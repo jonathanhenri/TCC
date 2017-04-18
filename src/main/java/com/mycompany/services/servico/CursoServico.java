@@ -19,6 +19,9 @@ import com.mycompany.util.Util;
 public class CursoServico implements ICursoServico {
 	private ICursoDAO cursoDAO;
 
+	public CursoServico() {
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Curso curso) {
 		Retorno retorno = validaRegrasAntesIncluir(curso);

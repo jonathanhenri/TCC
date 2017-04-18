@@ -98,7 +98,6 @@ public class Reflexao {
 				atributoIdentificadoEstrangeiro = getIdentificadorEstrangeiro((AbstractBean<?>) classeAuxBean); // PEGA O IDENTIFICADOR ESTRANGEIRO: EX: "NOME"
 			}
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
 		}
 		
 		return atributoIdentificadoEstrangeiro;

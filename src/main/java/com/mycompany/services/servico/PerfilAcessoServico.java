@@ -17,6 +17,9 @@ import com.mycompany.util.Util;
 
 public class PerfilAcessoServico implements IPerfilAcessoServico {
 	private IPerfilAcessoDAO perfilAcessoDAO;
+	
+	public PerfilAcessoServico() {
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(PerfilAcesso perfilAcesso) {

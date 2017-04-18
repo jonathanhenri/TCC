@@ -17,6 +17,9 @@ import com.mycompany.util.Util;
 
 public class MateriaServico implements IMateriaServico {
 	private IMateriaDAO materiaDAO;
+	
+	public MateriaServico() {
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Materia materia) {

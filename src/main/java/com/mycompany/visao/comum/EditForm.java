@@ -8,15 +8,15 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.services.interfaces.IServiceComum;
-
+@SuppressWarnings("unchecked")
 public abstract class EditForm extends Form<AbstractBean<?>>{
 	private static final long serialVersionUID = 1L;
 	protected AbstractBean<?> abstractBean;
 	protected FeedbackPanel feedbackPanel;
 	
-	private IServiceComum<?> serviceComum;
+	private IServiceComum serviceComum;
 	
-	public EditForm(String id, AbstractBean<?> abstractBean,IServiceComum<?> serviceComum) {
+	public EditForm(String id, AbstractBean<?> abstractBean,IServiceComum serviceComum) {
 		super(id);
 		this.abstractBean = abstractBean;
 		this.serviceComum = serviceComum;
@@ -44,7 +44,7 @@ public abstract class EditForm extends Form<AbstractBean<?>>{
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
 				if(validarRegrasAntesExcluir(target)){
-//					serviceComum.remove(abstractBean);
+					serviceComum.remove(getAbstractBean());
 				}
 			}
 		};
@@ -60,9 +60,9 @@ public abstract class EditForm extends Form<AbstractBean<?>>{
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
 				if(validarRegrasAntesSalvarEditar((target))){
 					if(getAbstractBean().getId()==null){
-//						serviceComum.persist(getAbstractBean());
+						serviceComum.persist(getAbstractBean());
 					}else{
-//						serviceComum.save(getAbstractBean());
+						serviceComum.save(getAbstractBean());
 					}
 						
 				}

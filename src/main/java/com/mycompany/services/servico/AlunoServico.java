@@ -18,6 +18,9 @@ import com.mycompany.util.Util;
 
 public class AlunoServico implements IAlunoServico {
 	private IAlunoDAO alunoDAO;
+	
+	public AlunoServico() {
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Aluno aluno) {

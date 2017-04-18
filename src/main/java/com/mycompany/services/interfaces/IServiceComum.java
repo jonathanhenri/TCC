@@ -3,26 +3,27 @@ package com.mycompany.services.interfaces;
 import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.feedback.Retorno;
 
-public interface IServiceComum<AbstractBean> {
+public interface IServiceComum<T extends AbstractBean<?>> {
 
-	public Retorno persist(AbstractBean persist);
+	public Retorno persist(T persist);
 	
-	public Retorno save(AbstractBean save);
+	public Retorno save(T save);
 	
-	public Retorno remove(AbstractBean  remove);
+	public Retorno remove(T  remove);
 	
-	public AbstractBean searchUnique(Search search);
+	public T searchUnique(Search search);
 	
 	public int count(Search search);
 	
-	public List<AbstractBean> search(Search search);
+	public List<T> search(Search search);
 	
-	public Retorno validaRegrasAntesIncluir(AbstractBean salvar);
+	public Retorno validaRegrasAntesIncluir(T salvar);
 	
-	public Retorno validaRegrasAntesAlterar(AbstractBean alterar);
+	public Retorno validaRegrasAntesAlterar(T alterar);
 	
-	public Retorno validaRegrasAntesRemover(AbstractBean remover);
+	public Retorno validaRegrasAntesRemover(T remover);
 	
 }

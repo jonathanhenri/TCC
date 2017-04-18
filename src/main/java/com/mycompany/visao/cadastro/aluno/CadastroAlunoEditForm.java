@@ -8,15 +8,14 @@ import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.visao.comum.EditForm;
 
-public class CadastroAluno extends EditForm {
+public class CadastroAlunoEditForm extends EditForm {
 	@SpringBean(name="alunoServico")
 	private static IAlunoServico alunoServico;
 	
 	private Aluno aluno;
-	public CadastroAluno(String id, Aluno aluno) {
+	public CadastroAlunoEditForm(String id, Aluno aluno) {
 		super(id, aluno,alunoServico);
 		this.aluno = aluno;
-		
 		adicionarCampos();
 	}
 

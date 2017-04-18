@@ -20,6 +20,9 @@ import com.mycompany.util.Util;
 
 public class CodigoAlunoServico implements ICodigoAlunoServico {
 	private ICodigoAlunoDAO codigoAlunoDAO;
+	
+	public CodigoAlunoServico() {
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(CodigoAluno curso) {

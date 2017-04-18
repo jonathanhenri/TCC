@@ -27,6 +27,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
+import com.mycompany.visao.comum.EditForm;
 import com.mycompany.visao.comum.Menu;
 
 
@@ -100,6 +101,7 @@ public abstract class ListarPageGenerico extends Menu {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				super.onSubmit(target, form);
+				getEditFormIncluir(target);
 				target.add(divListaAtualizar);
 			}
 		};
@@ -114,8 +116,6 @@ public abstract class ListarPageGenerico extends Menu {
 		createColumns();
 		criarDataProvider();
 		criarDataTable();
-		criarLinkEditar(abstractBean);
-		criarLinkExcluir(abstractBean);
 	}
 	
 	private void criarForm(){
@@ -154,6 +154,12 @@ public abstract class ListarPageGenerico extends Menu {
 		return true;
 	}
 	
+	protected abstract void getEditFormIncluir(AjaxRequestTarget target);
+	
+	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
+	
+	protected abstract void getFormExcluir(AjaxRequestTarget target);
+	
 	protected void createColumns(){
 		Map<String, String> hashMapColunas = Reflexao.colunaListarPage(abstractBean);
 		
@@ -184,12 +190,12 @@ public abstract class ListarPageGenerico extends Menu {
 		};
 	}
 	
-	protected AjaxLink<AbstractBean<?>> criarLinkEditar(AbstractBean<?> abstractBean) {
+	protected AjaxLink<AbstractBean<?>> criarLinkEditar(final AbstractBean<?> abstractBean) {
 		AjaxLink<AbstractBean<?>> linkEditar = new AjaxLink<AbstractBean<?>>("linkAlterar", new Model<AbstractBean<?>>(abstractBean)) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalIncluirEditar.show(target);
+				getEditFormEditar(target,abstractBean);
 			}
 		};
 		linkEditar.setOutputMarkupId(true);
@@ -216,5 +222,20 @@ public abstract class ListarPageGenerico extends Menu {
 		return quantidadeRegistrosVisiveis;
 	}
 	
+	public void setModalExcluir(ModalWindow modalExcluir) {
+		this.modalExcluir = modalExcluir;
+	}
+	
+	public ModalWindow getModalExcluir() {
+		return modalExcluir;
+	}
+	
+	public void setModalIncluirEditar(ModalWindow modalIncluirEditar) {
+		this.modalIncluirEditar = modalIncluirEditar;
+	}
+	
+	public ModalWindow getModalIncluirEditar() {
+		return modalIncluirEditar;
+	}
 	
 }

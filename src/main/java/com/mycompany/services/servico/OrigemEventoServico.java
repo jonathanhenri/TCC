@@ -17,6 +17,9 @@ import com.mycompany.util.Util;
 
 public class OrigemEventoServico implements IOrigemEventoServico {
 	private IOrigemEventoDAO origemEventoDAO;
+	
+	public OrigemEventoServico() {
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(OrigemEvento origemEvento) {

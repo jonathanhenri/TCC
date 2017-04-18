@@ -1,9 +1,11 @@
 package com.mycompany.visao.cadastro.curso;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
@@ -38,6 +40,23 @@ public class CursoListarPage extends ListarPageGenerico {
 	private void addFiltros(){
 		campoNome();
 		campoDuracao();
+	}
+
+	@Override
+	protected void getEditFormIncluir(AjaxRequestTarget target) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
+		getModalIncluirEditar().show(target);
+	}
+
+	@Override
+	protected void getFormExcluir(AjaxRequestTarget target) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
