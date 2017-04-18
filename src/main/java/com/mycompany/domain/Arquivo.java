@@ -1,0 +1,66 @@
+package com.mycompany.domain;
+
+import java.io.Serializable;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+
+@Table(name = "CF_ARQUIVO")
+@Entity
+public class Arquivo extends AbstractBean<Arquivo>{
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_arquivo")
+	private Long id;
+	
+	@Column(name = "nome_arquivo", nullable = true, length = 100)
+	private String nomeArquivo;
+	
+	@Lob
+	@Column(name = "bytes",nullable = false, length = 100000)
+	@Basic(fetch = FetchType.LAZY)
+	private byte[] bytes = {};
+	
+	public Arquivo(){
+	}
+	
+	public Arquivo(byte[] bytes){
+		this.bytes = bytes;
+	}
+	
+	public Serializable getIdentifier() {
+		return this.id;
+	}
+
+	public Class<Arquivo> getJavaType() {
+		return Arquivo.class;
+	}
+
+	@Override
+	public Long getId() {
+		return this.id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public byte[] getBytes() {
+		return bytes;
+	}
+	
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
+	}
+}
