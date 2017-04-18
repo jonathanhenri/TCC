@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+
+    <bean id="alunoServico"  class="com.mycompany.services.servico.AlunoServico">
+    	<property name="alunoDAO" ref="alunoDAO" />
+    </bean>
+    
+    <bean id="cursoServico"  class="com.mycompany.services.servico.CursoServico">
+    	<property name="cursoDAO" ref="cursoDAO" />
+    </bean>
+    
+     <bean id="codigoAlunoServico"  class="com.mycompany.services.servico.CodigoAlunoServico">
+    	<property name="codigoAlunoDAO" ref="codigoAlunoDAO" />
+    </bean>
+    
+    <bean id="eventoServico"  class="com.mycompany.services.servico.EventoServico">
+    	<property name="eventoDAO" ref="eventoDAO" />
+    </bean>
+    
+    <bean id="materiaServico"  class="com.mycompany.services.servico.MateriaServico">
+    	<property name="materiaDAO" ref="materiaDAO" />
+    </bean>
+    
+    <bean id="origemEventoEventoServico"  class="com.mycompany.services.servico.OrigemEventoServico">
+    	<property name="origemEventoDAO" ref="origemEventoDAO" />
+    </bean>
+    
+    <bean id="tipoEventoServico"  class="com.mycompany.services.servico.TipoEventoServico">
+    	<property name="tipoEventoDAO" ref="tipoEventoDAO" />
+    </bean>
+    
+    <bean id="perfilAcessoServico"  class="com.mycompany.services.servico.PerfilAcessoServico">
+    	<property name="perfilAcessoDAO" ref="perfilAcessoDAO" />
+    </bean>
+    
+</beans>

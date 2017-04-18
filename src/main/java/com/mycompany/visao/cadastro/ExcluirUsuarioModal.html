@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<link href="css/simple-sidebar.css" type="text/css" rel="stylesheet" media="screen,projection" />
+<script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<h3>Excluir Usuario</h3>
+<form wicket:id="formExcluirModal" id="form">
+		<b>ID</b>
+			 <input type="text" class="form-control" wicket:id="id" id="ID" placeholder="ID" readonly="readonly">
+		 <b>Usuario</b> 
+			 <input type="text" class="form-control" wicket:id="login" id="login" placeholder="Login" readonly="readonly">
+		<b>Senha</b>
+			<input type="text" class="form-control" wicket:id="senha" id="senha" placeholder="Senha" readonly="readonly">
+		 <b>Nome</b> 
+			 <input type="text" class="form-control" wicket:id="nome" id="nome" placeholder="Nome" readonly="readonly">
+
+	<input value="Excluir" id="excluir" wicket:id="submit" type="submit" class="btn btn-primary btn3d " />
+	<input value="Cancelar" id="cancelar" wicket:id="cancelar" type="reset" class="btn  btn-danger  btn3d " />
+</form>
+
+</body>
+</html>

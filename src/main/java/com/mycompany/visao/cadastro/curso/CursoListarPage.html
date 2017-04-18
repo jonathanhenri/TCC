@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
+
+<head>
+<wicket:head>
+</wicket:head>
+</head>
+
+<body>
+	<wicket:extend>
+	
+		<div class="main-grid">
+			<div class="agile-grids">	
+				<!-- input-forms -->
+				<div class="grids">
+					<div class="progressbar-heading grids-heading">
+						<h2>Listagem de cursos</h2>
+					</div>
+					<form id="form" wicket:id="formListagem">
+						<div class="panel panel-info">
+						 	<div class="panel-heading">Filtros</div>
+							
+							<div class="panel-body">
+								<div class="col-md-3">
+									<label id="labelLogin" for="Duracao">Duracao</label>
+									 <input autofocus="autofocus"type="text" class="form-control" id="login" name="duracao" wicket:id="duracao"	placeholder="Login" />
+								</div>
+								<div class="col-md-3">
+									<label id="labelNome" for="nome">Nome</label> 
+									<input  wicket:id="nome" id="nome" name="nome" autofocus="autofocus"type="text" class="form-control" placeholder="Nome Pessoal" />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-3 pull-right">				 
+								 <input value="Pesquisar" id ="pesquisar" name ="pesquisar" wicket:id="pesquisar" type="submit" class="btn btn-primary  btn3d " />
+								 <input value="incluir" id ="incluir" name ="incluir" wicket:id="incluir" class="btn btn-success btn3d " />
+							</div>
+						</div>
+					</form>
+					
+					<div id="theContainer" class= "table-responsive" wicket:id="theContainer">
+						<hr>
+						<table id="table" border="0"  style="text-align: center;" name="tabela" wicket:id="tabela" class="table" ></table>
+						<td colspan="5"><span id="navegacao"wicket:id="navegacao">[[aqui vai a barra de navegacao]]</span></td>
+			
+					
+					</div>
+					<div id="modalEditar" name = "modalEditar" wicket:id="modalIncluirEditar"></div>
+					<div id="modalExcluir" name="modalExcluir" wicket:id="modalExcluir"></div>
+				</div>
+			</div>
+		</div>
+	</wicket:extend>
+</body>
+
+</html>
