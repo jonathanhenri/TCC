@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.mycompany.anotacao.ListarPageAnotacao;
+
 @Entity
 @Table(name = "MATERIA")
 public class Materia extends AbstractBean<Materia> {
@@ -21,9 +23,11 @@ public class Materia extends AbstractBean<Materia> {
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
 	
+	@ListarPageAnotacao(identificadorEstrangeiro = true)
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
+	@ListarPageAnotacao
 	@Column(name = "PERIODO", nullable = false)
 	private Integer periodo;	
 	

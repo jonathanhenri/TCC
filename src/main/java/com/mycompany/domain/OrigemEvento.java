@@ -12,14 +12,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.mycompany.anotacao.ListarPageAnotacao;
+
 @Entity
 @Table(name = "ORIGEM_EVENTO")
 public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	private static final long serialVersionUID = 1L;
 
+	@ListarPageAnotacao
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
+	@ListarPageAnotacao(nomeColuna = "Curso")
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;

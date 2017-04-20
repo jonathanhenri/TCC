@@ -16,7 +16,6 @@ public class CadastroAlunoEditForm extends EditForm {
 	public CadastroAlunoEditForm(String id, Aluno aluno) {
 		super(id, aluno,alunoServico);
 		this.aluno = aluno;
-		adicionarCampos();
 	}
 
 	
@@ -28,11 +27,18 @@ public class CadastroAlunoEditForm extends EditForm {
 	}
 	
 	
-	private TextField<String> criarCampoLogin(){
-		TextField<String> textFieldLogin = new TextField<String>("login");
-		textFieldLogin.setOutputMarkupId(true);
-		textFieldLogin.setRequired(true);
-		return textFieldLogin;
+	private TextField<String> criarCampoCpf(){
+		TextField<String> textField = new TextField<String>("cpf");
+		textField.setOutputMarkupId(true);
+		textField.setRequired(true);
+		return textField;
+	}
+	
+	private TextField<String> criarCampoEmail(){
+		TextField<String> textField = new TextField<String>("email");
+		textField.setOutputMarkupId(true);
+		textField.setRequired(true);
+		return textField;
 	}
 	
 	private PasswordTextField criarCampoSenha(){
@@ -46,8 +52,9 @@ public class CadastroAlunoEditForm extends EditForm {
 	@Override
 	protected void adicionarCampos() {
 		add(criarCampoNome());
-		add(criarCampoLogin());
+		add(criarCampoCpf());
 		add(criarCampoSenha());
+		add(criarCampoEmail());
 	}
 	
 	private static final long serialVersionUID = 1L;

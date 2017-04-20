@@ -13,17 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.mycompany.anotacao.ListarPageAnotacao;
+
 @Entity
 @Table(name = "EVENTO")
 public class Evento extends AbstractBean<Evento> {
 	private static final long serialVersionUID = 1L;
 
+	
 	@Column(name = "DATA_INICIO", nullable = false)
 	private Date dataInicio;
 	
 	@Column(name = "DATA_FIM", nullable = true)
 	private Date dataFim;
 	
+	@ListarPageAnotacao
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
 	

@@ -1,15 +1,20 @@
 package com.mycompany.visao.comum;
 
+import java.io.Serializable;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.services.interfaces.IServiceComum;
 @SuppressWarnings("unchecked")
-public abstract class EditForm extends Form<AbstractBean<?>>{
+public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	private static final long serialVersionUID = 1L;
 	protected AbstractBean<?> abstractBean;
 	protected FeedbackPanel feedbackPanel;
@@ -17,12 +22,13 @@ public abstract class EditForm extends Form<AbstractBean<?>>{
 	private IServiceComum serviceComum;
 	
 	public EditForm(String id, AbstractBean<?> abstractBean,IServiceComum serviceComum) {
-		super(id);
+		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
 		this.abstractBean = abstractBean;
 		this.serviceComum = serviceComum;
 		adicionarCampos();
+		adicionarCamposGerais();
 	}
-
+	
 
 	private AjaxLink<String> criarBotaoVoltar(){
 		 AjaxLink<String> voltar = new  AjaxLink<String>("voltar"){
@@ -105,10 +111,12 @@ public abstract class EditForm extends Form<AbstractBean<?>>{
 		return abstractBean;
 	}
 
-	protected void adicionarCampos(){
+	private void adicionarCamposGerais(){
 		add(criarBotaoExcluir());
 		add(criarBotaoSalvar());
 		add(criarBotaoVoltar());
+	}
+	protected void adicionarCampos(){
 	}
 
 	public void setAbstractBean(AbstractBean<?> abstractBean) {

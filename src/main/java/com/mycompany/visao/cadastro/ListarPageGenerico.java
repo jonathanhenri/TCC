@@ -15,6 +15,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.DefaultDataT
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -27,7 +28,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
-import com.mycompany.visao.comum.EditForm;
+import com.mycompany.util.Util;
 import com.mycompany.visao.comum.Menu;
 
 
@@ -45,6 +46,7 @@ public abstract class ListarPageGenerico extends Menu {
 	private AbstractBean<?> abstractBean;
 	protected IColumn[] columns;
 	protected int quantidadeRegistrosVisiveis = 10;
+	protected String nomeTituloListarPage;
 	
 	protected ListarPageGenerico(AbstractBean<?> abstractBean,Panel editPanel,int quantidadeRegistrosVisiveis,IServiceComum<?> servicoComum){
 		this.editPanel = editPanel;
@@ -67,9 +69,6 @@ public abstract class ListarPageGenerico extends Menu {
 		modalIncluirEditar.setOutputMarkupId(true);
 		modalIncluirEditar.setInitialHeight(400);
 		modalIncluirEditar.setInitialWidth(600);
-//		add(editPanel);
-	
-//		modalIncluirEditar.add(editPanel);
 		add(modalIncluirEditar);
 	
 	}
@@ -100,7 +99,6 @@ public abstract class ListarPageGenerico extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				super.onSubmit(target, form);
 				getEditFormIncluir(target);
 				target.add(divListaAtualizar);
 			}
@@ -116,8 +114,12 @@ public abstract class ListarPageGenerico extends Menu {
 		createColumns();
 		criarDataProvider();
 		criarDataTable();
+		add(criarCampoTituloPage());
 	}
 	
+	protected Form<?> getForm(){
+		return form;
+	}
 	private void criarForm(){
 		form = new Form<AbstractBean<?>>("formListagem",new CompoundPropertyModel<AbstractBean<?>>(abstractBean));
 		form.add(criarButtonPesquisar());
@@ -200,6 +202,16 @@ public abstract class ListarPageGenerico extends Menu {
 		};
 		linkEditar.setOutputMarkupId(true);
 		return linkEditar;
+	}
+	
+	protected Label criarCampoTituloPage(){
+		Label titulo = new Label("nomeTitulo",getNomeTituloListarPage());
+		titulo.setOutputMarkupId(true);
+		return titulo;
+	}
+	
+	protected String getNomeTituloListarPage(){
+		return "Listagem de "+Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
 	}
 	
 	protected AjaxLink<AbstractBean<?>> criarLinkExcluir(AbstractBean<?> abstractBean) {

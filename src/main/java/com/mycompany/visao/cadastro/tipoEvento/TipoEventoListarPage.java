@@ -1,4 +1,4 @@
-package com.mycompany.visao.cadastro.curso;
+package com.mycompany.visao.cadastro.tipoEvento;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
@@ -8,39 +8,28 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
+import com.mycompany.domain.OrigemEvento;
+import com.mycompany.domain.TipoEvento;
 import com.mycompany.services.interfaces.ICursoServico;
+import com.mycompany.services.interfaces.IOrigemEventoServico;
+import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
 
-public class CursoListarPage extends ListarPageGenerico {
+public class TipoEventoListarPage extends ListarPageGenerico {
 	private static final long serialVersionUID = 1L;
 	
-	@SpringBean(name="cursoServico")
-	static ICursoServico cursoServico;
+	@SpringBean(name="tipoEventoServico")
+	static ITipoEventoServico tipoEventoServico;
 	
-	static Curso curso = new Curso();
+	static TipoEvento tipoEvento = new TipoEvento();
 	
-	public CursoListarPage(){
-		super(curso,10,cursoServico);
+	public TipoEventoListarPage(){
+		super(tipoEvento,10,tipoEventoServico);
 		addFiltros();
 	}
 	
-	private void campoDuracao(){
-		final TextField<String> duracao = new TextField<String>("duracao");
-		duracao.setOutputMarkupId(true);
-		form.add(duracao);
-	}
-	
-	private void campoNome(){
-		final TextField<String> nome = new TextField<String>("nome");
-		nome.setOutputMarkupId(true);
-		form.add(nome);
-	}
-	
-	
 	private void addFiltros(){
-		campoNome();
-		campoDuracao();
 	}
 
 	@Override
@@ -55,7 +44,6 @@ public class CursoListarPage extends ListarPageGenerico {
 	}
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().show(target);
 	}
 
 	@Override

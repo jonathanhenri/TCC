@@ -2,13 +2,13 @@ package com.mycompany.visao.cadastro.aluno;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
-import com.mycompany.visao.comum.EditForm;
 
 public class AlunoListarPage extends ListarPageGenerico {
 	private static final long serialVersionUID = 1L;
@@ -37,9 +37,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		CadastroAlunoEditForm cadastroAlunoEditForm = new CadastroAlunoEditForm(getModalIncluirEditar().getContentId(),(Aluno) abstractBean);
-		cadastroAlunoEditForm.setOutputMarkupId(true);
-		getModalIncluirEditar().add(cadastroAlunoEditForm);
+		getModalIncluirEditar().setContent(criarPanel(abstractBean));
 		getModalIncluirEditar().show(target);
 	}
 	
@@ -62,14 +60,21 @@ public class AlunoListarPage extends ListarPageGenerico {
 		
 	}
 
+	private Panel criarPanel(AbstractBean<?> abstractBean){
+		CadastroAlunoPanel editPanel = new CadastroAlunoPanel(getModalIncluirEditar().getContentId());
+		editPanel.setOutputMarkupId(true);
+		getForm().add(editPanel);
+		
+		CadastroAlunoEditForm cadastroAlunoEditForm = new CadastroAlunoEditForm("formCadastro",(Aluno) abstractBean);
+		cadastroAlunoEditForm.setOutputMarkupId(true);
+		editPanel.add(cadastroAlunoEditForm);
+		
+		return editPanel;
+	}
+	
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
-		CadastroAlunoPanel editPanel = new CadastroAlunoPanel("editPanel");
-		getModalIncluirEditar().add(editPanel);
-		
-		CadastroAlunoEditForm cadastroAlunoEditForm = new CadastroAlunoEditForm(getModalIncluirEditar().getContentId(),new Aluno());
-		cadastroAlunoEditForm.setOutputMarkupId(true);
-		getModalIncluirEditar().setContent(cadastroAlunoEditForm);
+		getModalIncluirEditar().setContent(criarPanel(new Aluno()));
 		getModalIncluirEditar().show(target);
 	}
 }

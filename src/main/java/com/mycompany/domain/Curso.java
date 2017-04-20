@@ -25,7 +25,7 @@ public class Curso extends AbstractBean<Curso> {
 	/*
 	 * A ordem dos atributos irar ser a ordem das colunas
 	 */
-	@ListarPageAnotacao
+	@ListarPageAnotacao(nomeColuna = "Numero")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
