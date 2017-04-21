@@ -9,6 +9,7 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
+import com.mycompany.visao.comum.MensagemExcluirPanel;
 
 public class AlunoListarPage extends ListarPageGenerico {
 	private static final long serialVersionUID = 1L;
@@ -54,18 +55,25 @@ public class AlunoListarPage extends ListarPageGenerico {
 		campoCurso();
 	}
 
-	@Override
-	protected void getFormExcluir(AjaxRequestTarget target) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
 		CadastroAlunoPanel editPanel = new CadastroAlunoPanel(getModalIncluirEditar().getContentId());
 		editPanel.setOutputMarkupId(true);
 		getForm().add(editPanel);
 		
-		CadastroAlunoEditForm cadastroAlunoEditForm = new CadastroAlunoEditForm("formCadastro",(Aluno) abstractBean);
+		CadastroAlunoEditForm cadastroAlunoEditForm = new CadastroAlunoEditForm((Aluno) abstractBean,editPanel){
+			private static final long serialVersionUID = 1L;
+
+			protected void executarAoEditar(AjaxRequestTarget target) {
+				target.add(getAtualizarListarPage());
+				getModalIncluirEditar().close(target);
+			};
+			
+			protected void executarAoSalvar(AjaxRequestTarget target) {
+				target.add(getAtualizarListarPage());
+				getModalIncluirEditar().close(target);
+			};
+		};
 		cadastroAlunoEditForm.setOutputMarkupId(true);
 		editPanel.add(cadastroAlunoEditForm);
 		

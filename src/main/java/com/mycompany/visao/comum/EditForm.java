@@ -1,30 +1,34 @@
 package com.mycompany.visao.comum;
 
-import java.io.Serializable;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.services.interfaces.IServiceComum;
+import com.mycompany.util.Util;
 @SuppressWarnings("unchecked")
 public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	private static final long serialVersionUID = 1L;
 	protected AbstractBean<?> abstractBean;
 	protected FeedbackPanel feedbackPanel;
+	protected String nomeTitulo;
+	private Panel editPanel;
 	
 	private IServiceComum serviceComum;
 	
-	public EditForm(String id, AbstractBean<?> abstractBean,IServiceComum serviceComum) {
+	public EditForm(String id, AbstractBean<?> abstractBean,IServiceComum serviceComum,Panel editPanel) {
 		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
 		this.abstractBean = abstractBean;
 		this.serviceComum = serviceComum;
+		this.editPanel = editPanel;
 		adicionarCampos();
 		adicionarCamposGerais();
 	}
@@ -67,10 +71,12 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 				if(validarRegrasAntesSalvarEditar((target))){
 					if(getAbstractBean().getId()==null){
 						serviceComum.persist(getAbstractBean());
+						executarAoSalvar(target);
 					}else{
 						serviceComum.save(getAbstractBean());
+						executarAoEditar(target);
 					}
-						
+					
 				}
 			}
 			
@@ -92,7 +98,6 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return true;
 	}
 	
-	
 	protected void executarAoEditar(AjaxRequestTarget target){
 		
 	}
@@ -105,6 +110,22 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected void iniciarPagina(){
 		
 	}
+	
+	protected Label criarCampoTituloPage(){
+		Label titulo = new Label("nomeTitulo",getNomeTituloListarPage());
+		titulo.setOutputMarkupId(true);
+		return titulo;
+	}
+	
+	protected String getNomeTituloListarPage(){
+		String titulo = "";
+		if(abstractBean.getId()!=null){
+			titulo = "Editando "+ Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
+		}else{
+			titulo = "Incluindo " +Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
+		}
+		return titulo;
+	}
 
 
 	public AbstractBean<?> getAbstractBean() {
@@ -115,6 +136,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		add(criarBotaoExcluir());
 		add(criarBotaoSalvar());
 		add(criarBotaoVoltar());
+		editPanel.add(criarCampoTituloPage());
 	}
 	protected void adicionarCampos(){
 	}

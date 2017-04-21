@@ -38,7 +38,7 @@ public class Curso extends AbstractBean<Curso> {
 	@Column(name = "DURACAO", nullable = false)
 	private Integer duracao;
 	
-	@Column(name = "MODALIDADE", nullable = false)
+	@Column(name = "MODALIDADE", nullable = true)
 	private Integer modalidade;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)

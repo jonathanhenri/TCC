@@ -49,10 +49,6 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
 	}
 
-	@Override
-	protected void getFormExcluir(AjaxRequestTarget target) {
-		// TODO Auto-generated method stub
 		
-	}
 	
 }

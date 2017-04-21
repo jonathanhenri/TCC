@@ -26,19 +26,20 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.util.Util;
+import com.mycompany.visao.comum.MensagemExcluirPanel;
 import com.mycompany.visao.comum.Menu;
 
 
 public abstract class ListarPageGenerico extends Menu {
 	private static final long serialVersionUID = 1L;
-	IServiceComum<?> serviceComum;
+	IServiceComum serviceComum;
 	
 	private WebMarkupContainer divListaAtualizar;
 	
-	protected Panel editPanel;
 	protected ModalWindow modalIncluirEditar;	
 	protected ModalWindow modalExcluir;
 	protected Form<AbstractBean<?>> form;
@@ -48,16 +49,15 @@ public abstract class ListarPageGenerico extends Menu {
 	protected int quantidadeRegistrosVisiveis = 10;
 	protected String nomeTituloListarPage;
 	
-	protected ListarPageGenerico(AbstractBean<?> abstractBean,Panel editPanel,int quantidadeRegistrosVisiveis,IServiceComum<?> servicoComum){
-		this.editPanel = editPanel;
-		this.serviceComum = servicoComum;
-		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
-		this.abstractBean = abstractBean;
-		adicionaCampos();
-	}
+//	protected ListarPageGenerico(AbstractBean<?> abstractBean,Panel editPanel,int quantidadeRegistrosVisiveis,IServiceComum<?> servicoComum){
+//		this.editPanel = editPanel;
+//		this.serviceComum = servicoComum;
+//		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
+//		this.abstractBean = abstractBean;
+//		adicionaCampos();
+//	}
 	
-	protected ListarPageGenerico(AbstractBean<?> abstractBean,int quantidadeRegistrosVisiveis,IServiceComum<?> servicoComum){
-		this.editPanel = editPanel;
+	protected ListarPageGenerico(AbstractBean<?> abstractBean,int quantidadeRegistrosVisiveis,IServiceComum servicoComum){
 		this.serviceComum = servicoComum;
 		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
 		this.abstractBean = abstractBean;
@@ -126,6 +126,7 @@ public abstract class ListarPageGenerico extends Menu {
 		form.add(criarButtonIncluir());
 		add(form);
 	}
+	
 	private void criarDataTable(){
 		divListaAtualizar = new WebMarkupContainer("theContainer");
 		divListaAtualizar.setOutputMarkupId(true);
@@ -156,11 +157,18 @@ public abstract class ListarPageGenerico extends Menu {
 		return true;
 	}
 	
+	
+	protected WebMarkupContainer getAtualizarListarPage(){
+		return divListaAtualizar;
+	}
+	
 	protected abstract void getEditFormIncluir(AjaxRequestTarget target);
 	
 	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
 	
-	protected abstract void getFormExcluir(AjaxRequestTarget target);
+	protected String getMensagemExclusao(){
+		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(abstractBean.getClass().getSimpleName())+" realmente?";
+	}
 	
 	protected void createColumns(){
 		Map<String, String> hashMapColunas = Reflexao.colunaListarPage(abstractBean);
@@ -214,12 +222,31 @@ public abstract class ListarPageGenerico extends Menu {
 		return "Listagem de "+Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
 	}
 	
-	protected AjaxLink<AbstractBean<?>> criarLinkExcluir(AbstractBean<?> abstractBean) {
+	protected AjaxLink<AbstractBean<?>> criarLinkExcluir(final AbstractBean<?> abstractBean) {
 		AjaxLink<AbstractBean<?>> linkExcluir = new AjaxLink<AbstractBean<?>>("linkExcluir", new Model<AbstractBean<?>>(abstractBean)) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				modalExcluir.show(target);
+				
+				MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(getModalExcluir().getContentId(), getMensagemExclusao()){
+					private static final long serialVersionUID = 1L;
+
+					protected void executarAoClicarNao(AjaxRequestTarget target) {
+						target.add(getAtualizarListarPage());
+						getModalExcluir().close(target);
+					};
+					
+					protected void executarAoClicarSim(AjaxRequestTarget target) {
+						serviceComum.remove(abstractBean);
+						target.add(getAtualizarListarPage());
+						getModalExcluir().close(target);
+					};
+				};
+				
+				getForm().add(excluirPanel);
+				getModalExcluir().setContent(excluirPanel);
+				getModalExcluir().show(target);
+				
 			}
 		};
 		linkExcluir.setOutputMarkupId(true);

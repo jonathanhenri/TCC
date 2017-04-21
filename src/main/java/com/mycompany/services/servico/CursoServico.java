@@ -59,17 +59,23 @@ public class CursoServico implements ICursoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno remove(Curso curso) {
-		Retorno retorno = validaRegrasAntesRemover(curso);
-		
-		if(retorno.getSucesso()){
-			Mensagem mensagem = new Mensagem();
-			if(cursoDAO.remove(curso)){
-				mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
-			}else{
-				mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
-			}
+		Retorno retorno = new Retorno();
+		try{
+			 retorno = validaRegrasAntesRemover(curso);
 			
-			retorno.addMensagem(mensagem);
+			if(retorno.getSucesso()){
+				Mensagem mensagem = new Mensagem();
+				if(cursoDAO.remove(curso)){
+					mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				}else{
+					mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				}
+				
+				retorno.addMensagem(mensagem);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			retorno.setSucesso(false);
 		}
 		
 		return retorno;

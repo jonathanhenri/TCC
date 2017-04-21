@@ -2,6 +2,7 @@ package com.mycompany.visao.cadastro.aluno;
 
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.Aluno;
@@ -13,8 +14,13 @@ public class CadastroAlunoEditForm extends EditForm {
 	private static IAlunoServico alunoServico;
 	
 	private Aluno aluno;
-	public CadastroAlunoEditForm(String id, Aluno aluno) {
-		super(id, aluno,alunoServico);
+	public CadastroAlunoEditForm(String id, Aluno aluno,Panel editPanel) {
+		super(id, aluno,alunoServico,editPanel);
+		this.aluno = aluno;
+	}
+	
+	public CadastroAlunoEditForm(Aluno aluno,Panel editPanel) {
+		super("formCadastro", aluno,alunoServico,editPanel);
 		this.aluno = aluno;
 	}
 

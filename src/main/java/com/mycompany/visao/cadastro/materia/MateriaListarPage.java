@@ -41,11 +41,6 @@ public class MateriaListarPage extends ListarPageGenerico {
 		getModalIncluirEditar().show(target);
 	}
 
-	@Override
-	protected void getFormExcluir(AjaxRequestTarget target) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	
 }
