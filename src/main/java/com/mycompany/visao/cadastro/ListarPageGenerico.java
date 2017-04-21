@@ -167,7 +167,7 @@ public abstract class ListarPageGenerico extends Menu {
 	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
 	
 	protected String getMensagemExclusao(){
-		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(abstractBean.getClass().getSimpleName())+" realmente?";
+		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()))+" realmente?";
 	}
 	
 	protected void createColumns(){
@@ -219,7 +219,7 @@ public abstract class ListarPageGenerico extends Menu {
 	}
 	
 	protected String getNomeTituloListarPage(){
-		return "Listagem de "+Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
+		return "Listagem de "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()));
 	}
 	
 	protected AjaxLink<AbstractBean<?>> criarLinkExcluir(final AbstractBean<?> abstractBean) {

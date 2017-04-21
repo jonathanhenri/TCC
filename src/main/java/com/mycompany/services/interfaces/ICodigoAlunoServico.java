@@ -25,10 +25,12 @@ public interface  ICodigoAlunoServico extends IServiceComum<CodigoAluno> {
 	@Override
 	public Retorno validaRegrasAntesRemover(CodigoAluno codigoAluno);
 	
-	public CodigoAluno verificarCodigoAtivo(String codigo);
+	public Retorno persist(List<CodigoAluno> listaCodigosAluno);
+	
+	public CodigoAluno verificarCodigoAtivo(String codigo,Curso curso);
 	
 	public List<CodigoAluno> gerarCodigosAluno(int quantidade,Curso curso);
 	
-	public CodigoAluno utilizarCodigoAluno(String codigo);
+	public CodigoAluno utilizarCodigoAluno(String codigo,Curso curso);
 	
 }

@@ -70,10 +70,10 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
 				if(validarRegrasAntesSalvarEditar((target))){
 					if(getAbstractBean().getId()==null){
-						serviceComum.persist(getAbstractBean());
+						persistAbstract(abstractBean);
 						executarAoSalvar(target);
 					}else{
-						serviceComum.save(getAbstractBean());
+						saveAbstract(abstractBean);
 						executarAoEditar(target);
 					}
 					
@@ -88,6 +88,13 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		
 		salvar.setOutputMarkupId(true);
 		return salvar;
+	}
+	
+	protected void saveAbstract(AbstractBean<?> abstractBean) {
+		serviceComum.save(getAbstractBean());
+	}
+	protected void persistAbstract(AbstractBean<?> abstractBean) {
+		serviceComum.persist(getAbstractBean());
 	}
 	
 	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target){
@@ -120,9 +127,9 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected String getNomeTituloListarPage(){
 		String titulo = "";
 		if(abstractBean.getId()!=null){
-			titulo = "Editando "+ Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
+			titulo = "Editando "+ Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()));
 		}else{
-			titulo = "Incluindo " +Util.firstToUpperCase(abstractBean.getClass().getSimpleName());
+			titulo = "Incluindo " +Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()));
 		}
 		return titulo;
 	}

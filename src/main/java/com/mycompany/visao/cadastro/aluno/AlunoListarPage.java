@@ -9,7 +9,6 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
-import com.mycompany.visao.comum.MensagemExcluirPanel;
 
 public class AlunoListarPage extends ListarPageGenerico {
 	private static final long serialVersionUID = 1L;

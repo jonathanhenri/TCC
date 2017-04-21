@@ -9,10 +9,10 @@ import com.mycompany.domain.Curso;
 
 public interface ICodigoAlunoDAO extends IDAOComum<CodigoAluno, Long>{
 	
-	public CodigoAluno verificarCodigoAtivo(String codigo);
+	public CodigoAluno verificarCodigoAtivo(String codigo,Curso curso);
 	
 	public List<CodigoAluno> gerarCodigosAluno(int quantidade,Curso curso);
 	
-	public CodigoAluno utilizarCodigoAluno(String codigo);
+	public CodigoAluno utilizarCodigoAluno(String codigo,Curso curso);
 	
 }

@@ -9,11 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
-import com.mycompany.domain.Materia;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.ICodigoAlunoDAO;
-import com.mycompany.persistence.interfaces.ICursoDAO;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.ICodigoAlunoServico;
 import com.mycompany.util.Util;
@@ -25,15 +23,29 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno persist(CodigoAluno curso) {
-		Retorno retorno = validaRegrasAntesIncluir(curso);
+	public Retorno persist(List<CodigoAluno> listaCodigosAluno) {
+		Retorno retorno = new Retorno();
+		for (CodigoAluno codigoAluno:listaCodigosAluno) {
+			Retorno persist = persist(codigoAluno); 
+			if(!persist.getSucesso()){
+				retorno.setSucesso(false);
+				retorno.addMensagens(persist.getListaMensagem());
+				break;
+			}
+		}
+		return retorno;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno persist(CodigoAluno codigoAluno) {
+		Retorno retorno = validaRegrasAntesIncluir(codigoAluno);
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(codigoAlunoDAO.persist(curso)){
-				mensagem  = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+			if(codigoAlunoDAO.persist(codigoAluno)){
+				mensagem  = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
 		}
@@ -42,15 +54,15 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno save(CodigoAluno curso) {
-		Retorno retorno = validaRegrasAntesAlterar(curso);
+	public Retorno save(CodigoAluno codigoAluno) {
+		Retorno retorno = validaRegrasAntesAlterar(codigoAluno);
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(codigoAlunoDAO.save(curso)){
-				mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+			if(codigoAlunoDAO.save(codigoAluno)){
+				mensagem = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
@@ -60,15 +72,15 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno remove(CodigoAluno curso) {
-		Retorno retorno = validaRegrasAntesRemover(curso);
+	public Retorno remove(CodigoAluno codigoAluno) {
+		Retorno retorno = validaRegrasAntesRemover(codigoAluno);
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(codigoAlunoDAO.remove(curso)){
-				mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+			if(codigoAlunoDAO.remove(codigoAluno)){
+				mensagem = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
@@ -134,21 +146,18 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Override
-	public CodigoAluno verificarCodigoAtivo(String codigo) {
-		return codigoAlunoDAO.verificarCodigoAtivo(codigo);
+	public CodigoAluno verificarCodigoAtivo(String codigo,Curso curso) {
+		return codigoAlunoDAO.verificarCodigoAtivo(codigo,curso);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public CodigoAluno utilizarCodigoAluno(String codigo) {
-		return codigoAlunoDAO.utilizarCodigoAluno(codigo);
+	public CodigoAluno utilizarCodigoAluno(String codigo,Curso curso) {
+		return codigoAlunoDAO.utilizarCodigoAluno(codigo,curso);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<CodigoAluno> gerarCodigosAluno(int quantidade, Curso curso) {
 		List<CodigoAluno> listaCodigoAluno = codigoAlunoDAO.gerarCodigosAluno(quantidade, curso);
-		for(CodigoAluno codigoAluno:listaCodigoAluno){
-			persist(codigoAluno);
-		}
 		return listaCodigoAluno;
 	}
 

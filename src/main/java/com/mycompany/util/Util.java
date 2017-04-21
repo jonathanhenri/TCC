@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.util.crypt.StringUtils;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.mycompany.domain.AbstractBean;
@@ -134,6 +135,19 @@ public class Util {
 		}
 		
 		return retorno;
+	}
+	
+	public static String separarToUpperCase(String str){
+		String novaString = "";
+		for(int i = 0;i<str.length();i++){
+			if(Character.isUpperCase(str.charAt(i))){
+				novaString = novaString +" "+str.charAt(i);
+			}else{
+				novaString+=str.charAt(i);
+			}
+		}
+		
+		return novaString;
 	}
 	public static String firstToUpperCase(String str) {
 		return str.substring(0, 1).toUpperCase().concat(str.substring(1));

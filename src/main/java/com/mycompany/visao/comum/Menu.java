@@ -1,19 +1,19 @@
 package com.mycompany.visao.comum;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
 
-import com.mycompany.domain.Curso;
-import com.mycompany.domain.TipoEvento;
+import com.mycompany.BasicAuthenticationSession;
 import com.mycompany.util.Util;
-import com.mycompany.visao.cadastro.Cadastro;
 import com.mycompany.visao.cadastro.aluno.AlunoListarPage;
 import com.mycompany.visao.cadastro.curso.CursoListarPage;
 import com.mycompany.visao.cadastro.evento.EventoListarPage;
 import com.mycompany.visao.cadastro.materia.MateriaListarPage;
 import com.mycompany.visao.cadastro.origemEvento.OrigemEventoListarPage;
 import com.mycompany.visao.cadastro.tipoEvento.TipoEventoListarPage;
+import com.mycompany.visao.geradorCodigo.CodigoAlunoListarPage;
 import com.mycompany.visao.login.Login;
 
 public class Menu extends WebPage {
@@ -76,15 +76,33 @@ public class Menu extends WebPage {
 			}
 		});
 		
-//		add(new AjaxLink<String>("sair") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				((BasicAuthenticationSession)Session.get()).clear();
-//				((BasicAuthenticationSession)Session.get()).invalidate();
-//				setResponsePage(Login.class);				
-//			}
-//		});
+		add(new AjaxLink<String>("link_gerador_codigos") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(CodigoAlunoListarPage.class);
+			}
+		});
+		
+		add(new AjaxLink<String>("sair_profile") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				((BasicAuthenticationSession)Session.get()).clear();
+				((BasicAuthenticationSession)Session.get()).invalidate();
+				setResponsePage(Login.class);				
+			}
+		});
+		
+		add(new AjaxLink<String>("sair_icon") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				((BasicAuthenticationSession)Session.get()).clear();
+				((BasicAuthenticationSession)Session.get()).invalidate();
+				setResponsePage(Login.class);				
+			}
+		});
 		
 
 		
