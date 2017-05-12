@@ -27,7 +27,10 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	static CodigoAluno codigoAluno = new CodigoAluno();
 	
 	public CodigoAlunoListarPage(){
-		super(codigoAluno,10,codigoAlunoServico);
+		setServiceComum(codigoAlunoServico);
+		setAbstractBean(codigoAluno);
+		setQuantidadeRegistrosVisiveis(10);
+		adicionaCampos();
 		addFiltros();
 	}
 	

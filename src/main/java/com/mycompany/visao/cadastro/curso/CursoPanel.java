@@ -2,9 +2,9 @@ package com.mycompany.visao.cadastro.curso;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class CadastroCursoPanel extends Panel {
+public class CursoPanel extends Panel {
 
-	public CadastroCursoPanel(String id) {
+	public CursoPanel(String id) {
 		super(id);
 	}
 }

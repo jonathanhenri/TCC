@@ -25,7 +25,9 @@ public class TipoEventoListarPage extends ListarPageGenerico {
 	static TipoEvento tipoEvento = new TipoEvento();
 	
 	public TipoEventoListarPage(){
-		super(tipoEvento,10,tipoEventoServico);
+		setServiceComum(tipoEventoServico);
+		setAbstractBean(tipoEvento);
+		adicionaCampos();
 		addFiltros();
 	}
 	

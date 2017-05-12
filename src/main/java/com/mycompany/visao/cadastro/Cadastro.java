@@ -34,7 +34,6 @@ public class Cadastro extends Menu{
 	private ICursoServico cursoServico;
 
 	public Cadastro(){
-		
 		feedbackPanel = new FeedbackPanel("feedback", new ContainerFeedbackMessageFilter(this));
 		feedbackPanel.setOutputMarkupId(true);
 		add(feedbackPanel);

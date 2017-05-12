@@ -20,7 +20,10 @@ public class MateriaListarPage extends ListarPageGenerico {
 	static Materia materia = new Materia();
 	
 	public MateriaListarPage(){
-		super(materia,10,materiaServico);
+		setServiceComum(materiaServico);
+		setAbstractBean(materia);
+		setQuantidadeRegistrosVisiveis(10);
+		adicionaCampos();
 		addFiltros();
 	}
 	private void addFiltros(){

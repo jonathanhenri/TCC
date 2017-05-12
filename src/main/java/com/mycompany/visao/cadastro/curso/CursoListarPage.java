@@ -5,9 +5,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
@@ -22,7 +20,13 @@ public class CursoListarPage extends ListarPageGenerico {
 	static Curso curso = new Curso();
 	
 	public CursoListarPage(){
-		super(curso,10,cursoServico);
+		
+		setServiceComum(cursoServico);
+		setQuantidadeRegistrosVisiveis(20);
+		setAbstractBean(curso);
+		
+		adicionaCampos();
+		
 		addFiltros();
 	}
 	
@@ -52,11 +56,11 @@ public class CursoListarPage extends ListarPageGenerico {
 	}
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
-		CadastroCursoPanel panel = new CadastroCursoPanel(getModalIncluirEditar().getContentId());
+		CursoPanel panel = new CursoPanel(getModalIncluirEditar().getContentId());
 		panel.setOutputMarkupId(true);
 		getForm().add(panel);
 		
-		CadastroCursoEditForm cadastroCursoEditForm = new CadastroCursoEditForm((Curso) abstractBean,panel){
+		CursoEditForm cadastroCursoEditForm = new CursoEditForm((Curso) abstractBean,panel){
 			private static final long serialVersionUID = 1L;
 			
 			protected void executarAoSalvar(AjaxRequestTarget target) {

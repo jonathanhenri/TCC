@@ -19,7 +19,10 @@ public class AlunoListarPage extends ListarPageGenerico {
 	static Aluno aluno = new Aluno();
 	
 	public AlunoListarPage(){
-		super(aluno,10,alunoServico);
+		setServiceComum(alunoServico);
+		setAbstractBean(aluno);
+		setQuantidadeRegistrosVisiveis(10);
+		adicionaCampos();
 		addFiltros();
 	}
 	
@@ -56,11 +59,11 @@ public class AlunoListarPage extends ListarPageGenerico {
 
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
-		CadastroAlunoPanel editPanel = new CadastroAlunoPanel(getModalIncluirEditar().getContentId());
+		AlunoPanel editPanel = new AlunoPanel(getModalIncluirEditar().getContentId());
 		editPanel.setOutputMarkupId(true);
 		getForm().add(editPanel);
 		
-		CadastroAlunoEditForm cadastroAlunoEditForm = new CadastroAlunoEditForm((Aluno) abstractBean,editPanel){
+		AlunoEditForm cadastroAlunoEditForm = new AlunoEditForm((Aluno) abstractBean,editPanel){
 			private static final long serialVersionUID = 1L;
 
 			protected void executarAoEditar(AjaxRequestTarget target) {

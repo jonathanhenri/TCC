@@ -17,7 +17,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColu
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -26,7 +25,6 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Aluno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.util.Util;
@@ -57,12 +55,18 @@ public abstract class ListarPageGenerico extends Menu {
 //		adicionaCampos();
 //	}
 	
-	protected ListarPageGenerico(AbstractBean<?> abstractBean,int quantidadeRegistrosVisiveis,IServiceComum servicoComum){
-		this.serviceComum = servicoComum;
-		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
-		this.abstractBean = abstractBean;
-		adicionaCampos();
-	}
+//	protected ListarPageGenerico(AbstractBean<?> abstractBean,int quantidadeRegistrosVisiveis,IServiceComum servicoComum){
+//		this.serviceComum = servicoComum;
+//		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
+//		this.abstractBean = abstractBean;
+//		adicionaCampos();
+//	}
+	
+	
+	protected abstract void getEditFormIncluir(AjaxRequestTarget target);
+	
+	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
+	
 	
 	private void criarModalIncluirEditar(){
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
@@ -162,10 +166,6 @@ public abstract class ListarPageGenerico extends Menu {
 		return divListaAtualizar;
 	}
 	
-	protected abstract void getEditFormIncluir(AjaxRequestTarget target);
-	
-	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
-	
 	protected String getMensagemExclusao(){
 		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()))+" realmente?";
 	}
@@ -251,6 +251,14 @@ public abstract class ListarPageGenerico extends Menu {
 		};
 		linkExcluir.setOutputMarkupId(true);
 		return linkExcluir;
+	}
+	
+	public void setServiceComum(IServiceComum serviceComum) {
+		this.serviceComum = serviceComum;
+	}
+	
+	public void setAbstractBean(AbstractBean<?> abstractBean) {
+		this.abstractBean = abstractBean;
 	}
 	
 	public void setQuantidadeRegistrosVisiveis(int quantidadeRegistrosVisiveis) {

@@ -2,6 +2,7 @@ package com.mycompany.services.servico;
 
 import java.util.List;
 
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.util.Util;
 
 public class CursoServico implements ICursoServico {
+	@SpringBean(name="cursoDAO")
 	private ICursoDAO cursoDAO;
 
 	public CursoServico() {

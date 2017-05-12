@@ -9,17 +9,17 @@ import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.visao.comum.EditForm;
 
-public class CadastroAlunoEditForm extends EditForm {
+public class AlunoEditForm extends EditForm {
 	@SpringBean(name="alunoServico")
 	private static IAlunoServico alunoServico;
 	
 	private Aluno aluno;
-	public CadastroAlunoEditForm(String id, Aluno aluno,Panel editPanel) {
+	public AlunoEditForm(String id, Aluno aluno,Panel editPanel) {
 		super(id, aluno,alunoServico,editPanel);
 		this.aluno = aluno;
 	}
 	
-	public CadastroAlunoEditForm(Aluno aluno,Panel editPanel) {
+	public AlunoEditForm(Aluno aluno,Panel editPanel) {
 		super("formCadastro", aluno,alunoServico,editPanel);
 		this.aluno = aluno;
 	}

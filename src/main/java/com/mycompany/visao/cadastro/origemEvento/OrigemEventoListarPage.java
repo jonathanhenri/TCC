@@ -23,7 +23,9 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 	static OrigemEvento origemEvento = new OrigemEvento();
 	
 	public OrigemEventoListarPage(){
-		super(origemEvento,10,origemEventoServico);
+		setServiceComum(origemEventoServico);
+		setAbstractBean(origemEvento);
+		adicionaCampos();
 		addFiltros();
 	}
 	
