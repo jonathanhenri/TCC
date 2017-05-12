@@ -79,6 +79,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 		return editPanel;
 	}
 	
+	
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
 		getModalIncluirEditar().setContent(criarPanel(new Aluno()));

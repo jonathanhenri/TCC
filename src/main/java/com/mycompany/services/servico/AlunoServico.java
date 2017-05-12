@@ -2,6 +2,8 @@ package com.mycompany.services.servico;
 
 import java.util.List;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;

@@ -30,7 +30,7 @@
     	<property name="materiaDAO" ref="materiaDAO" />
     </bean>
     
-    <bean id="origemEventoEventoServico"  class="com.mycompany.services.servico.OrigemEventoServico">
+    <bean id="origemEventoServico"  class="com.mycompany.services.servico.OrigemEventoServico">
     	<property name="origemEventoDAO" ref="origemEventoDAO" />
     </bean>
     

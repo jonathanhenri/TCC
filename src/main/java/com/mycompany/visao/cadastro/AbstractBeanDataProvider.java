@@ -19,8 +19,7 @@ import com.mycompany.services.interfaces.IServiceComum;
 public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<?>, String> {
 	private static final long serialVersionUID = 1L;
 
-	@SpringBean(name="servicoComum")
-	IServiceComum<?> servicoComum;
+	IServiceComum servicoComum;
 	
 	private AbstractBean<?> abstractBean;
 	protected Search search;
@@ -29,7 +28,7 @@ public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<
 	private String[] colPropertyExpression;
 	protected Boolean pesquisaPadrao = true;
 	
-	public AbstractBeanDataProvider(IServiceComum<?> servicoComum, String[] colPropertyExpression) {
+	public AbstractBeanDataProvider(IServiceComum servicoComum, String[] colPropertyExpression) {
 		this.servicoComum = servicoComum;
 		this.colPropertyExpression=colPropertyExpression;
 		

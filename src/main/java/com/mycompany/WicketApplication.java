@@ -59,8 +59,6 @@ public class WicketApplication extends AuthenticatedWebApplication implements Ap
 			
 			
 			if(Application.get().usesDeploymentConfig()){
-				//WicketUtil.setUrl("http://sistema.controlese.com/");
-//				WicketUtil.setUrl("https://www.controlese.com/");
 				System.setProperty("ambienteDesenvolvimento", "false");
 			}else{
 				//Indica se o ambiente é de desenvolvimento, caso seja positivo, apenas algumas categorias estão sendo incluídas (CategoriaDataGenerator)
