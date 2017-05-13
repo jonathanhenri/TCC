@@ -143,7 +143,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		add(criarBotaoExcluir());
 		add(criarBotaoSalvar());
 		add(criarBotaoVoltar());
-		editPanel.add(criarCampoTituloPage());
+		add(criarCampoTituloPage());
 	}
 	protected void adicionarCampos(){
 	}

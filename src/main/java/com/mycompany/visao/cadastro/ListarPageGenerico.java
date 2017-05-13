@@ -25,6 +25,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.util.Util;
@@ -68,18 +69,11 @@ public abstract class ListarPageGenerico extends Menu {
 	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
 	
 	
-	private void criarModalIncluirEditar(){
-		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
-		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(400);
-		modalIncluirEditar.setInitialWidth(600);
-		add(modalIncluirEditar);
-	
-	}
+	protected abstract ModalWindow criarModalIncluirEditar();
 	
 	private void criarModalExcluir(){
 		modalExcluir= new ModalWindow("modalExcluir");
-		modalExcluir.setInitialHeight(350);
+		modalExcluir.setInitialHeight(300);
 		modalExcluir.setInitialWidth(600);
 		modalExcluir.setOutputMarkupId(true);
 		add(modalExcluir);
@@ -112,7 +106,7 @@ public abstract class ListarPageGenerico extends Menu {
 	}
 	
 	public void adicionaCampos(){
-		criarModalIncluirEditar();
+		add(criarModalIncluirEditar());
 		criarModalExcluir();
 		criarForm();
 		createColumns();
@@ -237,9 +231,15 @@ public abstract class ListarPageGenerico extends Menu {
 					};
 					
 					protected void executarAoClicarSim(AjaxRequestTarget target) {
-						serviceComum.remove(abstractBean);
-						target.add(getAtualizarListarPage());
-						getModalExcluir().close(target);
+						Retorno retorno = null;
+						try{
+							retorno = serviceComum.remove(abstractBean);
+							target.add(getAtualizarListarPage());
+							getModalExcluir().close(target);
+						}catch(Exception e){
+							System.err.println(retorno);
+							e.printStackTrace();
+						}
 					};
 				};
 				

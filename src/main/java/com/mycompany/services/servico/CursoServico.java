@@ -1,5 +1,6 @@
 package com.mycompany.services.servico;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;

@@ -1,5 +1,6 @@
 package com.mycompany.persistence.dao;
 
+import java.sql.BatchUpdateException;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Isolation;

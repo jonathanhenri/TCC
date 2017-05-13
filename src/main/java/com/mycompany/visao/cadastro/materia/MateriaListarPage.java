@@ -1,6 +1,7 @@
 package com.mycompany.visao.cadastro.materia;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -29,6 +30,15 @@ public class MateriaListarPage extends ListarPageGenerico {
 	private void addFiltros(){
 	}
 
+	@Override
+	protected ModalWindow criarModalIncluirEditar() {
+		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
+		modalIncluirEditar.setOutputMarkupId(true);
+		modalIncluirEditar.setInitialHeight(200);
+		modalIncluirEditar.setInitialWidth(600);
+		return modalIncluirEditar;
+	}
+	
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
 		// TODO Auto-generated method stub

@@ -8,30 +8,32 @@
 </head>
 <body>
 	<wicket:panel>
-				<div class="panel panel-info">
-					<div class="panel-heading"><span wicket:id="nomeTitulo"></span></div>
-					<div class="panel-body">
-						<form data-toggle="validator" novalidate="true" wicket:id="formCadastro">
-							<div class="form-group">
-								<div class="col-md-6">	
-									<label>Nome</label>
-									<input type="text" class="form-control" id="nome" wicket:id="nome" placeholder="Nome">
-								</div>
-								<div class="col-md-6">	
-									<label>Duração</label>
-									<input type="number" class="form-control" id="duracao" wicket:id="duracao" placeholder="duracao">
-								</div>
-							</div>
-																
-							<div class="form-group">
-								<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-primary"></input>
-								<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
-								<input wicket:id="voltar" value="voltar" class="btn btn-default"></input>
-							</div>
-						</form>
-<!-- 					<div wicket:id="feedback">[Feedback Panel]</div> -->
+		<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formCadastro">
+			<div class="panel panel-info">
+				<div class="panel-heading"><span wicket:id="nomeTitulo"></span></div>
+				<div class="panel-body">
+					<div class="form-group">
+						<div class="col-md-6">	
+							<label class="control-label">Nome</label>
+							<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
+						</div>
+						<div class="col-md-6">	
+							<label class="control-label">Duração</label>
+							<input type="number" class="form-control" id="duracao" wicket:id="duracao" placeholder="duracao">
+						</div>
 					</div>
 				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<div class="panel-footer">
+							<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>
+							<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
+							<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-primary"></input>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
 	</wicket:panel>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package com.mycompany.visao.cadastro.origemEvento;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,6 +28,15 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 		setAbstractBean(origemEvento);
 		adicionaCampos();
 		addFiltros();
+	}
+	
+	@Override
+	protected ModalWindow criarModalIncluirEditar() {
+		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
+		modalIncluirEditar.setOutputMarkupId(true);
+		modalIncluirEditar.setInitialHeight(200);
+		modalIncluirEditar.setInitialWidth(600);
+		return modalIncluirEditar;
 	}
 	
 	private void addFiltros(){

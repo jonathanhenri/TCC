@@ -1,6 +1,7 @@
 package com.mycompany.persistence.dao;
 
 import java.io.Serializable;
+import java.sql.BatchUpdateException;
 
 import org.hibernate.SessionFactory;
 

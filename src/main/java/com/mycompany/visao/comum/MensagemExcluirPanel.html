@@ -8,33 +8,25 @@
 </head>
 <body>
 	<wicket:panel>
-		<div class="main-grid">
-			<div class="agile-grids">	
-				<!-- input-forms -->
-				<div class="grids">
-					<div class="progressbar-heading grids-heading">
-						<h2>Exclus„o</h2>
+		<div class="form-horizontal">
+			<div class="panel panel-info">
+				<div class="panel-heading">Exclus√£o</div>
+				<div class="panel-body">
+					<div class="form-group col-md-12">
+						<label wicket:id="conteudoMensagem"></label>
+						
 					</div>
-					
-					<div class="panel panel-widget agile-validation">
-						<div class="validation-grids widget-shadow" data-example-id="basic-forms"> 
-							<div class="form-body form-body-info">
-								<label wicket:id="conteudoMensagem"></label>
-								
-								<div class="form-group">
-									<input wicket:id="linkSim" value="Sim" class="btn btn-primary"></input>
-									<input wicket:id="linkNao" value="Nao" class="btn btn-danger"></input>
-								</div>
-									
-									
-							</div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group">
+						<div class="panel-footer">
+							<input wicket:id="linkSim" value="Sim" class="btn btn-primary"></input>
+							<input wicket:id="linkNao" value="Nao" class="btn btn-danger"></input>
 						</div>
 					</div>
 				</div>
-				<!-- //input-forms -->
 			</div>
 		</div>
-	
 	</wicket:panel>
 </body>
 </html>
