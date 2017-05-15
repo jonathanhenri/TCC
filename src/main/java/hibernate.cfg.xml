@@ -32,6 +32,5 @@
 		
 		
 		<mapping class="com.mycompany.domain.Aluno"/>
-		<mapping class="com.mycompany.domain.Fabricante"/>
 	</session-factory>
 </hibernate-configuration>

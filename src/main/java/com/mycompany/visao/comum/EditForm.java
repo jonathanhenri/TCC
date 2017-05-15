@@ -138,12 +138,19 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	public AbstractBean<?> getAbstractBean() {
 		return abstractBean;
 	}
+	
+	private FeedbackPanel criarFeedbackPanel(){
+		feedbackPanel = new FeedbackPanel("feedbackPanel");
+		feedbackPanel.setOutputMarkupId(true);
+		return feedbackPanel;
+	}
 
 	private void adicionarCamposGerais(){
 		add(criarBotaoExcluir());
 		add(criarBotaoSalvar());
 		add(criarBotaoVoltar());
 		add(criarCampoTituloPage());
+		editPanel.add(criarFeedbackPanel());
 	}
 	protected void adicionarCampos(){
 	}

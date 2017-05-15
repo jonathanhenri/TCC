@@ -3,6 +3,11 @@
 
 <head>
 <wicket:head>
+<script>
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	</script>
 </wicket:head>
 </head>
 
@@ -14,11 +19,11 @@
 				<!-- input-forms -->
 				<div class="grids">
 					<div class="progressbar-heading grids-heading">
-						<h2><label wicket:id="nomeTitulo"> Titulo page</label></h2>
+						<h2><label wicket:id="nomeTitulo" > Titulo page</label></h2>
 					</div>
 					<form id="form" wicket:id="formListagem">
 						<div class="panel panel-info">
-						 	<div class="panel-heading">Filtros</div>
+						 	<div class="panel-heading">Filtros <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="?"></a></div>
 							
 							<div class="panel-body">
 								<div class="col-md-3">

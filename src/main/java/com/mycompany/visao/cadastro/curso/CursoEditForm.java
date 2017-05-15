@@ -2,6 +2,7 @@ package com.mycompany.visao.cadastro.curso;
 
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -15,6 +16,7 @@ public class CursoEditForm extends EditForm {
 	private static ICursoServico cursoServico;
 	
 	private Curso curso;
+	
 	public CursoEditForm(String id, Curso curso,Panel editPanel) {
 		super(id, curso,cursoServico,editPanel);
 		this.curso = curso;
@@ -26,6 +28,11 @@ public class CursoEditForm extends EditForm {
 	}
 
 	
+	private FileUploadField criarCampoUploadLogo(){
+		FileUploadField  uploadField = new FileUploadField("logo");
+		uploadField.setOutputMarkupId(true);
+		return uploadField;
+	}
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
@@ -45,6 +52,7 @@ public class CursoEditForm extends EditForm {
 	protected void adicionarCampos() {
 		add(criarCampoNome());
 		add(criarCampoDuracao());
+		add(criarCampoUploadLogo());
 	}
 	
 	private static final long serialVersionUID = 1L;

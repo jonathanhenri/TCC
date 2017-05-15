@@ -3,24 +3,45 @@
 
 <head>
 <wicket:head>
-<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery2.0.3.min.js"></script>
+
+	<script>
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	</script>
 </wicket:head>
 </head>
 <body>
 	<wicket:panel>
 		<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formCadastro">
 			<div class="panel panel-info">
-				<div class="panel-heading"><span wicket:id="nomeTitulo"></span></div>
+				<div class="panel-heading">
+					<div class="panel-title">
+						<span wicket:id="nomeTitulo"></span>
+					</div>
+				</div>
 				<div class="panel-body">
-					<div class="form-group">
+					<div class="row">
 						<div class="col-md-6">	
 							<label class="control-label">Nome</label>
 							<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
 						</div>
 						<div class="col-md-6">	
 							<label class="control-label">Duração</label>
-							<input type="number" class="form-control" id="duracao" wicket:id="duracao" placeholder="duracao">
+							<input type="number" class="form-control" id="duracao" wicket:id="duracao" placeholder="Duracao">
 						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">	
+							<label class="control-label">Logo</label>
+							<input type="file" class="form-control"  id="nome" wicket:id="logo" placeholder="Logo">
+						</div>
+					<div class="container">
+						<a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a>
+					</div>
 					</div>
 				</div>
 				<div class="col-md-12">
@@ -34,6 +55,13 @@
 				</div>
 			</div>
 		</form>
+	
+		<div class="container">
+			<div class="alert alert-success alert-dismissible">
+			  <div wicket:id="feedbackPanel"></div>
+			  <button class="close" data-dismiss="alert">&times;</button>
+			</div>
+		</div>
 	</wicket:panel>
 </body>
 </html>

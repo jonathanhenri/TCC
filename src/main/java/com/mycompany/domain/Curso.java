@@ -1,6 +1,8 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,6 +72,10 @@ public class Curso extends AbstractBean<Curso> {
 		return id;
 	}
 
+	public List<Integer> getListaModalidades(){
+		return Arrays.asList(MODALIDADE_ANUAL,MODALIDADE_SEMESTRAL);
+	}
+	
 	@Override
 	public void setId(Long id) {
 		this.id = id;
