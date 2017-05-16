@@ -1,6 +1,9 @@
 package com.mycompany.visao.login;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -20,9 +23,9 @@ public class Login extends WebPage {
 
 	Aluno usuario = new Aluno();
 	FeedbackPanel feedbackPanel;
+	
 	@SpringBean(name = "alunoDAO")
 	IAlunoDAO alunoDAO;
-	
 	
 	public Login() {
 		adicionaCampos();		
@@ -30,24 +33,59 @@ public class Login extends WebPage {
 
 	private void adicionaCampos(){
 		add(criarFormularioLogin());
-		add(new FeedbackPanel("feedback"));
+		add(criarFeedbackPanel());
 	}
 	
-	private Form<Aluno> criarFormularioLogin(){
+	private FeedbackPanel criarFeedbackPanel(){
+		feedbackPanel = new FeedbackPanel("feedback");
+		feedbackPanel.setOutputMarkupId(true);
 		
-		Form<Aluno> form = new Form<Aluno>("form"){
+		return feedbackPanel;
+	}
+		
+	
+	private AjaxButton criarBotaoLogin(){
+		AjaxButton ajaxButton = new AjaxButton("login") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSubmit() {
-				Login.this.onFormSubmit();
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				AuthenticatedWebSession session = AuthenticatedWebSession.get(); 
+		        try{
+			        if(session.signIn(usuario.getCpf(), usuario.getSenha())) {
+			        	try{
+			        		session.replaceSession();
+			        	}catch(Exception e){
+			        		error("Erro ao tentar logar, tente novamente mais tarde");
+			        		e.printStackTrace();
+			        		return;
+			        	}
+			            setDefaultResponsePageIfNecessary(); 
+			        } else { 
+			            error(getString("ERRO! Senha ou Username não encontrado"));
+			        }
+		        }catch(BadCredentialsException e){
+		        	error(getString(e.getLocalizedMessage()));
+		        }catch(AccessDeniedException e){
+		        	getSession().error(getString("ERRO! O usuário já está logado"));
+		        	redirectToInterceptPage(new Login());
+				}
+		        
+		        target.add(feedbackPanel);
 			}
-			
 		};
+		
+		return ajaxButton;
+	}
+	private Form<Aluno> criarFormularioLogin(){
+		
+		Form<Aluno> form = new Form<Aluno>("form");
+		form.setOutputMarkupId(true);
 		add(form);
 		
 		form.add(criarCampoLogin());
 		form.add(criarCampoSenha());
+		form.add(criarBotaoLogin());
 		return form;
 	}
 	
@@ -66,29 +104,6 @@ public class Login extends WebPage {
 		senha.setRequired(true);
 		return senha;
 		
-	}
-	protected void onFormSubmit() {
-		AuthenticatedWebSession session = AuthenticatedWebSession.get(); 
-        try{
-	        if(session.signIn(usuario.getCpf(), usuario.getSenha())) {
-	        	try{
-	        		session.replaceSession();
-	        	}catch(Exception e){
-	        		error("Erro ao tentar logar, tente novamente mais tarde");
-	        		e.printStackTrace();
-	        		return;
-	        	}
-	            setDefaultResponsePageIfNecessary(); 
-	        } else { 
-	            error(getString("ERRO! Senha ou Username não encontrado"));
-	        }
-        }catch(BadCredentialsException e){
-        	error(getString(e.getLocalizedMessage()));
-        }catch(AccessDeniedException e){
-        	getSession().error(getString("ERRO! O usuário já está logado"));
-        	redirectToInterceptPage(new Login());
-		}
-
 	}
 
 	protected void setDefaultResponsePageIfNecessary() {

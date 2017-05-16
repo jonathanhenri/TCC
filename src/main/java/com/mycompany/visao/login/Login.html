@@ -1,55 +1,376 @@
-<!--A Design by W3layouts
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
 <head>
 <title>UEG Agenda</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Colored Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- bootstrap-css -->
 <link rel="stylesheet" href="css/bootstrap.css">
-<!-- //bootstrap-css -->
-<!-- Custom CSS -->
 <link href="css/style.css" rel='stylesheet' type='text/css' />
-<!-- font CSS -->
-<link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-<!-- font-awesome icons -->
 <link rel="stylesheet" href="css/font.css" type="text/css"/>
 <link href="css/font-awesome.css" rel="stylesheet"> 
-<!-- //font-awesome icons -->
+
+<script>
+$.getScript("https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js", function(){
+    particlesJS('particles-js',
+      {
+        "particles": {
+          "number": {
+            "value": 80,
+            "density": {
+              "enable": true,
+              "value_area": 800
+            }
+          },
+          "color": {
+            "value": "#ffffff"
+          },
+          "shape": {
+            "type": "circle",
+            "stroke": {
+              "width": 0,
+              "color": "#000000"
+            },
+            "polygon": {
+              "nb_sides": 5
+            },
+            "image": {
+              "width": 100,
+              "height": 100
+            }
+          },
+          "opacity": {
+            "value": 0.5,
+            "random": false,
+            "anim": {
+              "enable": false,
+              "speed": 1,
+              "opacity_min": 0.1,
+              "sync": false
+            }
+          },
+          "size": {
+            "value": 5,
+            "random": true,
+            "anim": {
+              "enable": false,
+              "speed": 40,
+              "size_min": 0.1,
+              "sync": false
+            }
+          },
+          "line_linked": {
+            "enable": true,
+            "distance": 150,
+            "color": "#ffffff",
+            "opacity": 0.4,
+            "width": 1
+          },
+          "move": {
+            "enable": true,
+            "speed": 6,
+            "direction": "none",
+            "random": false,
+            "straight": false,
+            "out_mode": "out",
+            "attract": {
+              "enable": false,
+              "rotateX": 600,
+              "rotateY": 1200
+            }
+          }
+        },
+        "interactivity": {
+          "detect_on": "canvas",
+          "events": {
+            "onhover": {
+              "enable": true,
+              "mode": "repulse"
+            },
+            "onclick": {
+              "enable": true,
+              "mode": "push"
+            },
+            "resize": true
+          },
+          "modes": {
+            "grab": {
+              "distance": 400,
+              "line_linked": {
+                "opacity": 1
+              }
+            },
+            "bubble": {
+              "distance": 400,
+              "size": 40,
+              "duration": 2,
+              "opacity": 8,
+              "speed": 3
+            },
+            "repulse": {
+              "distance": 200
+            },
+            "push": {
+              "particles_nb": 4
+            },
+            "remove": {
+              "particles_nb": 2
+            }
+          }
+        },
+        "retina_detect": true,
+        "config_demo": {
+          "hide_card": false,
+          "background_color": "#b61924",
+          "background_image": "",
+          "background_position": "50% 50%",
+          "background_repeat": "no-repeat",
+          "background_size": "cover"
+        }
+      }
+    );
+
+});
+
+
+
+
+
+
+</script>
+<style type="text/css">
+
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Poiret+One');
+
+body, html {
+	height: 100%;
+	background-repeat: no-repeat;    /*background-image: linear-gradient(rgb(12, 97, 33),rgb(104, 145, 162));*/
+	background:rgb(0, 188, 212);
+	position: relative;
+}
+#login-box {
+	position: absolute;
+	top: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 350px;
+	margin: 0 auto;
+	background: rgb(0, 188, 212);
+	min-height: 250px;
+	padding: 20px;
+	z-index: 9999;
+}
+#login-box .logo .logo-caption {
+	font-family: 'Poiret One', cursive;
+	color: white;
+	text-align: center;
+	margin-bottom: 0px;
+}
+#login-box .logo .tweak {
+	color: #ff5252;
+}
+#login-box .controls {
+	padding-top: 30px;
+}
+#login-box .controls input {
+	border-radius: 0px;
+	background: #004a88;
+	border: 0px;
+	color: black;
+	font-family: 'Nunito', sans-serif;
+}
+#login-box .controls input:focus {
+	box-shadow: none;
+}
+#login-box .controls input:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+}
+#login-box .controls input:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+}
+#login-box button.btn-custom {
+	border-radius: 2px;
+	margin-top: 8px;
+	background:#ff5252;
+	border-color: rgba(48, 46, 45, 1);
+	color: white;
+	font-family: 'Nunito', sans-serif;
+}
+#login-box button.btn-custom:hover{
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+	background: rgba(48, 46, 45, 1);
+	border-color: #ff5252;
+}
+
+.login-container::before,.login-container::after{
+    content: "";
+    position: absolute;
+    width: 100%;height: 100%;
+    top: 3.5px;left: 0;
+    background: #fff;
+    z-index: -1;
+    -webkit-transform: rotateZ(4deg);
+    -moz-transform: rotateZ(4deg);
+    -ms-transform: rotateZ(4deg);
+    border: 1px solid #ccc;
+
+}
+
+.login-container::after{
+    top: 5px;
+    z-index: -2;
+    -webkit-transform: rotateZ(-2deg);
+     -moz-transform: rotateZ(-2deg);
+      -ms-transform: rotateZ(-2deg);
+
+}
+
+.avatar{
+    width: 100px;height: 100px;
+    margin: 10px auto 30px;
+    border-radius: 100%;
+    border: 2px solid #aaa;
+    background-size: cover;
+}
+
+.form-box input{
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    height:40px;
+    border: 1px solid #ccc;;
+    background: #fafafa;
+    transition:0.2s ease-in-out;
+
+}
+
+.form-box input:focus{
+    outline: 0;
+    background: #eee;
+}
+
+.form-box input[type="text"]{
+    border-radius: 5px 5px 0 0;
+    text-transform: lowercase;
+}
+
+.form-box input[type="password"]{
+    border-radius: 0 0 5px 5px;
+    border-top: 0;
+}
+
+
+.login-container{
+    position: relative;
+    width: 300px;
+    margin: 80px auto;
+    padding: 20px 40px 40px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+
+#output{
+    position: absolute;
+    width: 300px;
+    top: -75px;
+    left: 0;
+    color: #fff;
+}
+
+#output.alert-success{
+    background: rgb(25, 204, 25);
+}
+
+#output.alert-danger{
+    background: rgb(228, 105, 105);
+}
+
+
+.form-box button.login{
+    margin-top:15px;
+    padding: 10px 20px;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@-webkit-keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+    -ms-transform: translateY(20px);
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+
+#particles-js{
+  	width: 100%;
+  	height: 100%;
+  	background-size: cover;
+  	background-position: 50% 50%;
+  	position: fixed;
+  	top: 0px;
+  	z-index:1;
+}
+</style>
 </head>
-<body class="signup-body">
-	<div class="agile-signup">	
-		
-		<div class="content2">
-			<div class="grids-heading gallery-heading signup-heading">
-				<h2>Login</h2>
-			</div>
-			<form action="." wicket:id="form" method="post">
-				<input type="text" wicket:id="cpf" name="Cpf" value="CPF" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'CPF';}">
-				<input type="password" wicket:id="senha" name="Password" value="Senha" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Senha';}">
-				<input type="submit" class="register" value="Login">
-			</form>
-			<div class="signin-text">
-				<div class="text-left">
-					<p><a href="#"> Esqueceu a senha? </a></p>
-				</div>
-				<div class="text-right">
-					<p><a href="signup.html"> Criar nova conta</a></p>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-			<a href="index.html">Back To Home</a>
-			<div wicket:id="feedback">[Feedback Panel]</div>
-		</div>
+<body>
+	<div class="container">
+		<div id="login-box">
+			<div class="login-container">
+	            <div id="output"></div>
+	            <div class="avatar">
+					<img src="images/iconeLogin.png" class="img img-responsive img-circle center-block"/>
+				</div><!-- /.logo -->
+	            <div class="form-box">
+	                <form action="" class="controls" wicket:id="form" method="">
+	                    <input name="CPF" type="text" wicket:id="cpf" title="Cpf" placeholder="Cpf">
+	                    <input type="password" wicket:id="senha" title="Senha" placeholder="Senha">
+	                    <button class="btn btn-info btn-block login" wicket:id="login" type="submit">Login</button>
+	                </form>
+	                <div wicket:id="feedback"></div>
+	            </div>
+		    </div>
+	    </div>
 	</div>
-	
+	<div id="particles-js"></div>
 </body>
+<!-- https://bootsnipp.com/snippets/56A0W -->
+<!-- https://bootsnipp.com/snippets/featured/login-form-layered -->
 </html>
