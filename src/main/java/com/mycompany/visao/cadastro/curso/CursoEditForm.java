@@ -1,5 +1,6 @@
 package com.mycompany.visao.cadastro.curso;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -29,9 +30,9 @@ public class CursoEditForm extends EditForm {
 
 	
 	private FileUploadField criarCampoUploadLogo(){
-		FileUploadField  uploadField = new FileUploadField("logo");
-		uploadField.setOutputMarkupId(true);
-		return uploadField;
+		FileUploadField  uploadFieldLogo = new FileUploadField("logo");
+		uploadFieldLogo.setOutputMarkupId(true);
+		return uploadFieldLogo;
 	}
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
@@ -53,6 +54,12 @@ public class CursoEditForm extends EditForm {
 		add(criarCampoNome());
 		add(criarCampoDuracao());
 		add(criarCampoUploadLogo());
+	}
+	
+	@Override
+	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target) {
+		
+		return super.validarRegrasAntesSalvarEditar(target);
 	}
 	
 	private static final long serialVersionUID = 1L;

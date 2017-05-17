@@ -46,6 +46,9 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Column(name = "EMAIL", nullable = false, length = 100)
 	private String email;	
 	
+	@Column(name = "CONTADOR_ACESSO", nullable = false)
+	private Double contadorAcesso;	
+	
 	@ListarPageAnotacao(nomeColuna = "Curso")
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO",nullable = false)
@@ -58,7 +61,21 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;
 	
+	public void setContadorAcesso(Double contadorAcesso) {
+		this.contadorAcesso = contadorAcesso;
+	}
 	
+	public Double getContadorAcesso() {
+		return contadorAcesso;
+	}
+	
+	public void addContadorAcesso(){
+		if(getContadorAcesso() == null){
+			setContadorAcesso(1.0);
+		}else{
+			setContadorAcesso(getContadorAcesso() + 1);
+		}
+	}
 	
 	public void setEmail(String email) {
 		this.email = email;
