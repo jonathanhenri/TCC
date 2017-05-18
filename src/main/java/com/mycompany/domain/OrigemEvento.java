@@ -28,10 +28,11 @@ public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
 	
-	@Column(name = "CODIGO_COR", nullable = true)
+	@Column(name = "CODIGO_COR", nullable = true,length = 50)
 	private String codigoCor;
 	
 	@Id
+	@Column(name = "ID_ORIGEM_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

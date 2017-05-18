@@ -19,7 +19,7 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class Materia extends AbstractBean<Materia> {
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
 	
@@ -32,6 +32,7 @@ public class Materia extends AbstractBean<Materia> {
 	private Integer periodo;	
 	
 	@Id
+	@Column(name = "ID_MATERIA")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

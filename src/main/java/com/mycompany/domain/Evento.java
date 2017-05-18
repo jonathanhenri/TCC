@@ -35,6 +35,10 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
 	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_AGENDA",nullable = false)
+	private Agenda agenda;
+	
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_TIPO_EVENTO",nullable = false)
 	private TipoEvento tipoEvento;
@@ -52,9 +56,18 @@ public class Evento extends AbstractBean<Evento> {
 	
 	
 	@Id
+	@Column(name = "ID_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	
+	public void setAgenda(Agenda agenda) {
+		this.agenda = agenda;
+	}
+	
+	public Agenda getAgenda() {
+		return agenda;
+	}
 	
 	public TipoEvento getTipoEvento() {
 		return tipoEvento;

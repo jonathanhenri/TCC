@@ -9,10 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-@Table(name = "CF_ARQUIVO")
+@Table(name = "ARQUIVO")
 @Entity
 public class Arquivo extends AbstractBean<Arquivo>{
 
@@ -20,18 +22,30 @@ public class Arquivo extends AbstractBean<Arquivo>{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_arquivo")
+	@Column(name = "ID_ARQUIVO")
 	private Long id;
 	
-	@Column(name = "nome_arquivo", nullable = true, length = 100)
+	@Column(name = "NOME_ARQUIVO", nullable = true, length = 100)
 	private String nomeArquivo;
 	
+	@ManyToOne(optional = false,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_CURSO",nullable = false)
+	private Curso curso;
+	
 	@Lob
-	@Column(name = "bytes",nullable = false, length = 100000)
+	@Column(name = "BYTES",nullable = false, length = 100000)
 	@Basic(fetch = FetchType.LAZY)
 	private byte[] bytes = {};
 	
 	public Arquivo(){
+	}
+	
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+	
+	public Curso getCurso() {
+		return curso;
 	}
 	
 	public Arquivo(byte[] bytes){

@@ -28,15 +28,12 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
 	
-	@ListarPageAnotacao(nomeColuna = "Materia")
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_MATERIA",nullable = true)
-	private Materia materia;
 	
-	@Column(name = "CODIGO_COR", nullable = true)
+	@Column(name = "CODIGO_COR", nullable = true, length = 50)
 	private String codigoCor;
 	
 	@Id
+	@Column(name = "ID_TIPO_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

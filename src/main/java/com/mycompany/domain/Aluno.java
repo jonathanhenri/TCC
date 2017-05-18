@@ -28,6 +28,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	
 	@ListarPageAnotacao(nomeColuna = "Numero")
 	@Id
+	@Column(name = "ID_ALUNO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

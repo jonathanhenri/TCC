@@ -44,6 +44,7 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	private List<CodigoAluno> listaCodigosAlunosGerados;
 	
 	@Id
+	@Column(name = "ID_CODIGO_ALUNO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

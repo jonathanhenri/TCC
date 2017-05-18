@@ -29,6 +29,7 @@ public class Curso extends AbstractBean<Curso> {
 	 */
 	@ListarPageAnotacao(nomeColuna = "Numero")
 	@Id
+	@Column(name = "ID_CURSO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
