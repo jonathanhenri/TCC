@@ -36,6 +36,22 @@ public class Materia extends AbstractBean<Materia> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	@Override
 	public Serializable getIdentifier() {
 		return id;

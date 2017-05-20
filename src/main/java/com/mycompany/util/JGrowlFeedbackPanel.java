@@ -7,6 +7,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * A feedback panel that shows feedback messages with JGrowl (http://www.stanlemon.net/projects/jgrowl.html)
@@ -71,53 +72,53 @@ public class JGrowlFeedbackPanel extends FeedbackPanel implements IHeaderContrib
 	 *            feedback message
 	 * @return component used to display the message
 	 */
-//	@Override
-//	protected Component newMessageDisplayComponent(final String id, final FeedbackMessage message)
-//	{
-//		final JGrowlFeedbackMessage jgrowlFeedbackMessage = new JGrowlFeedbackMessage(message) {
-//			
-//			@Override
-//			protected Options newFatalOptions() {
-//				return fatalOptions;
-//			}
-//			
-//			@Override
-//			protected Options newErrorOptions() {
-//				return errorOptions;
-//			}
-//			
-//			@Override
-//			protected Options newWarningOptions() {
-//				return warningOptions;
-//			}
-//			
-//			@Override
-//			protected Options newInfoOptions() {
-//				return infoOptions;
-//			}
-//			
-//			@Override
-//			protected Options newDebugOptions() {
-//				return debugOptions;
-//			}
-//			
-//			@Override
-//			protected Options newSuccessOptions() {
-//				return successOptions;
-//			}
-//		};
-//		
-//		final String jgrowlJavaScript = jgrowlFeedbackMessage.toJavaScript();
-//		
-//		final Label label = new Label(id, jgrowlJavaScript);
-//		label.setEscapeModelStrings(JGrowlFeedbackPanel.this.getEscapeModelStrings());
-//		return label;
-//	}
+	@Override
+	protected Component newMessageDisplayComponent(final String id, final FeedbackMessage message)
+	{
+		final JGrowlFeedbackMessage jgrowlFeedbackMessage = new JGrowlFeedbackMessage(message) {
+			
+			@Override
+			protected Options newFatalOptions() {
+				return fatalOptions;
+			}
+			
+			@Override
+			protected Options newErrorOptions() {
+				return errorOptions;
+			}
+			
+			@Override
+			protected Options newWarningOptions() {
+				return warningOptions;
+			}
+			
+			@Override
+			protected Options newInfoOptions() {
+				return infoOptions;
+			}
+			
+			@Override
+			protected Options newDebugOptions() {
+				return debugOptions;
+			}
+			
+			@Override
+			protected Options newSuccessOptions() {
+				return successOptions;
+			}
+		};
+		
+		final String jgrowlJavaScript = jgrowlFeedbackMessage.toJavaScript();
+		
+		final Label label = new Label(id, jgrowlJavaScript);
+		label.setEscapeModelStrings(JGrowlFeedbackPanel.this.getEscapeModelStrings());
+		return label;
+	}
 
 	public void renderHead(final IHeaderResponse response) {
-		//response.renderCSSReference(new ResourceReference(JGrowlFeedbackPanel.class, "res/jquery.jgrowl.css"));
-		//response.renderJavascriptReference(JQueryBehavior.JQUERY_JS);
-		//response.renderJavascriptReference(new ResourceReference(JGrowlFeedbackPanel.class, "res/jquery.jgrowl.js"));	
+//		response.renderCSSReference(new ResourceReference(JGrowlFeedbackPanel.class, "res/jquery.jgrowl.css"));
+//		response.renderJavascriptReference(JQueryBehavior.JQUERY_JS);
+//		response.renderJavascriptReference(new ResourceReference(JGrowlFeedbackPanel.class, "res/jquery.jgrowl.js"));	
 	}
 
 	public JGrowlFeedbackPanel setErrorMessageOptions(final Options errorOptions) {

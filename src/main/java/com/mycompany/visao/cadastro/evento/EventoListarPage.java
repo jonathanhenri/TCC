@@ -20,10 +20,13 @@ public class EventoListarPage extends ListarPageGenerico {
 	static Evento evento = new Evento();
 	
 	public EventoListarPage(){
-		setServiceComum(eventoServico);
-		setAbstractBean(evento);
-		adicionaCampos();
+		super(evento);
 		addFiltros();
+	}
+	
+	@Override
+	protected void setServicoComum() {
+		serviceComum = eventoServico;
 	}
 	
 	@Override

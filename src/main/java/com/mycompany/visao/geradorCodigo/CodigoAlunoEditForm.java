@@ -16,13 +16,18 @@ public class CodigoAlunoEditForm extends EditForm {
 	private CodigoAluno codigoAluno;
 	private Integer quantidadeCodigos = 0;
 	public CodigoAlunoEditForm(String id, CodigoAluno codigoAluno,Panel editPanel) {
-		super(id, codigoAluno,codigoAlunoServico,editPanel);
+		super(id, codigoAluno,editPanel);
 		this.codigoAluno = codigoAluno;
 	}
 	
 	public CodigoAlunoEditForm(CodigoAluno codigoAluno,Panel editPanel) {
-		super("formCadastro", codigoAluno,codigoAlunoServico,editPanel);
+		super("formCadastro", codigoAluno,editPanel);
 		this.codigoAluno = codigoAluno;
+	}
+	
+	@Override
+	protected void setServicoComum() {
+		serviceComum = codigoAlunoServico;
 	}
 
 	

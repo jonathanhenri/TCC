@@ -22,17 +22,18 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected String nomeTitulo;
 	private Panel editPanel;
 	
-	private IServiceComum serviceComum;
+	protected IServiceComum serviceComum;
 	
-	public EditForm(String id, AbstractBean<?> abstractBean,IServiceComum serviceComum,Panel editPanel) {
+	public EditForm(String id, AbstractBean<?> abstractBean,Panel editPanel) {
 		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
 		this.abstractBean = abstractBean;
-		this.serviceComum = serviceComum;
 		this.editPanel = editPanel;
+		setServicoComum();
 		adicionarCampos();
 		adicionarCamposGerais();
 	}
 	
+	protected abstract void setServicoComum();
 
 	private AjaxLink<String> criarBotaoVoltar(){
 		 AjaxLink<String> voltar = new  AjaxLink<String>("voltar"){
@@ -145,12 +146,14 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return feedbackPanel;
 	}
 
+//	protected abstract void inicializarEditForm(String id,AbstractBean<?> abstractBean,Panel editPanel);
+			
 	private void adicionarCamposGerais(){
 		add(criarBotaoExcluir());
 		add(criarBotaoSalvar());
 		add(criarBotaoVoltar());
 		add(criarCampoTituloPage());
-		editPanel.add(criarFeedbackPanel());
+//		editPanel.add(criarFeedbackPanel());
 	}
 	protected void adicionarCampos(){
 	}
@@ -167,6 +170,14 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 
 	public void setFeedbackPanel(FeedbackPanel feedbackPanel) {
 		this.feedbackPanel = feedbackPanel;
+	}
+
+	public IServiceComum getServiceComum() {
+		return serviceComum;
+	}
+
+	public void setServiceComum(IServiceComum serviceComum) {
+		this.serviceComum = serviceComum;
 	}
 	
 	

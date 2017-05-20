@@ -20,11 +20,13 @@ public class AlunoListarPage extends ListarPageGenerico {
 	static Aluno aluno = new Aluno();
 	
 	public AlunoListarPage(){
-		setServiceComum(alunoServico);
-		setAbstractBean(aluno);
-		setQuantidadeRegistrosVisiveis(10);
-		adicionaCampos();
+		super(aluno);
 		addFiltros();
+	}
+
+	@Override
+	protected void setServicoComum() {
+		serviceComum = alunoServico;
 	}
 	
 	@Override

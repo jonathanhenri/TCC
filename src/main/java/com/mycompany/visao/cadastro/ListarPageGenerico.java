@@ -1,7 +1,5 @@
 package com.mycompany.visao.cadastro;
 
-import groovyjarjarcommonscli.Options;
-
 import java.util.Arrays;
 import java.util.Map;
 
@@ -37,7 +35,7 @@ import com.mycompany.visao.comum.Menu;
 
 public abstract class ListarPageGenerico extends Menu {
 	private static final long serialVersionUID = 1L;
-	IServiceComum serviceComum;
+	protected IServiceComum serviceComum;
 	
 	private WebMarkupContainer divListaAtualizar;
 	
@@ -50,21 +48,21 @@ public abstract class ListarPageGenerico extends Menu {
 	protected int quantidadeRegistrosVisiveis = 10;
 	protected String nomeTituloListarPage;
 	
-//	protected ListarPageGenerico(AbstractBean<?> abstractBean,Panel editPanel,int quantidadeRegistrosVisiveis,IServiceComum<?> servicoComum){
-//		this.editPanel = editPanel;
-//		this.serviceComum = servicoComum;
-//		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
-//		this.abstractBean = abstractBean;
-//		adicionaCampos();
-//	}
+	protected ListarPageGenerico(AbstractBean<?> abstractBean){
+		this.abstractBean = abstractBean;
+		setServicoComum();
+		adicionaCampos();
+	}
 	
-//	protected ListarPageGenerico(AbstractBean<?> abstractBean,int quantidadeRegistrosVisiveis,IServiceComum servicoComum){
-//		this.serviceComum = servicoComum;
-//		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
-//		this.abstractBean = abstractBean;
-//		adicionaCampos();
-//	}
 	
+	protected ListarPageGenerico(AbstractBean<?> abstractBean,int quantidadeRegistrosVisiveis){
+		this.quantidadeRegistrosVisiveis = quantidadeRegistrosVisiveis;
+		this.abstractBean = abstractBean;
+		setServicoComum();
+		adicionaCampos();
+	}
+	
+	protected abstract void setServicoComum();
 	
 	protected abstract void getEditFormIncluir(AjaxRequestTarget target);
 	
@@ -283,10 +281,6 @@ public abstract class ListarPageGenerico extends Menu {
 		};
 		linkExcluir.setOutputMarkupId(true);
 		return linkExcluir;
-	}
-	
-	public void setServiceComum(IServiceComum serviceComum) {
-		this.serviceComum = serviceComum;
 	}
 	
 	public void setAbstractBean(AbstractBean<?> abstractBean) {

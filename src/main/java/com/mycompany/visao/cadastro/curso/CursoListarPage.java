@@ -9,6 +9,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
+import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
 
@@ -21,14 +22,14 @@ public class CursoListarPage extends ListarPageGenerico {
 	static Curso curso = new Curso();
 	
 	public CursoListarPage(){
-		
-		setServiceComum(cursoServico);
-		setQuantidadeRegistrosVisiveis(20);
-		setAbstractBean(curso);
-		adicionaCampos();
+		super(curso);
 		addFiltros();
 	}
 	
+	@Override
+	protected void setServicoComum() {
+		serviceComum = cursoServico;
+	}
 
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {

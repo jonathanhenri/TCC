@@ -15,13 +15,18 @@ public class AlunoEditForm extends EditForm {
 	
 	private Aluno aluno;
 	public AlunoEditForm(String id, Aluno aluno,Panel editPanel) {
-		super(id, aluno,alunoServico,editPanel);
+		super(id, aluno,editPanel);
 		this.aluno = aluno;
 	}
 	
 	public AlunoEditForm(Aluno aluno,Panel editPanel) {
-		super("formCadastro", aluno,alunoServico,editPanel);
+		super("formCadastro", aluno,editPanel);
 		this.aluno = aluno;
+	}
+	
+	@Override
+	protected void setServicoComum() {
+		serviceComum = alunoServico;
 	}
 
 	

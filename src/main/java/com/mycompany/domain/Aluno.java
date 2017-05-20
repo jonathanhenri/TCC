@@ -69,7 +69,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	public Double getContadorAcesso() {
 		return contadorAcesso;
 	}
-	
+
 	public void addContadorAcesso(){
 		if(getContadorAcesso() == null){
 			setContadorAcesso(1.0);
@@ -77,6 +77,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 			setContadorAcesso(getContadorAcesso() + 1);
 		}
 	}
+	
 	
 	public void setEmail(String email) {
 		this.email = email;

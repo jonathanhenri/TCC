@@ -30,7 +30,7 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	@Override
 	public boolean persist(T arg0) {
 		try{
-			super._persist(arg0);
+			super._save(arg0);
 		}catch(DAOException e ){
 			e.printStackTrace();
 			return false;

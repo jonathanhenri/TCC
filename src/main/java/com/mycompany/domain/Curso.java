@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
 
 import com.mycompany.anotacao.ListarPageAnotacao;
 
@@ -44,7 +47,7 @@ public class Curso extends AbstractBean<Curso> {
 	@Column(name = "MODALIDADE", nullable = true)
 	private Integer modalidade;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ARQUIVO")
 	private Arquivo logo;
 	
@@ -73,7 +76,7 @@ public class Curso extends AbstractBean<Curso> {
 		return id;
 	}
 
-	public List<Integer> getListaModalidades(){
+	public static List<Integer> getListaModalidades(){
 		return Arrays.asList(MODALIDADE_ANUAL,MODALIDADE_SEMESTRAL);
 	}
 	

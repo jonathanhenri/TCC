@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+div.jGrowl{
+		
+}
+
+div.jGrowl div.jgrowl-ERROR {
+ background-color: #BF0B0B;
+ padding:20px;
+ border-radius: 10px;
+ color: #FFF;
+ 
+}
+div.jGrowl div.jgrowl-WARNING {
+ background-color: orange;
+ color: black;
+ padding:20px;
+ border-radius: 10px;
+}
+div.jGrowl div.jgrowl-INFO {
+ background-color: #0C5F0C;
+ padding:20px;
+ border-radius: 10px;
+ color: #FFF;
+}
+
+div.jGrowl .header{ color: #FFF; font-weight: bold; }

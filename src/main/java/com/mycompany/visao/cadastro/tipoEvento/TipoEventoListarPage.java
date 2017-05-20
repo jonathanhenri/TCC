@@ -2,17 +2,11 @@ package com.mycompany.visao.cadastro.tipoEvento;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Curso;
-import com.mycompany.domain.OrigemEvento;
 import com.mycompany.domain.TipoEvento;
-import com.mycompany.services.interfaces.ICursoServico;
-import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
@@ -26,11 +20,15 @@ public class TipoEventoListarPage extends ListarPageGenerico {
 	static TipoEvento tipoEvento = new TipoEvento();
 	
 	public TipoEventoListarPage(){
-		setServiceComum(tipoEventoServico);
-		setAbstractBean(tipoEvento);
-		adicionaCampos();
+		super(tipoEvento);
 		addFiltros();
 	}
+	
+	@Override
+	protected void setServicoComum() {
+		serviceComum = tipoEventoServico;
+	}
+	
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
