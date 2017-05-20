@@ -41,6 +41,8 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	
 	private void addFiltros(){
 	}
+	
+
 
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {

@@ -3,6 +3,8 @@ package com.mycompany.visao.comum;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -12,6 +14,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.feedback.Mensagem;
+import com.mycompany.feedback.Retorno;
+import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.util.Util;
 @SuppressWarnings("unchecked")
@@ -21,6 +26,8 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected FeedbackPanel feedbackPanel;
 	protected String nomeTitulo;
 	private Panel editPanel;
+	
+	private ModalWindow modalExcluir;
 	
 	protected IServiceComum serviceComum;
 	
@@ -33,6 +40,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		adicionarCamposGerais();
 	}
 	
+	
 	protected abstract void setServicoComum();
 
 	private AjaxLink<String> criarBotaoVoltar(){
@@ -41,12 +49,21 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
+				executarAoVoltar(target);
 			}
 			 
 		 };
 		 return voltar;
 	}
 	
+	
+	private ModalWindow criarModalExcluir(){
+		modalExcluir= new ModalWindow("modalExcluir");
+		modalExcluir.setInitialHeight(300);
+		modalExcluir.setInitialWidth(600);
+		modalExcluir.setOutputMarkupId(true);
+		return modalExcluir;
+	}
 	
 	private AjaxSubmitLink criarBotaoExcluir(){
 		AjaxSubmitLink excluir = new AjaxSubmitLink("excluir", this){
@@ -55,8 +72,44 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
 				if(validarRegrasAntesExcluir(target)){
-					serviceComum.remove(getAbstractBean());
+					
+					MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(modalExcluir.getContentId(), Util.getMensagemExclusao(abstractBean)){
+						private static final long serialVersionUID = 1L;
+
+						protected void executarAoClicarNao(AjaxRequestTarget target) {
+							modalExcluir.close(target);
+						};
+						
+						protected void executarAoClicarSim(AjaxRequestTarget target) {
+							Retorno retorno = null;
+							try{
+								retorno = serviceComum.remove(abstractBean);
+								
+								 for(Mensagem mensagem:retorno.getListaMensagem()){
+									 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+								 }
+								 
+								modalExcluir.close(target);
+								executarAoExcluir(target);
+							}catch(Exception e){
+								System.err.println(retorno);
+								e.printStackTrace();
+							}
+						};
+					};
+					
+					getForm().add(excluirPanel);
+					modalExcluir.setContent(excluirPanel);
+					modalExcluir.show(target);
 				}
+			}
+			
+			@Override
+			public boolean isVisible() {
+				if(getAbstractBean()!=null && getAbstractBean().getId()!=null){
+					return true;
+				}
+				return false;
 			}
 		};
 		excluir.setOutputMarkupId(true);
@@ -69,21 +122,29 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
-				if(validarRegrasAntesSalvarEditar((target))){
-					if(getAbstractBean().getId()==null){
-						persistAbstract(abstractBean);
-						executarAoSalvar(target);
-					}else{
-						saveAbstract(abstractBean);
-						executarAoEditar(target);
+				Retorno retorno = Reflexao.validarTodosCamposObrigatorios(getAbstractBean());
+				if(retorno.getSucesso()){
+					if(validarRegrasAntesSalvarEditar((target))){
+						if(getAbstractBean().getId()==null){
+							persistAbstract(abstractBean,target);
+							executarAoSalvar(target);
+						}else{
+							saveAbstract(abstractBean,target);
+							executarAoEditar(target);
+						}
+						
+						executarAoSalvarEditar(target);
 					}
-					
+				}else{
+					 for(Mensagem mensagem:retorno.getListaMensagem()){
+						 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+			        }
 				}
 			}
 			
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				target.add(feedbackPanel);
+//				target.add(feedbackPanel);
 			}
 		};
 		
@@ -91,11 +152,17 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return salvar;
 	}
 	
-	protected void saveAbstract(AbstractBean<?> abstractBean) {
-		serviceComum.save(getAbstractBean());
+	protected void saveAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
+		Retorno retorno = serviceComum.save(getAbstractBean());
+		 for(Mensagem mensagem:retorno.getListaMensagem()){
+			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+       }
 	}
-	protected void persistAbstract(AbstractBean<?> abstractBean) {
-		serviceComum.persist(getAbstractBean());
+	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
+		Retorno retorno = serviceComum.persist(getAbstractBean());
+		 for(Mensagem mensagem:retorno.getListaMensagem()){
+			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+        }
 	}
 	
 	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target){
@@ -104,6 +171,15 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	
 	protected Boolean validarRegrasAntesExcluir(AjaxRequestTarget target){
 		return true;
+	}
+	
+	protected void executarAoVoltar(AjaxRequestTarget target){
+		
+	}
+	
+	
+	protected void executarAoSalvarEditar(AjaxRequestTarget target){
+		
 	}
 	
 	protected void executarAoEditar(AjaxRequestTarget target){
@@ -152,6 +228,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		add(criarBotaoExcluir());
 		add(criarBotaoSalvar());
 		add(criarBotaoVoltar());
+		add(criarModalExcluir());
 		add(criarCampoTituloPage());
 //		editPanel.add(criarFeedbackPanel());
 	}

@@ -64,6 +64,7 @@ public class CursoListarPage extends ListarPageGenerico {
 		getModalIncluirEditar().show(target);
 		
 	}
+	
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
 		CursoPanel panel = new CursoPanel(getModalIncluirEditar().getContentId());
@@ -73,14 +74,19 @@ public class CursoListarPage extends ListarPageGenerico {
 		CursoEditForm cadastroCursoEditForm = new CursoEditForm((Curso) abstractBean,panel){
 			private static final long serialVersionUID = 1L;
 			
-			protected void executarAoSalvar(AjaxRequestTarget target) {
+			@Override
+			protected void executarAoExcluir(AjaxRequestTarget target) {
 				target.add(getAtualizarListarPage());
 				getModalIncluirEditar().close(target);
-			};
+			}
+			@Override
+			protected void executarAoSalvarEditar(AjaxRequestTarget target) {
+				target.add(getAtualizarListarPage());
+				getModalIncluirEditar().close(target);
+			}
 			
 			@Override
-			protected void executarAoEditar(AjaxRequestTarget target) {
-				target.add(getAtualizarListarPage());
+			protected void executarAoVoltar(AjaxRequestTarget target) {
 				getModalIncluirEditar().close(target);
 			}
 		};

@@ -8,10 +8,11 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.BadCredentialsException;
@@ -20,6 +21,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.visao.cadastro.Cadastro;
+import com.sun.xml.internal.ws.api.policy.ValidationProcessor;
 
 public class Login extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -77,7 +79,7 @@ public class Login extends WebPage {
 		        	target.appendJavaScript("$.notify('"+feedbackMessage.getMessage()+"', \"error\");");
 		        }
 			}
-			@Override
+			
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 			  for(FeedbackMessage feedbackMessage:getFeedbackMessages()){
 		        	target.appendJavaScript("$.notify('"+feedbackMessage.getMessage()+"', \"error\");");
@@ -93,10 +95,8 @@ public class Login extends WebPage {
 	
 	private Form<Aluno> criarFormularioLogin(){
 		
-		Form<Aluno> form = new Form<Aluno>("form");
+		Form<Aluno> form = new Form<Aluno>("form",new CompoundPropertyModel<Aluno>(aluno));
 		form.setOutputMarkupId(true);
-		add(form);
-		
 		form.add(criarCampoLogin());
 		form.add(criarCampoSenha());
 		form.add(criarBotaoLogin());
@@ -104,7 +104,7 @@ public class Login extends WebPage {
 	}
 	
 	private TextField<String> criarCampoLogin(){		
-		TextField<String> username = new TextField<String>("cpf", new PropertyModel<String>(aluno, "cpf"));
+		TextField<String> username = new TextField<String>("cpf");
 		username.setOutputMarkupId(true);
 		username.setRequired(true);
 		
@@ -113,19 +113,23 @@ public class Login extends WebPage {
 	
 	private PasswordTextField criarCampoSenha(){
 		
-		PasswordTextField senha = new PasswordTextField("senha", new PropertyModel<String>(aluno, "senha"));
+		PasswordTextField senha = new PasswordTextField("senha");
 		senha.setOutputMarkupId(true);
 		senha.setRequired(true);
 		return senha;
 		
 	}
 
-	protected void setDefaultResponsePageIfNecessary() {
+	private void addContador(){
 		Search search = new Search(Aluno.class);
 		search.addFilterEqual("cpf", aluno.getCpf());
 		aluno = alunoServico.searchUnique(search);
 		aluno.addContadorAcesso();
     	alunoServico.save(aluno);
+	}
+	
+	protected void setDefaultResponsePageIfNecessary() {
+		addContador();
 		redirectToInterceptPage(new Cadastro());
     	continueToOriginalDestination();
     

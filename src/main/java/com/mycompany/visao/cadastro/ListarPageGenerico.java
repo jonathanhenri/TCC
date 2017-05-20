@@ -25,6 +25,7 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
@@ -190,9 +191,7 @@ public abstract class ListarPageGenerico extends Menu {
 		return divListaAtualizar;
 	}
 	
-	protected String getMensagemExclusao(){
-		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()))+" realmente?";
-	}
+	
 	
 	protected void createColumns(){
 		Map<String, String> hashMapColunas = Reflexao.colunaListarPage(abstractBean);
@@ -252,7 +251,7 @@ public abstract class ListarPageGenerico extends Menu {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				
-				MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(getModalExcluir().getContentId(), getMensagemExclusao()){
+				MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(getModalExcluir().getContentId(), Util.getMensagemExclusao(abstractBean)){
 					private static final long serialVersionUID = 1L;
 
 					protected void executarAoClicarNao(AjaxRequestTarget target) {
@@ -264,6 +263,10 @@ public abstract class ListarPageGenerico extends Menu {
 						Retorno retorno = null;
 						try{
 							retorno = serviceComum.remove(abstractBean);
+							
+							 for(Mensagem mensagem:retorno.getListaMensagem()){
+								 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+							 }
 							target.add(getAtualizarListarPage());
 							getModalExcluir().close(target);
 						}catch(Exception e){

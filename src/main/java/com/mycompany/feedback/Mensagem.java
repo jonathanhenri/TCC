@@ -3,11 +3,11 @@ package com.mycompany.feedback;
 import com.mycompany.util.Util;
 
 public class Mensagem {
-	public static int INFORMACAO = 0;
-    public static int PERGUNTA = 1;
-    public static int ALERTA = 2;
-    public static int ERRO = 3;
-    public static int SUCESSO = 4;
+	public static String INFORMACAO = "info";
+    public static String PERGUNTA = "info";
+    public static String ALERTA = "danger";
+    public static String ERRO = "error";
+    public static String SUCESSO = "success";
     
     public static String MOTIVO_NULO = "não pode ser vazio.";
     public static String MOTIVO_REPETIDO = "não pode se repetir.";
@@ -22,17 +22,17 @@ public class Mensagem {
     public static String ID="Identificador";
 	    
 	public String campo;
-	public Integer tipo;
+	public String tipo;
 	public String motivo;
 	
 	public Mensagem(){};
 	
-	public Mensagem(String motivo,Integer tipo){
+	public Mensagem(String motivo,String tipo){
 		setTipo(tipo);
 		setMotivo(motivo);
 	}
 	
-	public Mensagem(String campo,String motivo,Integer tipo){
+	public Mensagem(String campo,String motivo,String tipo){
 		setTipo(tipo);
 		setCampo(campo);
 		setMotivo(motivo);
@@ -60,13 +60,14 @@ public class Mensagem {
 	public String getCampo() {
 		return campo;
 	}
-	
-	public Integer getTipo() {
+
+	public String getTipo() {
 		return tipo;
 	}
-	public void setTipo(Integer tipo) {
+
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-  
+	
     
 }

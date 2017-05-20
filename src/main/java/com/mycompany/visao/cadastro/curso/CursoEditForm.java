@@ -64,7 +64,7 @@ public class CursoEditForm extends EditForm {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-		textFieldNome.setRequired(true);
+//		textFieldNome.setRequired(true);
 		return textFieldNome;
 	}
 	
@@ -72,7 +72,7 @@ public class CursoEditForm extends EditForm {
 	private NumberTextField<Integer> criarCampoDuracao(){
 		NumberTextField<Integer> duracao = new NumberTextField<Integer>("duracao");
 		duracao.setOutputMarkupId(true);
-		duracao.setRequired(true);
+//		duracao.setRequired(true);
 		return duracao;
 	}
 	

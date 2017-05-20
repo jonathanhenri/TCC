@@ -41,6 +41,7 @@ public class EventoListarPage extends ListarPageGenerico {
 	private void addFiltros(){
 	}
 
+
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
 		// TODO Auto-generated method stub

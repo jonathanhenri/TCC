@@ -6,6 +6,8 @@
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery2.0.3.min.js"></script>
+	<script src="js/notify.js"></script>
+	<script src="js/notify.min.js"></script>
 
 	<script>
 	$(function () {
@@ -16,47 +18,49 @@
 </head>
 <body>
 	<wicket:panel>
-		<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formCadastro">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					<div class="panel-title">
-						<span wicket:id="nomeTitulo"></span>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-md-6">	
-							<label class="control-label">Nome</label>
-							<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
-						</div>
-						<div class="col-md-6">	
-							<label class="control-label">Duração</label>
-							<input type="number" class="form-control" id="duracao" wicket:id="duracao" placeholder="Duracao">
+		<div class="" style="padding: 15px">
+			<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formCadastro">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<span wicket:id="nomeTitulo"></span>
 						</div>
 					</div>
-					<div class="row">
-<!-- 						<div class="col-md-6">	 -->
-<!-- 							<label class="control-label">Logo</label> -->
-<!-- 							<input type="file" class="form-control"  id="nome" wicket:id="logo" placeholder="Logo"> -->
-<!-- 						</div> -->
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Nome</label>
+								<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
+							</div>
+							<div class="col-md-6">	
+								<label class="control-label">Duração</label>
+								<input type="number" class="form-control" id="duracao" wicket:id="duracao" placeholder="Duracao">
+							</div>
+						</div>
+						<div class="form-group">
+	<!-- 						<div class="col-md-6">	 -->
+	<!-- 							<label class="control-label">Logo</label> -->
+	<!-- 							<input type="file" class="form-control"  id="nome" wicket:id="logo" placeholder="Logo"> -->
+	<!-- 						</div> -->
+							
+							<div class="col-md-6">	
+								<label class="control-label">Modalidade</label>
+								<select class="form-control" wicket:id="modalidade"></select>
+							</div>
+						</div>
 						
-						<div class="col-md-6">	
-							<label class="control-label">Modalidade</label>
-							<select  wicket:id="modalidade"></select>
+						<div class="form-group">
+							<div class="col-md-12">	
+								<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>
+								<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
+								<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-default"></input>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12">
-					<div class="form-group">
-						<div class="panel-footer">
-							<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>
-							<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
-							<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-primary"></input>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
+				<div wicket:id="modalExcluir"></div>
+			</form>
+		</div>
 	
 <!-- 		<div wicket:id="feedbackPanel"></div> -->
 	</wicket:panel>

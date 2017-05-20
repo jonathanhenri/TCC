@@ -47,6 +47,7 @@ public class TipoEventoListarPage extends ListarPageGenerico {
 		
 	}
 
+
 	private Panel criarPanel(AbstractBean<?> abstractBean){
 		
 		return null;

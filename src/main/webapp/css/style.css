@@ -1500,16 +1500,6 @@ code {
     color: #fff;
     background-color: #00bcd4;
 }
-.btn-danger {
-    color: #fff;
-    background-color: #fcb216;
-    border-color: #fcb216;
-}
-.btn-danger:hover, .btn-danger:focus, .btn-danger.focus, .btn-danger:active, .btn-danger.active, .open > .dropdown-toggle.btn-danger {
-    color: #fff;
-    background-color: #2d2d2d;
-    border-color: #2d2d2d;
-}
 .btn-xs, .btn-group-xs > .btn {
     padding: 3px 8px;
     font-size: 11px;
@@ -3334,8 +3324,8 @@ code {
   border-color:rgb(3, 197, 135);
 }
 .btn-success:hover{
-  border-color:#E74225 !important;
-  background:#E74225 !important;
+  border-color:	#5cb85c !important;
+  background:	#5cb85c !important;
 }
 .control2{
   height:200px;

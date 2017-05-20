@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.util.crypt.StringUtils;
 import org.springframework.security.context.SecurityContextHolder;
@@ -87,6 +88,10 @@ public class Util {
 		}
 		
 		return null;
+	}
+	
+	public static String getMensagemExclusao(AbstractBean<?> abstractBean){
+		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()))+" realmente?";
 	}
 	
 	/**
@@ -235,6 +240,10 @@ public class Util {
 	public static void apagarArquivo(String nomeArquivo, String diretorio) throws FileNotFoundException, IOException{
 		File file = new File(diretorio + nomeArquivo);
 		file.delete();
+	}
+	
+	public static void notify(AjaxRequestTarget target,String mensagem,String tipo){
+		target.appendJavaScript("$.notify('"+mensagem+"',\""+tipo+"\");");
 	}
 	
 	/**

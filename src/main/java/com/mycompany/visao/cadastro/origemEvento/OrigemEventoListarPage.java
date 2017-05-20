@@ -40,12 +40,7 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 	
 	private void addFiltros(){
 	}
-
-	@Override
-	protected void getEditFormIncluir(AjaxRequestTarget target) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	@Override
 	protected String getNomeTituloListarPage() {
@@ -58,6 +53,12 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 	}
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
+	}
+
+	@Override
+	protected void getEditFormIncluir(AjaxRequestTarget target) {
+		// TODO Auto-generated method stub
+		
 	}
 
 		
