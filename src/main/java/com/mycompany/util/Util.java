@@ -246,6 +246,23 @@ public class Util {
 		target.appendJavaScript("$.notify('"+mensagem+"',\""+tipo+"\");");
 	}
 	
+	public static void notifyError(AjaxRequestTarget target,String mensagem){
+		target.appendJavaScript("$.notify('"+mensagem+"',\"error\");");
+	}
+	
+	public static void notifyInfo(AjaxRequestTarget target,String mensagem){
+		target.appendJavaScript("$.notify('"+mensagem+"',\"info\");");
+	}
+	
+	public static void notifySuccess(AjaxRequestTarget target,String mensagem){
+		target.appendJavaScript("$.notify('"+mensagem+"',\"success\");");
+	}
+	
+	public static void notifyWarn(AjaxRequestTarget target,String mensagem){
+		target.appendJavaScript("$.notify('"+mensagem+"',\"warn\");");
+	}
+	
+	
 	/**
 	 * Retorna um número randômico
 	 * 

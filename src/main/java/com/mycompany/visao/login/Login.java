@@ -20,6 +20,7 @@ import org.springframework.security.BadCredentialsException;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
+import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.Cadastro;
 import com.sun.xml.internal.ws.api.policy.ValidationProcessor;
 
@@ -76,15 +77,12 @@ public class Login extends WebPage {
 		        	redirectToInterceptPage(new Login());
 				}
 		        for(FeedbackMessage feedbackMessage:getFeedbackMessages()){
-		        	target.appendJavaScript("$.notify('"+feedbackMessage.getMessage()+"', \"error\");");
+		        	Util.notify(target, feedbackMessage.getMessage().toString(), "error");
 		        }
 			}
 			
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-			  for(FeedbackMessage feedbackMessage:getFeedbackMessages()){
-		        	target.appendJavaScript("$.notify('"+feedbackMessage.getMessage()+"', \"error\");");
-		        }
-			  	target.add(feedbackPanel);
+				Util.notifyError(target, "Cpf e senha são obrigatórios");
 				super.onError(target, form);
 			}
 		};
@@ -106,7 +104,6 @@ public class Login extends WebPage {
 	private TextField<String> criarCampoLogin(){		
 		TextField<String> username = new TextField<String>("cpf");
 		username.setOutputMarkupId(true);
-		username.setRequired(true);
 		
 		return username;
 	}
@@ -115,7 +112,6 @@ public class Login extends WebPage {
 		
 		PasswordTextField senha = new PasswordTextField("senha");
 		senha.setOutputMarkupId(true);
-		senha.setRequired(true);
 		return senha;
 		
 	}

@@ -270,7 +270,7 @@ public abstract class ListarPageGenerico extends Menu {
 							target.add(getAtualizarListarPage());
 							getModalExcluir().close(target);
 						}catch(Exception e){
-							System.err.println(retorno);
+							Util.notifyError(target, "Erro ao tentar realizar a ação");
 							e.printStackTrace();
 						}
 					};
