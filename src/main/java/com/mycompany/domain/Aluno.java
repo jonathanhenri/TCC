@@ -47,7 +47,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Column(name = "EMAIL", nullable = false, length = 100)
 	private String email;	
 	
-	@Column(name = "CONTADOR_ACESSO", nullable = false)
+	@Column(name = "CONTADOR_ACESSO", nullable = true)
 	private Double contadorAcesso;	
 	
 	@ListarPageAnotacao(nomeColuna = "Curso")

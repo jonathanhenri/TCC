@@ -1,17 +1,32 @@
 package com.mycompany.visao.cadastro.aluno;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.IAlunoServico;
+import com.mycompany.services.interfaces.ICursoServico;
+import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.visao.comum.EditForm;
 
 public class AlunoEditForm extends EditForm {
 	@SpringBean(name="alunoServico")
 	private static IAlunoServico alunoServico;
+	
+	@SpringBean(name="cursoServico")
+	private  ICursoServico cursoServico;
 	
 	private Aluno aluno;
 	public AlunoEditForm(String id, Aluno aluno,Panel editPanel) {
@@ -19,8 +34,8 @@ public class AlunoEditForm extends EditForm {
 		this.aluno = aluno;
 	}
 	
-	public AlunoEditForm(Aluno aluno,Panel editPanel) {
-		super("formCadastro", aluno,editPanel);
+	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
+		super("formCadastro", aluno,editPanel,feedbackPanel);
 		this.aluno = aluno;
 	}
 	
@@ -33,7 +48,6 @@ public class AlunoEditForm extends EditForm {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-		textFieldNome.setRequired(true);
 		return textFieldNome;
 	}
 	
@@ -41,14 +55,12 @@ public class AlunoEditForm extends EditForm {
 	private TextField<String> criarCampoCpf(){
 		TextField<String> textField = new TextField<String>("cpf");
 		textField.setOutputMarkupId(true);
-		textField.setRequired(true);
 		return textField;
 	}
 	
 	private TextField<String> criarCampoEmail(){
 		TextField<String> textField = new TextField<String>("email");
 		textField.setOutputMarkupId(true);
-		textField.setRequired(true);
 		return textField;
 	}
 	
@@ -60,14 +72,42 @@ public class AlunoEditForm extends EditForm {
 		return passwordTextField;
 	}
 	
+	private DropDownChoice<Curso> criarCampoCurso(){
+		IChoiceRenderer<Curso> choiceRenderer = new ChoiceRenderer<Curso>("nome", "id");
+		LoadableDetachableModel<List<Curso>> cursos = new LoadableDetachableModel<List<Curso>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<Curso> load() {
+				List<Curso> cursos = new ArrayList<Curso>();
+				
+				cursos = cursoServico.search(new Search(Curso.class));
+				
+				return cursos;
+			}
+		};
+		
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("curso", cursos,choiceRenderer);
+		tipoRadioChoice.setNullValid(true);
+		tipoRadioChoice.setOutputMarkupId(true);
+		
+		return tipoRadioChoice;
+	}
+	
+	
 	@Override
 	protected void adicionarCampos() {
 		add(criarCampoNome());
 		add(criarCampoCpf());
 		add(criarCampoSenha());
 		add(criarCampoEmail());
+		add(criarCampoCurso());
 	}
 	
+	@Override
+	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target) {
+		return super.validarRegrasAntesSalvarEditar(target);
+	}
 	private static final long serialVersionUID = 1L;
 
 	

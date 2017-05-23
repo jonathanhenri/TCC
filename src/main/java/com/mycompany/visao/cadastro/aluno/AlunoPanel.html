@@ -3,65 +3,70 @@
 
 <head>
 <wicket:head>
-<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery2.0.3.min.js"></script>
+	<script src="js/notify.js"></script>
+	<script src="js/notify.min.js"></script>
+	<script>
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	</script>
 </wicket:head>
 </head>
 <body>
 	<wicket:panel>
-		<div class="main-grid">
-			<div class="agile-grids">	
-				<!-- input-forms -->
-				<div class="grids">
-					<div class="progressbar-heading grids-heading">
-						<h2><label wicket:id="nomeTitulo"> Titulo page</label></h2>
+		<div class="" style="padding: 15px">
+			<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formCadastro">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="panel-title">
+							<span wicket:id="nomeTitulo"></span>
+						</div>
 					</div>
-					
-					<div class="panel panel-widget agile-validation">
-						<div class="validation-grids widget-shadow" data-example-id="basic-forms"> 
-							<div class="input-info">
-								<h3>Aluno:</h3>
+					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Nome</label>
+								<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
 							</div>
-							<div class="form-body form-body-info">
-								<form data-toggle="validator" novalidate="true" wicket:id="formCadastro">
-									<div class="form-group valid-form">
-										<input type="text" class="form-control" id="nome" wicket:id="nome" placeholder="Nome">
-									</div>
-									
-									<div class="form-group valid-form">
-										<input type="text" class="form-control" id="cpf" wicket:id="cpf" placeholder="CPF">
-									</div>
-									
-									<div class="form-group">
-									  <input type="password" data-toggle="validator" data-minlength="6" class="form-control" id="senha" wicket:id="senha" placeholder="Senha" >
-									  <span class="help-block">Minimum of 6 characters</span>
-									</div>
-									
-									<div class="form-group">
-									  <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm password" >
-									  <div class="help-block with-errors"></div>
-									</div>
-									
-									<div class="form-group has-feedback">
-										<input type="text" class="form-control" id="inputEmail"  wicket:id="email" placeholder="Email" data-error="Bruh, that email address is invalid" required="">
-										<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-										<span class="help-block with-errors">Please enter a valid email address</span>
-									</div>
-																		
-									<div class="form-group">
-										<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-primary"></input>
-										<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
-										<input wicket:id="voltar" value="voltar" class="btn btn-default"></input>
-									</div>
-								</form>
-<!-- 								<div wicket:id="feedback">[Feedback Panel]</div> -->
+							<div class="col-md-6">	
+								<label class="control-label">Cpf</label>
+								<input type="text" class="form-control" id="cpf" wicket:id="cpf" placeholder="cpf">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Senha</label>
+								<input type="password" class="form-control" id="Senha" wicket:id="senha" placeholder="Senha">
+							</div>
+							<div class="col-md-6">	
+								<label class="control-label">Email</label>
+								<input type="text" class="form-control" id="email" wicket:id="email" placeholder="email">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Curso</label>
+								<select class="form-control" wicket:id="curso"></select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-md-12">	
+								<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>
+								<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
+								<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-default"></input>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- //input-forms -->
-			</div>
+				<div wicket:id="modalExcluir"></div>
+			</form>
 		</div>
 	
+<!-- 		<div wicket:id="feedbackPanel"></div> -->
 	</wicket:panel>
 </body>
 </html>

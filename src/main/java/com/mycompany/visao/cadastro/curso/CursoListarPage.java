@@ -37,6 +37,7 @@ public class CursoListarPage extends ListarPageGenerico {
 		modalIncluirEditar.setOutputMarkupId(true);
 		modalIncluirEditar.setInitialHeight(350);
 		modalIncluirEditar.setInitialWidth(600);
+		
 		return modalIncluirEditar;
 	}
 	
@@ -71,7 +72,7 @@ public class CursoListarPage extends ListarPageGenerico {
 		panel.setOutputMarkupId(true);
 		getForm().add(panel);
 		
-		CursoEditForm cadastroCursoEditForm = new CursoEditForm((Curso) abstractBean,panel){
+		CursoEditForm cadastroCursoEditForm = new CursoEditForm((Curso) abstractBean,panel,getFeedbackPanel()){
 			private static final long serialVersionUID = 1L;
 			
 			@Override

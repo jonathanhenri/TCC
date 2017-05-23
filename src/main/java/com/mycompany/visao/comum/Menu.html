@@ -4,6 +4,11 @@
 <title>UEG Agenda</title>
 <link rel="stylesheet" href="css/bootstrap.css">
 <link href="css/style.css" rel='stylesheet' type='text/css' />
+<link href="css/JGrowlPage.css" rel='stylesheet' type='text/css' />
+<link href="css/jquery.alerts.css" rel='stylesheet' type='text/css' />
+<link href="css/jquery.jgrowl.css" rel='stylesheet' type='text/css' />
+<link href="css/jquery.jgrowl.min.css" rel='stylesheet' type='text/css' />
+<link href="css/jquery-ui.css" rel='stylesheet' type='text/css' />
 <link href="css/bootstrap-theme.css" rel='stylesheet' type='text/css' />
 <link rel="stylesheet" href="css/font.css" type="text/css"/>
 <link href="css/font-awesome.css" rel="stylesheet"> 
@@ -11,6 +16,8 @@
 <script src="js/jquery2.0.3.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="js/jquery.cookie.js"></script>
+<script src="js/jquery.jgrowl.js"></script>
+<script src="js/jquery.jgrowl.min.js"></script>
 <script src="js/screenfull.js"></script>
 <script src="js/bootstrap.js"></script>
 
@@ -22,6 +29,21 @@
 				return false;
 			}
 
+			var Hoffset=100; // largura
+			var Voffset=70; //altura
+			
+			var ieHoffset_extra=15;
+			var cross_obj= document.getElementById("divFeedbackJGrowl");
+			
+			function positionit(){
+			    var dsocleft=$(window).scrollLeft();
+			    var dsoctop=$(window).scrollTop();
+			    var window_width=document.body.clientWidth+ieHoffset_extra;
+			    var window_height=document.body.clientHeight;
+			    //190 é a largura do divFeedbackJGrowl 
+			    cross_obj.style.left=parseInt(dsocleft)+parseInt(window_width)-Hoffset - 190 + 'px';
+			    cross_obj.style.top=dsoctop + 'px';
+			}
 			
 
 			$('#toggle').click(function () {
@@ -54,9 +76,9 @@
 					<li>
 						<a class="subnav-text" wicket:id="link_cadastro_curso">Curso</a>
 					</li>
-<!-- 					<li> -->
-<!-- 						<a class="subnav-text" wicket:id="link_cadastro_aluno" >Aluno</a> -->
-<!-- 					</li> -->
+					<li>
+						<a class="subnav-text" wicket:id="link_cadastro_aluno" >Aluno</a>
+					</li>
 <!-- 					<li> -->
 <!-- 						<a class="subnav-text" wicket:id="link_cadastro_materia">Materia</a> -->
 <!-- 					</li> -->
@@ -254,13 +276,18 @@
 									</div>	
 								</a>
 								<ul class="dropdown-menu drp-mnu">
-									<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li> 
-									<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li> 
+<!-- 									<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>  -->
+<!-- 									<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li>  -->
 									<li> <a wicket:id="sair_profile"><i class="fa fa-sign-out"></i> Sair</a> </li>
 								</ul>
 							</li>
 						</ul>
 					</div>
+					
+					<div id="divFeedbackJGrowl" style="position:absolute; top:0; right:0; z-index:999999; width: 280px; margin-left: -10px;">
+						<div wicket:id="jgrowlFeedback"></div>
+					</div>
+					
 					<div class="clearfix"> </div>
 				</div>
 			</div>

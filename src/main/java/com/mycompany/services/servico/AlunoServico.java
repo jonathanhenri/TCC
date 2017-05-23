@@ -122,9 +122,6 @@ public class AlunoServico implements IAlunoServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(aluno);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
-			
 			return retorno;
 		}else{
 			return retorno;

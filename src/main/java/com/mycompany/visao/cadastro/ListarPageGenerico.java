@@ -29,6 +29,8 @@ import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
+import com.mycompany.util.JGrowlFeedbackPanel;
+import com.mycompany.util.Options;
 import com.mycompany.util.Util;
 import com.mycompany.visao.comum.MensagemExcluirPanel;
 import com.mycompany.visao.comum.Menu;
@@ -72,32 +74,6 @@ public abstract class ListarPageGenerico extends Menu {
 	
 	protected abstract ModalWindow criarModalIncluirEditar();
 	
-//	private JGrowlFeedbackPanel criarFeedbackPanel() {
-//		JGrowlFeedbackPanel feedback = new JGrowlFeedbackPanel("jgrowlFeedback");
-//		Options errorOptions = new Options();
-//		errorOptions.set("header", getString("erro"));
-//		errorOptions.set("theme", "jgrowl-ERROR"); 
-//		errorOptions.set("glue", "after");
-//		errorOptions.set("sticky", new FunctionString("true"));
-//		feedback.setErrorMessageOptions(errorOptions);
-//
-//		Options infoOptions = new Options();
-//		infoOptions.set("header", getString("info"));
-//		infoOptions.set("theme", "jgrowl-INFO");
-//		infoOptions.set("sticky", new FunctionString("true"));
-//		infoOptions.set("glue", "after");
-//		feedback.setInfoMessageOptions(infoOptions);
-//		
-//		Options successOptions = new Options();
-//		successOptions.set("header", getString("successo"));
-//		successOptions.set("theme", "jgrowl-SUCCESS");
-//		successOptions.set("sticky", new FunctionString("true"));
-//		successOptions.set("glue", "after");
-//		feedback.setSuccessMessageOptions(successOptions);
-//		
-//		return feedback;
-//	}
-//	
 	private void criarModalExcluir(){
 		modalExcluir= new ModalWindow("modalExcluir");
 		modalExcluir.setInitialHeight(300);
@@ -105,10 +81,6 @@ public abstract class ListarPageGenerico extends Menu {
 		modalExcluir.setOutputMarkupId(true);
 		add(modalExcluir);
 	}
-	
-//	protected JGrowlFeedbackPanel getFeedbackPanel(){
-//		return (JGrowlFeedbackPanel)get("jgrowlFeedback");
-//	}
 	
 	private AjaxButton criarButtonPesquisar(){
 		AjaxButton ajaxButton =  new AjaxButton("pesquisar") {

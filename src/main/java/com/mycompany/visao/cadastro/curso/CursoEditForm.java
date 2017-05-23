@@ -19,6 +19,7 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
+import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.WicketUtil;
 import com.mycompany.visao.comum.EditForm;
 
@@ -31,13 +32,13 @@ public class CursoEditForm extends EditForm {
 	private FileUploadField  uploadFieldLogo;
 	private String file = "";
 	
-	public CursoEditForm(String id, Curso curso,Panel editPanel) {
-		super(id, curso,editPanel);
+	public CursoEditForm(String id, Curso curso,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
+		super(id, curso,editPanel,feedbackPanel);
 		this.curso = curso;
 	}
 	
-	public CursoEditForm(Curso curso,Panel editPanel) {
-		super("formCadastro", curso,editPanel);
+	public CursoEditForm(Curso curso,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
+		super("formCadastro", curso,editPanel,feedbackPanel);
 		this.curso = curso;
 	}
 	
@@ -64,7 +65,7 @@ public class CursoEditForm extends EditForm {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-//		textFieldNome.setRequired(true);
+		textFieldNome.setRequired(true);
 		return textFieldNome;
 	}
 	

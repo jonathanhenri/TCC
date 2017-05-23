@@ -33,7 +33,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(200);
+		modalIncluirEditar.setInitialHeight(400);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
@@ -77,7 +77,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 		editPanel.setOutputMarkupId(true);
 		getForm().add(editPanel);
 		
-		AlunoEditForm cadastroAlunoEditForm = new AlunoEditForm((Aluno) abstractBean,editPanel){
+		AlunoEditForm cadastroAlunoEditForm = new AlunoEditForm((Aluno) abstractBean,editPanel,getFeedbackPanel()){
 			private static final long serialVersionUID = 1L;
 
 			protected void executarAoEditar(AjaxRequestTarget target) {
@@ -89,6 +89,12 @@ public class AlunoListarPage extends ListarPageGenerico {
 				target.add(getAtualizarListarPage());
 				getModalIncluirEditar().close(target);
 			};
+			
+			@Override
+			protected void executarAoVoltar(AjaxRequestTarget target) {
+				getModalIncluirEditar().close(target);
+				super.executarAoVoltar(target);
+			}
 		};
 		cadastroAlunoEditForm.setOutputMarkupId(true);
 		editPanel.add(cadastroAlunoEditForm);

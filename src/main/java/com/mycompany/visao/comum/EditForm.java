@@ -18,6 +18,7 @@ import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
+import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.Util;
 @SuppressWarnings("unchecked")
 public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
@@ -35,6 +36,16 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
 		this.abstractBean = abstractBean;
 		this.editPanel = editPanel;
+		setServicoComum();
+		adicionarCampos();
+		adicionarCamposGerais();
+	}
+	
+	public EditForm(String id, AbstractBean<?> abstractBean,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
+		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
+		this.abstractBean = abstractBean;
+		this.editPanel = editPanel;
+		setFeedbackPanel(feedbackPanel);
 		setServicoComum();
 		adicionarCampos();
 		adicionarCamposGerais();
@@ -144,7 +155,9 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-//				target.add(feedbackPanel);
+//				target.appendJavaScript("$.jGrowl('teste');");
+				
+				target.add(feedbackPanel);
 			}
 		};
 		
@@ -153,16 +166,26 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	protected void saveAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
-		Retorno retorno = serviceComum.save(getAbstractBean());
-		 for(Mensagem mensagem:retorno.getListaMensagem()){
-			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-       }
+		try{
+			Retorno retorno = serviceComum.save(getAbstractBean());
+			 for(Mensagem mensagem:retorno.getListaMensagem()){
+				 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+			 }
+		}catch(Exception e){
+			Util.notifyError(target, "Erro ao tentar realizar a ação");
+			e.printStackTrace();
+		}
 	}
 	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
-		Retorno retorno = serviceComum.persist(getAbstractBean());
-		 for(Mensagem mensagem:retorno.getListaMensagem()){
-			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-        }
+		try{
+			Retorno retorno = serviceComum.persist(getAbstractBean());
+			 for(Mensagem mensagem:retorno.getListaMensagem()){
+				 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+	        }
+		}catch(Exception e){
+			Util.notifyError(target, "Erro ao tentar realizar a ação");
+			e.printStackTrace();
+		}
 	}
 	
 	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target){
@@ -216,12 +239,6 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return abstractBean;
 	}
 	
-	private FeedbackPanel criarFeedbackPanel(){
-		feedbackPanel = new FeedbackPanel("feedbackPanel");
-		feedbackPanel.setOutputMarkupId(true);
-		return feedbackPanel;
-	}
-
 //	protected abstract void inicializarEditForm(String id,AbstractBean<?> abstractBean,Panel editPanel);
 			
 	private void adicionarCamposGerais(){
@@ -230,7 +247,6 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		add(criarBotaoVoltar());
 		add(criarModalExcluir());
 		add(criarCampoTituloPage());
-//		editPanel.add(criarFeedbackPanel());
 	}
 	protected void adicionarCampos(){
 	}
