@@ -12,7 +12,7 @@ public interface IServiceComum<T extends AbstractBean<?>> {
 	
 	public Retorno save(T save);
 	
-	public Retorno remove(T  remove);
+	public Retorno remove(T  remove) ;
 	
 	public T searchUnique(Search search);
 	

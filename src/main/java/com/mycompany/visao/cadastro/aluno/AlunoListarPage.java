@@ -77,25 +77,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 		editPanel.setOutputMarkupId(true);
 		getForm().add(editPanel);
 		
-		AlunoEditForm cadastroAlunoEditForm = new AlunoEditForm((Aluno) abstractBean,editPanel,getFeedbackPanel()){
-			private static final long serialVersionUID = 1L;
-
-			protected void executarAoEditar(AjaxRequestTarget target) {
-				target.add(getAtualizarListarPage());
-				getModalIncluirEditar().close(target);
-			};
-			
-			protected void executarAoSalvar(AjaxRequestTarget target) {
-				target.add(getAtualizarListarPage());
-				getModalIncluirEditar().close(target);
-			};
-			
-			@Override
-			protected void executarAoVoltar(AjaxRequestTarget target) {
-				getModalIncluirEditar().close(target);
-				super.executarAoVoltar(target);
-			}
-		};
+		AlunoEditForm cadastroAlunoEditForm = new AlunoEditForm((Aluno) abstractBean,editPanel,getFeedbackPanel(),getAtualizarListarPage(),getModalIncluirEditar());
 		cadastroAlunoEditForm.setOutputMarkupId(true);
 		editPanel.add(cadastroAlunoEditForm);
 		

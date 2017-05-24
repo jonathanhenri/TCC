@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -21,7 +23,7 @@ import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.visao.comum.EditForm;
 
-public class AlunoEditForm extends EditForm {
+public class AlunoEditForm extends EditForm<Aluno> {
 	@SpringBean(name="alunoServico")
 	private static IAlunoServico alunoServico;
 	
@@ -29,13 +31,10 @@ public class AlunoEditForm extends EditForm {
 	private  ICursoServico cursoServico;
 	
 	private Aluno aluno;
-	public AlunoEditForm(String id, Aluno aluno,Panel editPanel) {
-		super(id, aluno,editPanel);
-		this.aluno = aluno;
-	}
 	
-	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
-		super("formCadastro", aluno,editPanel,feedbackPanel);
+	
+	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
+		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.aluno = aluno;
 	}
 	

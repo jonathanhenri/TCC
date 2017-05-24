@@ -3,6 +3,8 @@ package com.mycompany.visao.cadastro.curso;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -32,13 +34,13 @@ public class CursoEditForm extends EditForm {
 	private FileUploadField  uploadFieldLogo;
 	private String file = "";
 	
-	public CursoEditForm(String id, Curso curso,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
-		super(id, curso,editPanel,feedbackPanel);
+	public CursoEditForm(String id, Curso curso,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
+		super(id, curso,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.curso = curso;
 	}
 	
-	public CursoEditForm(Curso curso,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
-		super("formCadastro", curso,editPanel,feedbackPanel);
+	public CursoEditForm(Curso curso,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
+		super("formCadastro", curso,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.curso = curso;
 	}
 	

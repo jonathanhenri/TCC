@@ -3,24 +3,36 @@
 
 <head>
 <wicket:head>
+<script>
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	</script>
 </wicket:head>
 </head>
 
 <body>
 	<wicket:extend>
-	
 		<div class="main-grid">
 			<div class="agile-grids">	
 				<!-- input-forms -->
 				<div class="grids">
 					<div class="progressbar-heading grids-heading">
-						<h2><label wicket:id="nomeTitulo"> Titulo page</label></h2>
+						<h2><label wicket:id="nomeTitulo" > Titulo page</label></h2>
 					</div>
 					<form id="form" wicket:id="formListagem">
 						<div class="panel panel-info">
-						 	<div class="panel-heading">Filtros</div>
+						 	<div class="panel-heading">Filtros <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="?"></a></div>
 							
 							<div class="panel-body">
+								<div class="col-md-3">
+									<label id="labelNome" for="nome">Nome</label> 
+									<input  wicket:id="nome" id="nome" name="nome" autofocus="autofocus"type="text" class="form-control" placeholder="Nome" />
+								</div>
+								<div class="col-md-3">
+									<label id="labelLogin" for="periodo">Periodo</label>
+									 <input autofocus="autofocus"type="number" class="form-control" id="periodo" name="periodo" wicket:id="periodo"	placeholder="Periodo" />
+								</div>
 							</div>
 						</div>
 						<div class="row">

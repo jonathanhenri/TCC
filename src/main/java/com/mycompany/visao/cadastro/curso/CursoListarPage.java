@@ -9,7 +9,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
-import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
 
@@ -72,25 +71,7 @@ public class CursoListarPage extends ListarPageGenerico {
 		panel.setOutputMarkupId(true);
 		getForm().add(panel);
 		
-		CursoEditForm cadastroCursoEditForm = new CursoEditForm((Curso) abstractBean,panel,getFeedbackPanel()){
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void executarAoExcluir(AjaxRequestTarget target) {
-				target.add(getAtualizarListarPage());
-				getModalIncluirEditar().close(target);
-			}
-			@Override
-			protected void executarAoSalvarEditar(AjaxRequestTarget target) {
-				target.add(getAtualizarListarPage());
-				getModalIncluirEditar().close(target);
-			}
-			
-			@Override
-			protected void executarAoVoltar(AjaxRequestTarget target) {
-				getModalIncluirEditar().close(target);
-			}
-		};
+		CursoEditForm cadastroCursoEditForm = new CursoEditForm((Curso) abstractBean,panel,getFeedbackPanel(),getAtualizarListarPage(),getModalIncluirEditar());
 		cadastroCursoEditForm.setOutputMarkupId(true);
 		panel.add(cadastroCursoEditForm);
 		return panel;

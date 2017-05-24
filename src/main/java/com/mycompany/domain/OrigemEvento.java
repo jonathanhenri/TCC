@@ -28,6 +28,7 @@ public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
 	
+	@ListarPageAnotacao(nomeColuna="Código cor")
 	@Column(name = "CODIGO_COR", nullable = true,length = 50)
 	private String codigoCor;
 	

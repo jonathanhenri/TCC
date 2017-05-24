@@ -1,11 +1,14 @@
 package com.mycompany.visao.geradorCodigo;
 
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.services.interfaces.ICodigoAlunoServico;
+import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.visao.comum.EditForm;
 
 public class CodigoAlunoEditForm extends EditForm {
@@ -15,13 +18,13 @@ public class CodigoAlunoEditForm extends EditForm {
 	
 	private CodigoAluno codigoAluno;
 	private Integer quantidadeCodigos = 0;
-	public CodigoAlunoEditForm(String id, CodigoAluno codigoAluno,Panel editPanel) {
-		super(id, codigoAluno,editPanel);
+	public CodigoAlunoEditForm(String id, CodigoAluno codigoAluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
+		super(id, codigoAluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.codigoAluno = codigoAluno;
 	}
 	
-	public CodigoAlunoEditForm(CodigoAluno codigoAluno,Panel editPanel) {
-		super("formCadastro", codigoAluno,editPanel);
+	public CodigoAlunoEditForm(CodigoAluno codigoAluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
+		super("formCadastro", codigoAluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.codigoAluno = codigoAluno;
 	}
 	

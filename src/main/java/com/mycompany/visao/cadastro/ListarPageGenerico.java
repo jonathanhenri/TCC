@@ -1,5 +1,6 @@
 package com.mycompany.visao.cadastro;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -29,8 +30,6 @@ import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
-import com.mycompany.util.JGrowlFeedbackPanel;
-import com.mycompany.util.Options;
 import com.mycompany.util.Util;
 import com.mycompany.visao.comum.MensagemExcluirPanel;
 import com.mycompany.visao.comum.Menu;

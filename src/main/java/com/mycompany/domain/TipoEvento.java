@@ -29,6 +29,7 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	private Curso curso;
 	
 	
+	@ListarPageAnotacao
 	@Column(name = "CODIGO_COR", nullable = true, length = 50)
 	private String codigoCor;
 	

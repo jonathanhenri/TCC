@@ -5,6 +5,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.feedback.FeedbackMessage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -28,24 +29,21 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected String nomeTitulo;
 	private Panel editPanel;
 	
+	private WebMarkupContainer divAtualizar;
+	private ModalWindow modalIncluirEditar;
+	
 	private ModalWindow modalExcluir;
 	
 	protected IServiceComum serviceComum;
 	
-	public EditForm(String id, AbstractBean<?> abstractBean,Panel editPanel) {
-		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
-		this.abstractBean = abstractBean;
-		this.editPanel = editPanel;
-		setServicoComum();
-		adicionarCampos();
-		adicionarCamposGerais();
-	}
 	
-	public EditForm(String id, AbstractBean<?> abstractBean,Panel editPanel,JGrowlFeedbackPanel feedbackPanel) {
+	public EditForm(String id, AbstractBean<?> abstractBean,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar, ModalWindow modalIncluirEditar) {
 		super(id, new CompoundPropertyModel<T>((IModel<T>) new Model<AbstractBean<?>>(abstractBean)));
 		this.abstractBean = abstractBean;
 		this.editPanel = editPanel;
 		setFeedbackPanel(feedbackPanel);
+		setDivAtualizar(divAtualizar);
+		setModalIncluirEditar(modalIncluirEditar);
 		setServicoComum();
 		adicionarCampos();
 		adicionarCamposGerais();
@@ -197,20 +195,23 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	protected void executarAoVoltar(AjaxRequestTarget target){
-		
+		getModalIncluirEditar().close(target);
 	}
 	
 	
 	protected void executarAoSalvarEditar(AjaxRequestTarget target){
-		
 	}
 	
 	protected void executarAoEditar(AjaxRequestTarget target){
-		
+		target.add(getDivAtualizar());
+		getModalIncluirEditar().close(target);
 	}
+	
 	protected void executarAoSalvar(AjaxRequestTarget target){
-		
+		target.add(getDivAtualizar());
+		getModalIncluirEditar().close(target);
 	}
+	
 	protected void executarAoExcluir(AjaxRequestTarget target){
 		
 	}
@@ -271,6 +272,26 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 
 	public void setServiceComum(IServiceComum serviceComum) {
 		this.serviceComum = serviceComum;
+	}
+
+
+	public WebMarkupContainer getDivAtualizar() {
+		return divAtualizar;
+	}
+
+
+	public void setDivAtualizar(WebMarkupContainer divAtualizar) {
+		this.divAtualizar = divAtualizar;
+	}
+
+
+	public ModalWindow getModalIncluirEditar() {
+		return modalIncluirEditar;
+	}
+
+
+	public void setModalIncluirEditar(ModalWindow modalIncluirEditar) {
+		this.modalIncluirEditar = modalIncluirEditar;
 	}
 	
 	
