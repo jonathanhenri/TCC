@@ -1,6 +1,5 @@
 package com.mycompany.visao.cadastro;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -26,11 +25,15 @@ import org.apache.wicket.model.ResourceModel;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.FiltroDinamicoAgrupador;
+import com.mycompany.domain.FiltroDinamicoAgrupador;
+import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
 import com.mycompany.util.Util;
+import com.mycompany.visao.comum.ListagemFiltrosDinamicosPanel;
 import com.mycompany.visao.comum.MensagemExcluirPanel;
 import com.mycompany.visao.comum.Menu;
 
@@ -43,12 +46,15 @@ public abstract class ListarPageGenerico extends Menu {
 	
 	protected ModalWindow modalIncluirEditar;	
 	protected ModalWindow modalExcluir;
+	protected ModalWindow modalFiltros;
 	protected Form<AbstractBean<?>> form;
 	private AbstractBeanDataProvider dataDataProvider;
 	private AbstractBean<?> abstractBean;
 	protected IColumn[] columns;
 	protected int quantidadeRegistrosVisiveis = 10;
 	protected String nomeTituloListarPage;
+	
+	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
 	
 	protected ListarPageGenerico(AbstractBean<?> abstractBean){
 		this.abstractBean = abstractBean;
@@ -70,16 +76,21 @@ public abstract class ListarPageGenerico extends Menu {
 	
 	protected abstract void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean);
 	
+	protected void inicializarFiltrosDinamicos() {
+	}
 	
 	protected abstract ModalWindow criarModalIncluirEditar();
 	
+	protected abstract ModalWindow criarModalFiltros();
+	
 	private void criarModalExcluir(){
 		modalExcluir= new ModalWindow("modalExcluir");
-		modalExcluir.setInitialHeight(300);
+		modalExcluir.setInitialHeight(250);
 		modalExcluir.setInitialWidth(600);
 		modalExcluir.setOutputMarkupId(true);
 		add(modalExcluir);
 	}
+	
 	
 	private AjaxButton criarButtonPesquisar(){
 		AjaxButton ajaxButton =  new AjaxButton("pesquisar") {
@@ -87,7 +98,36 @@ public abstract class ListarPageGenerico extends Menu {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				super.onSubmit(target, form);
+				
+//				FiltroDinamicoAtributo filtroDinamicoAtributo = new FiltroDinamicoAtributo(Reflexao.nomesAtributosFiltros(abstractBean));
+				
 				target.add(divListaAtualizar);
+			}
+		};
+		
+		return ajaxButton;
+	}
+	
+	private AjaxButton criarButtonListagemFiltrosDinamicos(){
+		AjaxButton ajaxButton =  new AjaxButton("buttonListagemFiltrosDinamicos") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				ListagemFiltrosDinamicosPanel filtrosDinamicosPanel = new ListagemFiltrosDinamicosPanel(getModalFiltros().getContentId(),getModalFiltros(),getFiltroDinamicoAgrupador(),Reflexao.nomesAtributosFiltros(abstractBean)) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void executarAoPesquisar(AjaxRequestTarget target) {
+						getModalFiltros().close(target);
+						target.add(getAtualizarListarPage());
+						
+					}
+				};
+				getForm().add(filtrosDinamicosPanel);
+				
+				filtrosDinamicosPanel.setOutputMarkupId(true);
+				getModalFiltros().setContent(filtrosDinamicosPanel);
+				getModalFiltros().show(target);
 			}
 		};
 		
@@ -109,7 +149,9 @@ public abstract class ListarPageGenerico extends Menu {
 	
 	public void adicionaCampos(){
 		add(criarModalIncluirEditar());
+		add(criarModalFiltros());
 		criarModalExcluir();
+		inicializarFiltrosDinamicos();
 		criarForm();
 		createColumns();
 		criarDataProvider();
@@ -124,6 +166,7 @@ public abstract class ListarPageGenerico extends Menu {
 		form = new Form<AbstractBean<?>>("formListagem",new CompoundPropertyModel<AbstractBean<?>>(abstractBean));
 		form.add(criarButtonPesquisar());
 		form.add(criarButtonIncluir());
+		form.add(criarButtonListagemFiltrosDinamicos());
 		add(form);
 	}
 	
@@ -147,10 +190,21 @@ public abstract class ListarPageGenerico extends Menu {
 			public void addFilters() {
 				setColPropertyExpression(new String[6]);
 				this.pesquisaPadrao = ListarPageGenerico.this.addFilters(search);
+				atualizarFiltrosGenericos(search);
 				super.addFilters();
 			}
 		};
 		dataDataProvider.setFilterState(abstractBean);
+	}
+	
+	private void atualizarFiltrosGenericos(Search search){
+		if(filtroDinamicoAgrupador!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos().size() >0){
+			for(FiltroDinamicoAtributo pesquisa:filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()){
+				search.addFilterEqual(pesquisa.getNomeCampo(), pesquisa.getValorCampo());
+			}
+		}
+		
+		filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
 	}
 	
 	protected Boolean addFilters(Search search) {
@@ -284,5 +338,29 @@ public abstract class ListarPageGenerico extends Menu {
 	public ModalWindow getModalIncluirEditar() {
 		return modalIncluirEditar;
 	}
+
+
+	public ModalWindow getModalFiltros() {
+		return modalFiltros;
+	}
+
+
+	public void setModalFiltros(ModalWindow modalFiltros) {
+		this.modalFiltros = modalFiltros;
+	}
+
+
+	public FiltroDinamicoAgrupador getFiltroDinamicoAgrupador() {
+		if(filtroDinamicoAgrupador == null){
+			filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
+		}
+		return filtroDinamicoAgrupador;
+	}
+
+
+	public void setFiltroDinamicoAgrupador(FiltroDinamicoAgrupador filtroDinamicoAgrupador) {
+		this.filtroDinamicoAgrupador = filtroDinamicoAgrupador;
+	}
+	
 	
 }

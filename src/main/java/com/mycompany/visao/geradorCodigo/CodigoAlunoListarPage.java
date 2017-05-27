@@ -29,6 +29,17 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 		serviceComum = codigoAlunoServico;
 	}
 	
+	@Override
+	protected ModalWindow criarModalFiltros() {
+		modalFiltros = new ModalWindow("modalFiltros");
+		modalFiltros.setOutputMarkupId(true);
+		modalFiltros.setInitialHeight(400);
+		modalFiltros.setInitialWidth(500);
+		
+		modalFiltros.setCloseButtonCallback(null);
+		
+		return modalFiltros;
+	}
 	
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {

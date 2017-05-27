@@ -8,6 +8,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
+import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
@@ -29,6 +30,18 @@ public class CursoListarPage extends ListarPageGenerico {
 	protected void setServicoComum() {
 		serviceComum = cursoServico;
 	}
+	
+	@Override
+	protected ModalWindow criarModalFiltros() {
+		modalFiltros = new ModalWindow("modalFiltros");
+		modalFiltros.setOutputMarkupId(true);
+		modalFiltros.setInitialHeight(400);
+		modalFiltros.setInitialWidth(500);
+		
+		modalFiltros.setCloseButtonCallback(null);
+		
+		return modalFiltros;
+	}
 
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {
@@ -36,6 +49,8 @@ public class CursoListarPage extends ListarPageGenerico {
 		modalIncluirEditar.setOutputMarkupId(true);
 		modalIncluirEditar.setInitialHeight(350);
 		modalIncluirEditar.setInitialWidth(600);
+		
+		modalIncluirEditar.setCloseButtonCallback(null);
 		
 		return modalIncluirEditar;
 	}
@@ -64,7 +79,6 @@ public class CursoListarPage extends ListarPageGenerico {
 		getModalIncluirEditar().show(target);
 		
 	}
-	
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
 		CursoPanel panel = new CursoPanel(getModalIncluirEditar().getContentId());

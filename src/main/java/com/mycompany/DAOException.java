@@ -1,9 +1,5 @@
 package com.mycompany;
 
-/**
- * 
- * @author Elizio.Rezende
- */
 public class DAOException extends RuntimeException {
 
 	/**

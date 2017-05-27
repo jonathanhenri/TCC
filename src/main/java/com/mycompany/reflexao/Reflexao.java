@@ -2,8 +2,10 @@ package com.mycompany.reflexao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.JoinColumn;
 
 import com.mycompany.anotacao.ListarPageAnotacao;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.util.Util;
@@ -102,6 +105,37 @@ public class Reflexao {
 		
 		return atributoIdentificadoEstrangeiro;
 	}
+	
+	public static List<FiltroDinamicoAtributo>  nomesAtributosFiltros(AbstractBean<?> abstractBean){
+		List<FiltroDinamicoAtributo> nomesAtributos = new ArrayList<FiltroDinamicoAtributo>();
+		
+		Class<?> cls = abstractBean.getClass();	
+		Field[] fld = cls.getDeclaredFields();
+		
+		for(int i = 0; i < fld.length; i++){
+			ListarPageAnotacao cmp = fld[i].getAnnotation(ListarPageAnotacao.class);				
+			if(cmp!=null && cmp.filtro()){
+				FiltroDinamicoAtributo filtroDinamicoAtributo = new FiltroDinamicoAtributo();
+				
+				if(cmp.nomeColuna()!=null && !cmp.nomeColuna().isEmpty()){
+					filtroDinamicoAtributo.setNomeCampoPersonalidado(cmp.nomeColuna());
+				}
+				
+				filtroDinamicoAtributo.setNomeCampo(fld[i].getName());
+				
+				String atributoIdentificadoEstrangeiro = verificarClassEstrangeira(fld[i].getType().getName());
+				
+				 if(!atributoIdentificadoEstrangeiro.isEmpty()){
+					filtroDinamicoAtributo.setNomeCampo(filtroDinamicoAtributo.getNomeCampo()+"."+atributoIdentificadoEstrangeiro);// JUNTA O NOME DO ATRIBUTO COM O IDENTIFICADOR UNICO: EX: CURSO.NOME
+					filtroDinamicoAtributo.setNomeCampoPersonalidado(filtroDinamicoAtributo.getNomeCampoPersonalidado()+"."+atributoIdentificadoEstrangeiro);
+				}
+				
+				nomesAtributos.add(filtroDinamicoAtributo);
+			}
+		}
+		return nomesAtributos;
+	}
+	
 	public static Map<String, String> colunaListarPage(AbstractBean<?> abstractBean){
 		Map<String, String> hashMapColunas = new LinkedHashMap<String, String>();
 		Class<?> cls = abstractBean.getClass();	

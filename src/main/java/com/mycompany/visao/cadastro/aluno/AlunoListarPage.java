@@ -90,4 +90,16 @@ public class AlunoListarPage extends ListarPageGenerico {
 		getModalIncluirEditar().setContent(criarPanel(new Aluno()));
 		getModalIncluirEditar().show(target);
 	}
+
+	@Override
+	protected ModalWindow criarModalFiltros() {
+		modalFiltros = new ModalWindow("modalFiltros");
+		modalFiltros.setOutputMarkupId(true);
+		modalFiltros.setInitialHeight(400);
+		modalFiltros.setInitialWidth(500);
+		
+		modalFiltros.setCloseButtonCallback(null);
+		
+		return modalFiltros;
+	}
 }

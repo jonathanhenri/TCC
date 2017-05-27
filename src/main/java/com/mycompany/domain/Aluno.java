@@ -26,17 +26,17 @@ import com.mycompany.security.AtribuicaoAdmin;
 public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private static final long serialVersionUID = 1L;
 	
-	@ListarPageAnotacao(nomeColuna = "Numero")
+	@ListarPageAnotacao(nomeColuna = "Numero",filtro = true)
 	@Id
 	@Column(name = "ID_ALUNO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ListarPageAnotacao(identificadorEstrangeiro = true)
+	@ListarPageAnotacao(identificadorEstrangeiro = true,filtro = true)
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@ListarPageAnotacao
+	@ListarPageAnotacao(filtro = true)
 	@Column(name = "CPF", nullable = false, length = 20)
 	private String cpf;
 	
@@ -50,7 +50,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Column(name = "CONTADOR_ACESSO", nullable = true)
 	private Double contadorAcesso;	
 	
-	@ListarPageAnotacao(nomeColuna = "Curso")
+	@ListarPageAnotacao(nomeColuna = "Curso",filtro = true)
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO",nullable = false)
 	private Curso curso;
