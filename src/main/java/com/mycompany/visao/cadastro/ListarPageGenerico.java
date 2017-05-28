@@ -1,6 +1,7 @@
 package com.mycompany.visao.cadastro;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.AttributeModifier;
@@ -113,21 +114,26 @@ public abstract class ListarPageGenerico extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				ListagemFiltrosDinamicosPanel filtrosDinamicosPanel = new ListagemFiltrosDinamicosPanel(getModalFiltros().getContentId(),getModalFiltros(),getFiltroDinamicoAgrupador(),Reflexao.nomesAtributosFiltros(abstractBean)) {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected void executarAoPesquisar(AjaxRequestTarget target) {
-						getModalFiltros().close(target);
-						target.add(getAtualizarListarPage());
-						
-					}
-				};
-				getForm().add(filtrosDinamicosPanel);
-				
-				filtrosDinamicosPanel.setOutputMarkupId(true);
-				getModalFiltros().setContent(filtrosDinamicosPanel);
-				getModalFiltros().show(target);
+				List<FiltroDinamicoAtributo> listaAtributos = Reflexao.nomesAtributosFiltros(abstractBean);
+				if(listaAtributos!=null && listaAtributos.size() > 0){
+					ListagemFiltrosDinamicosPanel filtrosDinamicosPanel = new ListagemFiltrosDinamicosPanel(getModalFiltros().getContentId(),getModalFiltros(),getFiltroDinamicoAgrupador(),listaAtributos) {
+						private static final long serialVersionUID = 1L;
+	
+						@Override
+						protected void executarAoPesquisar(AjaxRequestTarget target) {
+							getModalFiltros().close(target);
+							target.add(getAtualizarListarPage());
+							
+						}
+					};
+					getForm().add(filtrosDinamicosPanel);
+					
+					filtrosDinamicosPanel.setOutputMarkupId(true);
+					getModalFiltros().setContent(filtrosDinamicosPanel);
+					getModalFiltros().show(target);
+				}else{
+					Util.notifyInfo(target, "Não existe filtros adicionais.");
+				}
 			}
 		};
 		

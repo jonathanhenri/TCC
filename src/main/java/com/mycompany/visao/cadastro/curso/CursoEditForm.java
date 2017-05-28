@@ -62,7 +62,7 @@ public class CursoEditForm extends EditForm<Curso> {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-		textFieldNome.setRequired(true);
+//		textFieldNome.setRequired(true);
 		return textFieldNome;
 	}
 	
