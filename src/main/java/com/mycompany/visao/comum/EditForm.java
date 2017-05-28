@@ -50,6 +50,15 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	
+	// caso queira desabilitar o form inteiro
+	@Override
+	public boolean isEnabled() {
+		return isEnabledEditForm();
+	}
+	
+	protected Boolean isEnabledEditForm(){
+		return true;
+	}
 	protected abstract void setServicoComum();
 
 	private AjaxLink<String> criarBotaoVoltar(){

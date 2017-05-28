@@ -15,8 +15,7 @@ public abstract class AbstractBean<T> implements ObjectIdentity{
 	
 	public abstract void setId(Long id);
 	
-	
-	 public T clonar(boolean clonarComId){
+    public T clonar(boolean clonarComId){
 		try{
 		
 			@SuppressWarnings("all")

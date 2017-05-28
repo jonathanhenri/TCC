@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.feedback.Mensagem;
@@ -88,7 +89,38 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		
 		return retorno;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public AbstractBean<?> searchFechId(AbstractBean<?> codigoAluno) {
+		if(codigoAluno!=null && codigoAluno.getId()!=null){
+			Search search = new Search(CodigoAluno.class);
+			search.addFilterEqual("id", codigoAluno.getId());
+			search.addFetch("curso");
+			search.addFetch("aluno");
+			return  (AbstractBean<?>) searchUnique(search);
+		}
+		return null;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public CodigoAluno searchFech(CodigoAluno codigoAluno) {
+		if(codigoAluno!=null && codigoAluno.getId()!=null){
+			Search search = new Search(CodigoAluno.class);
+			search.addFilterEqual("id", codigoAluno.getId());
+			search.addFetch("curso");
+			search.addFetch("aluno");
+			return searchUnique(search);
+		}
+		return null;
+	}
 
+	@Override
+	public CodigoAluno searchFech(Search search) {
+		search.addFetch("curso");
+		search.addFetch("aluno");
+		return searchUnique(search);
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<CodigoAluno> search(Search search) {
 		return codigoAlunoDAO.search(search);
@@ -135,7 +167,10 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		Retorno retorno = Util.verificarIdNulo(curso);
 			
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
+			if(curso.getAluno()!=null){
+				retorno.setSucesso(false);
+				retorno.addMensagem(new Mensagem("Aluno vinculado a este código", Mensagem.ERRO));
+			}
 		}
 		
 		return retorno;

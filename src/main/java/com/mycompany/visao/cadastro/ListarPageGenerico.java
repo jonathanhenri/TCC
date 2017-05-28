@@ -80,6 +80,18 @@ public abstract class ListarPageGenerico extends Menu {
 	protected void inicializarFiltrosDinamicos() {
 	}
 	
+	protected Boolean isVisibleBotaoIncluir(){
+		return true;
+	}
+	
+	protected Boolean isVisibleBotaoEditar(){
+		return true;
+	}
+	
+	protected Boolean isVisibleBotaoExcluir(){
+		return true;
+	}
+	
 	protected abstract ModalWindow criarModalIncluirEditar();
 	
 	protected abstract ModalWindow criarModalFiltros();
@@ -147,6 +159,11 @@ public abstract class ListarPageGenerico extends Menu {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				getEditFormIncluir(target);
 				target.add(divListaAtualizar);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return isVisibleBotaoIncluir();
 			}
 		};
 		
@@ -261,6 +278,11 @@ public abstract class ListarPageGenerico extends Menu {
 			public void onClick(AjaxRequestTarget target) {
 				getEditFormEditar(target,abstractBean);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				return isVisibleBotaoEditar();
+			}
 		};
 		linkEditar.setOutputMarkupId(true);
 		return linkEditar;
@@ -311,6 +333,11 @@ public abstract class ListarPageGenerico extends Menu {
 				getModalExcluir().setContent(excluirPanel);
 				getModalExcluir().show(target);
 				
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return isVisibleBotaoExcluir();
 			}
 		};
 		linkExcluir.setOutputMarkupId(true);

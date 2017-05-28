@@ -22,21 +22,21 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	private static final long serialVersionUID = 1L;
 	
-	@ListarPageAnotacao
+	@ListarPageAnotacao(filtro = true)
 	@Column(name = "CODIGO", nullable = false, length = 100)
 	private String codigo;
 	
-	@ListarPageAnotacao(nomeColuna = "Curso")
+	@ListarPageAnotacao(nomeColuna = "Curso",filtro = true)
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO")
 	private Curso curso;
 	
-	@ListarPageAnotacao(nomeColuna = "Curso")
+	@ListarPageAnotacao(nomeColuna = "Aluno",filtro = true)
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_aluno")
+	@JoinColumn(name="ID_ALUNO")
 	private Aluno aluno;
 	
-	@ListarPageAnotacao
+	@ListarPageAnotacao(filtro = true)
 	@Column(name = "ATIVO", nullable = false)
 	private Boolean ativo;
 	

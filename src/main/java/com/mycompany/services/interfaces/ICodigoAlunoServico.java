@@ -3,6 +3,7 @@ package com.mycompany.services.interfaces;
 import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.feedback.Retorno;
@@ -13,6 +14,12 @@ public interface  ICodigoAlunoServico extends IServiceComum<CodigoAluno> {
 	
 	public List<CodigoAluno> search(Search search);
 
+	public CodigoAluno searchFech(Search search);
+	
+	public CodigoAluno searchFech(CodigoAluno codigoAluno);
+	
+	public AbstractBean<?> searchFechId(AbstractBean<?> codigoAluno);
+	
 	@Override
 	public CodigoAluno searchUnique(Search search);
 	

@@ -43,6 +43,7 @@ public class CursoListarPage extends ListarPageGenerico {
 		return modalFiltros;
 	}
 
+	
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
