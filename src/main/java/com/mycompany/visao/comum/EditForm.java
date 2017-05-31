@@ -13,6 +13,8 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.feedback.Mensagem;
@@ -99,20 +101,29 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 						};
 						
 						protected void executarAoClicarSim(AjaxRequestTarget target) {
-							Retorno retorno = null;
+							Retorno retorno = new Retorno();
 							try{
 								retorno = serviceComum.remove(abstractBean);
-								
-								 for(Mensagem mensagem:retorno.getListaMensagem()){
-									 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-								 }
-								 
-								modalExcluir.close(target);
-								executarAoExcluir(target);
 							}catch(Exception e){
-								System.err.println(retorno);
+								retorno.setSucesso(false);
+								
+								if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+									retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+								}else{
+									retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+								}
+								
 								e.printStackTrace();
 							}
+							
+							if(retorno.getSucesso()){
+								modalExcluir.close(target);
+								executarAoExcluir(target);
+							}
+							
+							 for(Mensagem mensagem:retorno.getListaMensagem()){
+								 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+							 }
 						};
 					};
 					
@@ -145,10 +156,8 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 					if(validarRegrasAntesSalvarEditar((target))){
 						if(getAbstractBean().getId()==null){
 							persistAbstract(abstractBean,target);
-							executarAoSalvar(target);
 						}else{
 							saveAbstract(abstractBean,target);
-							executarAoEditar(target);
 						}
 						
 						executarAoSalvarEditar(target);
@@ -173,26 +182,41 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	protected void saveAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
+		Retorno retorno = new Retorno();
 		try{
-			Retorno retorno = serviceComum.save(getAbstractBean());
-			 for(Mensagem mensagem:retorno.getListaMensagem()){
-				 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-			 }
+			 retorno = serviceComum.save(getAbstractBean());
 		}catch(Exception e){
-			Util.notifyError(target, "Erro ao tentar realizar a ação");
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação", Mensagem.ERRO));
 			e.printStackTrace();
+		}
+		
+		if(retorno.getSucesso()){
+			executarAoEditar(target);
+		}
+		
+		for(Mensagem mensagem:retorno.getListaMensagem()){
+			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
 		}
 	}
 	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
+		Retorno retorno = new Retorno();
 		try{
-			Retorno retorno = serviceComum.persist(getAbstractBean());
-			 for(Mensagem mensagem:retorno.getListaMensagem()){
-				 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-	        }
+			retorno = serviceComum.persist(getAbstractBean());
+			
 		}catch(Exception e){
-			Util.notifyError(target, "Erro ao tentar realizar a ação");
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação", Mensagem.ERRO));
 			e.printStackTrace();
 		}
+		
+		if(retorno.getSucesso()){
+			executarAoSalvar(target);
+		}
+		
+		 for(Mensagem mensagem:retorno.getListaMensagem()){
+			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+        }
 	}
 	
 	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target){

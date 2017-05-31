@@ -3,11 +3,14 @@ package com.mycompany.services.servico;
 import java.util.List;
 
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Materia;
 import com.mycompany.feedback.Mensagem;
@@ -39,6 +42,21 @@ public class CursoServico implements ICursoServico {
 		}
 		
 		return retorno;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
+		if(abstractBean!=null && abstractBean.getId()!=null){
+			Search search = new Search(Curso.class);
+			search.addFilterEqual("id", abstractBean.getId());
+			
+			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+				search.addFetch(fetch);
+			}
+			
+			return  (AbstractBean<?>) searchUnique(search);
+		}
+		return null;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
@@ -76,8 +94,13 @@ public class CursoServico implements ICursoServico {
 				retorno.addMensagem(mensagem);
 			}
 		}catch(Exception e){
-			e.printStackTrace();
 			retorno.setSucesso(false);
+			if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+				retorno.addMensagem(new Mensagem("Curso sendo utilizado", Mensagem.ERRO));
+			}
+			
+			e.printStackTrace();
+			
 		}
 		
 		return retorno;
@@ -98,8 +121,15 @@ public class CursoServico implements ICursoServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(curso);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
+				Search search = new Search(Curso.class);
+				search.addFilterEqual("nome", curso.getNome());
+				
+				int i = count(search);
+				
+				if(i>0){
+					retorno.setSucesso(false);
+					retorno.addMensagem(new Mensagem("Curso com nome já existente.", Mensagem.ALERTA));
+				}
 			
 			return retorno;
 		}else{
@@ -113,9 +143,21 @@ public class CursoServico implements ICursoServico {
 		Retorno retorno = Util.verificarIdNulo(curso);
 		
 		if(retorno.getSucesso()){
+			
 			retorno = Reflexao.validarTodosCamposObrigatorios(curso);
+			
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
+				
+				Search searchNomeRepetido = new Search(Curso.class);
+				searchNomeRepetido.addFilterEqual("nome", curso.getNome());
+				searchNomeRepetido.addFilterNotEqual("id",curso.getId());
+				
+				int i = count(searchNomeRepetido);
+				
+				if(i>0){
+					retorno.setSucesso(false);
+					retorno.addMensagem(new Mensagem(curso.getClass().getSimpleName(),"Nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+				}
 				
 			}
 		}

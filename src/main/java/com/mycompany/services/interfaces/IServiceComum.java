@@ -20,6 +20,8 @@ public interface IServiceComum<T extends AbstractBean<?>> {
 	
 	public List<T> search(Search search);
 	
+	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean);
+	
 	public Retorno validaRegrasAntesIncluir(T salvar);
 	
 	public Retorno validaRegrasAntesAlterar(T alterar);

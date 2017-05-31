@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.feedback.Retorno;
@@ -16,6 +17,7 @@ public interface  IAlunoServico extends IServiceComum<Aluno> {
 	
 	public List<Aluno> search(Search search);
 
+	
 	@Override
 	public Aluno searchUnique(Search search);
 	

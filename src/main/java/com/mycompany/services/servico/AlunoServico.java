@@ -2,13 +2,12 @@ package com.mycompany.services.servico;
 
 import java.util.List;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.feedback.Mensagem;
@@ -57,6 +56,22 @@ public class AlunoServico implements IAlunoServico {
 		alunoDAO.save(arquivo);
 		return retorno;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
+		if(abstractBean!=null && abstractBean.getId()!=null){
+			Search search = new Search(Aluno.class);
+			search.addFilterEqual("id", abstractBean.getId());
+			
+			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+				search.addFetch(fetch);
+			}
+			
+			return  (AbstractBean<?>) searchUnique(search);
+		}
+		return null;
+	}
+	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno remove(Arquivo arquivo) {

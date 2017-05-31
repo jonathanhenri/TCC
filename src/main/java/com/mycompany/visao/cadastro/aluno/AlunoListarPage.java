@@ -54,7 +54,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().setContent(criarPanel(abstractBean));
+		getModalIncluirEditar().setContent(criarPanel((alunoServico.searchFechId(abstractBean))));
 		getModalIncluirEditar().show(target);
 	}
 	

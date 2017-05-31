@@ -14,16 +14,18 @@ public class Mensagem {
     public static String MOTIVO_CADASTRADO= "cadastrado com sucesso.";
     public static String MOTIVO_ALTERADO = "alterado com sucesso.";
     public static String MOTIVO_EXCLUIDO = "excluido com sucesso.";
+    public static String MOTIVO_UTILIZADO = "está sendo utilizado.";
     
-    public static String MOTIVO_CADASTRO_ERRO="Erro ao cadastrar ";
+    public static String MOTIVO_CADASTRO_ERRO ="Erro ao cadastrar ";
     public static String MOTIVO_ALTERADO_ERRO ="Erro ao alterar ";
-    public static String MOTIVO_EXCLUIDO_ERRO = "Erro ao excluir ";
+    public static String MOTIVO_EXCLUIDO_ERRO ="Erro ao excluir ";
     
     public static String ID="Identificador";
 	    
 	public String campo;
 	public String tipo;
 	public String motivo;
+	public String nomeEntidade;
 	
 	public Mensagem(){};
 	
@@ -38,12 +40,21 @@ public class Mensagem {
 		setMotivo(motivo);
 	}
 	
-	public String toString(){
-		if(getCampo()!=null)
-			return getCampo()+" "+getMotivo();
-		else
-			return Util.firstToUpperCase(getMotivo());
+	public Mensagem(String nomeEntidade,String campo,String motivo,String tipo){
+		setNomeEntidade(nomeEntidade);
+		setTipo(tipo);
+		setCampo(campo);
+		setMotivo(motivo);
+	}
 	
+	public String toString(){
+		if(getCampo()!=null && getNomeEntidade() == null){
+			return getCampo()+" "+getMotivo();
+		}else if(motivo.equals(Mensagem.MOTIVO_REPETIDO)){
+			return "Campo "+getCampo()+" em " + getNomeEntidade()+" "+getMotivo();
+		}else{
+			return Util.firstToUpperCase(getMotivo());
+		}
 	}
 	
 	public void setMotivo(String motivo) {
@@ -67,6 +78,14 @@ public class Mensagem {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public String getNomeEntidade() {
+		return nomeEntidade;
+	}
+
+	public void setNomeEntidade(String nomeEntidade) {
+		this.nomeEntidade = nomeEntidade;
 	}
 	
     

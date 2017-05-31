@@ -2,18 +2,14 @@ package com.mycompany.visao.cadastro.materia;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Curso;
 import com.mycompany.domain.Materia;
 import com.mycompany.services.interfaces.IMateriaServico;
-import com.mycompany.util.WicketUtil;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
 
@@ -83,7 +79,7 @@ public class MateriaListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().setContent(criarPanel(abstractBean));
+		getModalIncluirEditar().setContent(criarPanel((materiaServico.searchFechId(abstractBean))));
 		getModalIncluirEditar().show(target);
 	}
 

@@ -23,10 +23,11 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.FiltroDinamicoAgrupador;
 import com.mycompany.domain.FiltroDinamicoAgrupador;
 import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.feedback.Mensagem;
@@ -313,19 +314,30 @@ public abstract class ListarPageGenerico extends Menu {
 					};
 					
 					protected void executarAoClicarSim(AjaxRequestTarget target) {
-						Retorno retorno = null;
+						Retorno retorno = new Retorno();
 						try{
-							retorno = serviceComum.remove(abstractBean);
-							
-							 for(Mensagem mensagem:retorno.getListaMensagem()){
-								 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-							 }
-							target.add(getAtualizarListarPage());
-							getModalExcluir().close(target);
+							retorno = serviceComum.remove(abstractBean);	
 						}catch(Exception e){
-							Util.notifyError(target, "Erro ao tentar realizar a ação");
+							retorno.setSucesso(false);
+							
+							if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+								retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+							}else{
+								retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+							}
+							
 							e.printStackTrace();
 						}
+						
+						if(retorno.getSucesso()){
+							target.add(getAtualizarListarPage());
+							getModalExcluir().close(target);
+						}
+						
+						for(Mensagem mensagem:retorno.getListaMensagem()){
+							 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+						 }
+						
 					};
 				};
 				

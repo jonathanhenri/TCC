@@ -74,7 +74,7 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().setContent(criarPanel(abstractBean));
+		getModalIncluirEditar().setContent(criarPanel((origemEventoServico.searchFechId(abstractBean))));
 		getModalIncluirEditar().show(target);
 	}
 

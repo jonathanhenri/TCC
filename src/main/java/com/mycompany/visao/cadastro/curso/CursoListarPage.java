@@ -8,7 +8,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Curso;
-import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
@@ -94,7 +93,7 @@ public class CursoListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().setContent(criarPanel(abstractBean));
+		getModalIncluirEditar().setContent(criarPanel((cursoServico.searchFechId(abstractBean))));
 		getModalIncluirEditar().show(target);
 	}
 

@@ -91,35 +91,20 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public AbstractBean<?> searchFechId(AbstractBean<?> codigoAluno) {
-		if(codigoAluno!=null && codigoAluno.getId()!=null){
+	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
+		if(abstractBean!=null && abstractBean.getId()!=null){
 			Search search = new Search(CodigoAluno.class);
-			search.addFilterEqual("id", codigoAluno.getId());
-			search.addFetch("curso");
-			search.addFetch("aluno");
+			search.addFilterEqual("id", abstractBean.getId());
+			
+			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+				search.addFetch(fetch);
+			}
+			
 			return  (AbstractBean<?>) searchUnique(search);
 		}
 		return null;
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public CodigoAluno searchFech(CodigoAluno codigoAluno) {
-		if(codigoAluno!=null && codigoAluno.getId()!=null){
-			Search search = new Search(CodigoAluno.class);
-			search.addFilterEqual("id", codigoAluno.getId());
-			search.addFetch("curso");
-			search.addFetch("aluno");
-			return searchUnique(search);
-		}
-		return null;
-	}
-
-	@Override
-	public CodigoAluno searchFech(Search search) {
-		search.addFetch("curso");
-		search.addFetch("aluno");
-		return searchUnique(search);
-	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<CodigoAluno> search(Search search) {

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.TipoEvento;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -41,6 +42,21 @@ public class TipoEventoServico implements ITipoEventoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
 		return tipoEventoDAO.count(search);
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
+		if(abstractBean!=null && abstractBean.getId()!=null){
+			Search search = new Search(TipoEvento.class);
+			search.addFilterEqual("id", abstractBean.getId());
+			
+			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+				search.addFetch(fetch);
+			}
+			
+			return  (AbstractBean<?>) searchUnique(search);
+		}
+		return null;
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)

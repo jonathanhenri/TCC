@@ -13,12 +13,7 @@ public interface  ICodigoAlunoServico extends IServiceComum<CodigoAluno> {
 	static final int DEFAUL_TIMEOUT = 1200;
 	
 	public List<CodigoAluno> search(Search search);
-
-	public CodigoAluno searchFech(Search search);
 	
-	public CodigoAluno searchFech(CodigoAluno codigoAluno);
-	
-	public AbstractBean<?> searchFechId(AbstractBean<?> codigoAluno);
 	
 	@Override
 	public CodigoAluno searchUnique(Search search);
