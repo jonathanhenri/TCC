@@ -133,6 +133,7 @@ fieldset[disabled] .btn-primary.active {
 }
 .btn-success {
   border-color: #66CC00;
+  
 }
 .btn-success:hover,
 .btn-success:focus {
