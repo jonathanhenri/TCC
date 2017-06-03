@@ -36,37 +36,37 @@ public class Menu extends WebPage {
 		});
 //		
 //		
-		add(new AjaxLink<String>("link_cadastro_aluno") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(AlunoListarPage.class);
-			}
-		});
+//		add(new AjaxLink<String>("link_cadastro_aluno") {
+//			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onClick(AjaxRequestTarget target) {
+//				setResponsePage(AlunoListarPage.class);
+//			}
+//		});
 //		
-		add(new AjaxLink<String>("link_cadastro_origem_evento") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(OrigemEventoListarPage.class);
-			}
-		});
+//		add(new AjaxLink<String>("link_cadastro_origem_evento") {
+//			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onClick(AjaxRequestTarget target) {
+//				setResponsePage(OrigemEventoListarPage.class);
+//			}
+//		});
 //		
-		add(new AjaxLink<String>("link_cadastro_materia") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(MateriaListarPage.class);
-			}
-		});
+//		add(new AjaxLink<String>("link_cadastro_materia") {
+//			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onClick(AjaxRequestTarget target) {
+//				setResponsePage(MateriaListarPage.class);
+//			}
+//		});
 //		
-		add(new AjaxLink<String>("link_cadastro_tipo_evento") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(TipoEventoListarPage.class);
-			}
-		});
+//		add(new AjaxLink<String>("link_cadastro_tipo_evento") {
+//			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onClick(AjaxRequestTarget target) {
+//				setResponsePage(TipoEventoListarPage.class);
+//			}
+//		});
 //		
 //		
 //		add(new AjaxLink<String>("link_cadastro_evento") {
@@ -77,13 +77,13 @@ public class Menu extends WebPage {
 //			}
 //		});
 //		
-		add(new AjaxLink<String>("link_gerador_codigos") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(CodigoAlunoListarPage.class);
-			}
-		});
+//		add(new AjaxLink<String>("link_gerador_codigos") {
+//			private static final long serialVersionUID = 1L;
+//			@Override
+//			public void onClick(AjaxRequestTarget target) {
+//				setResponsePage(CodigoAlunoListarPage.class);
+//			}
+//		});
 		
 		add(new AjaxLink<String>("sair_profile") {
 			private static final long serialVersionUID = 1L;

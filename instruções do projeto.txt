@@ -1,0 +1,19 @@
+Instruções para criação do banco de dados:
+
+1° Cria um banco de dados chamado "tcc" no mysql.
+2° Abra o arquivo "applicationContext.xml" no eclipse
+3° Se posicione na linha 114
+4° Descomente a linha "<prop key="hibernate.hbm2ddl.auto">create-drop</prop>"
+5° Execute o projeto
+6° Comente a linha novamente
+
+Instruções para executar o projeto
+1° Botão direito em cima do projeto eclipse
+2° Selecione debug ou run as
+3° Escolha java application
+4° Escolha a classe "StartApp - com.mycompany"
+5° Aperta ok
+6° Abra o navegador e digite "localhost:81"
+
+Login: admin 
+senha: admin

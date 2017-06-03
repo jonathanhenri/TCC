@@ -118,6 +118,8 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 							
 							if(retorno.getSucesso()){
 								modalExcluir.close(target);
+								getModalIncluirEditar().close(target);
+								target.add(getDivAtualizar());
 								executarAoExcluir(target);
 							}
 							
