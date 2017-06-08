@@ -158,8 +158,10 @@ public abstract class ListarPageGenerico extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				getEditFormIncluir(target);
-				target.add(divListaAtualizar);
+				if(!getModalIncluirEditar().isShown()){
+					getEditFormIncluir(target);
+					target.add(divListaAtualizar);
+				}
 			}
 			
 			@Override
@@ -304,46 +306,47 @@ public abstract class ListarPageGenerico extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				
-				MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(getModalExcluir().getContentId(), Util.getMensagemExclusao(abstractBean)){
-					private static final long serialVersionUID = 1L;
-
-					protected void executarAoClicarNao(AjaxRequestTarget target) {
-						target.add(getAtualizarListarPage());
-						getModalExcluir().close(target);
-					};
-					
-					protected void executarAoClicarSim(AjaxRequestTarget target) {
-						Retorno retorno = new Retorno();
-						try{
-							retorno = serviceComum.remove(abstractBean);	
-						}catch(Exception e){
-							retorno.setSucesso(false);
-							
-							if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
-								retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
-							}else{
-								retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
-							}
-							
-							e.printStackTrace();
-						}
-						
-						if(retorno.getSucesso()){
+				if(!getModalExcluir().isShown()){
+					MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(getModalExcluir().getContentId(), Util.getMensagemExclusao(abstractBean)){
+						private static final long serialVersionUID = 1L;
+	
+						protected void executarAoClicarNao(AjaxRequestTarget target) {
 							target.add(getAtualizarListarPage());
 							getModalExcluir().close(target);
-						}
+						};
 						
-						for(Mensagem mensagem:retorno.getListaMensagem()){
-							 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-						 }
-						
+						protected void executarAoClicarSim(AjaxRequestTarget target) {
+							Retorno retorno = new Retorno();
+							try{
+								retorno = serviceComum.remove(abstractBean);	
+							}catch(Exception e){
+								retorno.setSucesso(false);
+								
+								if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+									retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+								}else{
+									retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+								}
+								
+								e.printStackTrace();
+							}
+							
+							if(retorno.getSucesso()){
+								target.add(getAtualizarListarPage());
+								getModalExcluir().close(target);
+							}
+							
+							for(Mensagem mensagem:retorno.getListaMensagem()){
+								 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+							 }
+							
+						};
 					};
-				};
-				
-				getForm().add(excluirPanel);
-				getModalExcluir().setContent(excluirPanel);
-				getModalExcluir().show(target);
+					
+					getForm().add(excluirPanel);
+					getModalExcluir().setContent(excluirPanel);
+					getModalExcluir().show(target);
+				}
 				
 			}
 			

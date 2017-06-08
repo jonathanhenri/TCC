@@ -19,7 +19,6 @@
 <script src="js/jquery.jgrowl.js"></script>
 <script src="js/jquery.jgrowl.min.js"></script>
 <script src="js/screenfull.js"></script>
-<script src="js/bootstrap.js"></script>
 
 <script src="js/bootstrap.min.js"></script>
 <script src="js/notify.js"></script>
@@ -67,7 +66,7 @@
 	<nav class="main-menu">
 		<ul>
 			<li>
-				<a href="index.html">
+				<a wicket:id="link_dashBoard">
 					<i class="fa fa-home nav_icon"></i>
 					<span class="nav-text">
 					Dashboard
@@ -131,9 +130,10 @@
 			</a>
 		</nav>
 		<section class="title-bar">
-			<div class="logo">
-				<h1><a><img src="images/logo.png" alt="" />Ueg Agenda</a></h1>
-			</div>
+			<span>
+				<a><img src="images/logo.png" alt="" /></a>
+			</span>
+				<label><h1>Ueg Agenda</h1></label>
 			<div class="header-right">
 				<div class="profile_details_left">
 <!-- 					<div class="header-right-left"> -->
@@ -271,7 +271,7 @@
 <!-- 							<div class="clearfix"> </div> -->
 <!-- 						</ul> -->
 <!-- 					</div>	 -->
-					<div class="profile_details">		
+					<span class="profile_details">		
 						<ul>
 							<li class="dropdown profile_details_drop">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -281,13 +281,13 @@
 									</div>	
 								</a>
 								<ul class="dropdown-menu drp-mnu">
-									<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li> 
-									<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li> 
+<!-- 									<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>  -->
+<!-- 									<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li>  -->
 									<li> <a wicket:id="sair_profile"><i class="fa fa-sign-out"></i> Sair</a> </li>
 								</ul>
 							</li>
 						</ul>
-					</div>
+					</span>
 					
 					<div id="divFeedbackJGrowl" style="position:absolute; top:0; right:0; z-index:999999; width: 280px; margin-left: -10px;">
 						<div wicket:id="jgrowlFeedback"></div>

@@ -8,12 +8,9 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.BadCredentialsException;
 
@@ -21,8 +18,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.util.Util;
-import com.mycompany.visao.cadastro.Cadastro;
-import com.sun.xml.internal.ws.api.policy.ValidationProcessor;
+import com.mycompany.visao.cadastro.Index;
 
 public class Login extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -126,7 +122,7 @@ public class Login extends WebPage {
 	
 	protected void setDefaultResponsePageIfNecessary() {
 		addContador();
-		redirectToInterceptPage(new Cadastro());
+		redirectToInterceptPage(new Index());
     	continueToOriginalDestination();
     
     } 
