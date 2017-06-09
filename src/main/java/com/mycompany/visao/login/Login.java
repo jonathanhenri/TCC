@@ -78,7 +78,7 @@ public class Login extends WebPage {
 			}
 			
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				Util.notifyError(target, "Cpf e senha são obrigatórios");
+				Util.notifyError(target, "Cpf e Senha são obrigatórios");
 				super.onError(target, form);
 			}
 		};

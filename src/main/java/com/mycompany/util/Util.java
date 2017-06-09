@@ -243,23 +243,44 @@ public class Util {
 	}
 	
 	public static void notify(AjaxRequestTarget target,String mensagem,String tipo){
-		target.appendJavaScript("$.notify('"+mensagem+"',\""+tipo+"\");");
+//		target.appendJavaScript("$.notify('"+mensagem+"',\""+tipo+"\");");
+		target.appendJavaScript("$.notify('"+mensagem+"',{"
+				+ "className: '"+tipo+"',"
+				+ "clickToHide: true,"
+				+ "showDuration: 500,"
+				+ "autoHide: true});");
 	}
 	
 	public static void notifyError(AjaxRequestTarget target,String mensagem){
-		target.appendJavaScript("$.notify('"+mensagem+"',\"error\");");
+		target.appendJavaScript("$.notify('"+mensagem+"',{"
+				+ "className: 'error',"
+				+ "clickToHide: true,"
+				+ "showDuration: 500,"
+				+ "autoHide: true});");
 	}
 	
 	public static void notifyInfo(AjaxRequestTarget target,String mensagem){
-		target.appendJavaScript("$.notify('"+mensagem+"',\"info\");");
+		target.appendJavaScript("$.notify('"+mensagem+"',{"
+				+ "className: 'info',"
+				+ "clickToHide: true,"
+				+ "showDuration: 500,"
+				+ "autoHide: true});");
 	}
 	
 	public static void notifySuccess(AjaxRequestTarget target,String mensagem){
-		target.appendJavaScript("$.notify('"+mensagem+"',\"success\");");
+		target.appendJavaScript("$.notify('"+mensagem+"',{"
+				+ "className: 'success',"
+				+ "clickToHide: true,"
+				+ "showDuration: 500,"
+				+ "autoHide: true});");
 	}
 	
 	public static void notifyWarn(AjaxRequestTarget target,String mensagem){
-		target.appendJavaScript("$.notify('"+mensagem+"',\"warn\");");
+		target.appendJavaScript("$.notify('"+mensagem+"',{"
+				+ "className: 'warn',"
+				+ "clickToHide: true,"
+				+ "showDuration: 500,"
+				+ "autoHide: true});");
 	}
 	
 	

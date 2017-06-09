@@ -3,6 +3,7 @@ package com.mycompany.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.acls.sid.Sid;
 import org.springframework.security.userdetails.UserDetails;
 
 import com.mycompany.anotacao.ListarPageAnotacao;
+import com.mycompany.feedback.Mensagem;
 import com.mycompany.security.AtribuicaoAdmin;
 
 @Entity
@@ -61,6 +64,10 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;
+	
+	@Transient
+	private List<Mensagem> listaMensagensSistema;
+	
 	
 	public void setContadorAcesso(Double contadorAcesso) {
 		this.contadorAcesso = contadorAcesso;
@@ -183,10 +190,25 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	public boolean isEnabled() {
 		return true;
 	}
+	
+	public void addMensagemSistema(Mensagem mensagem){
+		if(listaMensagensSistema ==  null){
+			listaMensagensSistema = new ArrayList<Mensagem>();
+		}
+		
+		listaMensagensSistema.add(mensagem);
+	}
+
+	public List<Mensagem> getListaMensagensSistema() {
+		return listaMensagensSistema;
+	}
+
+	public void setListaMensagensSistema(List<Mensagem> listaMensagensSistema) {
+		this.listaMensagensSistema = listaMensagensSistema;
+	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return nome;
 	}
 

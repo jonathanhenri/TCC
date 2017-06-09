@@ -27,6 +27,7 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 	private FiltroDinamicoAtributo filtroDinamicoAtributo;
 	private ModalWindow modalIncluirFiltro;
 	private IndicatorDropDownChoice<FiltroDinamicoAtributo> nomeCampoDropDown;
+	
 	public IncluirFiltroDinamicoAtributoPanel(String id,ModalWindow  modalIncluirFiltro,List<FiltroDinamicoAtributo> listaAtributos) {
 		super(id);
 		this.listaAtributos = listaAtributos;

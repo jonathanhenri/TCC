@@ -2,6 +2,7 @@ package com.mycompany.visao.cadastro.curso;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -56,7 +57,7 @@ public class CursoListarPage extends ListarPageGenerico {
 	}
 	
 	private void campoDuracao(){
-		final TextField<String> duracao = new TextField<String>("duracao");
+		final NumberTextField<Integer> duracao = new NumberTextField<Integer>("duracao");
 		duracao.setOutputMarkupId(true);
 		form.add(duracao);
 	}

@@ -1,5 +1,6 @@
 package com.mycompany.visao.cadastro;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +137,13 @@ public abstract class ListarPageGenerico extends Menu {
 						protected void executarAoPesquisar(AjaxRequestTarget target) {
 							getModalFiltros().close(target);
 							target.add(getAtualizarListarPage());
+							
+							if(Util.getAlunoLogado().getListaMensagensSistema()!=null && Util.getAlunoLogado().getListaMensagensSistema().size()>0){
+								for(Mensagem mensagem:Util.getAlunoLogado().getListaMensagensSistema()){
+									Util.notify(target, mensagem.toString(), mensagem.getTipo());
+								}
+								Util.getAlunoLogado().setListaMensagensSistema(new ArrayList<Mensagem>());
+							}
 							
 						}
 					};

@@ -7,14 +7,14 @@ import java.util.List;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortParam;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.DetachableUsuarioModel;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Aluno;
+import com.mycompany.feedback.Mensagem;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
+import com.mycompany.util.Util;
 
 public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<?>, String> {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +37,7 @@ public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<
 			search.addSort("id", true); // ordena quando inicializar
 		}
 	}
+	
 	public Search getSearch() {
 		return search;
 	}
@@ -63,35 +64,49 @@ public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<
 	
 	@Override
 	public Iterator<AbstractBean<?>> iterator(long first, long count) {
-		if(search == null){
-			search = new Search();
-			search.addSort("id", true);
+		try{
+			if(search == null){
+				search = new Search();
+				search.addSort("id", true);
+			}
+			search.setFirstResult((int)first);
+			search.setMaxResults((int)count);
+			
+			listaBean =  (List<AbstractBean<?>>) servicoComum.search(search);
+			
+			
+		}catch(Exception e ){
+			e.printStackTrace();
 		}
-		search.setFirstResult((int)first);
-		search.setMaxResults((int)count);
-		
-		listaBean =  (List<AbstractBean<?>>) servicoComum.search(search);
-		
 		return listaBean.iterator();
 	}
 	@Override
 	public long size() {
-		if(size == null){
-			if (search == null)
-			{
-				search = new Search();
-				search.addSort("id", true);
+		try{
+			if(size == null){
+				if (search == null)
+				{
+					search = new Search();
+					search.addSort("id", true);
+				}
+				
+				SortParam<String> sp = getSort();
+				if(sp!=null){
+					search.addSort(sp.getProperty(), !sp.isAscending(), false);
+				}
+				
+				addFilters();
+				size = servicoComum.count(search);
 			}
-			
-			SortParam<String> sp = getSort();
-			if(sp!=null){
-				search.addSort(sp.getProperty(), !sp.isAscending(), false);
+			return size;
+		}catch(Exception e ){
+			if(e instanceof ClassCastException){
+				System.err.println();
+				Util.getAlunoLogado().addMensagemSistema(new Mensagem("Erro ao realizar a pesquisa, coloque dados coerentes com o campo pesquisado.", Mensagem.ERRO));
 			}
-			
-			addFilters();
-			size = servicoComum.count(search);
+			e.printStackTrace();
 		}
-		return size;
+		return 0;
 	}
 	
 	@Override

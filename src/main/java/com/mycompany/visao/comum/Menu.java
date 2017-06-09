@@ -109,7 +109,7 @@ public class Menu extends WebPage {
 			}
 		});
 		
-		add(criarFeedbackPanel());
+//		add(criarFeedbackPanel());
 		
 	}
 	
