@@ -62,7 +62,6 @@ public abstract class ListagemFiltrosDinamicosPanel extends Panel {
 
 					@Override
 					protected void executarAoVoltar(AjaxRequestTarget target) {
-						// TODO Auto-generated method stub
 						
 					}
 					
@@ -74,9 +73,11 @@ public abstract class ListagemFiltrosDinamicosPanel extends Panel {
 						
 					}
 				};
-				
-				form.add(filtroDinamicoAtributoPanel);
+				filtroDinamicoAtributoPanel.setOutputMarkupId(true);
+				filtroDinamicoAtributoPanel.setOutputMarkupPlaceholderTag(true);	
+//				form.add(filtroDinamicoAtributoPanel);
 				modalIncluirFiltros.setContent(filtroDinamicoAtributoPanel);
+				target.add(filtroDinamicoAtributoPanel);
 				modalIncluirFiltros.show(target);
 			}
 			 

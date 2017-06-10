@@ -2,20 +2,20 @@ package com.mycompany.visao.comum;
 
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.core.util.string.JavaScriptUtils;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 
 import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.util.Util;
@@ -26,7 +26,9 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 	private List<FiltroDinamicoAtributo> listaAtributos;
 	private FiltroDinamicoAtributo filtroDinamicoAtributo;
 	private ModalWindow modalIncluirFiltro;
-	private IndicatorDropDownChoice<FiltroDinamicoAtributo> nomeCampoDropDown;
+	private DropDownChoice<FiltroDinamicoAtributo> nomeCampoDropDown;
+	private Form<FiltroDinamicoAtributo> form;
+	private TextField<Object> textFieldValorCampo;
 	
 	public IncluirFiltroDinamicoAtributoPanel(String id,ModalWindow  modalIncluirFiltro,List<FiltroDinamicoAtributo> listaAtributos) {
 		super(id);
@@ -37,7 +39,7 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 	}
 	
 	
-	private IndicatorDropDownChoice<FiltroDinamicoAtributo> criarCampoNomeCampo(){
+	private DropDownChoice<FiltroDinamicoAtributo> criarCampoNomeCampo(){
 		
 		LoadableDetachableModel<List<FiltroDinamicoAtributo>> nomesAtributo = new LoadableDetachableModel<List<FiltroDinamicoAtributo>>() {
 
@@ -63,9 +65,19 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 			};
 		};
 		
-		nomeCampoDropDown = new IndicatorDropDownChoice<FiltroDinamicoAtributo>("nomeCampo",new Model<FiltroDinamicoAtributo>(), nomesAtributo,renderer);
+		nomeCampoDropDown = new DropDownChoice<FiltroDinamicoAtributo>("nomeCampo",new Model<FiltroDinamicoAtributo>(), nomesAtributo,renderer);
 		
 		nomeCampoDropDown.setOutputMarkupId(true);
+		
+		nomeCampoDropDown.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				textFieldValorCampo.modelChanged();
+				target.add(textFieldValorCampo);				
+			}
+		});
 		
 		return nomeCampoDropDown;
 		
@@ -73,12 +85,12 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 
 	
 	private Form<FiltroDinamicoAtributo> criarForm(){
-		Form<FiltroDinamicoAtributo> form  = new Form<FiltroDinamicoAtributo>("formIncluirFiltro");
+		form  = new Form<FiltroDinamicoAtributo>("formIncluirFiltro", new CompoundPropertyModel<FiltroDinamicoAtributo>(filtroDinamicoAtributo));
 		form.setOutputMarkupId(true);
 		form.add(criarCampoNomeCampo());
 		form.add(criarButtonSalvar(form));
 		form.add(criarBotaoVoltar());
-		form.addOrReplace(criarCampoValorCampo());
+		form.addOrReplace(criarValorCampo());
 		return form;
 	}
 	
@@ -109,6 +121,11 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 		return ajaxButton;
 	}
 	
+	private TextField<Object> criarValorCampo(){
+		textFieldValorCampo = new TextField<Object>("valorCampo");
+		textFieldValorCampo.setOutputMarkupId(true);
+		return textFieldValorCampo;
+	}
 	private AjaxLink<String> criarBotaoVoltar(){
 		 AjaxLink<String> voltar = new  AjaxLink<String>("voltar"){
 			private static final long serialVersionUID = 1L;
@@ -121,12 +138,6 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel {
 			 
 		 };
 		 return voltar;
-	}
-	
-	private TextField<Object> criarCampoValorCampo(){
-		TextField<Object> valorCampo = new TextField<Object>("valorCampo", new PropertyModel<Object>(filtroDinamicoAtributo, "valorCampo"));
-		valorCampo.setOutputMarkupId(true);
-		return valorCampo;
 	}
 	
 	protected abstract void executarAoSalvar(AjaxRequestTarget target,FiltroDinamicoAtributo filtroDinamicoAtributo);

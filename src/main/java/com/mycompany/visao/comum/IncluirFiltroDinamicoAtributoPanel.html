@@ -3,18 +3,12 @@
 
 <head>
 <wicket:head>
-	<script>
-	$( document ).ready(function() {
-		console.log("teste");
-	  $( "#valorCampo" ).focus();
-	});
-	</script>
 </wicket:head>
 </head>
 <body>
 	<wicket:panel>
 		<div class="" style="padding: 15px">
-			<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formIncluirFiltro">
+			<form  class="form-horizontal" wicket:id="formIncluirFiltro">
 				<div class="panel panel-info">
 					<div class="panel-heading">
 						<div class="panel-title">
@@ -29,7 +23,7 @@
 							</div>
 							<div class="col-md-6">	
 								<label class="control-label">Valor Campo</label>
-								<input type="text" class="form-control"  id="valorCampo" wicket:id="valorCampo" placeholder="Valor do campo">
+								<input class="form-control" type="text" wicket:id="valorCampo" placeholder="Valor do campo">
 							</div>
 						</div>
 						

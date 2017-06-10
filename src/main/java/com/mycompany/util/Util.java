@@ -12,7 +12,6 @@ import java.util.UUID;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
-import org.apache.wicket.util.crypt.StringUtils;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.mycompany.domain.AbstractBean;

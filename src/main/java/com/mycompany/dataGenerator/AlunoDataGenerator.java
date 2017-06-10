@@ -19,6 +19,18 @@ public class AlunoDataGenerator {
 		alunoAdministrador.addContadorAcesso();
 		alunoAdministrador.setCurso((Curso) cursoDAO.search(new Search(Curso.class)).get(0));
 		alunooDAO.persist(alunoAdministrador);
+		
+		
+		Aluno alunoAdministrador2 = new Aluno();
+		alunoAdministrador2.setNome("Jonathan");
+		alunoAdministrador2.setSenha("admin");
+		alunoAdministrador2.setCpf("70105574112");
+		alunoAdministrador2.setPeriodo(5); 
+		alunoAdministrador2.setEmail("aluno@gmail");
+		alunoAdministrador2.addContadorAcesso();
+		alunoAdministrador2.setCurso((Curso) cursoDAO.search(new Search(Curso.class)).get(0));
+		alunooDAO.persist(alunoAdministrador2);
+		
 	}
 
 }
