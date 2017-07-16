@@ -11,6 +11,7 @@ import com.mycompany.util.Options;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.Index;
 import com.mycompany.visao.cadastro.curso.CursoListarPage;
+import com.mycompany.visao.cadastro.origemEvento.OrigemEventoListarPage;
 import com.mycompany.visao.login.Login;
 
 public class Menu extends WebPage {
@@ -48,13 +49,13 @@ public class Menu extends WebPage {
 //			}
 //		});
 //		
-//		add(new AjaxLink<String>("link_cadastro_origem_evento") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				setResponsePage(OrigemEventoListarPage.class);
-//			}
-//		});
+		add(new AjaxLink<String>("link_cadastro_origem_evento") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(OrigemEventoListarPage.class);
+			}
+		});
 //		
 //		add(new AjaxLink<String>("link_cadastro_materia") {
 //			private static final long serialVersionUID = 1L;

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAO;
-import com.googlecode.genericdao.search.ISearch;
+import com.googlecode.genericdao.search.Search;
 
 public interface IDAOComum<T, ID extends Serializable> extends GenericDAO<T, ID>{
 	@Override
@@ -19,12 +19,10 @@ public interface IDAOComum<T, ID extends Serializable> extends GenericDAO<T, ID>
 	@Transactional
 	public boolean remove(T arg0);
 	
-	
-	@Override
 	@Transactional
-	public <RT> List<RT> search(ISearch arg0);
+	public T searchUnique(Search search);
 	
-	@Override
 	@Transactional
-	public <RT> RT searchUnique(ISearch arg0);
+	public List<T> search(Search search);
+
 }

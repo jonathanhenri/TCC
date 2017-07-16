@@ -2,6 +2,7 @@ package com.mycompany.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,20 +24,34 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@ListarPageAnotacao(nomeColuna = "Curso")
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
-	
-	
 	@ListarPageAnotacao
 	@Column(name = "CODIGO_COR", nullable = true, length = 50)
 	private String codigoCor;
+	
+	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
 	
 	@Id
 	@Column(name = "ID_TIPO_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
+	}
+	
+	
+	
+	
 	
 	
 	public void setCodigoCor(String codigoCor) {
@@ -45,13 +60,6 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	
 	public String getCodigoCor() {
 		return codigoCor;
-	}
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
-	
-	public Curso getCurso() {
-		return curso;
 	}
 	
 	public String getNome() {
@@ -82,5 +90,4 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 }

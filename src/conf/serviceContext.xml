@@ -18,6 +18,11 @@
     	<property name="cursoDAO" ref="cursoDAO" />
     </bean>
     
+     <bean id="contadorAcessoServico"  class="com.mycompany.services.servico.ContadorAcessoServico">
+    	<property name="contadorAcessoDAO" ref="contadorAcessoDAO" />
+    </bean>
+    
+    
      <bean id="codigoAlunoServico"  class="com.mycompany.services.servico.CodigoAlunoServico">
     	<property name="codigoAlunoDAO" ref="codigoAlunoDAO" />
     </bean>

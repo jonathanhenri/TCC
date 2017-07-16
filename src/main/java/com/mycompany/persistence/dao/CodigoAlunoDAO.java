@@ -117,7 +117,6 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 		for(int i = 0; i<quantidade;i++){
 			CodigoAluno codigoAluno = new CodigoAluno();
 			codigoAluno.setAtivo(true);
-			codigoAluno.setCurso(curso);
 			codigoAluno.setCodigo(Util.codigoGeradorAcesso());
 			
 			listaCodigoAluno.add(codigoAluno);

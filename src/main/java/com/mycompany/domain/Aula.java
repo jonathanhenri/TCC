@@ -3,6 +3,7 @@ package com.mycompany.domain;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,10 +47,27 @@ public class Aula extends AbstractBean<Aula> {
 	@Column(name = "OBSERVACAO", nullable = true, length = 200)
 	private String observacao;
 	
+
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+
 	@Id
 	@Column(name = "ID_AULA")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
+	}
+	
 	
 	@Override
 	public Serializable getIdentifier() {
@@ -125,7 +143,5 @@ public class Aula extends AbstractBean<Aula> {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-	
-	
 
 }

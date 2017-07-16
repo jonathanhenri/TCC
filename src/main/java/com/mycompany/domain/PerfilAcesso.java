@@ -24,29 +24,31 @@ public class PerfilAcesso extends AbstractBean<PerfilAcesso> {
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@Column(name = "ADMINISTRADOR", nullable = false, length = 300)
-	private Boolean administrador;
-	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
-	
 	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "perfilAcesso")
 	@JoinColumn(name="ID_PERMISSAO_ACESSO",nullable = false)
 	private Set<PermissaoAcesso> permissoesAcesso;
 	
+
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+	
+
 	@Id
 	@Column(name = "ID_PERFIL_ACESSO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
 	
-	public Curso getCurso() {
-		return curso;
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
 	}
 	
 	public String getNome() {
@@ -57,13 +59,6 @@ public class PerfilAcesso extends AbstractBean<PerfilAcesso> {
 		this.nome = nome;
 	}
 
-	public Boolean getAdministrador() {
-		return administrador;
-	}
-
-	public void setAdministrador(Boolean administrador) {
-		this.administrador = administrador;
-	}
 
 	public Set<PermissaoAcesso> getPermissoesAcesso() {
 		return permissoesAcesso;

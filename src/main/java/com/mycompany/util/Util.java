@@ -307,14 +307,8 @@ public class Util {
 		return new String(b);
 	}
 	
+	
 	public static void main(String[] args) {
-		String teste = "https://www.youtube.com/watch?v=uK3MLlTL5Ko";
-		
-		if(teste.indexOf("embed")<0){
-			teste = "https://www.youtube.com/embed/" + teste.substring(teste.lastIndexOf("=")+1);
-		}
-		
-		System.out.println(teste);
 	}
 	
 	public static Date zeraHoraData(Date data){

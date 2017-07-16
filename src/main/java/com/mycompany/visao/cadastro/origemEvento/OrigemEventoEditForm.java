@@ -73,7 +73,7 @@ public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
 			}
 		};
 		
-		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("curso", cursos,choiceRenderer);
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
 		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		

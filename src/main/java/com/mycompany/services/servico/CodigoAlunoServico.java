@@ -152,7 +152,7 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		Retorno retorno = Util.verificarIdNulo(curso);
 			
 		if(retorno.getSucesso()){
-			if(curso.getAluno()!=null){
+			if(curso.getAdministracao().getAluno()!=null){
 				retorno.setSucesso(false);
 				retorno.addMensagem(new Mensagem("Aluno vinculado a este código", Mensagem.ERRO));
 			}

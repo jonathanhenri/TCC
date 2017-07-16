@@ -15,8 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
 import com.mycompany.anotacao.ListarPageAnotacao;
 
 @Entity
@@ -47,25 +45,34 @@ public class Curso extends AbstractBean<Curso> {
 	@Column(name = "MODALIDADE", nullable = true)
 	private Integer modalidade;
 	
+//	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+//	@JoinColumn(name="ID_ARQUIVO")
+//	private Arquivo logo;
+	
+	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name="ID_ARQUIVO")
-	private Arquivo logo;
-	
-	
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
 	
 	
 	@Override
 	public Serializable getIdentifier() {
 		return id;
 	}
+	
 
-	public void setLogo(Arquivo logo) {
-		this.logo = logo;
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
 	}
 	
-	public Arquivo getLogo() {
-		return logo;
-	}
+	
+
 	@Override
 	public Class<Curso> getJavaType() {
 		return Curso.class;
@@ -108,5 +115,4 @@ public class Curso extends AbstractBean<Curso> {
 	public void setModalidade(Integer modalidade) {
 		this.modalidade = modalidade;
 	}
-
 }

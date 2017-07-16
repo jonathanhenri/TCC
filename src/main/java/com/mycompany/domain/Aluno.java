@@ -1,10 +1,11 @@
-package com.mycompany.domain;
+	package com.mycompany.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +30,10 @@ import com.mycompany.security.AtribuicaoAdmin;
 public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private static final long serialVersionUID = 1L;
 	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+	
 	@ListarPageAnotacao(nomeColuna = "Numero",filtro = true)
 	@Id
 	@Column(name = "ID_ALUNO")
@@ -40,7 +45,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private String nome;
 	
 	@ListarPageAnotacao(filtro = true)
-	@Column(name = "CPF", nullable = false, length = 20)
+	@Column(name = "CPF", nullable = false, length = 11)
 	private String cpf;
 	
 	@Column(name = "SENHA", nullable = false, length = 50)
@@ -50,41 +55,15 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Column(name = "EMAIL", nullable = false, length = 100)
 	private String email;	
 	
-	@Column(name = "CONTADOR_ACESSO", nullable = true)
-	private Double contadorAcesso;	
-	
-	@ListarPageAnotacao(nomeColuna = "Curso",filtro = true)
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
-	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ARQUIVO")
-	private Arquivo imagem;
+//	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+//	@JoinColumn(name="ID_ARQUIVO")
+//	private Arquivo imagem;
 	
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;
 	
 	@Transient
 	private List<Mensagem> listaMensagensSistema;
-	
-	
-	public void setContadorAcesso(Double contadorAcesso) {
-		this.contadorAcesso = contadorAcesso;
-	}
-	
-	public Double getContadorAcesso() {
-		return contadorAcesso;
-	}
-
-	public void addContadorAcesso(){
-		if(getContadorAcesso() == null){
-			setContadorAcesso(1.0);
-		}else{
-			setContadorAcesso(getContadorAcesso() + 1);
-		}
-	}
-	
 	
 	public void setEmail(String email) {
 		this.email = email;
@@ -98,13 +77,6 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 		this.cpf = cpf;
 	}
 	
-	public void setImagem(Arquivo imagem) {
-		this.imagem = imagem;
-	}
-	
-	public Arquivo getImagem() {
-		return imagem;
-	}
 	public String getCpf() {
 		return cpf;
 	}
@@ -116,15 +88,6 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	public Integer getPeriodo() {
 		return periodo;
 	}
-	
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
-	
-	public Curso getCurso() {
-		return curso;
-	}
-	
 	
 	public String getNome() {
 		return nome;
@@ -162,8 +125,6 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	
 
 
 	@Override
@@ -211,7 +172,19 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	public String getUsername() {
 		return nome;
 	}
-
+	
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
+	}
+	
+	
+	
 	@Override
 	public GrantedAuthority[] getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

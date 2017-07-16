@@ -6,35 +6,38 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mycompany.domain.Evento;
-import com.mycompany.persistence.interfaces.IEventoDAO;
+import com.mycompany.domain.Aluno;
+import com.mycompany.domain.ContadorAcesso;
+import com.mycompany.persistence.interfaces.IContadorAcessoDAO;
 
 
-public class EventoDAO extends DAOComumHibernateImpl<Evento, Long> implements IEventoDAO{	
+public class ContadorAcessoDAO extends DAOComumHibernateImpl<ContadorAcesso, Long> implements IContadorAcessoDAO{	
 
-	public EventoDAO() {
-	}
-	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public boolean persist(Evento evento) {
-		return super.persist(evento);
+	public ContadorAcessoDAO() {
 	}
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public boolean save(Evento evento) {
-		return super.save(evento);
+	public boolean persist(ContadorAcesso contadorAcesso) {
+		return super.persist(contadorAcesso);
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
+	public boolean save(ContadorAcesso contadorAcesso) {
+		return super.save(contadorAcesso);
 	}
 
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public boolean remove(Evento evento) {
-		return super.remove(evento);
+	public boolean remove(ContadorAcesso contadorAcesso) {
+		return super.remove(contadorAcesso);
 	}
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public List<Evento> getEventos() {
+	public List<ContadorAcesso> getAcessos(Aluno aluno) {
+		//TODO FAZER SEARCH
 		return super.findAll();
 	}
 

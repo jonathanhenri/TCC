@@ -6,10 +6,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Materia;
 import com.mycompany.persistence.interfaces.ICursoDAO;
+import com.mycompany.util.Util;
 
 
 public class CursoDAO extends DAOComumHibernateImpl<Curso, Long> implements ICursoDAO{	
@@ -18,6 +20,15 @@ public class CursoDAO extends DAOComumHibernateImpl<Curso, Long> implements ICur
 	}
 	
 	
+	
+	@Override
+	public <Curso> List<Curso> search(ISearch search) {
+		Search searchAux = new Search();
+		searchAux.addFilterEqual("ID_ADMINISTRACAO", Util.getAlunoLogado().getAdministracao().getId());
+		
+		return _search(searchAux);
+		
+	}
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
 	public boolean persist(Curso curso) {
 		return super.persist(curso);

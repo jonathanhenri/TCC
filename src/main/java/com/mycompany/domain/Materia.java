@@ -2,6 +2,7 @@ package com.mycompany.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,10 +20,6 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class Materia extends AbstractBean<Materia> {
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
-	
 	@ListarPageAnotacao(identificadorEstrangeiro = true)
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
@@ -31,18 +28,27 @@ public class Materia extends AbstractBean<Materia> {
 	@Column(name = "PERIODO", nullable = false)
 	private Integer periodo;	
 	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+	
+	
+	
 	@Id
 	@Column(name = "ID_MATERIA")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	public Curso getCurso() {
-		return curso;
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
 	}
-
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
 	}
+	
 
 	public String getNome() {
 		return nome;
@@ -79,5 +85,4 @@ public class Materia extends AbstractBean<Materia> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 }

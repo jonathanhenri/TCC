@@ -1,7 +1,6 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-
 /*Pensar no futuro para selecionar quais tipos de evento receber e de quem receber.
  * 
  * 
@@ -26,7 +23,11 @@ import org.hibernate.annotations.Cascade;
 @Table(name = "AGENDA")
 public class Agenda extends AbstractBean<Agenda> {
 	private static final long serialVersionUID = 1L;
-
+	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+	
 	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "agenda")
 	@JoinColumn(name="ID_EVENTO",nullable = false)
 	private Set<Evento> eventos;
@@ -41,18 +42,6 @@ public class Agenda extends AbstractBean<Agenda> {
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;	
 	
-
-	//receber eventos vindo de outros lugares
-	@Column(name = "RECEBER_EVENTOS", nullable = false)
-	private Boolean receberEventos;
-	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ALUNO")
-	private Aluno aluno;
-	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
 	
 	@Id
 	@Column(name = "ID_AGENDA")
@@ -110,30 +99,15 @@ public class Agenda extends AbstractBean<Agenda> {
 	public void setPeriodo(Integer periodo) {
 		this.periodo = periodo;
 	}
-
-	public Boolean getReceberEventos() {
-		return receberEventos;
-	}
-
-	public void setReceberEventos(Boolean receberEventos) {
-		this.receberEventos = receberEventos;
-	}
-
-	public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
-
-	public Curso getCurso() {
-		return curso;
-	}
-
-	public void setCurso(Curso curso) {
-		this.curso = curso;
-	}
 	
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
+	}
 	
 }

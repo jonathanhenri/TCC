@@ -1,5 +1,7 @@
 package com.mycompany.visao.login;
 
+import java.util.Date;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -16,7 +18,9 @@ import org.springframework.security.BadCredentialsException;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.ContadorAcesso;
 import com.mycompany.services.interfaces.IAlunoServico;
+import com.mycompany.services.interfaces.IContadorAcessoServico;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.Index;
 
@@ -28,6 +32,9 @@ public class Login extends WebPage {
 	
 	@SpringBean(name = "alunoServico")
 	IAlunoServico alunoServico;
+	
+	@SpringBean(name = "contadorAcessoServico")
+	IContadorAcessoServico contadorAcessoServico;
 	
 	public Login() {
 		adicionaCampos();		
@@ -115,9 +122,10 @@ public class Login extends WebPage {
 	private void addContador(){
 		Search search = new Search(Aluno.class);
 		search.addFilterEqual("cpf", aluno.getCpf());
+		
 		aluno = alunoServico.searchUnique(search);
-		aluno.addContadorAcesso();
-    	alunoServico.save(aluno);
+		ContadorAcesso acesso = new ContadorAcesso(aluno, new Date());
+		contadorAcessoServico.persist(acesso);
 	}
 	
 	protected void setDefaultResponsePageIfNecessary() {

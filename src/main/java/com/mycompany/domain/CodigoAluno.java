@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,15 +27,6 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Column(name = "CODIGO", nullable = false, length = 100)
 	private String codigo;
 	
-	@ListarPageAnotacao(nomeColuna = "Curso",filtro = true)
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO")
-	private Curso curso;
-	
-	@ListarPageAnotacao(nomeColuna = "Aluno",filtro = true)
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ALUNO")
-	private Aluno aluno;
 	
 	@ListarPageAnotacao(filtro = true)
 	@Column(name = "ATIVO", nullable = false)
@@ -43,14 +35,26 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Transient
 	private List<CodigoAluno> listaCodigosAlunosGerados;
 	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+	
 	@Id
 	@Column(name = "ID_CODIGO_ALUNO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
 	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
+	}
+	
 	
 	public void setListaCodigosAlunosGerados(
 			List<CodigoAluno> listaCodigosAlunosGerados) {
@@ -67,18 +71,6 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 		}
 		
 		listaCodigosAlunosGerados.add(codigoAluno);
-	}
-	
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
-	}
-	
-	public Aluno getAluno() {
-		return aluno;
-	}
-	
-	public Curso getCurso() {
-		return curso;
 	}
 	
 	public String getCodigo() {

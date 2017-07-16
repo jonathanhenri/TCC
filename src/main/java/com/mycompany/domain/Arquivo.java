@@ -3,6 +3,7 @@ package com.mycompany.domain;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,9 +29,10 @@ public class Arquivo extends AbstractBean<Arquivo>{
 	@Column(name = "NOME_ARQUIVO", nullable = true, length = 100)
 	private String nomeArquivo;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+
 	
 	@Lob
 	@Column(name = "BYTES",nullable = false, length = 100000)
@@ -40,13 +42,16 @@ public class Arquivo extends AbstractBean<Arquivo>{
 	public Arquivo(){
 	}
 	
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
 	}
 	
-	public Curso getCurso() {
-		return curso;
-	}
 	
 	public Arquivo(byte[] bytes){
 		this.bytes = bytes;

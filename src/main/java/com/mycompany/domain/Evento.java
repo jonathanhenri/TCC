@@ -3,6 +3,7 @@ package com.mycompany.domain;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +21,9 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class Evento extends AbstractBean<Evento> {
 	private static final long serialVersionUID = 1L;
 
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
 	
 	@Column(name = "DATA_INICIO", nullable = false)
 	private Date dataInicio;
@@ -31,9 +35,6 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_CURSO",nullable = false)
-	private Curso curso;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_AGENDA",nullable = false)
@@ -47,19 +48,13 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = false)
 	private OrigemEvento origemEvento;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ALUNO")
-	private Aluno alunoCriou;
-	
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;	
-	
 	
 	@Id
 	@Column(name = "ID_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	
 	public void setAgenda(Agenda agenda) {
 		this.agenda = agenda;
@@ -116,23 +111,17 @@ public class Evento extends AbstractBean<Evento> {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
-	public Curso getCurso() {
-		return curso;
+	
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
 	}
-
-	public void setCurso(Curso curso) {
-		this.curso = curso;
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
 	}
-
-	public Aluno getAlunoCriou() {
-		return alunoCriou;
-	}
-
-	public void setAlunoCriou(Aluno alunoCriou) {
-		this.alunoCriou = alunoCriou;
-	}
-
+	
 
 	@Override
 	public Long getId() {

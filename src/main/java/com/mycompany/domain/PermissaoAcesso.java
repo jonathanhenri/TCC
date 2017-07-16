@@ -2,6 +2,7 @@ package com.mycompany.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,10 +32,28 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	@Column(name = "CASO_DE_USO", nullable = false, length = 300)
 	private Class<?> casoDeUso;
 	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+
+	
 	@Id
 	@Column(name = "ID_PERMISSAO_ACESSO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	
+	
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+		
+	}
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
+	}
+	
+	
 	
 	@Override
 	public Serializable getIdentifier() {
@@ -87,6 +106,4 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	public void setCasoDeUso(Class<?> casoDeUso) {
 		this.casoDeUso = casoDeUso;
 	}
-
-	
 }

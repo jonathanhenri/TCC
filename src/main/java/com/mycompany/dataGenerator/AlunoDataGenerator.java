@@ -16,8 +16,6 @@ public class AlunoDataGenerator {
 		alunoAdministrador.setCpf("admin");
 		alunoAdministrador.setPeriodo(5); 
 		alunoAdministrador.setEmail("aluno@gmail");
-		alunoAdministrador.addContadorAcesso();
-		alunoAdministrador.setCurso((Curso) cursoDAO.search(new Search(Curso.class)).get(0));
 		alunooDAO.persist(alunoAdministrador);
 		
 		
@@ -27,8 +25,6 @@ public class AlunoDataGenerator {
 		alunoAdministrador2.setCpf("70105574112");
 		alunoAdministrador2.setPeriodo(5); 
 		alunoAdministrador2.setEmail("aluno@gmail");
-		alunoAdministrador2.addContadorAcesso();
-		alunoAdministrador2.setCurso((Curso) cursoDAO.search(new Search(Curso.class)).get(0));
 		alunooDAO.persist(alunoAdministrador2);
 		
 	}

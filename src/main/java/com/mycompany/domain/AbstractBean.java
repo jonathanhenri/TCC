@@ -2,18 +2,28 @@ package com.mycompany.domain;
 
 import java.beans.PropertyDescriptor;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.security.acls.objectidentity.ObjectIdentity;
 
 
 public abstract class AbstractBean<T> implements ObjectIdentity{
-	
 	private static final long serialVersionUID = 1L;
 
-	public abstract Long getId();
 	
+	public abstract void setAdministracao(Administracao administracao);
+	
+	public abstract Administracao getAdministracao();
+	
+	public abstract Long getId();
+
 	public abstract void setId(Long id);
+	
 	
     public T clonar(boolean clonarComId){
 		try{
