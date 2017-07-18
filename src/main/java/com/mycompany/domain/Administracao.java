@@ -1,5 +1,7 @@
 package com.mycompany.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,8 +14,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ADMINISTRACAO")
-public class Administracao {
-	
+public class Administracao implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "ID_ADMINISTRACAO")
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -10,8 +10,13 @@ import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.Options;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.Index;
+import com.mycompany.visao.cadastro.aluno.AlunoListarPage;
 import com.mycompany.visao.cadastro.curso.CursoListarPage;
+import com.mycompany.visao.cadastro.evento.EventoListarPage;
+import com.mycompany.visao.cadastro.materia.MateriaListarPage;
 import com.mycompany.visao.cadastro.origemEvento.OrigemEventoListarPage;
+import com.mycompany.visao.cadastro.tipoEvento.TipoEventoListarPage;
+import com.mycompany.visao.geradorCodigo.CodigoAlunoListarPage;
 import com.mycompany.visao.login.Login;
 
 public class Menu extends WebPage {
@@ -39,15 +44,13 @@ public class Menu extends WebPage {
 				setResponsePage(Index.class);
 			}
 		});
-//		
-//		
-//		add(new AjaxLink<String>("link_cadastro_aluno") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				setResponsePage(AlunoListarPage.class);
-//			}
-//		});
+		add(new AjaxLink<String>("link_cadastro_aluno") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(AlunoListarPage.class);
+			}
+		});
 //		
 		add(new AjaxLink<String>("link_cadastro_origem_evento") {
 			private static final long serialVersionUID = 1L;
@@ -57,38 +60,38 @@ public class Menu extends WebPage {
 			}
 		});
 //		
-//		add(new AjaxLink<String>("link_cadastro_materia") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				setResponsePage(MateriaListarPage.class);
-//			}
-//		});
-//		
-//		add(new AjaxLink<String>("link_cadastro_tipo_evento") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				setResponsePage(TipoEventoListarPage.class);
-//			}
-//		});
-//		
-//		
-//		add(new AjaxLink<String>("link_cadastro_evento") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				setResponsePage(EventoListarPage.class);
-//			}
-//		});
-//		
-//		add(new AjaxLink<String>("link_gerador_codigos") {
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public void onClick(AjaxRequestTarget target) {
-//				setResponsePage(CodigoAlunoListarPage.class);
-//			}
-//		});
+		add(new AjaxLink<String>("link_cadastro_materia") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(MateriaListarPage.class);
+			}
+		});
+		
+		add(new AjaxLink<String>("link_cadastro_tipo_evento") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(TipoEventoListarPage.class);
+			}
+		});
+		
+		
+		add(new AjaxLink<String>("link_cadastro_evento") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(EventoListarPage.class);
+			}
+		});
+		
+		add(new AjaxLink<String>("link_gerador_codigos") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(CodigoAlunoListarPage.class);
+			}
+		});
 		
 		add(new AjaxLink<String>("sair_profile") {
 			private static final long serialVersionUID = 1L;

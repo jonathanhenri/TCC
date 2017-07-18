@@ -86,7 +86,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			}
 		};
 		
-		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("curso", cursos,choiceRenderer);
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
 		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		

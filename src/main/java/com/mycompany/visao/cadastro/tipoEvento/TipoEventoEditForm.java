@@ -19,6 +19,7 @@ import com.mycompany.domain.TipoEvento;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
+import com.mycompany.visao.comum.ColorTextField;
 import com.mycompany.visao.comum.EditForm;
 
 public class TipoEventoEditForm extends EditForm<TipoEvento> {
@@ -52,8 +53,8 @@ public class TipoEventoEditForm extends EditForm<TipoEvento> {
 		return textFieldNome;
 	}
 	
-	private TextField<String> criarCampoCodigoCor(){
-		TextField<String> textFieldCodigoCor = new TextField<String>("codigoCor");
+	private ColorTextField criarCampoCodigoCor(){
+		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
 		textFieldCodigoCor.setOutputMarkupId(true);
 		return textFieldCodigoCor;
 	}
@@ -73,7 +74,7 @@ public class TipoEventoEditForm extends EditForm<TipoEvento> {
 			}
 		};
 		
-		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("curso", cursos,choiceRenderer);
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
 		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		

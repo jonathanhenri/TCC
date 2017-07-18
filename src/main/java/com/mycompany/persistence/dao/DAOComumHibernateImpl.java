@@ -88,9 +88,16 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	@Override
 	public boolean persist(T arg0) {
 		try{
-			if(arg0.getAdministracao()!=null && arg0.getAdministracao().getId()==null){
-				super._save(arg0.getAdministracao());
+			if(arg0.getAdministracao()!=null ){
+				if(arg0.getAdministracao().getAluno() == null){
+					arg0.getAdministracao().setAluno(Util.getAlunoLogado());
+				}
+				
+				if(arg0.getAdministracao().getId()==null){
+					super._save(arg0.getAdministracao());
+				}
 			}
+			
 			super._save(arg0);
 		}catch(DAOException e ){
 			e.printStackTrace();

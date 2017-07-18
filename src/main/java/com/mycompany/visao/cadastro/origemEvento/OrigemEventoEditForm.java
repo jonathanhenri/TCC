@@ -19,6 +19,7 @@ import com.mycompany.domain.OrigemEvento;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
+import com.mycompany.visao.comum.ColorTextField;
 import com.mycompany.visao.comum.EditForm;
 
 public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
@@ -52,8 +53,8 @@ public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
 		return textFieldNome;
 	}
 	
-	private TextField<String> criarCampoCodigoCor(){
-		TextField<String> textFieldCodigoCor = new TextField<String>("codigoCor");
+	private ColorTextField criarCampoCodigoCor(){
+		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
 		textFieldCodigoCor.setOutputMarkupId(true);
 		return textFieldCodigoCor;
 	}
