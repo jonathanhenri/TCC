@@ -45,7 +45,7 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(450);
+		modalIncluirEditar.setInitialHeight(300);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
@@ -53,14 +53,16 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	private void addFiltros(){
 	}
 	
-	@Override
-	protected Boolean isVisibleBotaoIncluir() {
-		return false;
-	}
 
 	@Override
+	protected Boolean isVisibleBotaoEditar() {
+		return false;
+	}
+	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
-		
+		getModalIncluirEditar().setContent(criarPanel(new CodigoAluno()));
+		getModalIncluirEditar().show(target);
+
 	}
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
@@ -76,8 +78,6 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().setContent(criarPanel((codigoAlunoServico.searchFechId(abstractBean))));
-		getModalIncluirEditar().show(target);
 	}
 
 	

@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
 import com.googlecode.genericdao.search.Filter;
-import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.DAOException;
 import com.mycompany.domain.AbstractBean;
@@ -24,6 +23,33 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	@Override
 	public boolean save(T entity) {
 		return super._merge(entity) != null;
+	}
+	
+	@Override
+	public int count(Search search) {
+		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
+			if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+				return super.count(search);
+			}
+			
+			Filter filterOr = Filter.or();
+			
+			if( Util.getAlunoLogado().getAdministracao().getCurso()!=null){
+				search.addFilterEqual("administracao.curso.id", Util.getAlunoLogado().getAdministracao().getCurso().getId());
+			}
+			
+			Filter filterCompartilhar = Filter.equal("administracao.compartilhar", true);
+			
+			
+			filterOr.add(filterCompartilhar);
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
+		return super.count(search);
 	}
 	
 	

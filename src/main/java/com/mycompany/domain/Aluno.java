@@ -45,15 +45,11 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private String nome;
 	
 	@ListarPageAnotacao(filtro = true)
-	@Column(name = "CPF", nullable = false, length = 11)
-	private String cpf;
+	@Column(name = "LOGIN", nullable = false, length = 40)
+	private String login;
 	
 	@Column(name = "SENHA", nullable = false, length = 50)
 	private String senha;	
-	
-	@ListarPageAnotacao
-	@Column(name = "EMAIL", nullable = false, length = 100)
-	private String email;	
 	
 //	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 //	@JoinColumn(name="ID_ARQUIVO")
@@ -65,20 +61,13 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Transient
 	private List<Mensagem> listaMensagensSistema;
 	
-	public void setEmail(String email) {
-		this.email = email;
+	
+	public void setLogin(String login) {
+		this.login = login;
 	}
 	
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	
-	public String getCpf() {
-		return cpf;
+	public String getLogin() {
+		return login;
 	}
 	
 	public void setPeriodo(Integer periodo) {
@@ -178,6 +167,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 		this.administracao = administracao;
 		
 	}
+	
 	@Override
 	public Administracao getAdministracao() {
 		return administracao;

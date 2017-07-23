@@ -12,6 +12,7 @@
 
     <bean id="alunoServico"  class="com.mycompany.services.servico.AlunoServico">
     	<property name="alunoDAO" ref="alunoDAO" />
+    	<property name="codigoAlunoServico" ref="codigoAlunoServico" />
     </bean>
     
     <bean id="cursoServico"  class="com.mycompany.services.servico.CursoServico">
@@ -25,6 +26,7 @@
     
      <bean id="codigoAlunoServico"  class="com.mycompany.services.servico.CodigoAlunoServico">
     	<property name="codigoAlunoDAO" ref="codigoAlunoDAO" />
+    	<property name="alunoServico" ref="alunoServico" />
     </bean>
     
     <bean id="eventoServico"  class="com.mycompany.services.servico.EventoServico">

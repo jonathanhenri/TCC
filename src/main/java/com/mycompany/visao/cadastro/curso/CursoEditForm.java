@@ -62,15 +62,19 @@ public class CursoEditForm extends EditForm<Curso> {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-//		textFieldNome.setRequired(true);
 		return textFieldNome;
 	}
 	
 	
+	private NumberTextField<Integer> criarCampoQuantidadePeriodo(){
+		NumberTextField<Integer> duracao = new NumberTextField<Integer>("quantidadePeriodo");
+		duracao.setOutputMarkupId(true);
+		return duracao;
+	}
+	
 	private NumberTextField<Integer> criarCampoDuracao(){
 		NumberTextField<Integer> duracao = new NumberTextField<Integer>("duracao");
 		duracao.setOutputMarkupId(true);
-//		duracao.setRequired(true);
 		return duracao;
 	}
 	
@@ -78,6 +82,7 @@ public class CursoEditForm extends EditForm<Curso> {
 	protected void adicionarCampos() {
 		add(criarCampoNome());
 		add(criarCampoDuracao());
+		add(criarCampoQuantidadePeriodo());
 //		add(criarCampoUploadLogo());
 		add(criarCampoSituacao());
 	}

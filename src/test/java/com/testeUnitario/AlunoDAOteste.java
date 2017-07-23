@@ -29,7 +29,7 @@ public class AlunoDAOteste extends BaseServiceTestCase {
 	@Rollback(true)
 	public void testeInserirAuno() {
 		Aluno aluno = new Aluno();
-		aluno.setCpf("teste");
+		aluno.setLogin("teste");
 		aluno.setNome("teste");
 		aluno.setSenha("teste");
 		Retorno retorno = alunoServico.persist(aluno);

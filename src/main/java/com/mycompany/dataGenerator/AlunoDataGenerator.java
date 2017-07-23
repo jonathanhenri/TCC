@@ -1,8 +1,7 @@
 package com.mycompany.dataGenerator;
 
-import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
-import com.mycompany.domain.Curso;
 import com.mycompany.persistence.interfaces.IAlunoDAO;
 import com.mycompany.persistence.interfaces.ICursoDAO;
 
@@ -10,22 +9,19 @@ public class AlunoDataGenerator {
 
 	public static void generateData(IAlunoDAO alunooDAO,ICursoDAO cursoDAO) throws Exception{
 		
+		Administracao administracao = new Administracao();
+		administracao.setAdministradorCampus(true);
+		
 		Aluno alunoAdministrador = new Aluno();
+		alunoAdministrador.setAdministracao(administracao);
 		alunoAdministrador.setNome("Administrador");
 		alunoAdministrador.setSenha("admin");
-		alunoAdministrador.setCpf("admin");
+		alunoAdministrador.setLogin("admin");
 		alunoAdministrador.setPeriodo(5); 
-		alunoAdministrador.setEmail("aluno@gmail");
 		alunooDAO.persist(alunoAdministrador);
 		
 		
-		Aluno alunoAdministrador2 = new Aluno();
-		alunoAdministrador2.setNome("Jonathan");
-		alunoAdministrador2.setSenha("admin");
-		alunoAdministrador2.setCpf("70105574112");
-		alunoAdministrador2.setPeriodo(5); 
-		alunoAdministrador2.setEmail("aluno@gmail");
-		alunooDAO.persist(alunoAdministrador2);
+		
 		
 	}
 

@@ -31,18 +31,24 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "DATA_FIM", nullable = true)
 	private Date dataFim;
 	
+	@Column(name = "CODIGO_COR", nullable = true, length = 50)
+	private String codigoCor;
+	
 	@ListarPageAnotacao
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
 	
-	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_AGENDA",nullable = false)
-	private Agenda agenda;
-	
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_TIPO_EVENTO",nullable = false)
 	private TipoEvento tipoEvento;
+	
+	@ManyToOne(optional = false,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_MATERIA",nullable = false)
+	private Materia materia;
+	
+	@ManyToOne(optional = false,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_AGENDA",nullable = false)
+	private Agenda agenda;
 	
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = false)
@@ -56,28 +62,44 @@ public class Evento extends AbstractBean<Evento> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	public void setAgenda(Agenda agenda) {
-		this.agenda = agenda;
-	}
-	
-	public Agenda getAgenda() {
-		return agenda;
-	}
-	
 	public TipoEvento getTipoEvento() {
 		return tipoEvento;
+	}
+	
+	public void setCodigoCor(String codigoCor) {
+		this.codigoCor = codigoCor;
+	}
+	
+	public String getCodigoCor() {
+		return codigoCor;
 	}
 
 	public void setTipoEvento(TipoEvento tipoEvento) {
 		this.tipoEvento = tipoEvento;
 	}
 
+	public void setMateria(Materia materia) {
+		this.materia = materia;
+	}
+	
+	public Materia getMateria() {
+		return materia;
+	}
+	
 	public OrigemEvento getOrigemEvento() {
 		return origemEvento;
 	}
 
 	public void setOrigemEvento(OrigemEvento origemEvento) {
 		this.origemEvento = origemEvento;
+	}
+	
+	public void setAgenda(Agenda agenda) {
+		this.agenda = agenda;
+	}
+	
+	public Agenda getAgenda() {
+		return agenda;
 	}
 
 	public void setPeriodo(Integer periodo) {

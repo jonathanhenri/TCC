@@ -32,27 +32,26 @@
 								<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
 							</div>
 							<div class="col-md-6">	
-								<label class="control-label">Cpf</label>
-								<input type="text" class="form-control" id="cpf" wicket:id="cpf" placeholder="cpf">
+								<label class="control-label">Login</label>
+								<input type="text" class="form-control" id="login" wicket:id="login" placeholder="login" maxlength="40">
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-6">	
 								<label class="control-label">Senha</label>
-								<input type="password" class="form-control" id="Senha" wicket:id="senha" placeholder="Senha">
+								<input type="password" class="form-control" id="Senha" wicket:id="senha" placeholder="Senha" maxlength="20">
 							</div>
-							<div class="col-md-6">	
-								<label class="control-label">Email</label>
-								<input type="text" class="form-control" id="email" wicket:id="email" placeholder="email">
-							</div>
-						</div>
-						<div class="form-group">
 							<div class="col-md-6">	
 								<label class="control-label">Curso</label>
 								<select class="form-control" wicket:id="administracao.curso"></select>
 							</div>
 						</div>
-						
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Periodo</label>
+								<input type="number" class="form-control" id="duracao" wicket:id="periodo" placeholder="Periodo">
+							</div>
+						</div>
 						<div class="form-group">
 							<div class="col-md-12">	
 								<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>

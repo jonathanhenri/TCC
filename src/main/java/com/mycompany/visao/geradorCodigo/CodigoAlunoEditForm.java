@@ -8,12 +8,9 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
-import org.apache.wicket.markup.html.form.Radio;
-import org.apache.wicket.markup.html.form.RadioGroup;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
@@ -49,46 +46,24 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 	}
 	
 	@Override
+	protected Boolean ignorarValidacaoCampoObrigatorio() {
+		return true;
+	}
+	@Override
 	protected void setServicoComum() {
 		serviceComum = codigoAlunoServico;
-	}
-
-	@Override
-	protected Boolean isEnabledEditForm() {
-		return false;
 	}
 	
 	@Override
 	protected void adicionarCampos() {
-		add(criarCampoCodigo());
-		add(criarCampoAtivo());
-		add(criarCampoAluno());
 		add(criarCampoCurso());
+		add(criarCampoQuantidadeAluno());
 	}
-	
-	private TextField<String> criarCampoAluno(){
-		TextField<String> textFieldAuno = new TextField<String>("aluno.nome");
-		textFieldAuno.setOutputMarkupId(true);
-		return textFieldAuno;
-	}
-	
 
-	private TextField<String> criarCampoCodigo(){
-		TextField<String> textFieldCodigo = new TextField<String>("codigo");
-		textFieldCodigo.setOutputMarkupId(true);
-		return textFieldCodigo;
-	}
-	
-	private RadioGroup<Boolean> criarCampoAtivo(){
-		 RadioGroup<Boolean> radioGroup = new RadioGroup<Boolean>("ativo");
-		 
-		 Radio<Boolean> radioSim = new Radio<Boolean>("sim",new Model<Boolean>(true));
-		 Radio<Boolean> radioNao = new Radio<Boolean>("nao",new Model<Boolean>(false));
-		 
-		 radioGroup.add(radioSim);
-		 radioGroup.add(radioNao);
-		 
-		 return radioGroup;
+	private NumberTextField<Integer> criarCampoQuantidadeAluno(){
+		NumberTextField<Integer> duracao = new NumberTextField<Integer>("quantidadeAlunosAux");
+		duracao.setOutputMarkupId(true);
+		return duracao;
 	}
 	
 	private DropDownChoice<Curso> criarCampoCurso(){
@@ -106,7 +81,7 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 			}
 		};
 		
-		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("cursoAux", cursos,choiceRenderer);
 		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		

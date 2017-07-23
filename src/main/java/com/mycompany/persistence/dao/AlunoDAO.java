@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
-import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IAlunoDAO;
 
 public class AlunoDAO extends DAOComumHibernateImpl<Aluno, Long> implements IAlunoDAO{	
@@ -64,7 +63,7 @@ public class AlunoDAO extends DAOComumHibernateImpl<Aluno, Long> implements IAlu
 
 	public Aluno alunoTrue(Aluno aluno){
 		Search searchAluno = new Search(Aluno.class);
-		searchAluno.addFilterEqual("cpf", aluno.getCpf());
+		searchAluno.addFilterEqual("login", aluno.getLogin());
 		searchAluno.addFilterEqual("senha", aluno.getSenha());
 		Aluno alunoAux =  (Aluno) _searchUnique(searchAluno);
 	

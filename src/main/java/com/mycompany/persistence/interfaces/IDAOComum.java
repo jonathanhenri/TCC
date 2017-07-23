@@ -24,5 +24,8 @@ public interface IDAOComum<T, ID extends Serializable> extends GenericDAO<T, ID>
 	
 	@Transactional
 	public List<T> search(Search search);
+	
+	@Transactional
+	public int count(Search search);
 
 }

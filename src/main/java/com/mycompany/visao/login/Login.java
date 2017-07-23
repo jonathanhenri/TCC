@@ -54,14 +54,14 @@ public class Login extends WebPage {
 		
 	
 	private AjaxButton criarBotaoLogin(){
-		AjaxButton ajaxButton = new AjaxButton("login") {
+		AjaxButton ajaxButton = new AjaxButton("botaoLogin") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				AuthenticatedWebSession session = AuthenticatedWebSession.get(); 
 		        try{
-			        if(session.signIn(aluno.getCpf(), aluno.getSenha())) {
+			        if(session.signIn(aluno.getLogin(), aluno.getSenha())) {
 			        	try{
 			        		session.replaceSession();
 			        	}catch(Exception e){
@@ -85,7 +85,7 @@ public class Login extends WebPage {
 			}
 			
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				Util.notifyError(target, "Cpf e Senha são obrigatórios");
+				Util.notifyError(target, "Login e Senha são obrigatórios");
 				super.onError(target, form);
 			}
 		};
@@ -105,7 +105,7 @@ public class Login extends WebPage {
 	}
 	
 	private TextField<String> criarCampoLogin(){		
-		TextField<String> username = new TextField<String>("cpf");
+		TextField<String> username = new TextField<String>("login");
 		username.setOutputMarkupId(true);
 		
 		return username;
@@ -121,7 +121,7 @@ public class Login extends WebPage {
 
 	private void addContador(){
 		Search search = new Search(Aluno.class);
-		search.addFilterEqual("cpf", aluno.getCpf());
+		search.addFilterEqual("login", aluno.getLogin());
 		
 		aluno = alunoServico.searchUnique(search);
 		ContadorAcesso acesso = new ContadorAcesso(aluno, new Date());

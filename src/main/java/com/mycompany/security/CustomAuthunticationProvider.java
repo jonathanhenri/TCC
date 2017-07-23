@@ -28,7 +28,7 @@ public class CustomAuthunticationProvider implements AuthenticationProvider{
 
 		try {
 			Aluno user = new Aluno();
-			user.setCpf((String) authentication.getPrincipal());
+			user.setLogin((String) authentication.getPrincipal());
 			user.setSenha((String) authentication.getCredentials());
 			
 			

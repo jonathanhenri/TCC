@@ -113,18 +113,18 @@ public class Util {
       soma = 11 - soma % 11;
       return soma > 9 ? 0 : soma;
    }
-
-   public static boolean isValidCPF(String cpf) {
-	  int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
-	  
-	  cpf = cpf.replace(".","").replace("-", "");
-	  
-      if ((cpf==null) || (cpf.length()!=11)) return false;
-     
-      Integer digito1 = calcularDigito(cpf.substring(0,9), pesoCPF);
-      Integer digito2 = calcularDigito(cpf.substring(0,9) + digito1, pesoCPF);
-      return cpf.equals(cpf.substring(0,9) + digito1.toString() + digito2.toString());
-   }
+//
+//   public static boolean isValidCPF(String cpf) {
+//	  int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+//	  
+//	  cpf = cpf.replace(".","").replace("-", "");
+//	  
+//      if ((cpf==null) || (cpf.length()!=11)) return false;
+//     
+//      Integer digito1 = calcularDigito(cpf.substring(0,9), pesoCPF);
+//      Integer digito2 = calcularDigito(cpf.substring(0,9) + digito1, pesoCPF);
+//      return cpf.equals(cpf.substring(0,9) + digito1.toString() + digito2.toString());
+//   }
 	
 	public static Retorno verificarIdNulo(AbstractBean<?> abstractBean){
 		Retorno retorno =  new Retorno();

@@ -46,10 +46,10 @@ public class AlunoListarPage extends ListarPageGenerico {
 		form.add(nome);
 	}
 	
-	private void campoCpf(){
-		final TextField<String> cpf = new TextField<String>("cpf");
-		cpf.setOutputMarkupId(true);
-		form.add(cpf);
+	private void campoLogin(){
+		final TextField<String> login = new TextField<String>("login");
+		login.setOutputMarkupId(true);
+		form.add(login);
 	}
 	
 	@Override
@@ -59,14 +59,14 @@ public class AlunoListarPage extends ListarPageGenerico {
 	}
 	
 	private void campoCurso(){
-		final TextField<String> cpf = new TextField<String>("curso.nome");
-		cpf.setOutputMarkupId(true);
-		form.add(cpf);
+		final TextField<String> curso = new TextField<String>("administracao.curso.nome");
+		curso.setOutputMarkupId(true);
+		form.add(curso);
 	}
 	
 	
 	private void addFiltros(){
-		campoCpf();
+		campoLogin();
 		campoNome();
 		campoCurso();
 	}

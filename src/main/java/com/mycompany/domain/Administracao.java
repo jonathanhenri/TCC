@@ -2,6 +2,7 @@ package com.mycompany.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,11 +23,11 @@ public class Administracao implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ALUNO")
 	private Aluno aluno;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_CURSO")
 	private Curso curso;
 	

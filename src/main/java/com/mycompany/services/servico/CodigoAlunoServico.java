@@ -9,16 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.CodigoAluno;
-import com.mycompany.domain.Curso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.ICodigoAlunoDAO;
 import com.mycompany.reflexao.Reflexao;
+import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICodigoAlunoServico;
 import com.mycompany.util.Util;
 
 public class CodigoAlunoServico implements ICodigoAlunoServico {
 	private ICodigoAlunoDAO codigoAlunoDAO;
+	private IAlunoServico alunoServico;
 	
 	public CodigoAlunoServico() {
 	}
@@ -26,11 +27,14 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(List<CodigoAluno> listaCodigosAluno) {
 		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		
 		for (CodigoAluno codigoAluno:listaCodigosAluno) {
-			Retorno persist = persist(codigoAluno); 
-			if(!persist.getSucesso()){
+			if(codigoAluno.getAdministracao().getAluno()!=null && codigoAluno.getAdministracao().getAluno().getId() ==null){
+				alunoServico.persist(codigoAluno.getAdministracao().getAluno());
+			}
+			if(!codigoAlunoDAO.persist(codigoAluno)){
 				retorno.setSucesso(false);
-				retorno.addMensagens(persist.getListaMensagem());
 				break;
 			}
 		}
@@ -39,16 +43,20 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(CodigoAluno codigoAluno) {
-		Retorno retorno = validaRegrasAntesIncluir(codigoAluno);
+		Retorno retorno = new Retorno();
 		
-		if(retorno.getSucesso()){
-			Mensagem mensagem = new Mensagem();
-			if(codigoAlunoDAO.persist(codigoAluno)){
-				mensagem  = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+		if(codigoAluno.getCursoAux()!=null && codigoAluno.getQuantidadeAlunosAux()>0){
+			List<CodigoAluno> listaNovosCodigosAluno = gerarCodigosAluno(codigoAluno);
+			
+			retorno = persist(listaNovosCodigosAluno);
+			if(retorno.getSucesso()){
+				retorno.addMensagem(new Mensagem("Alunos criados com sucesso.", Mensagem.SUCESSO));
 			}else{
-				mensagem  = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				retorno.addMensagem(new Mensagem("Erro ao criar alunos automaticamente.", Mensagem.ERRO));
 			}
-			retorno.addMensagem(mensagem);
+		}else{
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Quantidade de alunos e curso são obrigatórios", Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -164,20 +172,19 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	public void setCodigoAlunoDAO(ICodigoAlunoDAO codigoAlunoDAO) {
 		this.codigoAlunoDAO = codigoAlunoDAO;
 	}
+	
+	public void setAlunoServico(IAlunoServico alunoServico) {
+		this.alunoServico = alunoServico;
+	}
 
 	@Override
-	public CodigoAluno verificarCodigoAtivo(String codigo,Curso curso) {
-		return codigoAlunoDAO.verificarCodigoAtivo(codigo,curso);
+	public CodigoAluno verificarCodigoAtivo(String codigo,CodigoAluno codigoAluno) {
+		return codigoAlunoDAO.verificarCodigoAtivo(codigo,codigoAluno);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public CodigoAluno utilizarCodigoAluno(String codigo,Curso curso) {
-		return codigoAlunoDAO.utilizarCodigoAluno(codigo,curso);
-	}
-	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public List<CodigoAluno> gerarCodigosAluno(int quantidade, Curso curso) {
-		List<CodigoAluno> listaCodigoAluno = codigoAlunoDAO.gerarCodigosAluno(quantidade, curso);
+	public List<CodigoAluno> gerarCodigosAluno(CodigoAluno codigoAluno) {
+		List<CodigoAluno> listaCodigoAluno = codigoAlunoDAO.gerarCodigosAluno(codigoAluno);
 		return listaCodigoAluno;
 	}
 

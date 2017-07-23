@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -27,6 +28,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	@SpringBean(name="alunoServico")
 	private static IAlunoServico alunoServico;
 	
+	private String senhaAux;
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
 	
@@ -35,6 +37,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	
 	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
+		senhaAux = aluno.getSenha();
 		this.aluno = aluno;
 	}
 	
@@ -51,22 +54,16 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	}
 	
 	
-	private TextField<String> criarCampoCpf(){
-		TextField<String> textField = new TextField<String>("cpf");
+	private TextField<String> criarCampoLogin(){
+		TextField<String> textField = new TextField<String>("login");
 		textField.setOutputMarkupId(true);
 		return textField;
 	}
 	
-	private TextField<String> criarCampoEmail(){
-		TextField<String> textField = new TextField<String>("email");
-		textField.setOutputMarkupId(true);
-		return textField;
-	}
 	
 	private PasswordTextField criarCampoSenha(){
 		PasswordTextField passwordTextField = new PasswordTextField("senha");
 		passwordTextField.setOutputMarkupId(true);
-		passwordTextField.setRequired(true);
 		
 		return passwordTextField;
 	}
@@ -94,19 +91,21 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	}
 	
 	
-	@Override
-	protected void adicionarCampos() {
-		add(criarCampoNome());
-		add(criarCampoCpf());
-		add(criarCampoSenha());
-		add(criarCampoEmail());
-		add(criarCampoCurso());
+	private NumberTextField<Integer> criarCampoPeriodo(){
+		NumberTextField<Integer> periodo = new NumberTextField<Integer>("periodo");
+		periodo.setOutputMarkupId(true);
+		return periodo;
 	}
 	
 	@Override
-	protected Boolean validarRegrasAntesSalvarEditar(AjaxRequestTarget target) {
-		return super.validarRegrasAntesSalvarEditar(target);
+	protected void adicionarCampos() {
+		add(criarCampoNome());
+		add(criarCampoLogin());
+		add(criarCampoSenha());
+		add(criarCampoPeriodo());
+		add(criarCampoCurso());
 	}
+	
 	private static final long serialVersionUID = 1L;
 
 	

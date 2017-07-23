@@ -1,8 +1,7 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,13 +26,12 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Column(name = "CODIGO", nullable = false, length = 100)
 	private String codigo;
 	
+	@Column(name = "DATA_CRIACAO", nullable = false)
+	private Date dataCriacao;
 	
 	@ListarPageAnotacao(filtro = true)
 	@Column(name = "ATIVO", nullable = false)
 	private Boolean ativo;
-	
-	@Transient
-	private List<CodigoAluno> listaCodigosAlunosGerados;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
@@ -45,6 +43,39 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	private Long id;
 	
 
+	//Usados para auxiliar a geracao de alunos
+	@Transient
+	private Integer quantidadeAlunosAux;
+	
+	@Transient
+	private Curso cursoAux;
+	
+	
+	
+	
+	public Integer getQuantidadeAlunosAux() {
+		return quantidadeAlunosAux;
+	}
+
+	public void setQuantidadeAlunosAux(Integer quantidadeAlunosAux) {
+		this.quantidadeAlunosAux = quantidadeAlunosAux;
+	}
+
+	public Curso getCursoAux() {
+		return cursoAux;
+	}
+
+	public void setCursoAux(Curso cursoAux) {
+		this.cursoAux = cursoAux;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+	
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
 	@Override
 	public void setAdministracao(Administracao administracao) {
 		this.administracao = administracao;
@@ -53,24 +84,6 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Override
 	public Administracao getAdministracao() {
 		return administracao;
-	}
-	
-	
-	public void setListaCodigosAlunosGerados(
-			List<CodigoAluno> listaCodigosAlunosGerados) {
-		this.listaCodigosAlunosGerados = listaCodigosAlunosGerados;
-	}
-	
-	public List<CodigoAluno> getListaCodigosAlunosGerados() {
-		return listaCodigosAlunosGerados;
-	}
-	
-	public void addListaCodigoAluno(CodigoAluno codigoAluno){
-		if(listaCodigosAlunosGerados == null){
-			listaCodigosAlunosGerados = new ArrayList<CodigoAluno>();
-		}
-		
-		listaCodigosAlunosGerados.add(codigoAluno);
 	}
 	
 	public String getCodigo() {

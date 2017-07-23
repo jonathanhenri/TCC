@@ -3,7 +3,6 @@ package com.mycompany.services.interfaces;
 import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
-import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.feedback.Retorno;
@@ -29,10 +28,7 @@ public interface  ICodigoAlunoServico extends IServiceComum<CodigoAluno> {
 	
 	public Retorno persist(List<CodigoAluno> listaCodigosAluno);
 	
-	public CodigoAluno verificarCodigoAtivo(String codigo,Curso curso);
+	public CodigoAluno verificarCodigoAtivo(String codigo,CodigoAluno codigoAluno);
 	
-	public List<CodigoAluno> gerarCodigosAluno(int quantidade,Curso curso);
-	
-	public CodigoAluno utilizarCodigoAluno(String codigo,Curso curso);
-	
+	public List<CodigoAluno> gerarCodigosAluno(CodigoAluno codigoAluno);
 }

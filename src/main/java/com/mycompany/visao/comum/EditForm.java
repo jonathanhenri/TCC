@@ -61,6 +61,10 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected Boolean isEnabledEditForm(){
 		return true;
 	}
+	
+	protected Boolean ignorarValidacaoCampoObrigatorio(){
+		return false;
+	}
 	protected abstract void setServicoComum();
 
 	private AjaxLink<String> criarBotaoVoltar(){
@@ -153,7 +157,11 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
-				Retorno retorno = Reflexao.validarTodosCamposObrigatorios(getAbstractBean());
+				Retorno retorno = new Retorno(); 
+				retorno.setSucesso(true);
+				if(!ignorarValidacaoCampoObrigatorio()){
+					retorno = Reflexao.validarTodosCamposObrigatorios(getAbstractBean());
+				}
 				if(retorno.getSucesso()){
 					if(validarRegrasAntesSalvarEditar((target))){
 						if(getAbstractBean().getId()==null){
@@ -169,13 +177,6 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 						 Util.notify(target, mensagem.toString(), mensagem.getTipo());
 			        }
 				}
-			}
-			
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-//				target.appendJavaScript("$.jGrowl('teste');");
-				
-				target.add(feedbackPanel);
 			}
 		};
 		

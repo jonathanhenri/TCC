@@ -33,7 +33,7 @@ public class EventoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(200);
+		modalIncluirEditar.setInitialHeight(450);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
@@ -44,16 +44,25 @@ public class EventoListarPage extends ListarPageGenerico {
 
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
-		// TODO Auto-generated method stub
-		
+		getModalIncluirEditar().setContent(criarPanel(new Evento()));
+		getModalIncluirEditar().show(target);		
 	}
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
+		EventoPanel editPanel = new EventoPanel(getModalIncluirEditar().getContentId());
+		editPanel.setOutputMarkupId(true);
+		getForm().add(editPanel);
 		
-		return null;
+		EventoEditForm cadastroAlunoEditForm = new EventoEditForm((Evento) abstractBean,editPanel,getFeedbackPanel(),getAtualizarListarPage(),getModalIncluirEditar());
+		cadastroAlunoEditForm.setOutputMarkupId(true);
+		editPanel.add(cadastroAlunoEditForm);
+		
+		return editPanel;
 	}
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
+		getModalIncluirEditar().setContent(criarPanel((eventoServico.searchFechId(abstractBean))));
+		getModalIncluirEditar().show(target);
 	}
 
 	@Override

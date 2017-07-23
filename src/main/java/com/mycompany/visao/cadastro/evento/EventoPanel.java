@@ -1,11 +1,11 @@
-package com.mycompany.visao.cadastro.aluno;
+package com.mycompany.visao.cadastro.evento;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class AlunoPanel extends Panel {
+public class EventoPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public AlunoPanel(String id) {
+	public EventoPanel(String id) {
 		super(id);
 	}
 }

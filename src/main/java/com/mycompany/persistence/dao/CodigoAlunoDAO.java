@@ -1,6 +1,7 @@
 package com.mycompany.persistence.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Isolation;
@@ -8,6 +9,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.persistence.interfaces.ICodigoAlunoDAO;
@@ -43,10 +46,10 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public CodigoAluno verificarCodigoAtivo(String codigo,Curso curso) {
+	public CodigoAluno verificarCodigoAtivo(String codigo,CodigoAluno codigoAluno) {
 		Search search = new Search(CodigoAluno.class);
 		search.addFilterEqual("codigo", codigo);
-		search.addFilterEqual("curso.id", curso.getId());
+		search.addFilterEqual("administracao.curso.id", codigoAluno.getCursoAux().getId());
 		search.addFilterEqual("ativo", true);
 		
 		return super.searchUnique(search);
@@ -57,7 +60,7 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 	private Boolean verificarCodigoExistente(String codigo,Curso curso) {
 		Search search = new Search(CodigoAluno.class);
 		search.addFilterEqual("codigo", codigo);
-		search.addFilterEqual("curso.id", curso.getId());
+		search.addFilterEqual("administracao.curso.id", curso.getId());
 		
 		int i = super._count(search);
 		
@@ -68,26 +71,17 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 		}
 	}
 	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public CodigoAluno utilizarCodigoAluno(String codigo,Curso curso) {
+	private boolean verificarListaCodigosUnicos(List<CodigoAluno> codigoAlunos, CodigoAluno codigoAluno){
+		List<String> listaCodigos = new ArrayList<String>();
+		
+		for(CodigoAluno codigo:codigoAlunos){
+			listaCodigos.add(codigo.getCodigo());
+		}
 		Search search = new Search(CodigoAluno.class);
-		search.addFilterEqual("codigo", codigo);
-		search.addFilterEqual("curso.id", curso.getId());
+		search.addFilterEqual("administracao.curso.id", codigoAluno.getCursoAux().getId());
+		search.addFilterIn("codigo", listaCodigos);
 		
-		CodigoAluno codigoAluno = super.searchUnique(search);
-		codigoAluno.setAtivo(false);
-		
-		save(codigoAluno);
-		
-		return codigoAluno;
-	}
-	
-	private boolean verificarListaCodigosUnicos(List<CodigoAluno> codigoAlunos, Curso curso){
-		Search search = new Search(CodigoAluno.class);
-		search.addFilterEqual("curso.id", curso.getId());
-		search.addFilterIn("codigo", codigoAlunos);
-		
-		int i = super._count(search);
+		int i = super.count(search);
 		
 		if(i>0){
 			return true;
@@ -112,22 +106,39 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 	
 	// Muito dificil de repetir o codigo, então verifico a lista inteira se tem algum repetido, se tiver refaço a lista toda
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
-	public List<CodigoAluno> gerarCodigosAluno(int quantidade, Curso curso) {
+	public List<CodigoAluno> gerarCodigosAluno(CodigoAluno codigoAluno) {
 		List<CodigoAluno> listaCodigoAluno = new ArrayList<CodigoAluno>();
-		for(int i = 0; i<quantidade;i++){
-			CodigoAluno codigoAluno = new CodigoAluno();
-			codigoAluno.setAtivo(true);
-			codigoAluno.setCodigo(Util.codigoGeradorAcesso());
+		for(int i = 0; i<codigoAluno.getQuantidadeAlunosAux();i++){
+			CodigoAluno codigoAlunoAux = new CodigoAluno();
+			codigoAlunoAux.setAtivo(true);
+			codigoAlunoAux.setCodigo(Util.codigoGeradorAcesso());
+			codigoAlunoAux.setDataCriacao(new Date());
 			
-			listaCodigoAluno.add(codigoAluno);
+			Administracao administracaoCodigo = new Administracao();
+			administracaoCodigo.setCurso(codigoAluno.getCursoAux());
+		
+			Administracao administracaoAluno = new Administracao();
+			administracaoAluno.setCurso(codigoAluno.getCursoAux());
+		
+			
+			Aluno aluno = new Aluno();
+			aluno.setNome("Alterar");
+			aluno.setLogin(codigoAlunoAux.getCodigo());
+			aluno.setSenha("12345678");
+			aluno.setAdministracao(administracaoAluno);
+			
+			administracaoCodigo.setAluno(aluno);
+			
+			codigoAlunoAux.setAdministracao(administracaoCodigo);
+			
+			listaCodigoAluno.add(codigoAlunoAux);
 		}
 		
-		if(verificarListaCodigosUnicos(listaCodigoAluno, curso)){
-			gerarCodigosAluno(quantidade, curso);
+		if(verificarListaCodigosUnicos(listaCodigoAluno, codigoAluno)){
+			gerarCodigosAluno(codigoAluno);
 		}
 		
 		return listaCodigoAluno;
 	}
-	
 	
 }

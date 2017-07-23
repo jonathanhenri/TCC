@@ -45,6 +45,9 @@ public class Curso extends AbstractBean<Curso> {
 	@Column(name = "MODALIDADE", nullable = true)
 	private Integer modalidade;
 	
+	@Column(name = "QUANTIDADE_PERIODO", nullable = true)
+	private Integer quantidadePeriodo;
+	
 //	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 //	@JoinColumn(name="ID_ARQUIVO")
 //	private Arquivo logo;
@@ -61,6 +64,14 @@ public class Curso extends AbstractBean<Curso> {
 	}
 	
 
+	public void setQuantidadePeriodo(Integer quantidadePeriodo) {
+		this.quantidadePeriodo = quantidadePeriodo;
+	}
+	
+	public Integer getQuantidadePeriodo() {
+		return quantidadePeriodo;
+	}
+	
 	@Override
 	public void setAdministracao(Administracao administracao) {
 		this.administracao = administracao;
