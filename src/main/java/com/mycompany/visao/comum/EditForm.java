@@ -8,6 +8,8 @@ import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.RadioChoice;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -152,6 +154,12 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	
+	private RadioGroup<Boolean> criarRadioCompartilhar(){
+		RadioGroup<Boolean> radioCompartilhar = new RadioGroup<Boolean>("administracao.compartilhar");
+		
+		
+		return radioCompartilhar;
+	}
 	private AjaxSubmitLink criarBotaoSalvar(){
 		AjaxSubmitLink salvar = new AjaxSubmitLink("salvar",this){
 			private static final long serialVersionUID = 1L;

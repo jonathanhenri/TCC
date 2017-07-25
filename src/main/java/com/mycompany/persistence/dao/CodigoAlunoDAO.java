@@ -126,6 +126,7 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 			aluno.setLogin(codigoAlunoAux.getCodigo());
 			aluno.setSenha("12345678");
 			aluno.setAdministracao(administracaoAluno);
+			administracaoAluno.setAluno(aluno);
 			
 			administracaoCodigo.setAluno(aluno);
 			

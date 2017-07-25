@@ -32,13 +32,9 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
 	
-	private Aluno aluno;
-	
-	
 	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		senhaAux = aluno.getSenha();
-		this.aluno = aluno;
 	}
 	
 	@Override
@@ -84,7 +80,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 		};
 		
 		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
+		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;

@@ -23,11 +23,11 @@ public class Administracao implements Serializable{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_ALUNO")
 	private Aluno aluno;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO")
 	private Curso curso;
 	

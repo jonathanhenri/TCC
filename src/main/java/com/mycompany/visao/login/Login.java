@@ -17,6 +17,7 @@ import org.springframework.security.AccessDeniedException;
 import org.springframework.security.BadCredentialsException;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.ContadorAcesso;
 import com.mycompany.services.interfaces.IAlunoServico;
@@ -124,7 +125,11 @@ public class Login extends WebPage {
 		search.addFilterEqual("login", aluno.getLogin());
 		
 		aluno = alunoServico.searchUnique(search);
-		ContadorAcesso acesso = new ContadorAcesso(aluno, new Date());
+		ContadorAcesso acesso = new ContadorAcesso(new Date());
+		Administracao administracao = new Administracao();
+		administracao.setAluno(aluno);
+		administracao.setCurso(aluno.getAdministracao().getCurso());
+		acesso.setAdministracao(administracao);
 		contadorAcessoServico.persist(acesso);
 	}
 	

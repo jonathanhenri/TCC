@@ -24,10 +24,6 @@ public class ContadorAcesso extends AbstractBean<ContadorAcesso> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ALUNO")
-	private Aluno aluno;
-	
 	@Column(name = "DATA_ACESSO")
 	private Date dataAcesso;
 	
@@ -40,8 +36,7 @@ public class ContadorAcesso extends AbstractBean<ContadorAcesso> {
 		return id;
 	}
 	
-	public ContadorAcesso(Aluno aluno,Date dataAcesso) {
-		setAluno(aluno);
+	public ContadorAcesso(Date dataAcesso) {
 		setDataAcesso(dataAcesso);
 	}
 	
@@ -55,16 +50,6 @@ public class ContadorAcesso extends AbstractBean<ContadorAcesso> {
 	@Override
 	public Administracao getAdministracao() {
 		return administracao;
-	}
-
-	
-	
-	public Aluno getAluno() {
-		return aluno;
-	}
-
-	public void setAluno(Aluno aluno) {
-		this.aluno = aluno;
 	}
 
 	public Date getDataAcesso() {

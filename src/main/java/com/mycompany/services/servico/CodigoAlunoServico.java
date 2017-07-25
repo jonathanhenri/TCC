@@ -43,9 +43,9 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(CodigoAluno codigoAluno) {
-		Retorno retorno = new Retorno();
+		Retorno retorno = validaRegrasAntesIncluir(codigoAluno);
 		
-		if(codigoAluno.getCursoAux()!=null && codigoAluno.getQuantidadeAlunosAux()>0){
+		if(retorno.getSucesso()){
 			List<CodigoAluno> listaNovosCodigosAluno = gerarCodigosAluno(codigoAluno);
 			
 			retorno = persist(listaNovosCodigosAluno);
@@ -54,9 +54,6 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 			}else{
 				retorno.addMensagem(new Mensagem("Erro ao criar alunos automaticamente.", Mensagem.ERRO));
 			}
-		}else{
-			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem("Quantidade de alunos e curso são obrigatórios", Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -125,17 +122,18 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesIncluir(CodigoAluno curso) {
-		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(curso);
+	public Retorno validaRegrasAntesIncluir(CodigoAluno codigoALuno) {
+//		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(codigoALuno);
 		
-		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
+		//Ignora os campos obrigatorios no form
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+			if(codigoALuno.getCursoAux()==null || codigoALuno.getQuantidadeAlunosAux()<=0){
+				retorno.setSucesso(false);
+				retorno.addMensagem(new Mensagem("Quantidade de alunos deve ser maior que zero e curso é obrigatório", Mensagem.ERRO));
+			}			
 			
 			return retorno;
-		}else{
-			return retorno;
-		}
 	}
 	
 	
@@ -156,15 +154,8 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesRemover(CodigoAluno curso) {
-		Retorno retorno = Util.verificarIdNulo(curso);
-			
-		if(retorno.getSucesso()){
-			if(curso.getAdministracao().getAluno()!=null){
-				retorno.setSucesso(false);
-				retorno.addMensagem(new Mensagem("Aluno vinculado a este código", Mensagem.ERRO));
-			}
-		}
+	public Retorno validaRegrasAntesRemover(CodigoAluno codigoAluno) {
+		Retorno retorno = Util.verificarIdNulo(codigoAluno);
 		
 		return retorno;
 	}

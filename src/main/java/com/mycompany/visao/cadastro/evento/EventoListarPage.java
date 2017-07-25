@@ -33,7 +33,7 @@ public class EventoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(450);
+		modalIncluirEditar.setInitialHeight(500);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}

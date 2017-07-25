@@ -13,6 +13,7 @@
     <bean id="alunoServico"  class="com.mycompany.services.servico.AlunoServico">
     	<property name="alunoDAO" ref="alunoDAO" />
     	<property name="codigoAlunoServico" ref="codigoAlunoServico" />
+    	<property name="contadorAcessoServico" ref="contadorAcessoServico" />
     </bean>
     
     <bean id="cursoServico"  class="com.mycompany.services.servico.CursoServico">

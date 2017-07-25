@@ -2,6 +2,7 @@ package com.mycompany.visao.geradorCodigo;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -51,6 +52,7 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	}
 	
 	private void addFiltros(){
+		criarCampoCodigo();
 	}
 	
 
@@ -65,6 +67,12 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 
 	}
 
+	private void criarCampoCodigo(){
+		final TextField<String> codigo = new TextField<String>("codigo");
+		codigo.setOutputMarkupId(true);
+		form.add(codigo);
+	}
+	
 	private Panel criarPanel(AbstractBean<?> abstractBean){
 		CodigoAlunoPanel codigoAlunoPanel = new CodigoAlunoPanel(getModalIncluirEditar().getContentId());
 		codigoAlunoPanel.setOutputMarkupId(true);

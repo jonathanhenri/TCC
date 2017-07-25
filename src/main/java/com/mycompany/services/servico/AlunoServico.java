@@ -12,17 +12,20 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.domain.CodigoAluno;
+import com.mycompany.domain.ContadorAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IAlunoDAO;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICodigoAlunoServico;
+import com.mycompany.services.interfaces.IContadorAcessoServico;
 import com.mycompany.util.Util;
 
 public class AlunoServico implements IAlunoServico {
 	private IAlunoDAO alunoDAO;
 	private ICodigoAlunoServico codigoAlunoServico;
+	private IContadorAcessoServico contadorAcessoServico;
 	
 	public AlunoServico() {
 	}
@@ -67,7 +70,6 @@ public class AlunoServico implements IAlunoServico {
 			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
 				search.addFetch(fetch);
 			}
-			
 			return  (AbstractBean<?>) searchUnique(search);
 		}
 		return null;
@@ -120,13 +122,21 @@ public class AlunoServico implements IAlunoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			
-			Search search = new Search(CodigoAluno.class);
-			search.addFilterEqual("administracao.aluno.id", aluno.getId());
+			Search searchCodigoAluno = new Search(CodigoAluno.class);
+			searchCodigoAluno.addFilterEqual("administracao.aluno.id", aluno.getId());
 			
-			CodigoAluno codigoAluno = codigoAlunoServico.searchUnique(search);
+			CodigoAluno codigoAluno = codigoAlunoServico.searchUnique(searchCodigoAluno);
 			
 			if(codigoAluno!=null){
-				codigoAlunoServico.remove(codigoAluno);
+				retorno.addMensagens(codigoAlunoServico.remove(codigoAluno).getListaMensagem());
+			}
+			
+			Search searchContadorAcesso = new Search(ContadorAcesso.class);
+			searchContadorAcesso.addFilterEqual("administracao.aluno.id",aluno.getId());
+			ContadorAcesso acesso = contadorAcessoServico.searchUnique(searchContadorAcesso);
+			
+			if(acesso!=null){
+				contadorAcessoServico.remove(acesso);
 			}
 			
 			if(alunoDAO.remove(aluno)){
@@ -134,6 +144,8 @@ public class AlunoServico implements IAlunoServico {
 			}else{
 				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
+			
+			
 			
 			retorno.addMensagem(mensagem);
 		}
@@ -188,6 +200,7 @@ public class AlunoServico implements IAlunoServico {
 		Retorno retorno = Util.verificarIdNulo(aluno);
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(aluno);
+			
 			if(retorno.getSucesso()){
 				aluno.setLogin(aluno.getLogin().trim());
 				
@@ -223,6 +236,11 @@ public class AlunoServico implements IAlunoServico {
 	}
 	
 
+	public void setContadorAcessoServico(
+			IContadorAcessoServico contadorAcessoServico) {
+		this.contadorAcessoServico = contadorAcessoServico;
+	}
+	
 	public void setCodigoAlunoServico(ICodigoAlunoServico codigoAlunoServico) {
 		this.codigoAlunoServico = codigoAlunoServico;
 	}
