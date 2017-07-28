@@ -1,7 +1,7 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +22,7 @@ public class Evento extends AbstractBean<Evento> {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name="ID_ADMINISTRACAO")
+	@JoinColumn(name="ID_ADMINISTRACAO",nullable=false)
 	private Administracao administracao;
 	
 	@Column(name = "DATA_INICIO", nullable = false)
@@ -38,20 +38,20 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_TIPO_EVENTO",nullable = false)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_TIPO_EVENTO",nullable = true)
 	private TipoEvento tipoEvento;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_MATERIA",nullable = false)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_MATERIA",nullable = true)
 	private Materia materia;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_AGENDA",nullable = false)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_AGENDA",nullable = true)
 	private Agenda agenda;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = false)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = true)
 	private OrigemEvento origemEvento;
 	
 	@Column(name = "PERIODO", nullable = true)

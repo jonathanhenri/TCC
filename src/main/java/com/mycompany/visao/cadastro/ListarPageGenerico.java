@@ -82,6 +82,10 @@ public abstract class ListarPageGenerico extends Menu {
 	protected void inicializarFiltrosDinamicos() {
 	}
 	
+	protected Boolean isVisibleBotaoMaisFiltros(){
+		return true;
+	}
+	
 	protected Boolean isVisibleBotaoIncluir(){
 		return true;
 	}
@@ -155,6 +159,10 @@ public abstract class ListarPageGenerico extends Menu {
 				}else{
 					Util.notifyInfo(target, "Não existe filtros adicionais.");
 				}
+			}
+			@Override
+			public boolean isVisible() {
+				return isVisibleBotaoMaisFiltros();
 			}
 		};
 		

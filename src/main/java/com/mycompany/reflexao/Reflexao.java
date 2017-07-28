@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 import com.mycompany.anotacao.ListarPageAnotacao;
@@ -30,7 +29,7 @@ public class Reflexao {
 		for(int i = 0; i < fld.length; i++){
 			Column cmp = fld[i].getAnnotation(Column.class);
 			if(cmp!=null && !cmp.nullable()){
-				Object objectCampo = getFieldValueCamposComuns(object, cmp.name());
+				Object objectCampo = getFieldValueCamposComuns(object, fld[i].getName());
 				if(objectCampo == null){ 
 					Mensagem mensagem = new Mensagem(cmp.name(), Mensagem.MOTIVO_NULO, Mensagem.ERRO);
 					retorno.setSucesso(false);

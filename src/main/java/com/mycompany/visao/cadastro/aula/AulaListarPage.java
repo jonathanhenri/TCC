@@ -1,51 +1,55 @@
-package com.mycompany.visao.cadastro.tipoEvento;
+package com.mycompany.visao.cadastro.aula;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.TipoEvento;
-import com.mycompany.services.interfaces.ITipoEventoServico;
+import com.mycompany.domain.Aula;
+import com.mycompany.services.interfaces.IAulaServico;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
 
-public class TipoEventoListarPage extends ListarPageGenerico {
+public class AulaListarPage extends ListarPageGenerico {
 	private static final long serialVersionUID = 1L;
 	
-	@SpringBean(name="tipoEventoServico")
-	static ITipoEventoServico tipoEventoServico;
+	@SpringBean(name="aulaServico")
+	static IAulaServico aulaServico;
 	
-	static TipoEvento tipoEvento = new TipoEvento();
+	static Aula aula = new Aula();
 	
-	public TipoEventoListarPage(){
-		super(tipoEvento);
+	public AulaListarPage(){
+		super(aula);
 		addFiltros();
 	}
 	
 	@Override
 	protected void setServicoComum() {
-		serviceComum = tipoEventoServico;
+		serviceComum = aulaServico;
 	}
 	
-	@Override
-	protected String getNomeTituloListarPage() {
-		return "Listagem de Tipo de evento";
+	private void addFiltros(){
+		form.add(criarCampoPeriodo());
+		form.add(criarCampoNome());
 	}
 	
+
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(350);
+		modalIncluirEditar.setInitialHeight(660);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
 	
-	private void addFiltros(){
-		form.add(criarCampoNome());
+	private NumberTextField<Integer> criarCampoPeriodo(){
+		NumberTextField<Integer> duracao = new NumberTextField<Integer>("periodo");
+		duracao.setOutputMarkupId(true);
+		return duracao;
 	}
 	
 	private TextField<String> criarCampoNome(){
@@ -53,19 +57,20 @@ public class TipoEventoListarPage extends ListarPageGenerico {
 		nome.setOutputMarkupId(true);
 		return nome;
 	}
-
+	
+	
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {
-		getModalIncluirEditar().setContent(criarPanel(new TipoEvento()));
+		getModalIncluirEditar().setContent(criarPanel(new Aula()));
 		getModalIncluirEditar().show(target);
 	}
 
 	private Panel criarPanel(AbstractBean<?> abstractBean){
-		TipoEventoPanel materiaPanel = new TipoEventoPanel(getModalIncluirEditar().getContentId());
+		AulaPanel materiaPanel = new AulaPanel(getModalIncluirEditar().getContentId());
 		materiaPanel.setOutputMarkupId(true);
 		getForm().add(materiaPanel);
 		
-		TipoEventoEditForm editForm = new TipoEventoEditForm((TipoEvento)abstractBean, materiaPanel, getFeedbackPanel(), getAtualizarListarPage(), getModalIncluirEditar());
+		AulaEditForm editForm = new AulaEditForm((Aula)abstractBean, materiaPanel, getFeedbackPanel(), getAtualizarListarPage(), getModalIncluirEditar());
 		editForm.setOutputMarkupId(true);
 		materiaPanel.add(editForm);
 		return materiaPanel;
@@ -74,7 +79,7 @@ public class TipoEventoListarPage extends ListarPageGenerico {
 	
 	@Override
 	protected void getEditFormEditar(AjaxRequestTarget target,AbstractBean<?> abstractBean) {
-		getModalIncluirEditar().setContent(criarPanel((tipoEventoServico.searchFechId(abstractBean))));
+		getModalIncluirEditar().setContent(criarPanel((aulaServico.searchFechId(abstractBean))));
 		getModalIncluirEditar().show(target);
 	}
 
@@ -89,9 +94,5 @@ public class TipoEventoListarPage extends ListarPageGenerico {
 		
 		return modalFiltros;
 	}
-
-	@Override
-	protected Boolean isVisibleBotaoMaisFiltros() {
-		return false;
-	}
+	
 }

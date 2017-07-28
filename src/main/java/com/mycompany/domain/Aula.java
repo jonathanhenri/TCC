@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.mycompany.anotacao.ListarPageAnotacao;
+
 /*
  * No futuro ter um crud de hora de materia para facilitar o cadastro do mesmo horario de aula em varias grades
  * TER UM CRUD DE CADASTRO DE PROFESSORES
@@ -24,14 +26,16 @@ import javax.persistence.Table;
 public class Aula extends AbstractBean<Aula> {
 	private static final long serialVersionUID = 1L;
 
+	@ListarPageAnotacao(identificadorEstrangeiro = true,nomeColuna ="Matéria")
 	@ManyToOne(optional = false,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_MATERIA",nullable = false)
 	private Materia materia;
 	
-	@ManyToOne(optional = false,fetch=FetchType.LAZY)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_AGENDA",nullable = false)
 	private Agenda agenda;
 	
+	@ListarPageAnotacao
 	@Column(name = "PROFESSOR", nullable = true, length = 200)
 	private String professor;
 	
@@ -41,12 +45,18 @@ public class Aula extends AbstractBean<Aula> {
 	@Column(name = "DATA_FIM", nullable = true)
 	private Date dataHoraFim;
 	
-	@Column(name = "LOCAL", nullable = true, length = 200)
+	@Column(name = "LOCAL", nullable = true, length = 100)
 	private String local;
 	
-	@Column(name = "OBSERVACAO", nullable = true, length = 200)
+	@ListarPageAnotacao
+	@Column(name = "NOME", nullable = true, length = 100)
+	private String nome;
+	
+	@Column(name = "OBSERVACAO", nullable = true, length = 600)
 	private String observacao;
 	
+	@Column(name = "PERIODO", nullable = false)
+	private Integer periodo;
 
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
@@ -57,6 +67,22 @@ public class Aula extends AbstractBean<Aula> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+	
+	public void setPeriodo(Integer periodo) {
+		this.periodo = periodo;
+	}
+	
+	public Integer getPeriodo() {
+		return periodo;
+	}
 	
 	@Override
 	public void setAdministracao(Administracao administracao) {

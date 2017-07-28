@@ -1,6 +1,7 @@
 package com.mycompany.visao.cadastro.evento;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -55,6 +56,12 @@ public class EventoEditForm extends EditForm<Evento> {
 		serviceComum = eventoServico;
 	}
 	
+	@Override
+	protected void beforeSave() {
+		if(evento.getDataInicio() == null){
+			evento.setDataInicio(new Date());
+		}
+	}
 	private ColorTextField criarCampoCodigoCor(){
 		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
 		textFieldCodigoCor.setOutputMarkupId(true);

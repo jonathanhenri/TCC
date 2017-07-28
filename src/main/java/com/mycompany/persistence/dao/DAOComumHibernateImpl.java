@@ -10,6 +10,7 @@ import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.DAOException;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Administracao;
 import com.mycompany.persistence.interfaces.IDAOComum;
 import com.mycompany.util.Util;
 
@@ -22,6 +23,7 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 
 	@Override
 	public boolean save(T entity) {
+		inicializarAdministracao(entity);
 		return super._merge(entity) != null;
 	}
 	
@@ -111,20 +113,39 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 		return super._deleteById(entity.getClass(), entity.getIdentifier());
 	}
 	
-	@Override
-	public boolean persist(T arg0) {
-		try{
-			if(arg0.getAdministracao()!=null ){
-				if(arg0.getAdministracao().getAluno() == null){
-					arg0.getAdministracao().setAluno(Util.getAlunoLogado());
-				}
-				
-				if(arg0.getAdministracao().getId()==null){
-					super._save(arg0.getAdministracao());
-				}
+	private void inicializarAdministracao(T entity){
+		if(entity.getAdministracao()!=null ){
+			if(entity.getAdministracao().getAluno() == null){
+				entity.getAdministracao().setAluno(Util.getAlunoLogado());
 			}
 			
-			super._save(arg0);
+			if(entity.getAdministracao().getCurso() == null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
+				entity.getAdministracao().setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+			}
+			
+			if(entity.getAdministracao().getId()==null){
+				super._save(entity.getAdministracao());
+			}
+		}else{
+			Administracao administracao = new Administracao();
+			administracao.setAluno(Util.getAlunoLogado());
+			
+			if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao().getCurso()!=null){
+				administracao.setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+			}
+			entity.setAdministracao(administracao);
+			
+			if(entity.getAdministracao().getId()==null){
+				super._save(entity.getAdministracao());
+			}
+		
+		}
+	}
+	@Override
+	public boolean persist(T entity) {
+		try{
+			inicializarAdministracao(entity);
+			super._save(entity);
 		}catch(DAOException e ){
 			e.printStackTrace();
 			return false;

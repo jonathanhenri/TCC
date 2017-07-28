@@ -28,12 +28,12 @@ public class Agenda extends AbstractBean<Agenda> {
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "agenda")
-	@JoinColumn(name="ID_EVENTO",nullable = false)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "agenda")
+	@JoinColumn(name="ID_EVENTO", nullable = true)
 	private Set<Evento> eventos;
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "agenda")
-	@JoinColumn(name="ID_AULA",nullable = false)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "agenda")
+	@JoinColumn(name="ID_AULA")
 	private Set<Aula> aulas;
 	
 	@Column(name = "DESCRICAO", nullable = true, length = 300)

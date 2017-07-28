@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Retorno {
 
-	private Boolean sucesso;
+	private Boolean sucesso = false;
 	private List<Mensagem> listaMensagem;
 	
 	public Retorno(){}

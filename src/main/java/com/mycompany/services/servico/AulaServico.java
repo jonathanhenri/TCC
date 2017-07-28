@@ -8,41 +8,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Evento;
+import com.mycompany.domain.Aula;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
-import com.mycompany.persistence.interfaces.IEventoDAO;
+import com.mycompany.persistence.interfaces.IAulaDAO;
 import com.mycompany.reflexao.Reflexao;
-import com.mycompany.services.interfaces.IEventoServico;
+import com.mycompany.services.interfaces.IAulaServico;
 import com.mycompany.util.Util;
 
-public class EventoServico implements IEventoServico {
-	private IEventoDAO eventoDAO;
+public class AulaServico implements IAulaServico {
+	private IAulaDAO aulaDAO;
 	
-	public EventoServico() {
+	public AulaServico() {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno persist(Evento evento) {
-		Retorno retorno = validaRegrasAntesIncluir(evento);
+	public Retorno persist(Aula aula) {
+		Retorno retorno = validaRegrasAntesIncluir(aula);
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(eventoDAO.persist(evento)){
-				mensagem  = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+			if(aulaDAO.persist(aula)){
+				mensagem  = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
 		}
 		
 		return retorno;
 	}
-	
+
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
 		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(Evento.class);
+			Search search = new Search(Aula.class);
 			search.addFilterEqual("id", abstractBean.getId());
 			
 			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
@@ -53,40 +53,22 @@ public class EventoServico implements IEventoServico {
 		}
 		return null;
 	}
-
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno save(Evento evento) {
-		Retorno retorno = validaRegrasAntesAlterar(evento);
-		
-		if(retorno.getSucesso()){
-			Mensagem mensagem = new Mensagem();
-			if(eventoDAO.save(evento)){
-				mensagem = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
-			}else{
-				mensagem  = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
-			}
-			
-			retorno.addMensagem(mensagem);
-		}
-		
-		return retorno;
-	}
-
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
-		return eventoDAO.count(search);
+		return aulaDAO.count(search);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno remove(Evento evento) {
-		Retorno retorno = validaRegrasAntesRemover(evento);
+	public Retorno save(Aula aula) {
+		Retorno retorno = validaRegrasAntesAlterar(aula);
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(eventoDAO.remove(evento)){
-				mensagem = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+			if(aulaDAO.save(aula)){
+				mensagem = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
@@ -96,29 +78,41 @@ public class EventoServico implements IEventoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public List<Evento> search(Search search) {
-		return eventoDAO.search(search);
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Evento searchUnique(Search search) {
-		return eventoDAO.searchUnique(search);
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	private Retorno validaRegrasComum(Evento evento){
-		Retorno retorno =  new Retorno();
-		retorno.setSucesso(true);
-		return retorno;
-	}
-	
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesIncluir(Evento evento) {
-		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(evento);
+	public Retorno remove(Aula aula) {
+		Retorno retorno = validaRegrasAntesRemover(aula);
 		
 		if(retorno.getSucesso()){
+			Mensagem mensagem = new Mensagem();
+			if(aulaDAO.remove(aula)){
+				mensagem = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+			}else{
+				mensagem = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+			}
 			
-			retorno = validaRegrasComum(evento);
+			retorno.addMensagem(mensagem);
+		}
+		
+		return retorno;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public List<Aula> search(Search search) {
+		return aulaDAO.search(search);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Aula searchUnique(Search search) {
+		return aulaDAO.searchUnique(search);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasAntesIncluir(Aula aula) {
+		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(aula);
+		
+		if(retorno.getSucesso()){
+			// Se precisar de regras especificas;
+			
+			
 			return retorno;
 		}else{
 			return retorno;
@@ -127,11 +121,11 @@ public class EventoServico implements IEventoServico {
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesAlterar(Evento evento) {
-		Retorno retorno = Util.verificarIdNulo(evento);
+	public Retorno validaRegrasAntesAlterar(Aula aula) {
+		Retorno retorno = Util.verificarIdNulo(aula);
 		
 		if(retorno.getSucesso()){
-			retorno = Reflexao.validarTodosCamposObrigatorios(evento);
+			retorno = Reflexao.validarTodosCamposObrigatorios(aula);
 			if(retorno.getSucesso()){
 				// Se precisar de regras especificas;
 				
@@ -143,8 +137,8 @@ public class EventoServico implements IEventoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesRemover(Evento evento) {
-		Retorno retorno = Util.verificarIdNulo(evento);
+	public Retorno validaRegrasAntesRemover(Aula aula) {
+		Retorno retorno = Util.verificarIdNulo(aula);
 			
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;
@@ -154,15 +148,14 @@ public class EventoServico implements IEventoServico {
 	}
 	
 
-	public void setEventoDAO(IEventoDAO eventoDAO) {
-		this.eventoDAO = eventoDAO;
+	public void setAulaDAO(IAulaDAO aulaDAO) {
+		this.aulaDAO = aulaDAO;
 	}
 
-
 	@Override
-	public List<Evento> getEventos() {
+	public List<Aula> getAulas() {
 		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getId()!=null){
-			return eventoDAO.getEventos();
+			return aulaDAO.getAulas();
 		}
 		
 		return null;

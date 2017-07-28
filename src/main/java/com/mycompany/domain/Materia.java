@@ -32,8 +32,6 @@ public class Materia extends AbstractBean<Materia> {
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
-	
-	
 	@Id
 	@Column(name = "ID_MATERIA")
 	@GeneratedValue(strategy = GenerationType.AUTO)

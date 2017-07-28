@@ -7,10 +7,10 @@ import org.apache.wicket.markup.html.WebPage;
 
 import com.mycompany.BasicAuthenticationSession;
 import com.mycompany.util.JGrowlFeedbackPanel;
-import com.mycompany.util.Options;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.Index;
 import com.mycompany.visao.cadastro.aluno.AlunoListarPage;
+import com.mycompany.visao.cadastro.aula.AulaListarPage;
 import com.mycompany.visao.cadastro.curso.CursoListarPage;
 import com.mycompany.visao.cadastro.evento.EventoListarPage;
 import com.mycompany.visao.cadastro.materia.MateriaListarPage;
@@ -60,6 +60,14 @@ public class Menu extends WebPage {
 			}
 		});
 //		
+		add(new AjaxLink<String>("link_cadastro_aula") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(AulaListarPage.class);
+			}
+		});
+		
 		add(new AjaxLink<String>("link_cadastro_materia") {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -122,32 +130,32 @@ public class Menu extends WebPage {
 	}
 	
 	
-	private JGrowlFeedbackPanel criarFeedbackPanel() {
-		JGrowlFeedbackPanel feedback = new JGrowlFeedbackPanel("jgrowlFeedback");
-		Options errorOptions = new Options();
-		errorOptions.set("header", getString("erro"));
-		errorOptions.set("theme", "jgrowl-ERROR"); 
-		errorOptions.set("glue", "after");
-//		errorOptions.set("sticky", new FunctionString("true"));
-		errorOptions.set("sticky",false);
-		feedback.setErrorMessageOptions(errorOptions);
-
-		Options infoOptions = new Options();
-		infoOptions.set("header", getString("info"));
-		infoOptions.set("theme", "jgrowl-INFO");
-//		infoOptions.set("sticky", new FunctionString("true"));
-		errorOptions.set("sticky", false);
-		infoOptions.set("glue", "after");
-		feedback.setInfoMessageOptions(infoOptions);
-		
-		Options successOptions = new Options();
-		successOptions.set("header", getString("successo"));
-		successOptions.set("theme", "jgrowl-SUCCESS");
-//		successOptions.set("sticky", new FunctionString("true"));
-		successOptions.set("sticky", false);
-		successOptions.set("glue", "after");
-		feedback.setSuccessMessageOptions(successOptions);
-		
-		return feedback;
-	}
+//	private JGrowlFeedbackPanel criarFeedbackPanel() {
+//		JGrowlFeedbackPanel feedback = new JGrowlFeedbackPanel("jgrowlFeedback");
+//		Options errorOptions = new Options();
+//		errorOptions.set("header", getString("erro"));
+//		errorOptions.set("theme", "jgrowl-ERROR"); 
+//		errorOptions.set("glue", "after");
+////		errorOptions.set("sticky", new FunctionString("true"));
+//		errorOptions.set("sticky",false);
+//		feedback.setErrorMessageOptions(errorOptions);
+//
+//		Options infoOptions = new Options();
+//		infoOptions.set("header", getString("info"));
+//		infoOptions.set("theme", "jgrowl-INFO");
+////		infoOptions.set("sticky", new FunctionString("true"));
+//		errorOptions.set("sticky", false);
+//		infoOptions.set("glue", "after");
+//		feedback.setInfoMessageOptions(infoOptions);
+//		
+//		Options successOptions = new Options();
+//		successOptions.set("header", getString("successo"));
+//		successOptions.set("theme", "jgrowl-SUCCESS");
+////		successOptions.set("sticky", new FunctionString("true"));
+//		successOptions.set("sticky", false);
+//		successOptions.set("glue", "after");
+//		feedback.setSuccessMessageOptions(successOptions);
+//		
+//		return feedback;
+//	}
 }

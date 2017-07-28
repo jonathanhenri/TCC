@@ -2,6 +2,7 @@ package com.mycompany.visao.geradorCodigo;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -30,6 +31,10 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 		serviceComum = codigoAlunoServico;
 	}
 	
+	@Override
+	protected String getNomeTituloListarPage() {
+		return "Listagem de acessos provisórios";
+	}
 	@Override
 	protected ModalWindow criarModalFiltros() {
 		modalFiltros = new ModalWindow("modalFiltros");

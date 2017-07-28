@@ -37,6 +37,9 @@
     <bean id="materiaServico"  class="com.mycompany.services.servico.MateriaServico">
     	<property name="materiaDAO" ref="materiaDAO" />
     </bean>
+    <bean id="aulaServico"  class="com.mycompany.services.servico.AulaServico">
+    	<property name="aulaDAO" ref="aulaDAO" />
+    </bean>
     
     <bean id="origemEventoServico"  class="com.mycompany.services.servico.OrigemEventoServico">
     	<property name="origemEventoDAO" ref="origemEventoDAO" />

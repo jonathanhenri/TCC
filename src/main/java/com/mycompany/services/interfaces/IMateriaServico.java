@@ -3,7 +3,6 @@ package com.mycompany.services.interfaces;
 import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
-import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Materia;
 import com.mycompany.feedback.Retorno;
 

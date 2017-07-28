@@ -4,11 +4,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -64,6 +62,9 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return true;
 	}
 	
+	protected void beforeSave(){
+		
+	}
 	protected Boolean ignorarValidacaoCampoObrigatorio(){
 		return false;
 	}
@@ -165,11 +166,13 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
+				beforeSave();
 				Retorno retorno = new Retorno(); 
 				retorno.setSucesso(true);
 				if(!ignorarValidacaoCampoObrigatorio()){
 					retorno = Reflexao.validarTodosCamposObrigatorios(getAbstractBean());
 				}
+				
 				if(retorno.getSucesso()){
 					if(validarRegrasAntesSalvarEditar((target))){
 						if(getAbstractBean().getId()==null){
