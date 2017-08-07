@@ -42,6 +42,8 @@ public class AlunoServico implements IAlunoServico {
 				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -110,6 +112,8 @@ public class AlunoServico implements IAlunoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -173,18 +177,9 @@ public class AlunoServico implements IAlunoServico {
 		
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(aluno);
 		
-		aluno.setLogin(aluno.getLogin().trim());
-		
-		Search searchLoginRepetido = new Search(Aluno.class);
-		searchLoginRepetido.addFilterEqual("login", aluno.getLogin());
-		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", aluno.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
-		searchLoginRepetido.addFilter(filterOr);
-		
-		int i = count(searchLoginRepetido);
-		
-		if(i>0){
-			retorno.addMensagem(new Mensagem("login", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
-			retorno.setSucesso(false);
+		if(retorno.getSucesso()){
+			aluno.setLogin(aluno.getLogin().trim());
+			retorno.addRetorno(validaRegrasComuns(aluno));
 		}
 		
 		if(retorno.getSucesso()){
@@ -194,6 +189,29 @@ public class AlunoServico implements IAlunoServico {
 		}
 	}
 	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(Aluno aluno){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		
+		Search searchLoginRepetido = new Search(Aluno.class);
+		searchLoginRepetido.addFilterEqual("login", aluno.getLogin());
+		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", aluno.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
+		searchLoginRepetido.addFilter(filterOr);
+		
+		if(aluno.getId()!=null){
+			searchLoginRepetido.addFilterNotEqual("id", aluno.getId());
+		}
+		
+		int i = count(searchLoginRepetido);
+		
+		if(i>0){
+			retorno.addMensagem(new Mensagem("Aluno","login", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+			retorno.setSucesso(false);
+		}
+		
+		return retorno;
+	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(Aluno aluno) {
@@ -203,19 +221,7 @@ public class AlunoServico implements IAlunoServico {
 			
 			if(retorno.getSucesso()){
 				aluno.setLogin(aluno.getLogin().trim());
-				
-				Search searchLoginRepetido = new Search(Aluno.class);
-				searchLoginRepetido.addFilterEqual("login", aluno.getLogin());
-				Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", aluno.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
-				searchLoginRepetido.addFilter(filterOr);
-				searchLoginRepetido.addFilterNotEqual("id", aluno.getId());
-				
-				int i = count(searchLoginRepetido);
-				
-				if(i>0){
-					retorno.addMensagem(new Mensagem("login", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
-					retorno.setSucesso(false);
-				}
+				retorno.addRetorno(validaRegrasComuns(aluno));
 			}
 		}
 		

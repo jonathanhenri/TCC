@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.TipoEvento;
@@ -34,6 +35,8 @@ public class TipoEventoServico implements ITipoEventoServico {
 				mensagem  = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -43,6 +46,31 @@ public class TipoEventoServico implements ITipoEventoServico {
 	public int count(Search search) {
 		return tipoEventoDAO.count(search);
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(TipoEvento tipoEvento){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		
+		Search searchLoginRepetido = new Search(TipoEvento.class);
+		searchLoginRepetido.addFilterEqual("nome", tipoEvento.getNome());
+		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", tipoEvento.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
+		searchLoginRepetido.addFilter(filterOr);
+		
+		if(tipoEvento.getId()!=null){
+			searchLoginRepetido.addFilterNotEqual("id", tipoEvento.getId());
+		}
+		
+		int i = count(searchLoginRepetido);
+		
+		if(i>0){
+			retorno.addMensagem(new Mensagem("Tipo de evento","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+			retorno.setSucesso(false);
+		}
+		
+		return retorno;
+	}
+	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
@@ -72,6 +100,8 @@ public class TipoEventoServico implements ITipoEventoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -110,8 +140,7 @@ public class TipoEventoServico implements ITipoEventoServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(tipoEvento);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
+			retorno.addRetorno(validaRegrasComuns(tipoEvento));
 			return retorno;
 		}else{
 			return retorno;
@@ -126,8 +155,7 @@ public class TipoEventoServico implements ITipoEventoServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(tipoEvento);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(tipoEvento));				
 			}
 		}
 		

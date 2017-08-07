@@ -36,6 +36,10 @@ public class Retorno {
 		this.listaMensagem = listaMensagem;
 	}
 	
+	public void addRetorno(Retorno retorno){
+		addMensagens(retorno.getListaMensagem());
+		setSucesso(retorno.getSucesso());
+	}
 	public void addMensagens(List<Mensagem> listaMensagensAux){
 		if(listaMensagem == null){
 			listaMensagem = new ArrayList<Mensagem>();

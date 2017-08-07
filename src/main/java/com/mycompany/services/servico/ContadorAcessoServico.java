@@ -35,8 +35,17 @@ public class ContadorAcessoServico implements IContadorAcessoServico {
 				mensagem  = new Mensagem(contadorAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(contadorAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
+		return retorno;
+	}
+	
+	@Override
+	public Retorno validaRegrasComuns(ContadorAcesso contadorAcesso) {
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
 		return retorno;
 	}
 	
@@ -68,6 +77,8 @@ public class ContadorAcessoServico implements IContadorAcessoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(contadorAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -111,8 +122,7 @@ public class ContadorAcessoServico implements IContadorAcessoServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(contadorAcesso);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
+			retorno.addRetorno(validaRegrasComuns(contadorAcesso));
 			return retorno;
 		}else{
 			return retorno;
@@ -127,8 +137,7 @@ public class ContadorAcessoServico implements IContadorAcessoServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(contadorAcesso);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(contadorAcesso));				
 			}
 		}
 		

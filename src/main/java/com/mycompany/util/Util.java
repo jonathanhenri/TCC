@@ -246,7 +246,7 @@ public class Util {
 		target.appendJavaScript("$.notify('"+mensagem+"',{"
 				+ "className: '"+tipo+"',"
 				+ "clickToHide: true,"
-				+ "showDuration: 500,"
+				+ "showDuration: 800,"
 				+ "autoHide: true});");
 	}
 	
@@ -254,7 +254,7 @@ public class Util {
 		target.appendJavaScript("$.notify('"+mensagem+"',{"
 				+ "className: 'error',"
 				+ "clickToHide: true,"
-				+ "showDuration: 500,"
+				+ "showDuration: 800,"
 				+ "autoHide: true});");
 	}
 	
@@ -262,7 +262,7 @@ public class Util {
 		target.appendJavaScript("$.notify('"+mensagem+"',{"
 				+ "className: 'info',"
 				+ "clickToHide: true,"
-				+ "showDuration: 500,"
+				+ "showDuration: 800,"
 				+ "autoHide: true});");
 	}
 	
@@ -270,7 +270,7 @@ public class Util {
 		target.appendJavaScript("$.notify('"+mensagem+"',{"
 				+ "className: 'success',"
 				+ "clickToHide: true,"
-				+ "showDuration: 500,"
+				+ "showDuration: 800,"
 				+ "autoHide: true});");
 	}
 	
@@ -278,7 +278,7 @@ public class Util {
 		target.appendJavaScript("$.notify('"+mensagem+"',{"
 				+ "className: 'warn',"
 				+ "clickToHide: true,"
-				+ "showDuration: 500,"
+				+ "showDuration: 800,"
 				+ "autoHide: true});");
 	}
 	

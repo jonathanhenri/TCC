@@ -34,11 +34,20 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 				mensagem  = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
 	}
 
+	@Override
+	public Retorno validaRegrasComuns(PerfilAcesso perfilAcesso) {
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		return retorno;
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
 		return perfilAcessoDAO.count(search);
@@ -72,6 +81,8 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -110,8 +121,7 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(perfilAcesso);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
+			retorno.addRetorno(validaRegrasComuns(perfilAcesso));
 			return retorno;
 		}else{
 			return retorno;
@@ -126,8 +136,7 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(perfilAcesso);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(perfilAcesso));				
 			}
 		}
 		

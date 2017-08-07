@@ -48,10 +48,12 @@ public class Mensagem {
 	}
 	
 	public String toString(){
-		if(getCampo()!=null && getNomeEntidade() == null){
-			return getCampo()+" "+getMotivo();
-		}else if(motivo.equals(Mensagem.MOTIVO_REPETIDO)){
+		if(motivo.equals(Mensagem.MOTIVO_REPETIDO)){
 			return "Campo "+getCampo()+" em " + getNomeEntidade()+" "+getMotivo();
+		}else if(motivo.equals(Mensagem.MOTIVO_CADASTRO_ERRO) || motivo.equals(Mensagem.MOTIVO_ALTERADO_ERRO) || motivo.equals(Mensagem.MOTIVO_EXCLUIDO_ERRO)){
+			return getMotivo()+" "+getCampo();
+		}else if(getCampo()!=null && getNomeEntidade() == null){
+			return getCampo()+" "+getMotivo();
 		}else{
 			return Util.firstToUpperCase(getMotivo());
 		}

@@ -34,6 +34,8 @@ public class EventoServico implements IEventoServico {
 				mensagem  = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -53,6 +55,28 @@ public class EventoServico implements IEventoServico {
 		}
 		return null;
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(Evento evento){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+
+		Search search = new Search(Evento.class);
+		search.addFilterEqual("descricao", evento.getDescricao());
+		
+		if(evento.getId()!=null){
+			search.addFilterNotEqual("id",evento.getId());
+		}
+		
+		int i = count(search);
+		
+		if(i>0){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Evento","descrição", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+		}
+		
+		return retorno;
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno save(Evento evento) {
@@ -67,6 +91,8 @@ public class EventoServico implements IEventoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -105,20 +131,13 @@ public class EventoServico implements IEventoServico {
 		return eventoDAO.searchUnique(search);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	private Retorno validaRegrasComum(Evento evento){
-		Retorno retorno =  new Retorno();
-		retorno.setSucesso(true);
-		return retorno;
-	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesIncluir(Evento evento) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(evento);
 		
 		if(retorno.getSucesso()){
-			
-			retorno = validaRegrasComum(evento);
+			retorno.addRetorno(validaRegrasComuns(evento));
 			return retorno;
 		}else{
 			return retorno;
@@ -133,8 +152,7 @@ public class EventoServico implements IEventoServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(evento);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(evento));
 			}
 		}
 		

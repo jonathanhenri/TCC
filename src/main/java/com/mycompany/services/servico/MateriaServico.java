@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Materia;
@@ -34,6 +35,8 @@ public class MateriaServico implements IMateriaServico {
 				mensagem  = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -72,6 +75,8 @@ public class MateriaServico implements IMateriaServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -106,13 +111,36 @@ public class MateriaServico implements IMateriaServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(Materia materia){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		
+		Search searchLoginRepetido = new Search(Materia.class);
+		searchLoginRepetido.addFilterEqual("nome", materia.getNome());
+		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", materia.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
+		searchLoginRepetido.addFilter(filterOr);
+		
+		if(materia.getId()!=null){
+			searchLoginRepetido.addFilterNotEqual("id", materia.getId());
+		}
+		
+		int i = count(searchLoginRepetido);
+		
+		if(i>0){
+			retorno.addMensagem(new Mensagem("Materia","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+			retorno.setSucesso(false);
+		}
+		
+		return retorno;
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesIncluir(Materia materia) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(materia);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
-			
+			retorno.addRetorno(validaRegrasComuns(materia));
 			return retorno;
 		}else{
 			return retorno;
@@ -127,8 +155,7 @@ public class MateriaServico implements IMateriaServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(materia);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(materia));				
 			}
 		}
 		

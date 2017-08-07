@@ -39,6 +39,8 @@ public class CursoServico implements ICursoServico {
 				mensagem  = new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -72,6 +74,8 @@ public class CursoServico implements ICursoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(curso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -115,22 +119,35 @@ public class CursoServico implements ICursoServico {
 	public Curso searchUnique(Search search) {
 		return cursoDAO.searchUnique(search);
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(Curso curso){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+
+		Search search = new Search(Curso.class);
+		search.addFilterEqual("nome", curso.getNome());
+		
+		if(curso.getId()!=null){
+			search.addFilterNotEqual("id",curso.getId());
+		}
+		
+		int i = count(search);
+		
+		if(i>0){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Curso","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+		}
+		
+		return retorno;
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesIncluir(Curso curso) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(curso);
 		
 		if(retorno.getSucesso()){
-				Search search = new Search(Curso.class);
-				search.addFilterEqual("nome", curso.getNome());
-				
-				int i = count(search);
-				
-				if(i>0){
-					retorno.setSucesso(false);
-					retorno.addMensagem(new Mensagem("Curso com nome já existente.", Mensagem.ALERTA));
-				}
-			
+			retorno.addRetorno(validaRegrasComuns(curso));
 			return retorno;
 		}else{
 			return retorno;
@@ -147,18 +164,7 @@ public class CursoServico implements ICursoServico {
 			retorno = Reflexao.validarTodosCamposObrigatorios(curso);
 			
 			if(retorno.getSucesso()){
-				
-				Search searchNomeRepetido = new Search(Curso.class);
-				searchNomeRepetido.addFilterEqual("nome", curso.getNome());
-				searchNomeRepetido.addFilterNotEqual("id",curso.getId());
-				
-				int i = count(searchNomeRepetido);
-				
-				if(i>0){
-					retorno.setSucesso(false);
-					retorno.addMensagem(new Mensagem(curso.getClass().getSimpleName(),"Nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
-				}
-				
+				retorno.addRetorno(validaRegrasComuns(curso));
 			}
 		}
 		

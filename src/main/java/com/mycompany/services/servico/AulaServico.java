@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aula;
@@ -34,6 +35,8 @@ public class AulaServico implements IAulaServico {
 				mensagem  = new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -60,6 +63,31 @@ public class AulaServico implements IAulaServico {
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(Aula aula){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		
+		Search searchLoginRepetido = new Search(Aula.class);
+		searchLoginRepetido.addFilterEqual("nome", aula.getNome());
+		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", aula.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
+		searchLoginRepetido.addFilter(filterOr);
+		
+		if(aula.getId()!=null){
+			searchLoginRepetido.addFilterNotEqual("id", aula.getId());
+		}
+		
+		int i = count(searchLoginRepetido);
+		
+		if(i>0){
+			retorno.addMensagem(new Mensagem("Aula","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+			retorno.setSucesso(false);
+		}
+		
+		return retorno;
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno save(Aula aula) {
 		Retorno retorno = validaRegrasAntesAlterar(aula);
 		
@@ -72,6 +100,8 @@ public class AulaServico implements IAulaServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(aula.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -110,9 +140,7 @@ public class AulaServico implements IAulaServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(aula);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
-			
+			retorno.addRetorno(validaRegrasComuns(aula));			
 			return retorno;
 		}else{
 			return retorno;
@@ -127,8 +155,7 @@ public class AulaServico implements IAulaServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(aula);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(aula));
 			}
 		}
 		

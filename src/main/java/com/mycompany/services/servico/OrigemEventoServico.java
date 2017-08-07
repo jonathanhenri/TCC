@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.OrigemEvento;
@@ -34,6 +35,8 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 				mensagem  = new Mensagem(origemEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(origemEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -55,6 +58,32 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno validaRegrasComuns(OrigemEvento origemEvento){
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		
+		Search searchLoginRepetido = new Search(OrigemEvento.class);
+		searchLoginRepetido.addFilterEqual("nome", origemEvento.getNome());
+		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", origemEvento.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
+		searchLoginRepetido.addFilter(filterOr);
+		
+		if(origemEvento.getId()!=null){
+			searchLoginRepetido.addFilterNotEqual("id", origemEvento.getId());
+		}
+		
+		int i = count(searchLoginRepetido);
+		
+		if(i>0){
+			retorno.addMensagem(new Mensagem("Origem de evento","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+			retorno.setSucesso(false);
+		}
+		
+		return retorno;
+	}
+	
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
 		return origemEventoDAO.count(search);
 	}
@@ -72,6 +101,8 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(origemEvento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -110,8 +141,7 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(origemEvento);
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
-			
+			retorno.addRetorno(validaRegrasComuns(origemEvento));
 			return retorno;
 		}else{
 			return retorno;
@@ -126,8 +156,7 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(origemEvento);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(origemEvento));
 			}
 		}
 		

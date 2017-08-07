@@ -72,6 +72,8 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 			}
 			
 			retorno.addMensagem(mensagem);
+		}else{
+			retorno.addMensagem(new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -122,30 +124,30 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesIncluir(CodigoAluno codigoALuno) {
+	public Retorno validaRegrasAntesIncluir(CodigoAluno codigoAluno) {
 //		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(codigoALuno);
 		
 		//Ignora os campos obrigatorios no form
 		Retorno retorno = new Retorno();
 		retorno.setSucesso(true);
-			if(codigoALuno.getCursoAux()==null || codigoALuno.getQuantidadeAlunosAux()<=0){
-				retorno.setSucesso(false);
-				retorno.addMensagem(new Mensagem("Quantidade de alunos deve ser maior que zero e curso é obrigatório", Mensagem.ERRO));
-			}			
+		if(codigoAluno.getCursoAux()==null || codigoAluno.getQuantidadeAlunosAux()<=0){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Quantidade de alunos deve ser maior que zero e curso é obrigatório", Mensagem.ERRO));
+		}			
 			
-			return retorno;
+		retorno.addRetorno(validaRegrasComuns(codigoAluno));
+		return retorno;
 	}
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
-	public Retorno validaRegrasAntesAlterar(CodigoAluno curso) {
-		Retorno retorno = Util.verificarIdNulo(curso);
+	public Retorno validaRegrasAntesAlterar(CodigoAluno codigoAluno) {
+		Retorno retorno = Util.verificarIdNulo(codigoAluno);
 		
 		if(retorno.getSucesso()){
-			retorno = Reflexao.validarTodosCamposObrigatorios(curso);
+			retorno = Reflexao.validarTodosCamposObrigatorios(codigoAluno);
 			if(retorno.getSucesso()){
-				// Se precisar de regras especificas;
-				
+				retorno.addRetorno(validaRegrasComuns(codigoAluno));				
 			}
 		}
 		
@@ -182,6 +184,13 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
 		return codigoAlunoDAO.count(search);
+	}
+
+	@Override
+	public Retorno validaRegrasComuns(CodigoAluno codigoAluno) {
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(true);
+		return retorno;
 	}
 	
 }
