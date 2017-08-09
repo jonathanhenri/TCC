@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.CodigoAluno;
-import com.mycompany.domain.Curso;
 import com.mycompany.feedback.Retorno;
 
 public interface  ICodigoAlunoServico extends IServiceComum<CodigoAluno> {

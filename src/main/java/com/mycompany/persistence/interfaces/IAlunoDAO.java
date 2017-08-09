@@ -5,7 +5,6 @@ import java.util.List;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
-import com.mycompany.feedback.Retorno;
 
 public interface IAlunoDAO extends IDAOComum<Aluno, Long>{
 	

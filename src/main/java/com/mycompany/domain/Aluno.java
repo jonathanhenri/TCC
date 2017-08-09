@@ -1,4 +1,4 @@
-	package com.mycompany.domain;
+package com.mycompany.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,6 +34,10 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_CONFIGURACAO")
+	private Configuracao configuracao;
+	
 	@ListarPageAnotacao(nomeColuna = "Numero",filtro = true)
 	@Id
 	@Column(name = "ID_ALUNO")
@@ -62,6 +66,13 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private List<Mensagem> listaMensagensSistema;
 	
 	
+	public void setConfiguracao(Configuracao configuracao) {
+		this.configuracao = configuracao;
+	}
+	
+	public Configuracao getConfiguracao() {
+		return configuracao;
+	}
 	public void setLogin(String login) {
 		this.login = login;
 	}

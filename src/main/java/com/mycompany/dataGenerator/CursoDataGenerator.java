@@ -13,7 +13,6 @@ public class CursoDataGenerator {
 		curso.setModalidade(Curso.MODALIDADE_ANUAL);
 		
 		Administracao administracao = new Administracao();
-		administracao.setCompartilhar(true);
 		administracao.setCurso(curso);
 		curso.setAdministracao(administracao);
 		cursoDAO.persist(curso);

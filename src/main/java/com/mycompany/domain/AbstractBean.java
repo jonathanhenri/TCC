@@ -2,11 +2,6 @@ package com.mycompany.domain;
 
 import java.beans.PropertyDescriptor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.security.acls.objectidentity.ObjectIdentity;

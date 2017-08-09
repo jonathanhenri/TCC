@@ -4,9 +4,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
-
-import com.mycompany.domain.AbstractBean;
 
 public class MensagemExcluirPanel extends Panel {
 	private static final long serialVersionUID = 1L;

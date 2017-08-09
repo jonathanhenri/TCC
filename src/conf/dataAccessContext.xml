@@ -33,6 +33,11 @@
     <bean id="materiaDAO"  class="com.mycompany.persistence.dao.MateriaDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    
+    <bean id="configuracaoDAO"  class="com.mycompany.persistence.dao.ConfiguracaoDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
      <bean id="aulaDAO"  class="com.mycompany.persistence.dao.AulaDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>

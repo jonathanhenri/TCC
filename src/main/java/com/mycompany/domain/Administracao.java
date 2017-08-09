@@ -29,21 +29,9 @@ public class Administracao implements Serializable{
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO")
 	private Curso curso;
-	
-	@Column(name = "COMPARTILHAR", nullable = true)
-	private Boolean compartilhar;
 
 	@Column(name = "ADMINISTRADOR_CAMPUS", nullable = true)
 	private Boolean administradorCampus = false;
-	
-	
-	public void setCompartilhar(Boolean compartilhar) {
-		this.compartilhar = compartilhar;
-	}
-	
-	public Boolean getCompartilhar() {
-		return compartilhar;
-	}
 	
 	public Aluno getAluno() {
 		return aluno;

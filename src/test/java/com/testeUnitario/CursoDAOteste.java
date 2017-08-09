@@ -3,11 +3,6 @@ package com.testeUnitario;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
-import com.mycompany.persistence.interfaces.IAlunoDAO;
-import com.mycompany.persistence.interfaces.ICursoDAO;
 import com.mycompany.services.interfaces.ICursoServico;
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
