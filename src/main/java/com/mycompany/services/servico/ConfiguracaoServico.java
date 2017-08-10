@@ -121,6 +121,11 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	public Retorno validaRegrasAntesIncluir(Configuracao configuracao) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(configuracao);
 		
+		if(count(new Search())>0){
+			retorno.addMensagem(new Mensagem("Configuração já existente",Mensagem.ALERTA));
+			retorno.setSucesso(false);
+		}
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(configuracao));
 			return retorno;

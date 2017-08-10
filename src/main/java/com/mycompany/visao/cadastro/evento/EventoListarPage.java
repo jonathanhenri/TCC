@@ -2,6 +2,7 @@ package com.mycompany.visao.cadastro.evento;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -35,12 +36,20 @@ public class EventoListarPage extends ListarPageGenerico {
 		modalIncluirEditar.setOutputMarkupId(true);
 		modalIncluirEditar.setInitialHeight(600);
 		modalIncluirEditar.setInitialWidth(600);
+		modalIncluirEditar.setCloseButtonCallback(null);
 		return modalIncluirEditar;
 	}
 	
 	private void addFiltros(){
+		campoDescricao();
 	}
 
+	private void campoDescricao(){
+		final TextField<String> descricao = new TextField<String>("descricao");
+		descricao.setOutputMarkupId(true);
+		form.add(descricao);
+	}
+	
 
 	@Override
 	protected void getEditFormIncluir(AjaxRequestTarget target) {

@@ -16,6 +16,7 @@ import com.mycompany.visao.cadastro.evento.EventoListarPage;
 import com.mycompany.visao.cadastro.materia.MateriaListarPage;
 import com.mycompany.visao.cadastro.origemEvento.OrigemEventoListarPage;
 import com.mycompany.visao.cadastro.tipoEvento.TipoEventoListarPage;
+import com.mycompany.visao.configuracao.ConfiguracaoPage;
 import com.mycompany.visao.geradorCodigo.CodigoAlunoListarPage;
 import com.mycompany.visao.login.Login;
 
@@ -98,6 +99,14 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(CodigoAlunoListarPage.class);
+			}
+		});
+		
+		add(new AjaxLink<String>("link_configuracao") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(ConfiguracaoPage.class);
 			}
 		});
 		

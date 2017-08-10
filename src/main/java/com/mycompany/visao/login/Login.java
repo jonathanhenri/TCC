@@ -38,6 +38,9 @@ public class Login extends WebPage {
 	IContadorAcessoServico contadorAcessoServico;
 	
 	public Login() {
+		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getId()!=null){
+			setDefaultResponsePageIfNecessary();
+		}
 		adicionaCampos();		
 	}
 

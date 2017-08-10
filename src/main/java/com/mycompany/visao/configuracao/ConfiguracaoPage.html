@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+<wicket:head>
+<style>
+.btn span.glyphicon {    			
+	opacity: 0;				
+}
+.btn.active span.glyphicon {				
+	opacity: 1;				
+}
+
+</style>
+</wicket:head>
+</head>
+
+<body>
+	<wicket:extend>
+		<div class="main-grid">
+			<div class="agile-grids">	
+				<!-- input-forms -->
+				<div class="grids">
+					<div class="progressbar-heading grids-heading">
+						<h2><label> Configurações</label></h2>
+					</div>
+					
+					<form wicket:id="form">
+						<span wicket:id="compartilharEvento">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-success active">
+									<input type="radio" wicket:id="compartilharEventoSim">
+									<span class="glyphicon glyphicon-ok"></span>
+								</label>
+								<label class="btn btn-danger">
+									<input type="radio" wicket:id="compartilharEventoNao">
+									<span class="glyphicon glyphicon-ok"></span>
+								</label>
+							</div>
+						</span>
+					</form>
+				</div>
+			</div>
+		</div>
+	</wicket:extend>
+</body>
+
+</html>

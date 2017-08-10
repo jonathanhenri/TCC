@@ -41,7 +41,7 @@ public class AulaListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(660);
+		modalIncluirEditar.setInitialHeight(780);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
