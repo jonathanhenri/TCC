@@ -1,5 +1,6 @@
 package com.mycompany.services.servico;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Isolation;
@@ -24,6 +25,10 @@ public class EventoServico implements IEventoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Evento evento) {
+		if(evento.getDataInicio() == null){
+			evento.setDataInicio(new Date());
+		}
+		
 		Retorno retorno = validaRegrasAntesIncluir(evento);
 		
 		if(retorno.getSucesso()){

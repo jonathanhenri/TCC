@@ -8,10 +8,15 @@
 	<script src="js/jquery2.0.3.min.js"></script>
 	<script src="js/notify.js"></script>
 	<script src="js/notify.min.js"></script>
+	<script src="js/jquery.mask.js"></script>
 	<script>
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
 		});
+	jQuery(function($){
+		$("#campoDataInicio").mask("99/99/9999");
+		$("#campoDataFim").mask("99/99/9999");
+	});
 	</script>
 </wicket:head>
 </head>
@@ -32,14 +37,24 @@
 								<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
 							</div>
 							<div class="col-md-6">	
-								<label class="control-label">Periodo</label>
-								<input type="number" class="form-control" id="periodo" wicket:id="periodo" placeholder="periodo">
+								<label class="control-label">Professor</label>
+								<input type="text" class="form-control"  id="professor" wicket:id="professor" placeholder="Professor">
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-6">	
-								<label class="control-label">Professor</label>
-								<input type="text" class="form-control"  id="professor" wicket:id="professor" placeholder="Professor">
+								<label class="control-label">Data inicio</label>
+								<input type="text" class="form-control"  id ="campoDataInicio"  wicket:id="dataInicio" placeholder="Data inicio">
+							</div>
+							<div class="col-md-6">	
+								<label class="control-label">Data final</label>
+								<input type="text" class="form-control"  id ="campoDataFim" wicket:id="dataFim" placeholder="Data final">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Periodo</label>
+								<input type="number" class="form-control" id="periodo" wicket:id="periodo" placeholder="periodo">
 							</div>
 							<div class="col-md-6">	
 								<label class="control-label">Local</label>

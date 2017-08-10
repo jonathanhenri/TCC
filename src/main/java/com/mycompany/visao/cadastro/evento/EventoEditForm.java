@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.datetime.PatternDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -14,6 +17,7 @@ import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
@@ -56,12 +60,6 @@ public class EventoEditForm extends EditForm<Evento> {
 		serviceComum = eventoServico;
 	}
 	
-	@Override
-	protected void beforeSave() {
-		if(evento.getDataInicio() == null){
-			evento.setDataInicio(new Date());
-		}
-	}
 	private ColorTextField criarCampoCodigoCor(){
 		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
 		textFieldCodigoCor.setOutputMarkupId(true);
@@ -112,11 +110,51 @@ public class EventoEditForm extends EditForm<Evento> {
 		return tipoRadioChoice;
 	}
 	
-//	private DateTextField criarCampoDataInicio(){
-//		DatePicker dateInicio = new DatePicker();
-//		
-//		DateTextField dataFieldInicio = new DateTextField("dataInicio", converter)
-//	}
+	private DateTextField criarCampoDataFim(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DateTextField dataFim = new DateTextField("dataFim", new PropertyModel<Date>(getAbstractBean(), "dataFim"),new PatternDateConverter("dd/MM/yyyy", true));
+		datePicker.setAutoHide(true);		
+		dataFim.add(datePicker);
+		dataFim.setOutputMarkupId(true);
+		return dataFim;
+	}
+
+	private DateTextField criarCampoDataInicio(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DateTextField dataInicio = new DateTextField("dataInicio", new PropertyModel<Date>(getAbstractBean(), "dataInicio"),new PatternDateConverter("dd/MM/yyyy", true));
+		datePicker.setAutoHide(true);		
+		dataInicio.add(datePicker);
+		dataInicio.setOutputMarkupId(true);
+		return dataInicio;
+	}
+
+
 	
 	private DropDownChoice<TipoEvento> criarCampoTipoEvento(){
 		IChoiceRenderer<TipoEvento> choiceRenderer = new ChoiceRenderer<TipoEvento>("nome", "id");
@@ -157,6 +195,8 @@ public class EventoEditForm extends EditForm<Evento> {
 		add(criarCampoDescricao());
 		add(criarCampoOrigemEvento());
 		add(criarCampoTipoEvento());
+		add(criarCampoDataFim());
+		add(criarCampoDataInicio());
 		add(criarCampoMateria());
 		add(criarCampoCodigoCor());
 		add(criarCampoPeriodo());

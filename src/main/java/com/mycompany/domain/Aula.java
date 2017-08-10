@@ -40,10 +40,10 @@ public class Aula extends AbstractBean<Aula> {
 	private String professor;
 	
 	@Column(name = "DATA_INICIO", nullable = true)
-	private Date dataHoraInicio;
+	private Date dataInicio;
 	
 	@Column(name = "DATA_FIM", nullable = true)
-	private Date dataHoraFim;
+	private Date dataFim;
 	
 	@Column(name = "LOCAL", nullable = true, length = 100)
 	private String local;
@@ -138,20 +138,20 @@ public class Aula extends AbstractBean<Aula> {
 		this.professor = professor;
 	}
 
-	public Date getDataHoraInicio() {
-		return dataHoraInicio;
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
 	}
-
-	public void setDataHoraInicio(Date dataHoraInicio) {
-		this.dataHoraInicio = dataHoraInicio;
+	
+	public Date getDataFim() {
+		return dataFim;
 	}
-
-	public Date getDataHoraFim() {
-		return dataHoraFim;
+	
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
 	}
-
-	public void setDataHoraFim(Date dataHoraFim) {
-		this.dataHoraFim = dataHoraFim;
+	
+	public Date getDataInicio() {
+		return dataInicio;
 	}
 
 	public String getLocal() {

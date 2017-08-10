@@ -181,6 +181,12 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			        }
 				}
 			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				Util.notify(target, "Dados incorretos", Mensagem.ALERTA);
+				super.onError(target, form);
+			}
 		};
 		
 		salvar.setOutputMarkupId(true);

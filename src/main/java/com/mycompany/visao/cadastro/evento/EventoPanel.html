@@ -8,9 +8,16 @@
 	<script src="js/jquery2.0.3.min.js"></script>
 	<script src="js/notify.js"></script>
 	<script src="js/notify.min.js"></script>
+	<script src="js/jquery.mask.js"></script>
 	<script>
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	
+	
+		jQuery(function($){
+			$("#campoDataInicio").mask("99/99/9999");
+			$("#campoDataFim").mask("99/99/9999");
 		});
 	</script>
 </wicket:head>
@@ -26,6 +33,16 @@
 						</div>
 					</div>
 					<div class="panel-body">
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Data inicio</label>
+								<input type="text" class="form-control"  id ="campoDataInicio"  wicket:id="dataInicio" placeholder="Data inicio">
+							</div>
+							<div class="col-md-6">	
+								<label class="control-label">Data final</label>
+								<input type="text" class="form-control"  id ="campoDataFim" wicket:id="dataFim" placeholder="Data final">
+							</div>
+						</div>
 						<div class="form-group">
 							<div class="col-md-12">	
 								<label class="control-label">Descrição</label>

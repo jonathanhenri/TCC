@@ -1,9 +1,13 @@
 package com.mycompany.visao.cadastro.aula;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.datetime.PatternDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -13,6 +17,7 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
@@ -59,31 +64,50 @@ public class AulaEditForm extends EditForm<Aula> {
 		return textArea;
 	}
 	
-//	private DataTextField criarTextFieldDataSaida(){
-//		
-//		DatePicker datePicker = new DatePicker(){
-//			private static final long serialVersionUID = 1L;
-//			
-//			
-//			@Override
-//			protected boolean alignWithIcon() {
-//				return true;
-//			}
-//			@Override
-//			protected boolean enableMonthYearSelection() {
-//				return false;
-//			}			
-//		};
-//		DataTextField datasaida = new DataTextField("dataSaida", new PropertyModel<Date>(getAbstractBean(), "dataSaida"),"dd/MM/yyyy", "regra.data.invalida");
-//		datePicker.setAutoHide(true);		
-//		datasaida.add(datePicker);
-//		datasaida.add(new DataJQueryAttributeModifier(getLocale()));
-//		datasaida.add(new AttributeModifier("onfocus", "$(this).setMask('99/99/9999');"));
-//		datasaida.setRequired(true);
-//		datasaida.setOutputMarkupId(true);
-//		return datasaida;
-//	}
-	
+
+	private DateTextField criarCampoDataFim(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DateTextField dataFim = new DateTextField("dataFim", new PropertyModel<Date>(getAbstractBean(), "dataFim"),new PatternDateConverter("dd/MM/yyyy", true));
+		datePicker.setAutoHide(true);		
+		dataFim.add(datePicker);
+		dataFim.setOutputMarkupId(true);
+		return dataFim;
+	}
+
+	private DateTextField criarCampoDataInicio(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DateTextField dataInicio = new DateTextField("dataInicio", new PropertyModel<Date>(getAbstractBean(), "dataInicio"),new PatternDateConverter("dd/MM/yyyy", true));
+		datePicker.setAutoHide(true);		
+		dataInicio.add(datePicker);
+		dataInicio.setOutputMarkupId(true);
+		return dataInicio;
+	}
 	
 	private TextField<String> criarCampoLocal(){
 		TextField<String> textFieldLocal = new TextField<String>("local");
@@ -160,6 +184,8 @@ public class AulaEditForm extends EditForm<Aula> {
 		add(criarCampoPeriodo());
 		add(criarCampoCurso());
 		add(criarCampoLocal());
+		add(criarCampoDataFim());
+		add(criarCampoDataInicio());
 		add(criarCampoMateria());
 		add(criarCampoObservacao());
 		add(criarCampoProfessor());
