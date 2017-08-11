@@ -27,15 +27,25 @@ public class Reflexao {
 		Class<?> cls = object.getClass();	
 		Field[] fld = cls.getDeclaredFields();
 		for(int i = 0; i < fld.length; i++){
-			Column cmp = fld[i].getAnnotation(Column.class);
-			if(cmp!=null && !cmp.nullable()){
+			String name = null;
+			Column cmpColum = fld[i].getAnnotation(Column.class);
+			JoinColumn cmpJoinColumn = fld[i].getAnnotation(JoinColumn.class);
+			
+			if(cmpColum!=null && !cmpColum.nullable()){
+				name = cmpColum.name();
+			}else if(cmpJoinColumn!=null && !cmpJoinColumn.nullable()){
+				name = cmpJoinColumn.name();
+			}
+			
+			if(name!=null){
 				Object objectCampo = getFieldValueCamposComuns(object, fld[i].getName());
 				if(objectCampo == null){ 
-					Mensagem mensagem = new Mensagem(cmp.name(), Mensagem.MOTIVO_NULO, Mensagem.ERRO);
+					Mensagem mensagem = new Mensagem(Util.firstToUpperCase(fld[i].getName()), Mensagem.MOTIVO_NULO, Mensagem.ERRO);
 					retorno.setSucesso(false);
 					retorno.addMensagem(mensagem);
 				}
 			}
+		
 		}
 		
 		return retorno;
@@ -213,8 +223,9 @@ public class Reflexao {
 			
 			for(int i = 0; i < fld.length; i++){
 				Column cmp = fld[i].getAnnotation(Column.class);
+				JoinColumn cmpJoinColumn = fld[i].getAnnotation(JoinColumn.class);
 				
-				if(cmp!=null && fld[i].getName().equalsIgnoreCase(fieldName)){
+				if((cmp!=null || cmpJoinColumn!=null) && fld[i].getName().equalsIgnoreCase(fieldName)){
 					pkValue = getValueBean(object, fld[i].getName(), cls);
 					break;
 				}				

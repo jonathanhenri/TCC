@@ -22,7 +22,7 @@ public class Evento extends AbstractBean<Evento> {
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
-	@JoinColumn(name="ID_ADMINISTRACAO",nullable=false)
+	@JoinColumn(name="ID_ADMINISTRACAO",nullable=true)
 	private Administracao administracao;
 	
 	@Column(name = "DATA_INICIO", nullable = false)
