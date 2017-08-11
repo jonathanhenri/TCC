@@ -46,7 +46,7 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_MATERIA",nullable = true)
 	private Materia materia;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY,optional = true)
 	@JoinColumn(name="ID_AGENDA",nullable = true)
 	private Agenda agenda;
 	

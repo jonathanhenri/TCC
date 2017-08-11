@@ -4,42 +4,311 @@
 <head>
 <meta charset="UTF-8">
 <wicket:head>
-<style>
-.btn span.glyphicon {    			
-	opacity: 0;				
-}
-.btn.active span.glyphicon {				
-	opacity: 1;				
-}
-
-</style>
+<link href="css/toggle-switch.css" rel='stylesheet'  />
+<link href="css/toggle-switch-px.css" rel='stylesheet'  />
+<link href="css/toggle-switch-rem.css" rel='stylesheet'  />
+<script>
+$('#tab a').on('click', function(e) {
+  e.preventDefault();
+  $(this).tab('show');
+});
+</script>
 </wicket:head>
 </head>
 
 <body>
 	<wicket:extend>
-		<div class="main-grid">
-			<div class="agile-grids">	
-				<!-- input-forms -->
-				<div class="grids">
-					<div class="progressbar-heading grids-heading">
-						<h2><label> Configurações</label></h2>
-					</div>
-					
-					<form wicket:id="form">
-						<span wicket:id="compartilharEvento">
-							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-success active">
-									<input type="radio" wicket:id="compartilharEventoSim">
-									<span class="glyphicon glyphicon-ok"></span>
-								</label>
-								<label class="btn btn-danger">
-									<input type="radio" wicket:id="compartilharEventoNao">
-									<span class="glyphicon glyphicon-ok"></span>
-								</label>
+	    <div class="fieldcontain col-lg-12">
+			<div class="main-grid ">
+				<div class="agile-grids">	
+					<!-- input-forms -->
+					<div class="grids">
+						<div class="progressbar-heading grids-heading">
+							<h2><label> Configurações</label></h2>
+						</div>
+						 <div class="fieldcontain col-lg-12">
+							<ul class="nav nav-pills">
+								<li class="active"><a href="#compartilhar" data-toggle="tab">Compartilhar</a></li>
+								<li><a href="#sincronizar" data-toggle="tab">Sincronizar</a></li>
+							</ul>
+						</div>
+						<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="form">
+							<div class="tab-content">
+								<div class="tab-pane active in" id="compartilhar" wicket:id="divCompartilhar">
+									<div class="form-group">
+									    <div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Evento
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharEvento" >
+													    <input id="compartilharEventoSim" wicket:id="compartilharEventoSim"  name="compartilharEventoSim" type="radio">
+													    <label for="compartilharEventoSim" onclick="">Sim</label>
+													
+													    <input id="compartilharEventoNao" wicket:id="compartilharEventoNao"  name="compartilharEventoNao" type="radio">
+													    <label for="compartilharEventoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Tipo de Evento
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharTipoEvento" >
+													    <input id="compartilharTipoEventoSim" wicket:id="compartilharTipoEventoSim"  name="compartilharTipoEventoSim" type="radio">
+													    <label for="compartilharTipoEventoSim" onclick="">Sim</label>
+													
+													    <input id="compartilharTipoEventoNao" wicket:id="compartilharTipoEventoNao"  name="compartilharTipoEventoNao" type="radio">
+													    <label for="compartilharTipoEventoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Origem de Evento
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharOrigemEvento" >
+													    <input id="compartilharOrigemEventoSim" wicket:id="compartilharOrigemEventoSim"  name="compartilharOrigemEventoSim" type="radio">
+													    <label for="compartilharOrigemEventoSim" onclick="">Sim</label>
+													
+													    <input id="compartilharOrigemEventoNao" wicket:id="compartilharOrigemEventoNao"  name="compartilharOrigemEventoNao" type="radio">
+													    <label for="compartilharOrigemEventoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Materia
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharMateria" >
+													    <input id="compartilharMateriaSim" wicket:id="compartilharMateriaSim"  name="compartilharMateriaSim" type="radio">
+													    <label for="compartilharMateriaSim" onclick="">Sim</label>
+													
+													    <input id="compartilharMateriaNao" wicket:id="compartilharMateriaNao"  name="compartilharMateriaNao" type="radio">
+													    <label for="compartilharMateriaNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Aula
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharAula" >
+													    <input id="compartilharAulaSim" wicket:id="compartilharAulaSim"  name="compartilharAulaSim" type="radio">
+													    <label for="compartilharAulaSim" onclick="">Sim</label>
+													
+													    <input id="compartilharAulaNao" wicket:id="compartilharAulaNao"  name="compartilharAulaNao" type="radio">
+													    <label for="compartilharAulaNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Agenda
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharAgenda" >
+													    <input id="compartilharAgendaSim" wicket:id="compartilharAgendaSim"  name="compartilharAgendaSim" type="radio">
+													    <label for="compartilharAgendaSim" onclick="">Sim</label>
+													
+													    <input id="compartilharAgendaNao" wicket:id="compartilharAgendaNao"  name="compartilharAgendaNao" type="radio">
+													    <label for="compartilharAgendaNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Compartilhar Perfil Acesso
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="compartilharPerfilAcesso" >
+													    <input id="compartilharPerfilAcessoSim" wicket:id="compartilharPerfilAcessoSim"  name="compartilharPerfilAcessoSim" type="radio">
+													    <label for="compartilharPerfilAcessoSim" onclick="">Sim</label>
+													
+													    <input id="compartilharPerfilAcessoNao" wicket:id="compartilharPerfilAcessoNao"  name="compartilharPerfilAcessoNao" type="radio">
+													    <label for="compartilharPerfilAcessoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="tab-pane" id="sincronizar" wicket:id="divSincronizar">
+									<div class="form-group">
+									    <div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Evento
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarEvento" >
+													    <input id="sincronizarEventoSim" wicket:id="sincronizarEventoSim"  name="sincronizarEventoSim" type="radio">
+													    <label for="sincronizarEventoSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarEventoNao" wicket:id="sincronizarEventoNao"  name="sincronizarEventoNao" type="radio">
+													    <label for="sincronizarEventoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Tipo de Evento
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarTipoEvento" >
+													    <input id="sincronizarTipoEventoSim" wicket:id="sincronizarTipoEventoSim"  name="sincronizarTipoEventoSim" type="radio">
+													    <label for="sincronizarTipoEventoSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarTipoEventoNao" wicket:id="sincronizarTipoEventoNao"  name="sincronizarTipoEventoNao" type="radio">
+													    <label for="sincronizarTipoEventoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Origem de Evento
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarOrigemEvento" >
+													    <input id="sincronizarOrigemEventoSim" wicket:id="sincronizarOrigemEventoSim"  name="sincronizarOrigemEventoSim" type="radio">
+													    <label for="sincronizarOrigemEventoSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarOrigemEventoNao" wicket:id="sincronizarOrigemEventoNao"  name="sincronizarOrigemEventoNao" type="radio">
+													    <label for="sincronizarOrigemEventoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Materia
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarMateria" >
+													    <input id="sincronizarMateriaSim" wicket:id="sincronizarMateriaSim"  name="sincronizarMateriaSim" type="radio">
+													    <label for="sincronizarMateriaSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarMateriaNao" wicket:id="sincronizarMateriaNao"  name="sincronizarMateriaNao" type="radio">
+													    <label for="sincronizarMateriaNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Aula
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarAula" >
+													    <input id="sincronizarAulaSim" wicket:id="sincronizarAulaSim"  name="sincronizarAulaSim" type="radio">
+													    <label for="sincronizarAulaSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarAulaNao" wicket:id="sincronizarAulaNao"  name="sincronizarAulaNao" type="radio">
+													    <label for="sincronizarAulaNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Agenda
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarAgenda" >
+													    <input id="sincronizarAgendaSim" wicket:id="sincronizarAgendaSim"  name="sincronizarAgendaSim" type="radio">
+													    <label for="sincronizarAgendaSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarAgendaNao" wicket:id="sincronizarAgendaNao"  name="sincronizarAgendaNao" type="radio">
+													    <label for="sincronizarAgendaNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="fieldcontain col-lg-2">
+									        <label >
+									           Sincronizar Perfil Acesso
+									        </label>
+											<div class="switch-toggle switch-candy large-3">
+												<div class="switch-toggle switch-candy large-3">
+												 	<div wicket:id="sincronizarPerfilAcesso" >
+													    <input id="sincronizarPerfilAcessoSim" wicket:id="sincronizarPerfilAcessoSim"  name="sincronizarPerfilAcessoSim" type="radio">
+													    <label for="sincronizarPerfilAcessoSim" onclick="">Sim</label>
+													
+													    <input id="sincronizarPerfilAcessoNao" wicket:id="sincronizarPerfilAcessoNao"  name="sincronizarPerfilAcessoNao" type="radio">
+													    <label for="sincronizarPerfilAcessoNao" onclick="">Não</label>
+							
+													    <a></a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<div class="col-md-12">	
+									<br>
+										<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>
+									</div>
+								</div>
 							</div>
-						</span>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

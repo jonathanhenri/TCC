@@ -31,8 +31,8 @@ public class Aula extends AbstractBean<Aula> {
 	@JoinColumn(name="ID_MATERIA",nullable = false)
 	private Materia materia;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_AGENDA",nullable = false)
+	@ManyToOne(fetch=FetchType.LAZY,optional = true)
+	@JoinColumn(name="ID_AGENDA",nullable = true)
 	private Agenda agenda;
 	
 	@ListarPageAnotacao

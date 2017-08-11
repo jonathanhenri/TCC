@@ -95,4 +95,8 @@ public class MateriaListarPage extends ListarPageGenerico {
 		return modalFiltros;
 	}
 	
+	@Override
+	protected Boolean isVisibleBotaoMaisFiltros() {
+		return false;
+	}
 }

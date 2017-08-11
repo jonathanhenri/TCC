@@ -89,6 +89,11 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 		
 		return modalFiltros;
 	}
+	
+	@Override
+	protected Boolean isVisibleBotaoMaisFiltros() {
+		return false;
+	}
 		
 	
 }
