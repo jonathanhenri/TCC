@@ -23,11 +23,59 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	public static Integer OPERACAO_PESQUISAR = 1;
 	public static Integer OPERACAO_ALTERAR = 2;
 	public static Integer OPERACAO_EXCLUIR = 3;
+	public static Integer OPERACAO_RELATORIO = 4;
 	
 	public static Integer PERMISSAO_ALUNO_INCLUIR = 0;
 	public static Integer PERMISSAO_ALUNO_PESQUISAR = 1;
 	public static Integer PERMISSAO_ALUNO_ALTERAR = 2;
 	public static Integer PERMISSAO_ALUNO_EXCLUIR = 3;
+	
+	public static Integer PERMISSAO_EVENTO_INCLUIR = 4;
+	public static Integer PERMISSAO_EVENTO_PESQUISAR = 5;
+	public static Integer PERMISSAO_EVENTO_ALTERAR = 6;
+	public static Integer PERMISSAO_EVENTO_EXCLUIR = 7;
+	
+	public static Integer PERMISSAO_TIPO_EVENTO_INCLUIR = 8;
+	public static Integer PERMISSAO_TIPO_EVENTO_PESQUISAR = 9;
+	public static Integer PERMISSAO_TIPO_EVENTO_ALTERAR = 10;
+	public static Integer PERMISSAO_TIPO_EVENTO_EXCLUIR = 11;
+	
+	public static Integer PERMISSAO_ORIGEM_EVENTO_INCLUIR = 12;
+	public static Integer PERMISSAO_ORIGEM_EVENTO_PESQUISAR = 13;
+	public static Integer PERMISSAO_ORIGEM_EVENTO_ALTERAR = 14;
+	public static Integer PERMISSAO_ORIGEM_EVENTO_EXCLUIR = 15;
+	
+	public static Integer PERMISSAO_CURSO_INCLUIR = 16;
+	public static Integer PERMISSAO_CURSO_PESQUISAR = 17;
+	public static Integer PERMISSAO_CURSO_ALTERAR = 18;
+	public static Integer PERMISSAO_CURSO_EXCLUIR = 19;
+	
+	public static Integer PERMISSAO_MATERIA_INCLUIR = 20;
+	public static Integer PERMISSAO_MATERIA_PESQUISAR = 21;
+	public static Integer PERMISSAO_MATERIA_ALTERAR = 22;
+	public static Integer PERMISSAO_MATERIA_EXCLUIR = 23;
+	
+	public static Integer PERMISSAO_AGENDA_INCLUIR = 24;
+	public static Integer PERMISSAO_AGENDA_PESQUISAR = 25;
+	public static Integer PERMISSAO_AGENDA_ALTERAR = 26;
+	public static Integer PERMISSAO_AGENDA_EXCLUIR = 27;
+	
+	public static Integer PERMISSAO_PERFIL_ACESSO_INCLUIR = 28;
+	public static Integer PERMISSAO_PERFIL_ACESSO_PESQUISAR = 29;
+	public static Integer PERMISSAO_PERFIL_ACESSO_ALTERAR = 30;
+	public static Integer PERMISSAO_PERFIL_ACESSO_EXCLUIR = 31;
+	
+	public static Integer PERMISSAO_ACESSO_PROVISORIO_INCLUIR = 32;
+	public static Integer PERMISSAO_ACESSO_PROVISORIO_PESQUISAR = 33;
+	public static Integer PERMISSAO_ACESSO_PROVISORIO_ALTERAR = 34;
+	public static Integer PERMISSAO_ACESSO_PROVISORIO_EXCLUIR = 35;
+	
+	public static Integer PERMISSAO_AULA_INCLUIR = 36;
+	public static Integer PERMISSAO_AULA_PESQUISAR = 37;
+	public static Integer PERMISSAO_AULA_ALTERAR = 38;
+	public static Integer PERMISSAO_AULA_EXCLUIR = 39;
+	
+	public static Integer PERMISSAO_RELATORIOS = 40;
 	
 	//TODO TRABALHAR NESSAS PERMISSÕES
 	@Column(name = "NOME", nullable = false, length = 300)

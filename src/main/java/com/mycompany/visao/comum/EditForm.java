@@ -15,6 +15,10 @@ import org.apache.wicket.model.Model;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import wicket.contrib.input.events.EventType;
+import wicket.contrib.input.events.InputBehavior;
+import wicket.contrib.input.events.key.KeyType;
+
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PermissaoAcesso;
@@ -81,6 +85,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			}
 			 
 		 };
+		 voltar.add(new InputBehavior(new KeyType[] { KeyType.Escape }, EventType.click));
 		 return voltar;
 	}
 	
@@ -191,6 +196,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			}
 		};
 		
+		salvar.add(new InputBehavior(new KeyType[] { KeyType.Enter }, EventType.click));
 		salvar.setOutputMarkupId(true);
 		return salvar;
 	}
@@ -217,20 +223,20 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	private Boolean validarPermissaoPersist(final AbstractBean<?> abstractBean){
 		
 //		if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
-//			return true;
+			return true;
 //		}
 		
-		Aluno aluno = (Aluno) serviceComum.searchFechId(Util.getAlunoLogado());
-		
-		for(PermissaoAcesso permissaoAcesso:aluno.getPerfilAcesso().getPermissoesAcesso()){
-			if(permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
-				if(permissaoAcesso.getOperacao().equals(PermissaoAcesso.OPERACAO_INCLUIR)){
-					return true;
-				}
-			}
-		}
-		
-		return false;
+//		Aluno aluno = (Aluno) serviceComum.searchFechId(Util.getAlunoLogado());
+//		
+//		for(PermissaoAcesso permissaoAcesso:aluno.getPerfilAcesso().getPermissoesAcesso()){
+//			if(permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
+//				if(permissaoAcesso.getOperacao().equals(PermissaoAcesso.OPERACAO_INCLUIR)){
+//					return true;
+//				}
+//			}
+//		}
+//		
+//		return false;
 	}
 	
 	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
