@@ -1,6 +1,6 @@
 package com.mycompany.visao.comum;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
+	import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -20,8 +20,6 @@ import wicket.contrib.input.events.InputBehavior;
 import wicket.contrib.input.events.key.KeyType;
 
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Aluno;
-import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
