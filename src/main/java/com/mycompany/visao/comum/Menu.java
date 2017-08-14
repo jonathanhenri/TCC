@@ -15,6 +15,7 @@ import com.mycompany.visao.cadastro.curso.CursoListarPage;
 import com.mycompany.visao.cadastro.evento.EventoListarPage;
 import com.mycompany.visao.cadastro.materia.MateriaListarPage;
 import com.mycompany.visao.cadastro.origemEvento.OrigemEventoListarPage;
+import com.mycompany.visao.cadastro.perfilAcesso.PerfilAcessoListarPage;
 import com.mycompany.visao.cadastro.tipoEvento.TipoEventoListarPage;
 import com.mycompany.visao.configuracao.ConfiguracaoPage;
 import com.mycompany.visao.geradorCodigo.CodigoAlunoListarPage;
@@ -110,6 +111,14 @@ public class Menu extends WebPage {
 			}
 		});
 		
+		add(new AjaxLink<String>("link_cadastro_perfil_acesso") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(PerfilAcessoListarPage.class);			
+			}
+		});
+		
 		add(new AjaxLink<String>("sair_profile") {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -129,6 +138,8 @@ public class Menu extends WebPage {
 				setResponsePage(Login.class);				
 			}
 		});
+		
+		
 		
 //		add(criarFeedbackPanel());
 		

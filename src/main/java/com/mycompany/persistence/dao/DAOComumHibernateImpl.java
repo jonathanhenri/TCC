@@ -114,31 +114,32 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	}
 	
 	private void inicializarAdministracao(T entity){
-		if(entity.getAdministracao()!=null ){
-			if(entity.getAdministracao().getAluno() == null){
-				entity.getAdministracao().setAluno(Util.getAlunoLogado());
+		if(entity instanceof AbstractBean){
+			if(entity.getAdministracao()!=null ){
+				if(entity.getAdministracao().getAluno() == null){
+					entity.getAdministracao().setAluno(Util.getAlunoLogado());
+				}
+				
+				if(entity.getAdministracao().getCurso() == null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
+					entity.getAdministracao().setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+				}
+				
+				if(entity.getAdministracao().getId()==null){
+					super._save(entity.getAdministracao());
+				}
+			}else{
+				Administracao administracao = new Administracao();
+				administracao.setAluno(Util.getAlunoLogado());
+				
+				if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao().getCurso()!=null){
+					administracao.setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+				}
+				entity.setAdministracao(administracao);
+				
+				if(entity.getAdministracao().getId()==null){
+					super._save(entity.getAdministracao());
+				}
 			}
-			
-			if(entity.getAdministracao().getCurso() == null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
-				entity.getAdministracao().setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
-			}
-			
-			if(entity.getAdministracao().getId()==null){
-				super._save(entity.getAdministracao());
-			}
-		}else{
-			Administracao administracao = new Administracao();
-			administracao.setAluno(Util.getAlunoLogado());
-			
-			if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao().getCurso()!=null){
-				administracao.setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
-			}
-			entity.setAdministracao(administracao);
-			
-			if(entity.getAdministracao().getId()==null){
-				super._save(entity.getAdministracao());
-			}
-		
 		}
 	}
 	@Override

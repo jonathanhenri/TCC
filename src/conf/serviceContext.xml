@@ -38,6 +38,10 @@
     	<property name="materiaDAO" ref="materiaDAO" />
     </bean>
     
+    <bean id="permissaoAcessoServico"  class="com.mycompany.services.servico.PermissaoAcessoServico">
+    	<property name="permissaoAcessoDAO" ref="permissaoAcessoDAO" />
+    </bean>
+    
      <bean id="configuracaoServico"  class="com.mycompany.services.servico.ConfiguracaoServico">
     	<property name="configuracaoDAO" ref="configuracaoDAO" />
     </bean>

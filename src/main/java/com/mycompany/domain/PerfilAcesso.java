@@ -11,34 +11,37 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.mycompany.anotacao.ListarPageAnotacao;
 
 @Entity
 @Table(name = "PERFIL_ACESSO")
 public class PerfilAcesso extends AbstractBean<PerfilAcesso> {
 	private static final long serialVersionUID = 1L;
 
-	//TODO TRABALHAR NESSAS PERMISSÕES
+	@ListarPageAnotacao
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "perfilAcesso")
-	@JoinColumn(name="ID_PERMISSAO_ACESSO",nullable = false)
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="PERFIL_PERMISSOES", joinColumns=
+  	 {@JoinColumn(name="ID_PERFIL_ACESSO")}, inverseJoinColumns=
+  	  {@JoinColumn(name="ID_PERMISSAO_ACESSO")})
 	private Set<PermissaoAcesso> permissoesAcesso;
 	
 
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
-	
 
 	@Id
 	@Column(name = "ID_PERFIL_ACESSO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	
 	
 	@Override

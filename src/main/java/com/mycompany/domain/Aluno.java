@@ -35,6 +35,10 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private Administracao administracao;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="PERFIL_ACESSO")
+	private PerfilAcesso perfilAcesso;
+	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_CONFIGURACAO")
 	private Configuracao configuracao;
 	
@@ -65,6 +69,14 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@Transient
 	private List<Mensagem> listaMensagensSistema;
 	
+	
+	public void setPerfilAcesso(PerfilAcesso perfilAcesso) {
+		this.perfilAcesso = perfilAcesso;
+	}
+	
+	public PerfilAcesso getPerfilAcesso() {
+		return perfilAcesso;
+	}
 	
 	public void setConfiguracao(Configuracao configuracao) {
 		this.configuracao = configuracao;

@@ -16,6 +16,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
@@ -211,19 +213,44 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			 Util.notify(target, mensagem.toString(), mensagem.getTipo());
 		}
 	}
-	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
-		Retorno retorno = new Retorno();
-		try{
-			retorno = serviceComum.persist(getAbstractBean());
-			
-		}catch(Exception e){
-			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação", Mensagem.ERRO));
-			e.printStackTrace();
+	
+	private Boolean validarPermissaoPersist(final AbstractBean<?> abstractBean){
+		
+//		if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+//			return true;
+//		}
+		
+		Aluno aluno = (Aluno) serviceComum.searchFechId(Util.getAlunoLogado());
+		
+		for(PermissaoAcesso permissaoAcesso:aluno.getPerfilAcesso().getPermissoesAcesso()){
+			if(permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
+				if(permissaoAcesso.getOperacao().equals(PermissaoAcesso.OPERACAO_INCLUIR)){
+					return true;
+				}
+			}
 		}
 		
-		if(retorno.getSucesso()){
-			executarAoSalvar(target);
+		return false;
+	}
+	
+	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
+		Retorno retorno = new Retorno();
+		if(validarPermissaoPersist(abstractBean)){
+			try{
+				retorno = serviceComum.persist(getAbstractBean());
+				
+			}catch(Exception e){
+				retorno.setSucesso(false);
+				retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação", Mensagem.ERRO));
+				e.printStackTrace();
+			}
+			
+			if(retorno.getSucesso()){
+				executarAoSalvar(target);
+			}
+		}else{
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Erro de permissão", Mensagem.ERRO));
 		}
 		
 		 for(Mensagem mensagem:retorno.getListaMensagem()){

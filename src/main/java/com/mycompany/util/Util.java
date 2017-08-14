@@ -5,8 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.wicket.Component;
@@ -78,6 +83,23 @@ public class Util {
 		return data1Temp.compareTo(data2Temp);
 	}
 
+    public static <T> Set<T> toSet(List<T> beanList) {
+		Set<T> result = new LinkedHashSet<T>();
+		if( beanList!=null){
+		result.addAll(beanList);
+		}
+		return result;
+	}
+    
+    public static <T> List<T> toList(Collection<T> beanList) {
+		List<T> result = new ArrayList<T>();
+		if( beanList!=null){
+			result.addAll(beanList);
+		}
+		return result;
+	}
+    
+    
 	/**
 	 * Retorna o aluno logado (SPRING)
 	 */

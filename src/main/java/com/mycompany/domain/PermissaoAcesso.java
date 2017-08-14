@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -18,24 +19,51 @@ import javax.persistence.Table;
 public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	private static final long serialVersionUID = 1L;
 
+	public static Integer OPERACAO_INCLUIR = 0;
+	public static Integer OPERACAO_PESQUISAR = 1;
+	public static Integer OPERACAO_ALTERAR = 2;
+	public static Integer OPERACAO_EXCLUIR = 3;
+	
+	public static Integer PERMISSAO_ALUNO_INCLUIR = 0;
+	public static Integer PERMISSAO_ALUNO_PESQUISAR = 1;
+	public static Integer PERMISSAO_ALUNO_ALTERAR = 2;
+	public static Integer PERMISSAO_ALUNO_EXCLUIR = 3;
+	
 	//TODO TRABALHAR NESSAS PERMISSÕES
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@Column(name = "ACAO", nullable = false, length = 300)
-	private Integer acao;
+	@Column(name = "OPERACAO", nullable = false)
+	private Integer operacao;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_PERFIL_ACESSO",nullable = true)
-	private PerfilAcesso perfilAcesso;
+	@Column(name = "PERMISSAO", nullable = false)
+	private Integer permissao;
+	
+	@Column(name = "CODIGO", nullable = false)
+	private Integer codigo;
 
 	@Column(name = "CASO_DE_USO", nullable = false, length = 300)
 	private Class<?> casoDeUso;
+	
+//	@ManyToMany(fetch=FetchType.LAZY)
+//	@JoinColumn(name="ID_PERFIL_ACESSO",nullable = true)
+//	private PerfilAcesso perfilAcesso;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 
+	public PermissaoAcesso(){
+	}
+	
+	public PermissaoAcesso(String nome,Integer permissao,Integer Codigo,Class<?> casoDeUso,Integer operacao) {
+		setNome(nome);
+		setPermissao(permissao);
+		setCodigo(Codigo);
+		setCasoDeUso(casoDeUso);
+		setOperacao(operacao);
+		
+	}
 	
 	@Id
 	@Column(name = "ID_PERMISSAO_ACESSO")
@@ -43,6 +71,30 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	private Long id;
 	
 	
+	public Integer getPermissao() {
+		return permissao;
+	}
+	public void setPermissao(Integer permissao) {
+		this.permissao = permissao;
+	}
+	public Integer getOperacao() {
+		return operacao;
+	}
+	public void setOperacao(Integer operacao) {
+		this.operacao = operacao;
+	}
+	public Integer getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+//	public PerfilAcesso getPerfilAcesso() {
+//		return perfilAcesso;
+//	}
+//	public void setPerfilAcesso(PerfilAcesso perfilAcesso) {
+//		this.perfilAcesso = perfilAcesso;
+//	}
 	@Override
 	public void setAdministracao(Administracao administracao) {
 		this.administracao = administracao;
@@ -60,14 +112,6 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 		return id;
 	}
 	
-	public void setPerfilAcesso(PerfilAcesso perfilAcesso) {
-		this.perfilAcesso = perfilAcesso;
-	}
-	
-	public PerfilAcesso getPerfilAcesso() {
-		return perfilAcesso;
-	}
-
 	@Override
 	public Class<PermissaoAcesso> getJavaType() {
 		return PermissaoAcesso.class;
@@ -89,14 +133,6 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Integer getAcao() {
-		return acao;
-	}
-
-	public void setAcao(Integer acao) {
-		this.acao = acao;
 	}
 
 	public Class<?> getCasoDeUso() {

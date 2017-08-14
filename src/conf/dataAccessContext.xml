@@ -34,6 +34,10 @@
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
+    <bean id="permissaoAcessoDAO"  class="com.mycompany.persistence.dao.PermissaoAcessoDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
     <bean id="configuracaoDAO"  class="com.mycompany.persistence.dao.ConfiguracaoDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>

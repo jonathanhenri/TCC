@@ -203,6 +203,8 @@
 	<bean id="dataGenerator" class="com.mycompany.dataGenerator.DataGenerator">
 		<property name="alunoDAO" ref="alunoDAO" />
 		<property name="cursoDAO" ref="cursoDAO" />
+		<property name="permissaoAcessoDAO" ref="permissaoAcessoDAO" />
+		<property name="perfilAcessoDAO" ref="perfilAcessoDAO" />
 	</bean>
 	
 </beans>
