@@ -4,8 +4,11 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.BasicAuthenticationSession;
+import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.Index;
@@ -23,7 +26,9 @@ import com.mycompany.visao.login.Login;
 
 public class Menu extends WebPage {
 	private static final long serialVersionUID = 1L;
-
+	@SpringBean(name="alunoServico")
+	static IAlunoServico alunoServico;
+	
 	public Menu(){
 
 		if(Util.getAlunoLogado() == null || Util.getAlunoLogado()!=null && Util.getAlunoLogado().getId() == null){
@@ -36,6 +41,11 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(CursoListarPage.class);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_CURSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
 			}
 		});
 		
@@ -52,6 +62,11 @@ public class Menu extends WebPage {
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(AlunoListarPage.class);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_ALUNO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
+			}
 		});
 //		
 		add(new AjaxLink<String>("link_cadastro_origem_evento") {
@@ -59,6 +74,11 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(OrigemEventoListarPage.class);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_ORIGEM_EVENTO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
 			}
 		});
 //		
@@ -68,6 +88,11 @@ public class Menu extends WebPage {
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(AulaListarPage.class);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AULA_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
+			}
 		});
 		
 		add(new AjaxLink<String>("link_cadastro_materia") {
@@ -76,6 +101,11 @@ public class Menu extends WebPage {
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(MateriaListarPage.class);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_MATERIA_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
+			}
 		});
 		
 		add(new AjaxLink<String>("link_cadastro_tipo_evento") {
@@ -83,6 +113,11 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(TipoEventoListarPage.class);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_TIPO_EVENTO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
 			}
 		});
 		
@@ -93,6 +128,11 @@ public class Menu extends WebPage {
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(EventoListarPage.class);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_EVENTO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
+			}
 		});
 		
 		add(new AjaxLink<String>("link_gerador_codigos") {
@@ -100,6 +140,11 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(CodigoAlunoListarPage.class);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_ACESSO_PROVISORIO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
 			}
 		});
 		
@@ -116,6 +161,11 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(PerfilAcessoListarPage.class);			
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_PERFIL_ACESSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
 			}
 		});
 		

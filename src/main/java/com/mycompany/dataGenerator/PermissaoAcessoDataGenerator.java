@@ -86,6 +86,9 @@ public class PermissaoAcessoDataGenerator {
 		//Relatorios
 		criarPermissao("Acesso a Relatórios", PermissaoAcesso.PERMISSAO_RELATORIOS, 31, AbstractBean.class, PermissaoAcesso.OPERACAO_RELATORIO);
 		
+		//Configuração
+		criarPermissao("Compartilhar", PermissaoAcesso.PERMISSAO_CONFIGURACAO_COMPARTILHAR, 32, AbstractBean.class, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR);
+		criarPermissao("Sincronizar", PermissaoAcesso.PERMISSAO_CONFIGURACAO_SINCRONIZAR, 33, AbstractBean.class, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR);
 		
 	}
 	

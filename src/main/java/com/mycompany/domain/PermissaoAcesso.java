@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,6 +23,8 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	public static Integer OPERACAO_ALTERAR = 2;
 	public static Integer OPERACAO_EXCLUIR = 3;
 	public static Integer OPERACAO_RELATORIO = 4;
+	public static Integer OPERACAO_CONFIGURACAO_SINCRONIZAR = 5;
+	public static Integer OPERACAO_CONFIGURACAO_COMPARTILHAR = 6;
 	
 	public static Integer PERMISSAO_ALUNO_INCLUIR = 0;
 	public static Integer PERMISSAO_ALUNO_PESQUISAR = 1;
@@ -76,6 +77,9 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	public static Integer PERMISSAO_AULA_EXCLUIR = 39;
 	
 	public static Integer PERMISSAO_RELATORIOS = 40;
+	
+	public static Integer PERMISSAO_CONFIGURACAO_SINCRONIZAR = 41;
+	public static Integer PERMISSAO_CONFIGURACAO_COMPARTILHAR = 41;
 	
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
