@@ -11,7 +11,9 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.DAOException;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Administracao;
+import com.mycompany.domain.Aluno;
 import com.mycompany.persistence.interfaces.IDAOComum;
+import com.mycompany.reflexao.Reflexao;
 import com.mycompany.util.Util;
 
 public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Serializable> extends GenericDAOImpl<T, ID> implements IDAOComum<T, ID>{
@@ -25,6 +27,17 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	public boolean save(T entity) {
 		inicializarAdministracao(entity);
 		return super._merge(entity) != null;
+	}
+	
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		Search search = new Search(Aluno.class);
+		search.addFilterEqual("id", alunoLogado.getId());
+		
+		for(String fetch: Reflexao.getListaAtributosEstrangeiros(alunoLogado)){
+			search.addFetch(fetch);
+		}
+		return  (Aluno)_searchUnique(search);
 	}
 	
 	@Override

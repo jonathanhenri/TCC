@@ -77,7 +77,6 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	
 	public static Integer PERMISSAO_RELATORIOS = 40;
 	
-	//TODO TRABALHAR NESSAS PERMISSÕES
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	

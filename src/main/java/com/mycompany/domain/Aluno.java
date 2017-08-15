@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.acls.sid.Sid;
 import org.springframework.security.userdetails.UserDetails;
@@ -24,6 +25,8 @@ import org.springframework.security.userdetails.UserDetails;
 import com.mycompany.anotacao.ListarPageAnotacao;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.security.AtribuicaoAdmin;
+import com.mycompany.services.interfaces.IAlunoServico;
+import com.mycompany.util.Util;
 
 @Entity
 @Table(name = "ALUNO")
@@ -196,13 +199,10 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 		return administracao;
 	}
 	
-	
-	
 	@Override
 	public GrantedAuthority[] getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new AtribuicaoAdmin());
 		return authorities.toArray(new GrantedAuthority[authorities.size()]);
 	}
-
 }

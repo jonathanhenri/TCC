@@ -22,7 +22,7 @@ import com.mycompany.services.interfaces.ICodigoAlunoServico;
 import com.mycompany.services.interfaces.IContadorAcessoServico;
 import com.mycompany.util.Util;
 
-public class AlunoServico implements IAlunoServico {
+public class AlunoServico implements IAlunoServico{
 	private IAlunoDAO alunoDAO;
 	private ICodigoAlunoServico codigoAlunoServico;
 	private IContadorAcessoServico contadorAcessoServico;
@@ -253,5 +253,10 @@ public class AlunoServico implements IAlunoServico {
 	
 	public void setalunoDAO(IAlunoDAO alunoDAO) {
 		this.alunoDAO = alunoDAO;
+	}
+
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return alunoDAO.searchFetchAlunoLogado(alunoLogado);
 	}
 }

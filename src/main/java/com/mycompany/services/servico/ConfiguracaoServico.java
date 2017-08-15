@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Configuracao;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -160,6 +161,12 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 		
 		return retorno;
 	}
+	
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return configuracaoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
+
 	
 	public void setConfiguracaoDAO(IConfiguracaoDAO configuracaoDAO) {
 		this.configuracaoDAO = configuracaoDAO;

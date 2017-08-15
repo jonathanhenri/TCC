@@ -1,5 +1,6 @@
 package com.mycompany.visao.cadastro;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.DetachableUsuarioModel;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IServiceComum;
@@ -72,7 +74,13 @@ public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<
 			search.setFirstResult((int)first);
 			search.setMaxResults((int)count);
 			
-			listaBean =  (List<AbstractBean<?>>) servicoComum.search(search);
+			if(Util.possuiPermissao(servicoComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_PESQUISAR)){
+				listaBean =  (List<AbstractBean<?>>) servicoComum.search(search);
+			}else{
+				search = new Search();
+				listaBean = new ArrayList<AbstractBean<?>>();
+			}
+			
 			
 			
 		}catch(Exception e ){
@@ -96,7 +104,11 @@ public class AbstractBeanDataProvider extends SortableDataProvider<AbstractBean<
 				}
 				
 				addFilters();
-				size = servicoComum.count(search);
+				if(Util.possuiPermissao(servicoComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_PESQUISAR)){
+					size = servicoComum.count(search);
+				}else{
+					size = 0;
+				}
 			}
 			return size;
 		}catch(Exception e ){

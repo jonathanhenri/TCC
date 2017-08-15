@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -191,6 +192,11 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		Retorno retorno = new Retorno();
 		retorno.setSucesso(true);
 		return retorno;
+	}
+	
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return codigoAlunoDAO.searchFetchAlunoLogado(alunoLogado);
 	}
 	
 }

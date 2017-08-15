@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAO;
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Aluno;
 
 public interface IDAOComum<T, ID extends Serializable> extends GenericDAO<T, ID>{
 	@Override
@@ -27,5 +28,8 @@ public interface IDAOComum<T, ID extends Serializable> extends GenericDAO<T, ID>
 	
 	@Transactional
 	public int count(Search search);
+	
+	@Transactional
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado);
 
 }

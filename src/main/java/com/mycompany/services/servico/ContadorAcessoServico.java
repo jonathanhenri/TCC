@@ -161,6 +161,10 @@ public class ContadorAcessoServico implements IContadorAcessoServico {
 		this.contadorAcessoDAO = contadorAcessoDAO;
 	}
 
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return contadorAcessoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
 
 	@Override
 	public List<ContadorAcesso> getAcessos(Aluno aluno) {

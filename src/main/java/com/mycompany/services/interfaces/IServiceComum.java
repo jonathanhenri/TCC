@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.feedback.Retorno;
 
 public interface IServiceComum<T extends AbstractBean<?>> {
@@ -21,6 +22,8 @@ public interface IServiceComum<T extends AbstractBean<?>> {
 	public List<T> search(Search search);
 	
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean);
+	
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado);
 	
 	public Retorno validaRegrasAntesIncluir(T salvar);
 	

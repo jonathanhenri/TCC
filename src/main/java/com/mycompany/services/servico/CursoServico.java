@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Materia;
 import com.mycompany.feedback.Mensagem;
@@ -204,6 +205,11 @@ public class CursoServico implements ICursoServico {
 		return cursoDAO.count(search);
 	}
 	
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return cursoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
+
 	@Override
 	public List<Curso> getcursos() {
 		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getId()!=null){

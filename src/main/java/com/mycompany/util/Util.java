@@ -17,14 +17,20 @@ import java.util.UUID;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
+import com.mycompany.services.interfaces.IAlunoServico;
 
 public class Util {
+	
+	@SpringBean(name="alunoServico")
+	private static IAlunoServico alunoServico;
 	
 	public static final String caminhoImagem = "/img/seta-voltar.gif";
 	
@@ -100,6 +106,44 @@ public class Util {
 	}
     
     
+    public static Boolean possuiPermissao(Aluno alunoLogado,AbstractBean<?> abstractBean,Integer operacao){
+    	
+    	if(alunoLogado!=null){
+//    		if(aluno.getAdministracao()!=null && aluno.getAdministracao().getAdministradorCampus()){
+//    			return true;
+//    		}
+    		if(alunoLogado.getPerfilAcesso()!=null && alunoLogado.getPerfilAcesso().getPermissoesAcesso()!=null && alunoLogado.getPerfilAcesso().getPermissoesAcesso().size()>0){
+    			
+    			for(PermissaoAcesso permissaoAcesso:alunoLogado.getPerfilAcesso().getPermissoesAcesso()){
+    				if(permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
+    					if(permissaoAcesso.getOperacao().equals(operacao)){
+    						return true;
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
+    public static Boolean possuiPermissao(Aluno alunoLogado,Integer permissao,Integer operacao){
+    	if(alunoLogado!=null){
+//    		if(aluno.getAdministracao()!=null && aluno.getAdministracao().getAdministradorCampus()){
+//    			return true;
+//    		}
+    		if(alunoLogado.getPerfilAcesso()!=null && alunoLogado.getPerfilAcesso().getPermissoesAcesso()!=null && alunoLogado.getPerfilAcesso().getPermissoesAcesso().size()>0){
+    			
+    			for(PermissaoAcesso permissaoAcesso:alunoLogado.getPerfilAcesso().getPermissoesAcesso()){
+    				if(permissaoAcesso.getPermissao().equals(permissao)){
+    					if(permissaoAcesso.getOperacao().equals(operacao)){
+    						return true;
+    					}
+    				}
+    			}
+    		}
+    	}
+    	return false;
+    }
 	/**
 	 * Retorna o aluno logado (SPRING)
 	 */

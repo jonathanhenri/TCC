@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PerfilAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -154,6 +155,12 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 		
 		return retorno;
 	}
+	
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return perfilAcessoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
+
 	
 
 	public void setPerfilAcessoDAO(IPerfilAcessoDAO perfilAcessoDAO) {

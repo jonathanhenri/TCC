@@ -9,4 +9,5 @@ public interface IPermissaoAcessoDAO extends IDAOComum<PermissaoAcesso, Long>{
 	
 	public List<PermissaoAcesso> getPermissoesAcesso();
 	
+	
 }

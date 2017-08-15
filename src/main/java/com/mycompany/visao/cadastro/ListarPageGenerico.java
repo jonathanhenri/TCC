@@ -31,6 +31,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.FiltroDinamicoAgrupador;
 import com.mycompany.domain.FiltroDinamicoAtributo;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
@@ -182,6 +183,10 @@ public abstract class ListarPageGenerico extends Menu {
 			
 			@Override
 			public boolean isVisible() {
+				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_INCLUIR)){
+					return false;
+				}
+				
 				return isVisibleBotaoIncluir();
 			}
 		};
@@ -375,6 +380,10 @@ public abstract class ListarPageGenerico extends Menu {
 			
 			@Override
 			public boolean isVisible() {
+				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_EXCLUIR)){
+					return false;
+				}
+				
 				return isVisibleBotaoExcluir();
 			}
 		};

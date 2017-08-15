@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.OrigemEvento;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -180,6 +181,10 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 		this.origemEventoDAO = origemEventoDAO;
 	}
 
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return origemEventoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
 
 	@Override
 	public List<OrigemEvento> getOrigemEventos() {

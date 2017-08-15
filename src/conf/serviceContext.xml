@@ -24,7 +24,6 @@
     	<property name="contadorAcessoDAO" ref="contadorAcessoDAO" />
     </bean>
     
-    
      <bean id="codigoAlunoServico"  class="com.mycompany.services.servico.CodigoAlunoServico">
     	<property name="codigoAlunoDAO" ref="codigoAlunoDAO" />
     	<property name="alunoServico" ref="alunoServico" />

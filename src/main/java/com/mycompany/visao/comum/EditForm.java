@@ -20,6 +20,8 @@ import wicket.contrib.input.events.InputBehavior;
 import wicket.contrib.input.events.key.KeyType;
 
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
@@ -113,18 +115,23 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 						
 						protected void executarAoClicarSim(AjaxRequestTarget target) {
 							Retorno retorno = new Retorno();
-							try{
-								retorno = serviceComum.remove(abstractBean);
-							}catch(Exception e){
-								retorno.setSucesso(false);
-								
-								if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
-									retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
-								}else{
-									retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+							if(Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_EXCLUIR)){
+								try{
+									retorno = serviceComum.remove(abstractBean);
+								}catch(Exception e){
+									retorno.setSucesso(false);
+									
+									if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+										retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+									}else{
+										retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+									}
+									
+									e.printStackTrace();
 								}
-								
-								e.printStackTrace();
+							}else{
+								retorno.setSucesso(false);
+								retorno.addMensagem(new Mensagem("Erro de permissão", Mensagem.ERRO));
 							}
 							
 							if(retorno.getSucesso()){
@@ -149,7 +156,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			@Override
 			public boolean isVisible() {
 				if(getAbstractBean()!=null && getAbstractBean().getId()!=null){
-					return true;
+					return Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_EXCLUIR);
 				}
 				return false;
 			}
@@ -188,6 +195,15 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			}
 			
 			@Override
+			public boolean isVisible() {
+				if(abstractBean.getId() == null){
+					return Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_INCLUIR);
+				}else{
+					return Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_ALTERAR);
+				}
+			}
+			
+			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				Util.notify(target, "Dados incorretos", Mensagem.ALERTA);
 				super.onError(target, form);
@@ -201,16 +217,21 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	
 	protected void saveAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
 		Retorno retorno = new Retorno();
-		try{
-			 retorno = serviceComum.save(getAbstractBean());
-		}catch(Exception e){
+		if(Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_ALTERAR)){
+			try{
+				 retorno = serviceComum.save(getAbstractBean());
+			}catch(Exception e){
+				retorno.setSucesso(false);
+				retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação", Mensagem.ERRO));
+				e.printStackTrace();
+			}
+			
+			if(retorno.getSucesso()){
+				executarAoEditar(target);
+			}
+		}else{
 			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação", Mensagem.ERRO));
-			e.printStackTrace();
-		}
-		
-		if(retorno.getSucesso()){
-			executarAoEditar(target);
+			retorno.addMensagem(new Mensagem("Erro de permissão", Mensagem.ERRO));
 		}
 		
 		for(Mensagem mensagem:retorno.getListaMensagem()){
@@ -218,28 +239,9 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		}
 	}
 	
-	private Boolean validarPermissaoPersist(final AbstractBean<?> abstractBean){
-		
-//		if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
-			return true;
-//		}
-		
-//		Aluno aluno = (Aluno) serviceComum.searchFechId(Util.getAlunoLogado());
-//		
-//		for(PermissaoAcesso permissaoAcesso:aluno.getPerfilAcesso().getPermissoesAcesso()){
-//			if(permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
-//				if(permissaoAcesso.getOperacao().equals(PermissaoAcesso.OPERACAO_INCLUIR)){
-//					return true;
-//				}
-//			}
-//		}
-//		
-//		return false;
-	}
-	
 	protected void persistAbstract(AbstractBean<?> abstractBean,AjaxRequestTarget target) {
 		Retorno retorno = new Retorno();
-		if(validarPermissaoPersist(abstractBean)){
+		if(Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_INCLUIR)){
 			try{
 				retorno = serviceComum.persist(getAbstractBean());
 				

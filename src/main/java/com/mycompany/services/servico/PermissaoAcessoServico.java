@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -161,6 +162,10 @@ public class PermissaoAcessoServico implements IPermissaoAcessoServico {
 		this.permissaoAcessoDAO = permissaoAcessoDAO;
 	}
 
+	@Override
+	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
+		return permissaoAcessoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
 
 	@Override
 	public List<PermissaoAcesso> getPermissoesAcesso(){
