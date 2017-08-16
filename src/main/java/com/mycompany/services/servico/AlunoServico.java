@@ -13,6 +13,7 @@ import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.ContadorAcesso;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IAlunoDAO;
@@ -177,6 +178,11 @@ public class AlunoServico implements IAlunoServico{
 		
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(aluno);
 		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),aluno, PermissaoAcesso.OPERACAO_INCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			aluno.setLogin(aluno.getLogin().trim());
 			retorno.addRetorno(validaRegrasComuns(aluno));
@@ -216,6 +222,12 @@ public class AlunoServico implements IAlunoServico{
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(Aluno aluno) {
 		Retorno retorno = Util.verificarIdNulo(aluno);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),aluno, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(aluno);
 			
@@ -232,6 +244,11 @@ public class AlunoServico implements IAlunoServico{
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesRemover(Aluno aluno) {
 		Retorno retorno = Util.verificarIdNulo(aluno);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),aluno, PermissaoAcesso.OPERACAO_EXCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;

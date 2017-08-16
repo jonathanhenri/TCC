@@ -186,7 +186,6 @@ public abstract class ListarPageGenerico extends Menu {
 				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_INCLUIR)){
 					return false;
 				}
-				
 				return isVisibleBotaoIncluir();
 			}
 		};

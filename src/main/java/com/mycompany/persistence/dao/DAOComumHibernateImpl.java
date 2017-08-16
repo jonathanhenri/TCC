@@ -31,13 +31,17 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	
 	@Override
 	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
-		Search search = new Search(Aluno.class);
-		search.addFilterEqual("id", alunoLogado.getId());
-		
-		for(String fetch: Reflexao.getListaAtributosEstrangeiros(alunoLogado)){
-			search.addFetch(fetch);
+		if(alunoLogado!=null && alunoLogado.getId()!=null){
+			Search search = new Search(Aluno.class);
+			search.addFilterEqual("id", alunoLogado.getId());
+			
+			for(String fetch: Reflexao.getListaAtributosEstrangeiros(alunoLogado)){
+				search.addFetch(fetch);
+			}
+			return  (Aluno)_searchUnique(search);
+		}else{
+			return null;
 		}
-		return  (Aluno)_searchUnique(search);
 	}
 	
 	@Override

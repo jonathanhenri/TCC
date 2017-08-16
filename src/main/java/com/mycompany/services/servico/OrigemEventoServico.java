@@ -11,6 +11,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.OrigemEvento;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IOrigemEventoDAO;
@@ -141,6 +142,12 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 	public Retorno validaRegrasAntesIncluir(OrigemEvento origemEvento) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(origemEvento);
 		
+
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),origemEvento, PermissaoAcesso.OPERACAO_INCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(origemEvento));
 			return retorno;
@@ -153,6 +160,11 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(OrigemEvento origemEvento) {
 		Retorno retorno = Util.verificarIdNulo(origemEvento);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),origemEvento, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(origemEvento);
@@ -169,6 +181,11 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 	public Retorno validaRegrasAntesRemover(OrigemEvento origemEvento) {
 		Retorno retorno = Util.verificarIdNulo(origemEvento);
 			
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),origemEvento, PermissaoAcesso.OPERACAO_EXCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;
 		}

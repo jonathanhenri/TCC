@@ -10,6 +10,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Configuracao;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IConfiguracaoDAO;
@@ -122,6 +123,13 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	public Retorno validaRegrasAntesIncluir(Configuracao configuracao) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(configuracao);
 		
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR) && !Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
+		
 		if(count(new Search())>0){
 			retorno.addMensagem(new Mensagem("Configuração já existente",Mensagem.ALERTA));
 			retorno.setSucesso(false);
@@ -140,6 +148,12 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	public Retorno validaRegrasAntesAlterar(Configuracao configuracao) {
 		Retorno retorno = Util.verificarIdNulo(configuracao);
 		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR) && !Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
+		
+		
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(configuracao);
 			if(retorno.getSucesso()){
@@ -155,6 +169,12 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	public Retorno validaRegrasAntesRemover(Configuracao configuracao) {
 		Retorno retorno = Util.verificarIdNulo(configuracao);
 			
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR) && !Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
+		
+		
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;
 		}

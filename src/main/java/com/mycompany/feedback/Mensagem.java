@@ -20,10 +20,10 @@ public class Mensagem {
     public static String MOTIVO_ALTERADO_ERRO ="Erro ao alterar ";
     public static String MOTIVO_EXCLUIDO_ERRO ="Erro ao excluir ";
     
-    public static String MOTIVO_SEM_PERMISSAO_INCLUIR = "Não possui permissão para cadastrar ";
-    public static String MOTIVO_SEM_PERMISSAO_PESQUISAR = "Não possui permissão para pesquisar ";
-    public static String MOTIVO_SEM_PERMISSAO_ALTERAR = "Não possui permissão para alterar ";
-    public static String MOTIVO_SEM_PERMISSAO_EXCLUIR = "Não possui permissão para excluir ";
+    public static String MOTIVO_SEM_PERMISSAO_INCLUIR = "Não possui permissão para cadastrar.";
+    public static String MOTIVO_SEM_PERMISSAO_PESQUISAR = "Não possui permissão para pesquisar.";
+    public static String MOTIVO_SEM_PERMISSAO_ALTERAR = "Não possui permissão para alterar.";
+    public static String MOTIVO_SEM_PERMISSAO_EXCLUIR = "Não possui permissão para excluir.";
     
     public static String ID="Identificador";
 	    

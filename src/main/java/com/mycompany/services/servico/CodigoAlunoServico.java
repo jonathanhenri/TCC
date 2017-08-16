@@ -10,6 +10,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.CodigoAluno;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.ICodigoAlunoDAO;
@@ -131,6 +132,12 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		//Ignora os campos obrigatorios no form
 		Retorno retorno = new Retorno();
 		retorno.setSucesso(true);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),codigoAluno, PermissaoAcesso.OPERACAO_INCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
 		if(codigoAluno.getCursoAux()==null || codigoAluno.getQuantidadeAlunosAux()<=0){
 			retorno.setSucesso(false);
 			retorno.addMensagem(new Mensagem("Quantidade de alunos deve ser maior que zero e curso é obrigatório", Mensagem.ERRO));
@@ -144,6 +151,11 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(CodigoAluno codigoAluno) {
 		Retorno retorno = Util.verificarIdNulo(codigoAluno);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),codigoAluno, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(codigoAluno);
@@ -159,6 +171,11 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesRemover(CodigoAluno codigoAluno) {
 		Retorno retorno = Util.verificarIdNulo(codigoAluno);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),codigoAluno, PermissaoAcesso.OPERACAO_EXCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
 		
 		return retorno;
 	}

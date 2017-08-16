@@ -11,6 +11,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Materia;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IMateriaDAO;
@@ -140,6 +141,11 @@ public class MateriaServico implements IMateriaServico {
 	public Retorno validaRegrasAntesIncluir(Materia materia) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(materia);
 		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),materia, PermissaoAcesso.OPERACAO_INCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(materia));
 			return retorno;
@@ -152,6 +158,11 @@ public class MateriaServico implements IMateriaServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(Materia materia) {
 		Retorno retorno = Util.verificarIdNulo(materia);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),materia, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(materia);
@@ -168,6 +179,11 @@ public class MateriaServico implements IMateriaServico {
 	public Retorno validaRegrasAntesRemover(Materia materia) {
 		Retorno retorno = Util.verificarIdNulo(materia);
 			
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),materia, PermissaoAcesso.OPERACAO_EXCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;
 		}

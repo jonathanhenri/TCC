@@ -10,6 +10,7 @@ import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.domain.TipoEvento;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -140,6 +141,12 @@ public class TipoEventoServico implements ITipoEventoServico {
 	public Retorno validaRegrasAntesIncluir(TipoEvento tipoEvento) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(tipoEvento);
 		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),tipoEvento, PermissaoAcesso.OPERACAO_INCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(tipoEvento));
 			return retorno;
@@ -152,6 +159,11 @@ public class TipoEventoServico implements ITipoEventoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(TipoEvento tipoEvento) {
 		Retorno retorno = Util.verificarIdNulo(tipoEvento);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),tipoEvento, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			retorno = Reflexao.validarTodosCamposObrigatorios(tipoEvento);
@@ -167,7 +179,12 @@ public class TipoEventoServico implements ITipoEventoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesRemover(TipoEvento tipoEvento) {
 		Retorno retorno = Util.verificarIdNulo(tipoEvento);
-			
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),tipoEvento, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;
 		}

@@ -131,7 +131,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 								}
 							}else{
 								retorno.setSucesso(false);
-								retorno.addMensagem(new Mensagem("Erro de permissão", Mensagem.ERRO));
+								retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR, Mensagem.ERRO));
 							}
 							
 							if(retorno.getSucesso()){
@@ -231,7 +231,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			}
 		}else{
 			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem("Erro de permissão", Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR, Mensagem.ERRO));
 		}
 		
 		for(Mensagem mensagem:retorno.getListaMensagem()){
@@ -256,7 +256,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			}
 		}else{
 			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem("Erro de permissão", Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR, Mensagem.ERRO));
 		}
 		
 		 for(Mensagem mensagem:retorno.getListaMensagem()){

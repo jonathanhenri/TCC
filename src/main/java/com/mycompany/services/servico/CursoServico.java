@@ -14,6 +14,7 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Materia;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.ICursoDAO;
@@ -147,6 +148,11 @@ public class CursoServico implements ICursoServico {
 	public Retorno validaRegrasAntesIncluir(Curso curso) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(curso);
 		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),curso, PermissaoAcesso.OPERACAO_INCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(curso));
 			return retorno;
@@ -159,6 +165,11 @@ public class CursoServico implements ICursoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesAlterar(Curso curso) {
 		Retorno retorno = Util.verificarIdNulo(curso);
+		
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),curso, PermissaoAcesso.OPERACAO_EXCLUIR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_ALTERAR,Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			
@@ -177,6 +188,11 @@ public class CursoServico implements ICursoServico {
 	public Retorno validaRegrasAntesRemover(Curso curso) {
 		Retorno retorno = Util.verificarIdNulo(curso);
 			
+		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),curso, PermissaoAcesso.OPERACAO_ALTERAR)){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_EXCLUIR,Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			// Se precisar de regras especificas;
 		}
