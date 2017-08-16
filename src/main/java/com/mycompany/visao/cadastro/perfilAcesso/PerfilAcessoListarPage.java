@@ -39,7 +39,7 @@ public class PerfilAcessoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(350);
+		modalIncluirEditar.setInitialHeight(800);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}

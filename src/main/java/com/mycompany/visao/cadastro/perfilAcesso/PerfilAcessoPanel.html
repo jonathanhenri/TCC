@@ -2,6 +2,7 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
 
 <head>
+<meta charset="UTF-8">
 <wicket:head>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -26,21 +27,63 @@
 						</div>
 					</div>
 					<div class="panel-body">
-						<div class="form-group">
-							<div class="col-md-6">	
-								<label class="control-label">Nome</label>
-								<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
+						<div class="panel with-nav-tabs panel-default">
+							 <div class="panel-heading">
+                        		<ul class="nav nav-pills">
+									<li class="active"><a href="#geral" data-toggle="tab">Geral</a></li>
+									<li><a href="#permissoes" data-toggle="tab">Permissões</a></li>
+								</ul>
 							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-6">	
-								<label class="control-label">Curso</label>
-								<select class="form-control" wicket:id="administracao.curso"></select>
-							</div>
-						</div>
+							<div class="panel-body">
+								<div class="tab-content">
+									<div class="tab-pane active in" id="geral">
+										<div class="form-group">
+											<div class="col-md-6">	
+												<label class="control-label">Nome</label>
+												<input type="text" class="form-control"  id="nome" wicket:id="nome" placeholder="Nome">
+											</div>
+											<div class="col-md-6">	
+												<label class="control-label">Curso</label>
+												<select class="form-control" wicket:id="administracao.curso"></select>
+											</div>
+										</div>
+									</div>
+									
+									<div class="tab-pane" id="permissoes" >
+										<div class="form-group">
+											<div class="col-md-12">	
+												<div  id="list-caixa" class="content scaffold-list" role="main">
+							                    	<wicket:container wicket:id="chkGroup">
+								                    	<table class="table table-striped table-bordered table-hover">
+								                    		<thead>
+								                    			<tr style="border-bottom:1px solid; border-color:gray; font-size: 14px">
+								                    				<th style="width: 20px;cursor: pointer;">
+																		<input type="checkbox" class="no-margin selecionaTodos" wicket:id="chkGroupSelector" title="Marcar/Desmarcar todos"></input>
+																	</th>
+									                    			<th><a>Nome</a></th>
+								                    			</tr>
+								                    		</thead>
+								                    		<tbody>
+								                    			<tr wicket:id="permissoesAcesso">
+								                    				<td>
+																		<input  type="checkbox" wicket:id="chkSeleciona" />
+																	</td>
+								                    				<td><label wicket:id="nome">[NOME]</label></td>
+								                    			</tr>
+								                    		</tbody>
+								                    	</table>
+							                    	</wicket:container>
+								                </div>
+								             </div>
+							              </div>
+						             </div>
+					            </div>
+					        </div>
+				        </div>
 						
 						<div class="form-group">
 							<div class="col-md-12">	
+							<br>
 								<input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"></input>
 								<input type="submit" wicket:id="excluir" value="excluir" class="btn btn-danger"></input>
 								<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-default"></input>
