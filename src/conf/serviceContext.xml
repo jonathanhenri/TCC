@@ -43,6 +43,7 @@
     
      <bean id="configuracaoServico"  class="com.mycompany.services.servico.ConfiguracaoServico">
     	<property name="configuracaoDAO" ref="configuracaoDAO" />
+    	 	<property name="alunoServico" ref="alunoServico" />
     </bean>
     
     <bean id="aulaServico"  class="com.mycompany.services.servico.AulaServico">

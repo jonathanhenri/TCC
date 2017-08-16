@@ -14,6 +14,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Configuracao;
 import com.mycompany.feedback.Mensagem;
+import com.mycompany.feedback.Retorno;
 import com.mycompany.services.interfaces.IConfiguracaoServico;
 import com.mycompany.util.Util;
 import com.mycompany.visao.comum.Menu;
@@ -219,7 +220,14 @@ public class ConfiguracaoPage extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
-				System.out.println(configuracao);
+				Retorno retorno = new Retorno(); 
+				retorno.setSucesso(true);
+				
+				retorno = configuracaoServico.persist(configuracao);
+				
+				for(Mensagem mensagem:retorno.getListaMensagem()){
+					 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+		        }
 			}
 			
 			@Override

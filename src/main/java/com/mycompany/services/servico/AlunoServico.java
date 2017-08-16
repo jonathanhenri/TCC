@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.domain.CodigoAluno;
@@ -37,6 +38,11 @@ public class AlunoServico implements IAlunoServico{
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			Administracao administracao = new Administracao();
+			administracao.setAdministradorCampus(false);
+			administracao.setAluno(aluno);
+			administracao.setCurso(aluno.getAdministracao().getCurso());
+			aluno.setAdministracao(administracao);
 			if(alunoDAO.persist(aluno)){
 				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
@@ -160,16 +166,19 @@ public class AlunoServico implements IAlunoServico{
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return alunoDAO.count(search);
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<Aluno> search(Search search) {
+		searchComum(search);
 		return alunoDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Aluno searchUnique(Search search) {
+		searchComum(search);
 		return alunoDAO.searchUnique(search);
 	}
 
@@ -202,7 +211,11 @@ public class AlunoServico implements IAlunoServico{
 		
 		Search searchLoginRepetido = new Search(Aluno.class);
 		searchLoginRepetido.addFilterEqual("login", aluno.getLogin());
-		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", aluno.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));
+		Filter filterOr = Filter.or();
+		if(aluno.getAdministracao().getCurso()!=null){
+			filterOr.add(Filter.equal("administracao.curso.id", aluno.getAdministracao().getCurso().getId()));
+		}
+		filterOr.add(Filter.equal("administracao.administradorCampus", true));
 		searchLoginRepetido.addFilter(filterOr);
 		
 		if(aluno.getId()!=null){
@@ -258,6 +271,18 @@ public class AlunoServico implements IAlunoServico{
 		return retorno;
 	}
 	
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
+	}
 
 	public void setContadorAcessoServico(
 			IContadorAcessoServico contadorAcessoServico) {

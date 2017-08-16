@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
@@ -107,6 +108,7 @@ public class EventoServico implements IEventoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return eventoDAO.count(search);
 	}
 	
@@ -130,11 +132,13 @@ public class EventoServico implements IEventoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<Evento> search(Search search) {
+		searchComum(search);
 		return eventoDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Evento searchUnique(Search search) {
+		searchComum(search);
 		return eventoDAO.searchUnique(search);
 	}
 
@@ -198,6 +202,24 @@ public class EventoServico implements IEventoServico {
 		this.eventoDAO = eventoDAO;
 	}
 
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			
+			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarEvento()){
+				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharEvento", true));
+				filterOr.add(filterCompartilhar);
+			}
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
+	}
 
 	@Override
 	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {

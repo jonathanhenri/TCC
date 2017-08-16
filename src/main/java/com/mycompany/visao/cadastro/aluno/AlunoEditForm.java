@@ -18,8 +18,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
+import com.mycompany.domain.PerfilAcesso;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICursoServico;
+import com.mycompany.services.interfaces.IPerfilAcessoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.visao.comum.EditForm;
 
@@ -28,8 +30,12 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private static IAlunoServico alunoServico;
 	
 	private String senhaAux;
+	
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
+	
+	@SpringBean(name="perfilAcessoServico")
+	private  IPerfilAcessoServico perfilAcessoServico;
 	
 	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
@@ -61,6 +67,26 @@ public class AlunoEditForm extends EditForm<Aluno> {
 		passwordTextField.setOutputMarkupId(true);
 		
 		return passwordTextField;
+	}
+	
+	private DropDownChoice<PerfilAcesso> criarCampoPerfilAcesso(){
+		IChoiceRenderer<PerfilAcesso> choiceRenderer = new ChoiceRenderer<PerfilAcesso>("nome", "id");
+		LoadableDetachableModel<List<PerfilAcesso>> perfis = new LoadableDetachableModel<List<PerfilAcesso>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<PerfilAcesso> load() {
+				List<PerfilAcesso> perfis = new ArrayList<PerfilAcesso>();
+				perfis = perfilAcessoServico.search(new Search(PerfilAcesso.class));
+				return perfis;
+			}
+		};
+		
+		final DropDownChoice<PerfilAcesso> tipoRadioChoice = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer);
+		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setOutputMarkupId(true);
+		
+		return tipoRadioChoice;
 	}
 	
 	private DropDownChoice<Curso> criarCampoCurso(){
@@ -99,6 +125,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 		add(criarCampoSenha());
 		add(criarCampoPeriodo());
 		add(criarCampoCurso());
+		add(criarCampoPerfilAcesso());
 	}
 	
 	private static final long serialVersionUID = 1L;

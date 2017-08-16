@@ -32,6 +32,8 @@ public interface IServiceComum<T extends AbstractBean<?>> {
 	public Retorno validaRegrasAntesRemover(T remover);
 	
 	public Retorno validaRegrasComuns(T object);
+
+	public void searchComum(Search search);
 	
 	
 	

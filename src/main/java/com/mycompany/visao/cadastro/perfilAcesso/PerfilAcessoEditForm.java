@@ -99,7 +99,7 @@ public class PerfilAcessoEditForm extends EditForm<PerfilAcesso> {
 
 			@Override
 			protected List<PermissaoAcesso> load() {
-				return permissaoAcessoServico.getPermissoesAcesso();
+				return permissaoAcessoServico.search(new Search(PermissaoAcesso.class));
 			}
 		};
 			

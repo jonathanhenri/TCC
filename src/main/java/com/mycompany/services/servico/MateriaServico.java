@@ -59,8 +59,29 @@ public class MateriaServico implements IMateriaServico {
 		return null;
 	}
 	
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+		
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			
+			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarMateria()){
+				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharMateria", true));
+				filterOr.add(filterCompartilhar);
+			}
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return materiaDAO.count(search);
 	}
 	
@@ -104,11 +125,13 @@ public class MateriaServico implements IMateriaServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<Materia> search(Search search) {
+		searchComum(search);
 		return materiaDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Materia searchUnique(Search search) {
+		searchComum(search);
 		return materiaDAO.searchUnique(search);
 	}
 

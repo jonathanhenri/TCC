@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
@@ -15,11 +16,13 @@ import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IConfiguracaoDAO;
 import com.mycompany.reflexao.Reflexao;
+import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.IConfiguracaoServico;
 import com.mycompany.util.Util;
 
 public class ConfiguracaoServico implements IConfiguracaoServico {
 	private IConfiguracaoDAO configuracaoDAO;
+	private IAlunoServico alunoServico;
 	
 	public ConfiguracaoServico() {
 	}
@@ -30,7 +33,9 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(configuracaoDAO.persist(configuracao)){
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			aluno.setConfiguracao(configuracao);
+			if(configuracaoDAO.persist(configuracao) && alunoServico.save(aluno).getSucesso()){
 				mensagem  = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
 				mensagem  = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
@@ -60,6 +65,7 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return configuracaoDAO.count(search);
 	}
 	
@@ -89,7 +95,9 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(configuracaoDAO.remove(configuracao)){
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			aluno.setConfiguracao(null);
+			if(configuracaoDAO.remove(configuracao) && alunoServico.save(aluno).getSucesso()){
 				mensagem = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
 				mensagem = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
@@ -103,11 +111,13 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<Configuracao> search(Search search) {
+		searchComum(search);
 		return configuracaoDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Configuracao searchUnique(Search search) {
+		searchComum(search);
 		return configuracaoDAO.searchUnique(search);
 	}
 
@@ -187,9 +197,25 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 		return configuracaoDAO.searchFetchAlunoLogado(alunoLogado);
 	}
 
+	public void setAlunoServico(IAlunoServico alunoServico) {
+		this.alunoServico = alunoServico;
+	}
 	
 	public void setConfiguracaoDAO(IConfiguracaoDAO configuracaoDAO) {
 		this.configuracaoDAO = configuracaoDAO;
+	}
+	
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
 	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
@@ -174,5 +175,9 @@ public class PermissaoAcessoServico implements IPermissaoAcessoServico {
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public void searchComum(Search search){
 	}
 }

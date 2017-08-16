@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
@@ -117,11 +118,13 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<CodigoAluno> search(Search search) {
+		searchComum(search);
 		return codigoAlunoDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public CodigoAluno searchUnique(Search search) {
+		searchComum(search);
 		return codigoAlunoDAO.searchUnique(search);
 	}
 
@@ -201,6 +204,7 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return codigoAlunoDAO.count(search);
 	}
 
@@ -214,6 +218,19 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 	@Override
 	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
 		return codigoAlunoDAO.searchFetchAlunoLogado(alunoLogado);
+	}
+	
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+		
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
 	}
 	
 }

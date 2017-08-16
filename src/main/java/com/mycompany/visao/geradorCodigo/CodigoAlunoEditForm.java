@@ -16,9 +16,11 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
+import com.mycompany.domain.PerfilAcesso;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICodigoAlunoServico;
 import com.mycompany.services.interfaces.ICursoServico;
+import com.mycompany.services.interfaces.IPerfilAcessoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.visao.comum.EditForm;
 
@@ -32,6 +34,9 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 	
 	@SpringBean(name="alunoServico")
 	private  IAlunoServico alunoServico;
+	
+	@SpringBean(name="perfilAcessoServico")
+	private  IPerfilAcessoServico perfilAcessoServico;
 	
 	private CodigoAluno codigoAluno;
 	
@@ -57,9 +62,31 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 	@Override
 	protected void adicionarCampos() {
 		add(criarCampoCurso());
+		add(criarCampoPerfilAcesso());
 		add(criarCampoQuantidadeAluno());
 	}
 
+	
+	private DropDownChoice<PerfilAcesso> criarCampoPerfilAcesso(){
+		IChoiceRenderer<PerfilAcesso> choiceRenderer = new ChoiceRenderer<PerfilAcesso>("nome", "id");
+		LoadableDetachableModel<List<PerfilAcesso>> perfis = new LoadableDetachableModel<List<PerfilAcesso>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<PerfilAcesso> load() {
+				List<PerfilAcesso> perfis = new ArrayList<PerfilAcesso>();
+				perfis = perfilAcessoServico.search(new Search(PerfilAcesso.class));
+				return perfis;
+			}
+		};
+		
+		final DropDownChoice<PerfilAcesso> tipoRadioChoice = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer);
+		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setOutputMarkupId(true);
+		
+		return tipoRadioChoice;
+	}
+	
 	private NumberTextField<Integer> criarCampoQuantidadeAluno(){
 		NumberTextField<Integer> duracao = new NumberTextField<Integer>("quantidadeAlunosAux");
 		duracao.setOutputMarkupId(true);

@@ -87,6 +87,7 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return origemEventoDAO.count(search);
 	}
 	
@@ -130,11 +131,13 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<OrigemEvento> search(Search search) {
+		searchComum(search);
 		return origemEventoDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public OrigemEvento searchUnique(Search search) {
+		searchComum(search);
 		return origemEventoDAO.searchUnique(search);
 	}
 
@@ -203,6 +206,25 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 		return origemEventoDAO.searchFetchAlunoLogado(alunoLogado);
 	}
 
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			
+			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarOrigemEvento()){
+				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharOrigemEvento", true));
+				filterOr.add(filterCompartilhar);
+			}
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
+	}
+	
 	@Override
 	public List<OrigemEvento> getOrigemEventos() {
 		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getId()!=null){

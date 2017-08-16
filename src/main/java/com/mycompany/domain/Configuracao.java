@@ -19,7 +19,7 @@ public class Configuracao extends AbstractBean<Configuracao>{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ID_ALUNO")
+	@Column(name = "ID_CONFIGURACAO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

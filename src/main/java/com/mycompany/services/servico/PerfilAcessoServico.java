@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
@@ -52,6 +53,7 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return perfilAcessoDAO.count(search);
 	}
 	
@@ -110,11 +112,13 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<PerfilAcesso> search(Search search) {
+		searchComum(search);
 		return perfilAcessoDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public PerfilAcesso searchUnique(Search search) {
+		searchComum(search);
 		return perfilAcessoDAO.searchUnique(search);
 	}
 
@@ -182,6 +186,25 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 
 	public void setPerfilAcessoDAO(IPerfilAcessoDAO perfilAcessoDAO) {
 		this.perfilAcessoDAO = perfilAcessoDAO;
+	}
+	
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			
+			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarPerfilAcesso()){
+				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharPerfilAcesso", true));
+				filterOr.add(filterCompartilhar);
+			}
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
 	}
 
 }

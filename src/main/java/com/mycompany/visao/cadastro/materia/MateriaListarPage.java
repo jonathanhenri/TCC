@@ -7,9 +7,12 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.googlecode.genericdao.search.Filter;
+import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Materia;
 import com.mycompany.services.interfaces.IMateriaServico;
+import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.ListarPageGenerico;
 
 
@@ -30,7 +33,6 @@ public class MateriaListarPage extends ListarPageGenerico {
 	protected void setServicoComum() {
 		serviceComum = materiaServico;
 	}
-	
 	private void addFiltros(){
 		form.add(criarCampoPeriodo());
 		form.add(criarCampoNome());

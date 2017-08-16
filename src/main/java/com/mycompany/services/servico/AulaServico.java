@@ -61,6 +61,7 @@ public class AulaServico implements IAulaServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public int count(Search search) {
+		searchComum(search);
 		return aulaDAO.count(search);
 	}
 	
@@ -129,11 +130,13 @@ public class AulaServico implements IAulaServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public List<Aula> search(Search search) {
+		searchComum(search);
 		return aulaDAO.search(search);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Aula searchUnique(Search search) {
+		searchComum(search);
 		return aulaDAO.searchUnique(search);
 	}
 
@@ -189,6 +192,25 @@ public class AulaServico implements IAulaServico {
 		}
 		
 		return retorno;
+	}
+	
+	@Override
+	public void searchComum(Search search){
+		Filter filterOr = Filter.or();
+		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
+			
+			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarAula()){
+				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharAula", true));
+				filterOr.add(filterCompartilhar);
+			}
+			
+			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+					
+			search.addFilter(filterOr);
+		}
 	}
 	
 	@Override
