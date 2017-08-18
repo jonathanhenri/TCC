@@ -297,6 +297,29 @@ if (typeof jQuery === 'undefined') {
  * ======================================================================== */
 
 
+function styleNavigation(){
+	// COLOCA ESTILO NOS LINKS DE PAGINACAO
+	
+	$(document).ready(function(){
+		// COLOCA ESTILO NOS LINKS DE PAGINACAO
+		$('.navigator').css('margin-right','0px');
+		
+		$('span[title="Voltar à primeira página"]').children('em').css('background','url(../../images/first.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		
+		$('span[title="Voltar à página anterior"]').children('em').css('background','url(../../images/previous.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		
+		$('a[title="Avançar à próxima página"]').css('background','url(../../images/forward.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		$('a[title="Avançar à última página"]').css('background','url(../../images/last.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		
+		$('a').css('text-decoration','none');
+		$('a[title="Voltar à primeira página"]').css('background','url(../../images/first.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		$('a[title="Voltar à página anterior"]').css('background','url(../../images/previous.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		
+		$('span[title="Avançar à próxima página"]').children('em').css('background','url(../../images/forward.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+		$('span[title="Avançar à última página"]').children('em').css('background','url(../../images/last.gif) no-repeat 0px -1px').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+	});
+}
+
 +function ($) {
   'use strict';
 

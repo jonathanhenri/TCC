@@ -45,13 +45,12 @@
 						</div>
 					</form>
 					
-					<div id="theContainer" class= "table-responsive" wicket:id="theContainer">
-						<hr>
-						<table id="table" border="0"  style="text-align: center;" name="tabela" wicket:id="tabela" class="table" ></table>
-						<td colspan="5"><span id="navegacao"wicket:id="navegacao">[[aqui vai a barra de navegacao]]</span></td>
-			
-					
-					</div>
+					<div wicket:id="theContainer"  id="list-caixa" class="content scaffold-list col-md-12" role="main">
+	                    <div style="padding:10px 20px;">
+	                    	<table wicket:id="tabela" class="table table-striped table-bordered table-hover"></table>
+	                    	<div wicket:id="navegacao" href="javascript:void(0);" class="navigator mbottom10"/>
+	                    </div>
+	                </div>
 					<div id="modalEditar" name = "modalEditar" wicket:id="modalIncluirEditar"></div>
 					<div id="modalExcluir" name="modalExcluir" wicket:id="modalExcluir"></div>
 					<div id="modalFiltros" name="modalFiltros" wicket:id="modalFiltros"></div>

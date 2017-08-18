@@ -226,7 +226,21 @@ public abstract class ListarPageGenerico extends Menu {
 		dataTable.setOutputMarkupId(true);
 		divListaAtualizar.add(dataTable);
 		divListaAtualizar.setVersioned(false);
-		divListaAtualizar.add(new AjaxPagingNavigator("navegacao", dataTable).add(new AttributeModifier("class", "pagination")));
+		
+		divListaAtualizar.addOrReplace(new AjaxPagingNavigator("navegacao", dataTable){
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onAjaxEvent(AjaxRequestTarget target) {
+				super.onAjaxEvent(target);
+				target.add(divListaAtualizar);
+			}
+			@Override
+			public boolean isVisible() {
+				return dataDataProvider.size() > getQuantidadeRegistrosVisiveis();
+			}
+		});
 	}
 	
 	private void criarDataProvider(){

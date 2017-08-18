@@ -20,7 +20,6 @@ import wicket.contrib.input.events.InputBehavior;
 import wicket.contrib.input.events.key.KeyType;
 
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -35,6 +34,8 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected FeedbackPanel feedbackPanel;
 	protected String nomeTitulo;
 	private Panel editPanel;
+	private AjaxLink<String> botaoVoltar;
+	private Boolean focusGained = true;
 	
 	private WebMarkupContainer divAtualizar;
 	private ModalWindow modalIncluirEditar;
@@ -76,17 +77,19 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected abstract void setServicoComum();
 
 	private AjaxLink<String> criarBotaoVoltar(){
-		 AjaxLink<String> voltar = new  AjaxLink<String>("voltar"){
+		 botaoVoltar = new  AjaxLink<String>("voltar"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				executarAoVoltar(target);
+				if(focusGained){
+					executarAoVoltar(target);
+				}
 			}
 			 
 		 };
-		 voltar.add(new InputBehavior(new KeyType[] { KeyType.Escape }, EventType.click));
-		 return voltar;
+		 botaoVoltar.add(new InputBehavior(new KeyType[] { KeyType.Escape }, EventType.click));
+		 return botaoVoltar;
 	}
 	
 	
@@ -104,16 +107,22 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
+				focusGained = false;
 				if(validarRegrasAntesExcluir(target)){
 					
 					MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(modalExcluir.getContentId(), Util.getMensagemExclusao(abstractBean)){
 						private static final long serialVersionUID = 1L;
 
 						protected void executarAoClicarNao(AjaxRequestTarget target) {
+							focusGained = true;
+							botaoVoltar.add(new InputBehavior(new KeyType[] { KeyType.Escape }, EventType.click));
+							botaoVoltar.modelChanged();
+							target.add(botaoVoltar);
 							modalExcluir.close(target);
 						};
 						
 						protected void executarAoClicarSim(AjaxRequestTarget target) {
+							focusGained = true;
 							Retorno retorno = new Retorno();
 							if(Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),abstractBean, PermissaoAcesso.OPERACAO_EXCLUIR)){
 								try{
@@ -151,6 +160,12 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 					modalExcluir.setContent(excluirPanel);
 					modalExcluir.show(target);
 				}
+			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				Util.notify(target, "Dados incorretos", Mensagem.ALERTA);
+				super.onError(target, form);
 			}
 			
 			@Override

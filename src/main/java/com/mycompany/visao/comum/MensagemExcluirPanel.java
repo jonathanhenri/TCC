@@ -5,6 +5,10 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 
+import wicket.contrib.input.events.EventType;
+import wicket.contrib.input.events.InputBehavior;
+import wicket.contrib.input.events.key.KeyType;
+
 public class MensagemExcluirPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
@@ -28,15 +32,17 @@ public class MensagemExcluirPanel extends Panel {
 	}
 	
 	private AjaxLink<String> criarLinkNao() {
-		AjaxLink<String> linkSim = new AjaxLink<String>("linkNao") {
+		AjaxLink<String> linkNao = new AjaxLink<String>("linkNao") {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				executarAoClicarNao(target);
 			}
 		};
-		linkSim.setOutputMarkupId(true);
-		return linkSim;
+		
+		linkNao.add(new InputBehavior(new KeyType[] { KeyType.Escape }, EventType.click));
+		linkNao.setOutputMarkupId(true);
+		return linkNao;
 	}
 	
 	protected void executarAoClicarSim(AjaxRequestTarget target){
