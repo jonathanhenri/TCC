@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
@@ -62,6 +63,7 @@ public class CursoEditForm extends EditForm<Curso> {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(1, 300));
 		return textFieldNome;
 	}
 	

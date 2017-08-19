@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Curso;
@@ -50,6 +51,7 @@ public class MateriaEditForm extends EditForm<Materia> {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(1, 300));
 		return textFieldNome;
 	}
 	

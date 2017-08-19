@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Evento;
@@ -63,6 +64,7 @@ public class EventoEditForm extends EditForm<Evento> {
 	private ColorTextField criarCampoCodigoCor(){
 		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
 		textFieldCodigoCor.setOutputMarkupId(true);
+		textFieldCodigoCor.add(StringValidator.lengthBetween(1, 40));
 		return textFieldCodigoCor;
 	}
 
@@ -181,6 +183,7 @@ public class EventoEditForm extends EditForm<Evento> {
 	private TextField<String> criarCampoDescricao(){
 		TextField<String> textFieldNome = new TextField<String>("descricao");
 		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(1, 600));
 		return textFieldNome;
 	}
 	

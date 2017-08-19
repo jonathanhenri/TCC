@@ -13,6 +13,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.BadCredentialsException;
 
@@ -99,7 +100,6 @@ public class Login extends WebPage {
 	}
 	
 	private Form<Aluno> criarFormularioLogin(){
-		
 		Form<Aluno> form = new Form<Aluno>("form",new CompoundPropertyModel<Aluno>(aluno));
 		form.setOutputMarkupId(true);
 		form.add(criarCampoLogin());
@@ -111,16 +111,15 @@ public class Login extends WebPage {
 	private TextField<String> criarCampoLogin(){		
 		TextField<String> username = new TextField<String>("login");
 		username.setOutputMarkupId(true);
-		
+		username.add(StringValidator.lengthBetween(1, 40));
 		return username;
 	}
 	
 	private PasswordTextField criarCampoSenha(){
-		
 		PasswordTextField senha = new PasswordTextField("senha");
 		senha.setOutputMarkupId(true);
+		senha.add(StringValidator.lengthBetween(1, 50));
 		return senha;
-		
 	}
 
 	private void addContador(){

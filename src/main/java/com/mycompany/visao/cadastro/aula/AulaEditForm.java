@@ -19,6 +19,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aula;
@@ -61,6 +62,7 @@ public class AulaEditForm extends EditForm<Aula> {
 	private TextArea<String> criarCampoObservacao(){
 		TextArea<String> textArea = new TextArea<String>("observacao");
 		textArea.setOutputMarkupId(true);
+		textArea.add(StringValidator.lengthBetween(0, 600));
 		return textArea;
 	}
 	
@@ -112,18 +114,21 @@ public class AulaEditForm extends EditForm<Aula> {
 	private TextField<String> criarCampoLocal(){
 		TextField<String> textFieldLocal = new TextField<String>("local");
 		textFieldLocal.setOutputMarkupId(true);
+		textFieldLocal.add(StringValidator.lengthBetween(0, 100));
 		return textFieldLocal;
 	}
 	
 	private TextField<String> criarCampoProfessor(){
 		TextField<String> textFieldProfessor = new TextField<String>("professor");
 		textFieldProfessor.setOutputMarkupId(true);
+		textFieldProfessor.add(StringValidator.lengthBetween(0, 200));
 		return textFieldProfessor;
 	}
 	
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(0, 100));
 		return textFieldNome;
 	}
 	
