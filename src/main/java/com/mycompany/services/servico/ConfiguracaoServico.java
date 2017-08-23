@@ -208,7 +208,7 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	@Override
 	public void searchComum(Search search){
 		Filter filterOr = Filter.or();
-		if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
+		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && !Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
 			
 			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
 				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));

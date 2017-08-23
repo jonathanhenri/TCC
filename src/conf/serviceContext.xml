@@ -37,6 +37,10 @@
     	<property name="materiaDAO" ref="materiaDAO" />
     </bean>
     
+     <bean id="agendaServico"  class="com.mycompany.services.servico.AgendaServico">
+    	<property name="agendaDAO" ref="agendaDAO" />
+    </bean>
+    
     <bean id="permissaoAcessoServico"  class="com.mycompany.services.servico.PermissaoAcessoServico">
     	<property name="permissaoAcessoDAO" ref="permissaoAcessoDAO" />
     </bean>

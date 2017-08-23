@@ -4,6 +4,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.BasicAuthenticationSession;
@@ -11,6 +12,7 @@ import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.Util;
+import com.mycompany.visao.agenda.AgendaPage;
 import com.mycompany.visao.cadastro.Index;
 import com.mycompany.visao.cadastro.aluno.AlunoListarPage;
 import com.mycompany.visao.cadastro.aula.AulaListarPage;
@@ -35,6 +37,12 @@ public class Menu extends WebPage {
 			setResponsePage(Login.class);
 		}
 		
+		String nome = "";
+		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getLogin()!=null){
+			nome = Util.getAlunoLogado().getLogin();
+		}
+		
+		add(new Label("login_usuario_logado",nome));
 		
 		add(new AjaxLink<String>("link_cadastro_curso") {
 			private static final long serialVersionUID = 1L;
@@ -153,6 +161,19 @@ public class Menu extends WebPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				setResponsePage(ConfiguracaoPage.class);
+			}
+		});
+		
+		add(new AjaxLink<String>("link_agenda") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(AgendaPage.class);			
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AGENDA_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
 			}
 		});
 		

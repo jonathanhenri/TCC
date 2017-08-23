@@ -28,6 +28,9 @@ public class Agenda extends AbstractBean<Agenda> {
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
+	@Column(name = "NOME", nullable = false, length = 300)
+	private String nome;
+	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "agenda")
 	@Column(name = "ID_AGENDA")
 	private Set<Evento> eventos;
@@ -66,6 +69,14 @@ public class Agenda extends AbstractBean<Agenda> {
 	@Override
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	public String getNome() {
+		return nome;
 	}
 
 	public Set<Evento> getEventos() {

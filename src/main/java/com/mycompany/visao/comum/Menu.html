@@ -112,9 +112,17 @@
 			</li>
 			<li>
 				<a wicket:id="link_gerador_codigos">
-					<i class="icon-table nav-icon"></i>
+					<i class="icon-table nav-icon fa fa-user-plus"></i>
 					<span class="nav-text">
 					Gerador de acessos
+					</span>
+				</a>
+			</li>
+			<li>
+				<a wicket:id="link_agenda">
+					<i class="icon-table nav-icon fa fa-calendar"></i>
+					<span class="nav-text">
+					Agenda
 					</span>
 				</a>
 			</li>
@@ -296,10 +304,12 @@
 										<div class="clearfix"></div>	
 									</div>	
 								</a>
+							
 								<ul class="dropdown-menu drp-mnu">
 <!-- 									<li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li>  -->
 <!-- 									<li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li>  -->
-									<li> <a wicket:id="sair_profile"><i class="fa fa-sign-out"></i> Sair</a> </li>
+									<li><a ><i class="fa fa-user"></i> <label wicket:id="login_usuario_logado">[Login]</label></a></li>
+									<li><a wicket:id="sair_profile"><i class="fa fa-sign-out"></i> Sair</a> </li>
 								</ul>
 							</li>
 						</ul>
