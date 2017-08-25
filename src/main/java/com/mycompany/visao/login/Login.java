@@ -123,16 +123,18 @@ public class Login extends WebPage {
 	}
 
 	private void addContador(){
-		Search search = new Search(Aluno.class);
-		search.addFilterEqual("login", aluno.getLogin());
-		
-		aluno = alunoServico.searchUnique(search);
-		ContadorAcesso acesso = new ContadorAcesso(new Date());
-		Administracao administracao = new Administracao();
-		administracao.setAluno(aluno);
-		administracao.setCurso(aluno.getAdministracao().getCurso());
-		acesso.setAdministracao(administracao);
-		contadorAcessoServico.persist(acesso);
+		if(aluno!=null && aluno.getLogin()!=null){
+			Search search = new Search(Aluno.class);
+			search.addFilterEqual("login", aluno.getLogin());
+			
+			aluno = alunoServico.searchUnique(search);
+			ContadorAcesso acesso = new ContadorAcesso(new Date());
+			Administracao administracao = new Administracao();
+			administracao.setAluno(aluno);
+			administracao.setCurso(aluno.getAdministracao().getCurso());
+			acesso.setAdministracao(administracao);
+			contadorAcessoServico.persist(acesso);
+		}
 	}
 	
 	protected void setDefaultResponsePageIfNecessary() {

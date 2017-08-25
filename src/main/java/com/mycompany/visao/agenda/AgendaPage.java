@@ -30,6 +30,7 @@ public class AgendaPage extends Menu {
 	private Agenda agendaPesquisa;
 	private WebMarkupContainer divAtualizar;
 	private ModalWindow modalIncluirEditar;
+	private ModalWindow modalCalendario;
 	private ModalWindow modalExcluir;
 	
 	public AgendaPage() {
@@ -50,10 +51,23 @@ public class AgendaPage extends Menu {
 		return modalExcluir;
 	}
 	
+	private ModalWindow criarModalCalendario() {
+		modalCalendario = new ModalWindow("modalCalendario");
+		modalCalendario.setOutputMarkupId(true);
+		modalCalendario.setInitialHeight(800);
+		modalCalendario.setInitialWidth(1300);
+		
+		modalCalendario.setCloseButtonCallback(null);
+		
+		return modalCalendario;
+	}
+	
+	
+	
 	private ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(350);
+		modalIncluirEditar.setInitialHeight(300);
 		modalIncluirEditar.setInitialWidth(600);
 		
 		modalIncluirEditar.setCloseButtonCallback(null);
@@ -63,6 +77,7 @@ public class AgendaPage extends Menu {
 	
 	private WebMarkupContainer criarDivAtualizar(){
 		divAtualizar = new WebMarkupContainer("divAtualizar");
+		divAtualizar.setOutputMarkupId(true);
 		divAtualizar.add(criarListViewAgendas());
 		return divAtualizar;
 	}
@@ -75,6 +90,7 @@ public class AgendaPage extends Menu {
 		form.add(criarButtonIncluir());
 		form.add(criarModalExcluir());
 		form.add(criarModalIncluirEditar());
+		form.add(criarModalCalendario());
 		add(form);
 	}
 	
@@ -94,22 +110,48 @@ public class AgendaPage extends Menu {
 
 			@Override
 			protected void populateItem(ListItem<Agenda> item) {
-				Agenda permissao = (Agenda) item.getModelObject();		
+				Agenda agenda = (Agenda) item.getModelObject();		
 				
-				item.add(new Label("nome", permissao.getNome()));
+				item.add(new Label("nome", agenda.getNome()));
+				item.add(criarButtonVisualizarCalendario(agenda));
 			}
 		};
 		
 		return listViewPermissaoAcesso;
 	}
 	
+	private AjaxButton criarButtonVisualizarCalendario(Agenda agenda){
+		AjaxButton ajaxButton =  new AjaxButton("visualizarCalendario") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				CalendarioPanel calendarioPanel = new CalendarioPanel(modalCalendario.getContentId());
+				calendarioPanel.setOutputMarkupId(true);
+				form.add(calendarioPanel);
+				modalCalendario.setContent(calendarioPanel);
+				modalCalendario.show(target);
+			}
+		};
+		ajaxButton.setOutputMarkupId(true);
+		return ajaxButton;
+	}
 	
 	private AjaxButton criarButtonIncluir(){
 		AjaxButton ajaxButton =  new AjaxButton("incluir") {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				target.add(divAtualizar);
+				AgendaPanel agendaPanel = new AgendaPanel(modalIncluirEditar.getContentId());
+				agendaPanel.setOutputMarkupId(true);
+				
+				AgendaEditForm agendaEditForm = new AgendaEditForm(new Agenda(), agendaPanel, null, divAtualizar, modalIncluirEditar);
+				agendaEditForm.setOutputMarkupId(true);
+				agendaPanel.add(agendaEditForm);
+				
+				modalIncluirEditar.setContent(agendaPanel);
+				modalIncluirEditar.show(target);
+				
 			}
 			
 			@Override

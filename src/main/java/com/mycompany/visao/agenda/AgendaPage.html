@@ -45,13 +45,15 @@ $('#tab a').on('click', function(e) {
 		                    <div style="padding:10px 20px;">
 		                    	<table class="table table-striped table-bordered table-hover">
 		                    		<thead>
-		                    			<tr style="border-bottom:1px solid; border-color:gray; font-size: 14px">
-			                    			<th><a>Nome</a></th>
-		                    			</tr>
+		                    			<th><a>Nome</a></th>
+		                    			<th><a>Ações</a></th>
 		                    		</thead>
 		                    		<tbody>
 		                    			<tr wicket:id="listAgendas">
 		                    				<td><label wicket:id="nome">[NOME]</label></td>
+		                    				<td style="text-align:left; white-space: nowrap; width:100px;vertical-align: top;">
+		                    					<a class="btn btn-primary btn3d" wicket:id="visualizarCalendario" data-toggle="tooltip" title="Visualizar Calendario"><span class="glyphicon glyphicon-calendar"></span></a>
+								        	</td>
 		                    			</tr>
 		                    		</tbody>
 		                    	</table>
@@ -59,6 +61,7 @@ $('#tab a').on('click', function(e) {
 		                </div>
 						<div id="modalEditar" name = "modalEditar" wicket:id="modalIncluirEditar"></div>
 						<div id="modalExcluir" name="modalExcluir" wicket:id="modalExcluir"></div>
+						<div id="modalCalendario" name="modalCalendario" wicket:id="modalCalendario"></div>
 					</form>
 				</div>
 			</div>
