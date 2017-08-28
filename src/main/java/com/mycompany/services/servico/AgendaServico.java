@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PermissaoAcesso;
@@ -43,12 +44,15 @@ public class AgendaServico implements IAgendaServico {
 		
 		return retorno;
 	}
+	
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
 		if(abstractBean!=null && abstractBean.getId()!=null){
 			Search search = new Search(Agenda.class);
 			search.addFilterEqual("id", abstractBean.getId());
+			search.addFetch("eventos");
+			search.addFetch("aulas");
 			
 			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
 				search.addFetch(fetch);

@@ -75,18 +75,32 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 		return super.search(search);
 	}
 	
+	@SuppressWarnings("unchecked")
+	private T fetchAdministracao(AbstractBean<?> abstractBean){
+		if(abstractBean.getAdministracao()!=null && abstractBean.getAdministracao().getId()!=null){
+			Search search = new Search(Administracao.class);
+			search.addFetch("aluno");
+			search.addFetch("curso");
+			search.addFilterEqual("id", abstractBean.getAdministracao().getId());
+			
+			Administracao administracao = (Administracao) _searchUnique(search);
+			abstractBean.setAdministracao(administracao);
+		}
+		return (T) abstractBean;
+	}
+	
 	@Override
 	public T searchUnique(Search search) {
 		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
 			if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
-				return super.searchUnique(search);
+				return fetchAdministracao((AbstractBean<?>) super.searchUnique(search));
 			}
 			
 			if( Util.getAlunoLogado().getAdministracao().getCurso()!=null){
 				search.addFilterEqual("administracao.curso.id", Util.getAlunoLogado().getAdministracao().getCurso().getId());
 			}
 		}
-		return super.searchUnique(search);
+		return fetchAdministracao((AbstractBean<?>) super.searchUnique(search));
 	}
 
 	@Override

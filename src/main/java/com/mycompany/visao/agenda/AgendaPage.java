@@ -55,7 +55,7 @@ public class AgendaPage extends Menu {
 		modalCalendario = new ModalWindow("modalCalendario");
 		modalCalendario.setOutputMarkupId(true);
 		modalCalendario.setInitialHeight(800);
-		modalCalendario.setInitialWidth(1300);
+		modalCalendario.setInitialWidth(1500);
 		
 		modalCalendario.setCloseButtonCallback(null);
 		
@@ -120,13 +120,13 @@ public class AgendaPage extends Menu {
 		return listViewPermissaoAcesso;
 	}
 	
-	private AjaxButton criarButtonVisualizarCalendario(Agenda agenda){
+	private AjaxButton criarButtonVisualizarCalendario(final Agenda agenda){
 		AjaxButton ajaxButton =  new AjaxButton("visualizarCalendario") {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				CalendarioPanel calendarioPanel = new CalendarioPanel(modalCalendario.getContentId());
+				CalendarioPanel calendarioPanel = new CalendarioPanel(modalCalendario.getContentId(),(Agenda) agendaServico.searchFechId(agenda));
 				calendarioPanel.setOutputMarkupId(true);
 				form.add(calendarioPanel);
 				modalCalendario.setContent(calendarioPanel);

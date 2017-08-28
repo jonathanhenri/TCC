@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Evento;
 import com.mycompany.services.interfaces.IEventoServico;
@@ -30,6 +31,11 @@ public class EventoListarPage extends ListarPageGenerico {
 		serviceComum = eventoServico;
 	}
 	
+	@Override
+	protected Boolean addFilters(Search search) {
+		search.addFilterNull("agenda");
+		return super.addFilters(search);
+	}
 	@Override
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");

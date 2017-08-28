@@ -1,6 +1,7 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -81,6 +82,13 @@ public class Agenda extends AbstractBean<Agenda> {
 
 	public Set<Evento> getEventos() {
 		return eventos;
+	}
+	
+	public void addEvento(Evento evento){
+		if(eventos == null){
+			eventos = new HashSet<Evento>();
+		}
+		eventos.add(evento);
 	}
 
 	public void setEventos(Set<Evento> eventos) {

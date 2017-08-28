@@ -247,6 +247,9 @@ public class CursoServico implements ICursoServico {
 			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
 				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
 			}
+			if(Util.getAlunoLogado().getAdministracao().getCurso()!=null){
+				filterOr.add(Filter.equal("administracao.curso.id", Util.getAlunoLogado().getAdministracao().getCurso().getId()));
+			}
 					
 			search.addFilter(filterOr);
 		}

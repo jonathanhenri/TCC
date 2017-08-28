@@ -22,6 +22,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.Materia;
 import com.mycompany.domain.OrigemEvento;
@@ -50,6 +51,11 @@ public class EventoEditForm extends EditForm<Evento> {
 	
 	private Evento evento;
 	
+	public EventoEditForm(Evento evento,Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
+		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
+		this.evento = evento;
+		this.evento.setAgenda(agenda);
+	}
 	
 	public EventoEditForm(Evento evento,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);

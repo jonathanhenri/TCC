@@ -23,12 +23,12 @@ public class Administracao implements Serializable{
 	private Long id;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
-	@JoinColumn(name="ID_ALUNO")
-	private Aluno aluno;
-	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_CURSO")
 	private Curso curso;
+	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
+	@JoinColumn(name="ID_ALUNO")
+	private Aluno aluno;
 
 	@Column(name = "ADMINISTRADOR_CAMPUS", nullable = true)
 	private Boolean administradorCampus = false;
