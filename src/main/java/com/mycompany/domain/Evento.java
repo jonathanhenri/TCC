@@ -34,6 +34,15 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "CODIGO_COR", nullable = true, length = 50)
 	private String codigoCor;
 	
+	@Column(name = "PROFESSOR", nullable = true, length = 200)
+	private String professor;
+	
+	@Column(name = "LOCAL", nullable = true, length = 100)
+	private String local;
+	
+	@Column(name = "OBSERVACAO", nullable = true, length = 600)
+	private String observacao;
+	
 	@ListarPageAnotacao
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
@@ -62,6 +71,31 @@ public class Evento extends AbstractBean<Evento> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	
+	public String getProfessor() {
+		return professor;
+	}
+
+	public void setProfessor(String professor) {
+		this.professor = professor;
+	}
+
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
+	}
+
+	public String getObservacao() {
+		return observacao;
+	}
+
+	public void setObservacao(String observacao) {
+		this.observacao = observacao;
+	}
+
 	public TipoEvento getTipoEvento() {
 		return tipoEvento;
 	}

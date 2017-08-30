@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -272,6 +274,20 @@ public class Util {
 		}
 	}
 	
+	public static String getDateFormat(Date date){
+		DateFormat formata = new SimpleDateFormat("dd/MM/yyyy");
+		return formata.format(date);
+	}
+	
+	public static String getMesAbreviadoDate(Date date){
+		DateFormat formata = new SimpleDateFormat("MMM");
+		return formata.format(date);
+	}
+	
+	public static String getDiaSemanaDate(Date date){
+		DateFormat formata = new SimpleDateFormat("dd");
+		return formata.format(date);
+	}
 	/**
 	 * Ler o arquivo do disco para efetuar sua gravaï¿½ï¿½o no banco e deleta.
 	 * @param	String	nomeArquivo

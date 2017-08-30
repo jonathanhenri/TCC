@@ -46,10 +46,6 @@
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
-     <bean id="aulaDAO"  class="com.mycompany.persistence.dao.AulaDAO">
-    	<property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-    
     <bean id="origemEventoDAO"  class="com.mycompany.persistence.dao.OrigemEventoDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>

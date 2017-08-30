@@ -36,10 +36,6 @@ public class Agenda extends AbstractBean<Agenda> {
 	@Column(name = "ID_AGENDA")
 	private Set<Evento> eventos;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy = "agenda")
-	@Column(name = "ID_AGENDA")
-	private Set<Aula> aulas;
-	
 	@Column(name = "DESCRICAO", nullable = true, length = 300)
 	private String descricao;
 	
@@ -95,13 +91,6 @@ public class Agenda extends AbstractBean<Agenda> {
 		this.eventos = eventos;
 	}
 
-	public Set<Aula> getAulas() {
-		return aulas;
-	}
-
-	public void setAulas(Set<Aula> aulas) {
-		this.aulas = aulas;
-	}
 
 	public String getDescricao() {
 		return descricao;

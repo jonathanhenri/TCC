@@ -52,7 +52,6 @@ public class AgendaServico implements IAgendaServico {
 			Search search = new Search(Agenda.class);
 			search.addFilterEqual("id", abstractBean.getId());
 			search.addFetch("eventos");
-			search.addFetch("aulas");
 			
 			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
 				search.addFetch(fetch);

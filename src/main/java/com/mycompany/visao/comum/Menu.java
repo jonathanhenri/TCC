@@ -15,7 +15,6 @@ import com.mycompany.util.Util;
 import com.mycompany.visao.agenda.AgendaPage;
 import com.mycompany.visao.cadastro.Index;
 import com.mycompany.visao.cadastro.aluno.AlunoListarPage;
-import com.mycompany.visao.cadastro.aula.AulaListarPage;
 import com.mycompany.visao.cadastro.curso.CursoListarPage;
 import com.mycompany.visao.cadastro.evento.EventoListarPage;
 import com.mycompany.visao.cadastro.materia.MateriaListarPage;
@@ -90,18 +89,6 @@ public class Menu extends WebPage {
 			}
 		});
 //		
-		add(new AjaxLink<String>("link_cadastro_aula") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onClick(AjaxRequestTarget target) {
-				setResponsePage(AulaListarPage.class);
-			}
-			
-			@Override
-			public boolean isVisible() {
-				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AULA_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
-			}
-		});
 		
 		add(new AjaxLink<String>("link_cadastro_materia") {
 			private static final long serialVersionUID = 1L;

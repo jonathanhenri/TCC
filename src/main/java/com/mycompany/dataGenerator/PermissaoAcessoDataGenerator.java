@@ -5,7 +5,6 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Aluno;
-import com.mycompany.domain.Aula;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Evento;
@@ -58,12 +57,6 @@ public class PermissaoAcessoDataGenerator {
 		criarPermissao("Materia Pesquisar", PermissaoAcesso.PERMISSAO_MATERIA_PESQUISAR, 22, Materia.class, PermissaoAcesso.OPERACAO_PESQUISAR);
 		criarPermissao("Materia Alterar", PermissaoAcesso.PERMISSAO_MATERIA_ALTERAR, 23, Materia.class, PermissaoAcesso.OPERACAO_ALTERAR);
 		criarPermissao("Materia Excluir", PermissaoAcesso.PERMISSAO_MATERIA_EXCLUIR, 24, Materia.class, PermissaoAcesso.OPERACAO_EXCLUIR);
-		
-		//Aula
-		criarPermissao("Aula Incluir", PermissaoAcesso.PERMISSAO_AULA_INCLUIR, 25, Aula.class, PermissaoAcesso.OPERACAO_INCLUIR);
-		criarPermissao("Aula Pesquisar", PermissaoAcesso.PERMISSAO_AULA_PESQUISAR, 26, Aula.class, PermissaoAcesso.OPERACAO_PESQUISAR);
-		criarPermissao("Aula Alterar", PermissaoAcesso.PERMISSAO_AULA_ALTERAR, 27, Aula.class, PermissaoAcesso.OPERACAO_ALTERAR);
-		criarPermissao("Aula Excluir", PermissaoAcesso.PERMISSAO_AULA_EXCLUIR, 28, Aula.class, PermissaoAcesso.OPERACAO_EXCLUIR);
 		
 		//Agenda
 		criarPermissao("Agenda Incluir", PermissaoAcesso.PERMISSAO_AGENDA_INCLUIR, 29, Agenda.class, PermissaoAcesso.OPERACAO_INCLUIR);

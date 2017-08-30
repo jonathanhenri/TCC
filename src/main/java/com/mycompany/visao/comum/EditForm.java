@@ -328,7 +328,6 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return titulo;
 	}
 
-
 	public AbstractBean<?> getAbstractBean() {
 		return abstractBean;
 	}

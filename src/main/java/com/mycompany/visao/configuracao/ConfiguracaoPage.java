@@ -43,7 +43,6 @@ public class ConfiguracaoPage extends Menu {
 		configuracao.setCompartilharTipoEvento(false);
 		configuracao.setCompartilharOrigemEvento(false);
 		configuracao.setCompartilharMateria(false);
-		configuracao.setCompartilharAula(false);
 		configuracao.setCompartilharAgenda(false);
 		configuracao.setCompartilharPerfilAcesso(false);
 		
@@ -51,7 +50,6 @@ public class ConfiguracaoPage extends Menu {
 		configuracao.setSincronizarTipoEvento(true);
 		configuracao.setSincronizarOrigemEvento(true);
 		configuracao.setSincronizarMateria(true);
-		configuracao.setSincronizarAula(true);
 		configuracao.setSincronizarAgenda(true);
 		configuracao.setSincronizarPerfilAcesso(true);
 		
@@ -63,7 +61,6 @@ public class ConfiguracaoPage extends Menu {
 		divSincronizar.add(criarCampoSincronizarTipoEvento());
 		divSincronizar.add(criarCampoSincronizarOrigemEvento());
 		divSincronizar.add(criarCampoSincronizarMateria());
-		divSincronizar.add(criarCampoSincronizarAula());
 		divSincronizar.add(criarCampoSincronizarAgenda());
 		divSincronizar.add(criarCampoSincronizarPerfilAcesso());
 		
@@ -76,7 +73,6 @@ public class ConfiguracaoPage extends Menu {
 		divCompartilhar.add(criarCampoCompartilharTipoEvento());
 		divCompartilhar.add(criarCampoCompartilharOrigemEvento());
 		divCompartilhar.add(criarCampoCompartilharMateria());
-		divCompartilhar.add(criarCampoCompartilharAula());
 		divCompartilhar.add(criarCampoCompartilharAgenda());
 		divCompartilhar.add(criarCampoCompartilharPerfilAcesso());
 		
@@ -110,14 +106,6 @@ public class ConfiguracaoPage extends Menu {
 		return radioGroupAtivo;
 	}
 	
-	
-	private RadioGroup<Boolean> criarCampoCompartilharAula() {
-		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("compartilharAula");
-		radioGroupAtivo.add(new Radio<Boolean>("compartilharAulaSim", new Model<Boolean>(true)).add(new AttributeModifier("id", "compartilharAulaSim")));
-		radioGroupAtivo.add(new Radio<Boolean>("compartilharAulaNao", new Model<Boolean>(false)).add(new AttributeModifier("id", "compartilharAulaNao")));
-		radioGroupAtivo.setOutputMarkupId(true);
-		return radioGroupAtivo;
-	}
 	
 	private RadioGroup<Boolean> criarCampoCompartilharMateria() {
 		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("compartilharMateria");
@@ -170,14 +158,6 @@ public class ConfiguracaoPage extends Menu {
 		return radioGroupAtivo;
 	}
 	
-	
-	private RadioGroup<Boolean> criarCampoSincronizarAula() {
-		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("sincronizarAula");
-		radioGroupAtivo.add(new Radio<Boolean>("sincronizarAulaSim", new Model<Boolean>(true)).add(new AttributeModifier("id", "sincronizarAulaSim")));
-		radioGroupAtivo.add(new Radio<Boolean>("sincronizarAulaNao", new Model<Boolean>(false)).add(new AttributeModifier("id", "sincronizarAulaNao")));
-		radioGroupAtivo.setOutputMarkupId(true);
-		return radioGroupAtivo;
-	}
 	
 	private RadioGroup<Boolean> criarCampoSincronizarMateria() {
 		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("sincronizarMateria");

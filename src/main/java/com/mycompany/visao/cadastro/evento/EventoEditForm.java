@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.NumberTextField;
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -32,6 +34,7 @@ import com.mycompany.services.interfaces.IMateriaServico;
 import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
+import com.mycompany.util.Util;
 import com.mycompany.visao.comum.ColorTextField;
 import com.mycompany.visao.comum.EditForm;
 
@@ -65,6 +68,60 @@ public class EventoEditForm extends EditForm<Evento> {
 	@Override
 	protected void setServicoComum() {
 		serviceComum = eventoServico;
+	}
+	
+	private DropDownChoice<Evento> criarListEventosRecorrentes(){
+		IChoiceRenderer<Evento> choiceRenderer = new ChoiceRenderer<Evento>("descricao", "id"){
+			@Override
+			public Object getDisplayValue(Evento object) {
+				return super.getDisplayValue(object)+" - "+Util.getDateFormat(object.getDataInicio());
+			}
+			
+		};
+		LoadableDetachableModel<List<Evento>> eventos = new LoadableDetachableModel<List<Evento>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<Evento> load() {
+				List<Evento> tiposEvento = new ArrayList<Evento>();
+				Search search = new Search(Evento.class);
+				search.addFilterNull("agenda");
+				tiposEvento = eventoServico.search(search);
+				
+				return tiposEvento;
+			}
+			
+			
+		};
+		
+		final DropDownChoice<Evento> tipoRadioChoice = new DropDownChoice<Evento>("eventos",new PropertyModel<Evento>(this, "evento") ,eventos,choiceRenderer){
+			@Override
+			public boolean isVisible() {
+				if(getAbstractBean().getId()!=null){
+					return false;
+				}
+				return true;
+			}
+		};
+		tipoRadioChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				Evento eventoNovo = evento.clonar(false);
+				eventoNovo.setAdministracao(null);
+				setAbstractBean(eventoNovo);
+				setModelObject(eventoNovo);
+				target.add(getRootForm());
+				
+			}
+			
+		});
+		
+		tipoRadioChoice.setNullValid(true);
+		tipoRadioChoice.setOutputMarkupId(true);
+		
+		return tipoRadioChoice;
 	}
 	
 	private ColorTextField criarCampoCodigoCor(){
@@ -133,7 +190,7 @@ public class EventoEditForm extends EditForm<Evento> {
 				return false;
 			}			
 		};
-		DateTextField dataFim = new DateTextField("dataFim", new PropertyModel<Date>(getAbstractBean(), "dataFim"),new PatternDateConverter("dd/MM/yyyy", true));
+		DateTextField dataFim = new DateTextField("dataFim",new PatternDateConverter("dd/MM/yyyy", true));
 		datePicker.setAutoHide(true);		
 		dataFim.add(datePicker);
 		dataFim.setOutputMarkupId(true);
@@ -155,7 +212,7 @@ public class EventoEditForm extends EditForm<Evento> {
 				return false;
 			}			
 		};
-		DateTextField dataInicio = new DateTextField("dataInicio", new PropertyModel<Date>(getAbstractBean(), "dataInicio"),new PatternDateConverter("dd/MM/yyyy", true));
+		DateTextField dataInicio = new DateTextField("dataInicio",new PatternDateConverter("dd/MM/yyyy", true));
 		datePicker.setAutoHide(true);		
 		dataInicio.add(datePicker);
 		dataInicio.setOutputMarkupId(true);
@@ -186,6 +243,26 @@ public class EventoEditForm extends EditForm<Evento> {
 		return tipoRadioChoice;
 	}
 	
+	private TextField<String> criarCampoProfessor(){
+		TextField<String> textFieldNome = new TextField<String>("professor");
+		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(1, 600));
+		return textFieldNome;
+	}
+	
+	private TextField<String> criarCampoLocal(){
+		TextField<String> textFieldNome = new TextField<String>("local");
+		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(1, 600));
+		return textFieldNome;
+	}
+	
+	
+	private TextArea<String> criarCampoObservacao(){
+		TextArea<String> textArea = new TextArea<String>("observacao");
+		textArea.setOutputMarkupId(true);
+		return textArea;
+	}
 	private TextField<String> criarCampoDescricao(){
 		TextField<String> textFieldNome = new TextField<String>("descricao");
 		textFieldNome.setOutputMarkupId(true);
@@ -202,12 +279,16 @@ public class EventoEditForm extends EditForm<Evento> {
 	@Override
 	protected void adicionarCampos() {
 		add(criarCampoDescricao());
+		add(criarCampoObservacao());
+		add(criarCampoLocal());
+		add(criarCampoProfessor());
 		add(criarCampoOrigemEvento());
 		add(criarCampoTipoEvento());
 		add(criarCampoDataFim());
 		add(criarCampoDataInicio());
 		add(criarCampoMateria());
 		add(criarCampoCodigoCor());
+		add(criarListEventosRecorrentes());
 		add(criarCampoPeriodo());
 	}
 	
@@ -217,5 +298,11 @@ public class EventoEditForm extends EditForm<Evento> {
 	}
 	private static final long serialVersionUID = 1L;
 
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+	public Evento getEvento() {
+		return evento;
+	}
 	
 }

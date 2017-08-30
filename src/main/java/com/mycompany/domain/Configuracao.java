@@ -39,9 +39,6 @@ public class Configuracao extends AbstractBean<Configuracao>{
 	@Column(name = "COMPARTILHAR_MATERIA", nullable = true)
 	private Boolean compartilharMateria;
 	
-	@Column(name = "COMPARTILHAR_AULA", nullable = true)
-	private Boolean compartilharAula;
-	
 	@Column(name = "COMPARTILHAR_AGENDA", nullable = true)
 	private Boolean compartilharAgenda;
 	
@@ -62,9 +59,6 @@ public class Configuracao extends AbstractBean<Configuracao>{
 	
 	@Column(name = "SINCRONIZAR_MATERIA", nullable = true)
 	private Boolean sincronizarMateria;
-	
-	@Column(name = "SINCRONIZAR_AULA", nullable = true)
-	private Boolean sincronizarAula;
 	
 	@Column(name = "SINCRONIZAR_AGENDA", nullable = true)
 	private Boolean sincronizarAgenda;
@@ -120,14 +114,6 @@ public class Configuracao extends AbstractBean<Configuracao>{
 		this.compartilharMateria = compartilharMateria;
 	}
 
-	public Boolean getCompartilharAula() {
-		return compartilharAula;
-	}
-
-	public void setCompartilharAula(Boolean compartilharAula) {
-		this.compartilharAula = compartilharAula;
-	}
-
 	public Boolean getCompartilharAgenda() {
 		return compartilharAgenda;
 	}
@@ -176,13 +162,6 @@ public class Configuracao extends AbstractBean<Configuracao>{
 		this.sincronizarMateria = sincronizarMateria;
 	}
 
-	public Boolean getSincronizarAula() {
-		return sincronizarAula;
-	}
-
-	public void setSincronizarAula(Boolean sincronizarAula) {
-		this.sincronizarAula = sincronizarAula;
-	}
 
 	public Boolean getSincronizarAgenda() {
 		return sincronizarAgenda;

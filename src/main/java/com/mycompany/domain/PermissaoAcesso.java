@@ -71,11 +71,6 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	public static Integer PERMISSAO_ACESSO_PROVISORIO_ALTERAR = 34;
 	public static Integer PERMISSAO_ACESSO_PROVISORIO_EXCLUIR = 35;
 	
-	public static Integer PERMISSAO_AULA_INCLUIR = 36;
-	public static Integer PERMISSAO_AULA_PESQUISAR = 37;
-	public static Integer PERMISSAO_AULA_ALTERAR = 38;
-	public static Integer PERMISSAO_AULA_EXCLUIR = 39;
-	
 	public static Integer PERMISSAO_RELATORIOS = 40;
 	
 	public static Integer PERMISSAO_CONFIGURACAO_SINCRONIZAR = 41;

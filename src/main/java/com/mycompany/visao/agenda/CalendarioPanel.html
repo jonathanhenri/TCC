@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <wicket:head>
 	<style>
-		
+
 #timeline {
   list-style: none;
   position: relative;
@@ -18,7 +18,6 @@
   width: 2px;
   background-color: #4997cd;
   left: 50%;
-  margin-left: -1.5px;
 }
 #timeline .clearFix {
   clear: both;
@@ -70,6 +69,7 @@
   top: -16px;
   margin-left: -18px;
 }
+
 #timeline .timeline-badge.timeline-future-movement a span {
   color: #4997cd;
   font-size: .9em;
@@ -91,6 +91,7 @@
   border-radius: 3px;
   background-color: #FFFFFF;
   color: #666;
+  margin-left:33px;
   padding: 10px;
   position: relative;
   -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
@@ -99,7 +100,6 @@
 #timeline .timeline-movement .timeline-item .timeline-panel .timeline-panel-ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 #timeline .timeline-movement .timeline-item .timeline-panel.credits .timeline-panel-ul {
   text-align: right;
@@ -134,7 +134,7 @@
 				<div class="panel-body">
 					<div wicket:id="divEvento">
 						<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formEvento">
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<div class="panel-title">
@@ -142,66 +142,18 @@
 										</div>
 									</div>
 									<div class="panel-body">	
-										<div class="form-group">
-											<div class="col-md-12">	
-												<label class="control-label">Listagem dos eventos recorrentes <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="Eventos recorrentes usados como base para novos eventos"></a></label>
-												<select class="form-control" wicket:id="eventos"></select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-md-6">	
-												<label class="control-label">Data inicio</label>
-												<input type="text" class="form-control"  id ="campoDataInicio"  wicket:id="dataInicio" placeholder="Data inicio">
-											</div>
-											<div class="col-md-6">	
-												<label class="control-label">Data final</label>
-												<input type="text" class="form-control"  id ="campoDataFim" wicket:id="dataFim" placeholder="Data final">
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-md-12">	
-												<label class="control-label">Descrição</label>
-												<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-md-6">	
-												<label class="control-label">Origem Evento</label>
-												<select class="form-control" wicket:id="origemEvento"></select>
-											</div>
-											<div class="col-md-6">	
-												<label class="control-label">Tipo Evento</label>
-												<select class="form-control" wicket:id="tipoEvento"></select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="col-md-6">	
-												<label class="control-label">Periodo</label>
-												<input type="number" class="form-control" id="periodo" wicket:id="periodo" placeholder="Periodo">
-											</div>
-											<div class="col-md-6">	
-												<label class="control-label">Materia</label>
-												<select class="form-control" wicket:id="materia"></select>
-											</div>
-											
-										</div>
-										<div class="form-group">
-											<div class="col-md-3">	
-												<label class="control-label">Cor</label>
-												<input type="color" class="form-control" wicket:id="codigoCor" name="color" id="color">
-											</div>
-										</div>
-										
-										<input value="Incluir" type="button" name ="incluir" wicket:id="incluir" class="btn btn-success " />
+										<input value="Novo" type="button" name ="novo" wicket:id="buttonNovoEvento" class="btn btn-success " />
 									</div>
 								</div>
 							</div>
+							
+							<div wicket:id="modalIncluirEditar"></div>
 						</form>
 					</div>
 					
 					<div wicket:id="divListagem">
 						<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="form">
-							<div class="col-md-8">
+							<div class="col-md-10">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<div class="panel-title">
@@ -222,94 +174,30 @@
 											        </a>
 											    </div>
 											</div>
-										 	<div wicket:id="eventosCalendario">
-												<div class="row timeline-movement">
-												
+										 	<div wicket:id="diaEventosCalendario">
+												<div class="row timeline-movement content scaffold-list">
 												    <div class="timeline-badge">
 												        <span class="timeline-balloon-date-day" wicket:id="day"></span><br>
 												        <span class="timeline-balloon-date-month" wicket:id="mon"></span>
 												    </div>
-												
-												
-												    <div class="col-sm-6  timeline-item">
-												        <div class="row">
-												            <div class="col-sm-11">
-												                <div class="timeline-panel credits">
-												                    <ul class="timeline-panel-ul">
-												                        <li><span class="importo"><label wicket:id="descricao"></label></span></li>
-												                        <li><span class="causale">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </span> </li>
-												                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11/09/2014</small></p> </li>
-												                    </ul>
-												                </div>
-												
-												            </div>
-												        </div>
-												    </div>
-												
-												    <div class="col-sm-6  timeline-item">
-												        <div class="row">
-												            <div class="col-sm-offset-1 col-sm-11">
-												                <div class="timeline-panel debits">
-												                    <ul class="timeline-panel-ul">
-												                        <li><span class="importo">Mussum ipsum cacilds 2</span></li>
-												                        <li><span class="causale">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </span> </li>
-												                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11/09/2014</small></p> </li>
-												                    </ul>
-												                </div>
-												
-												            </div>
-												        </div>
-												    </div>
-												    
-												       <div class="col-sm-6  timeline-item">
-												        <div class="row">
-												            <div class="col-sm-11">
-												                <div class="timeline-panel credits">
-												                    <ul class="timeline-panel-ul">
-												                        <li><span class="importo">Mussum ipsum cacilds 3</span></li>
-												                        <li><span class="causale">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </span> </li>
-												                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11/09/2014</small></p> </li>
-												                    </ul>
-												                </div>
-												
-												            </div>
-												        </div>
-												    </div>
-												    
-												    <div class="col-sm-6  timeline-item">
-												        <div class="row">
-												            <div class="col-sm-offset-1 col-sm-11">
-												                <div class="timeline-panel debits">
-												                    <ul class="timeline-panel-ul">
-												                        <li><span class="importo">Mussum ipsum cacilds 4</span></li>
-												                        <li><span class="causale">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </span> </li>
-												                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11/09/2014</small></p> </li>
-												                    </ul>
-												                </div>
-												
-												            </div>
-												        </div>
+												    <div class="row">
+												    	<div wicket:id="eventosDoDia">
+														    <div class="col-md-6  timeline-item">
+													            <div class="col-md-12 row">
+													                <div class="timeline-panel credits">
+													                    <ul class="timeline-panel-ul">
+													                       <li><span class="importo"><label wicket:id="descricao"></label></span></li>
+													                        <li><span class="causale">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </span> </li>
+													                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small></p> </li>
+													                    </ul>
+													                </div>
+													            </div>
+														    </div>
+														 </div>
 												    </div>
 												</div>
 											</div>
 										</div>											
-										
-										
-										
-										
-										
-<!-- 											<div class="panel panel-info"> -->
-<!-- 												<div class="panel-heading"> -->
-<!-- 													<div class="panel-title"> -->
-<!-- 															<label>Descrição</label> -->
-<!-- 													</div> -->
-<!-- 												</div> -->
-<!-- 												<div class="panel-body"> -->
-<!-- 													<div class="col-md-12"> -->
-<!-- 													<label wicket:id="descricao">[NOME]</label> -->
-<!-- 													</div> -->
-<!-- 												</div> -->
-<!-- 											</div> -->
 									</div>
 								</div>
 							</div>

@@ -77,7 +77,7 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	
 	@SuppressWarnings("unchecked")
 	private T fetchAdministracao(AbstractBean<?> abstractBean){
-		if(abstractBean.getAdministracao()!=null && abstractBean.getAdministracao().getId()!=null){
+		if(abstractBean !=null && abstractBean.getAdministracao()!=null && abstractBean.getAdministracao().getId()!=null){
 			Search search = new Search(Administracao.class);
 			search.addFetch("aluno");
 			search.addFetch("curso");

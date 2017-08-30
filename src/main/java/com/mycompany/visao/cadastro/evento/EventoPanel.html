@@ -33,47 +33,64 @@
 						</div>
 					</div>
 					<div class="panel-body">
+						<wicket:enclosure="eventos">
+							<div class="form-group">
+								<div class="col-md-12">	
+									<label class="control-label">Listagem dos eventos recorrentes <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="Eventos recorrentes usados como base para novos eventos"></a></label>
+									<select class="form-control" wicket:id="eventos"></select>
+								</div>
+							</div>
+						</wicket:enclosure>
 						<div class="form-group">
-							<div class="col-md-6">	
+							<div class="col-md-3">	
 								<label class="control-label">Data inicio</label>
 								<input type="text" class="form-control"  id ="campoDataInicio"  wicket:id="dataInicio" placeholder="Data inicio">
 							</div>
-							<div class="col-md-6">	
+							<div class="col-md-3">	
 								<label class="control-label">Data final</label>
 								<input type="text" class="form-control"  id ="campoDataFim" wicket:id="dataFim" placeholder="Data final">
 							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-12">	
+							<div class="col-md-6">	
 								<label class="control-label">Descrição</label>
 								<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-6">	
-								<label class="control-label">Origem Evento</label>
-								<select class="form-control" wicket:id="origemEvento"></select>
+								<label class="control-label">Local</label>
+								<input type="text" class="form-control"  id="local" wicket:id="local" placeholder="Local">
 							</div>
-							<div class="col-md-6">	
-								<label class="control-label">Tipo Evento</label>
-								<select class="form-control" wicket:id="tipoEvento"></select>
+							<div class="col-md-3">	
+								<label class="control-label">Professor</label>
+								<input type="text" class="form-control"  id="professor" wicket:id="professor" placeholder="Professor">
 							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-md-6">	
+							<div class="col-md-3">	
 								<label class="control-label">Periodo</label>
 								<input type="number" class="form-control" id="periodo" wicket:id="periodo" placeholder="Periodo">
 							</div>
-							<div class="col-md-6">	
-								<label class="control-label">Materia</label>
-								<select class="form-control" wicket:id="materia"></select>
-							</div>
-							
 						</div>
 						<div class="form-group">
 							<div class="col-md-3">	
+								<label class="control-label">Origem Evento</label>
+								<select class="form-control" wicket:id="origemEvento"></select>
+							</div>
+							<div class="col-md-3">	
+								<label class="control-label">Tipo Evento</label>
+								<select class="form-control" wicket:id="tipoEvento"></select>
+							</div>
+							<div class="col-md-3">	
+								<label class="control-label">Materia</label>
+								<select class="form-control" wicket:id="materia"></select>
+							</div>
+							<div class="col-md-3">	
 								<label class="control-label">Cor</label>
 								<input type="color" class="form-control" wicket:id="codigoCor" name="color" id="color">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-md-12">	
+								<label class="control-label">Observação</label>
+								<textarea rows="7" cols="50" class="form-control" wicket:id="observacao"></textarea>
 							</div>
 						</div>
 						<div class="form-group">
