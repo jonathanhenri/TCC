@@ -64,14 +64,101 @@ public class Evento extends AbstractBean<Evento> {
 	private OrigemEvento origemEvento;
 	
 	@Column(name = "PERIODO", nullable = true)
-	private Integer periodo;	
+	private Integer periodo;
+	
+	@Column(name = "REPETIR_TODOS_DIAS", nullable = true)
+	private Boolean repetirTodosDias;
+	
+	@Column(name = "REPETIR_TODA_SEGUNDA", nullable = true)
+	private Boolean repetirTodaSegunda;
+	
+	@Column(name = "REPETIR_TODA_TERCA", nullable = true)
+	private Boolean repetirTodaTerca;
+	
+	@Column(name = "REPETIR_TODA_QUARTA", nullable = true)
+	private Boolean repetirTodaQuarta;
+	
+	@Column(name = "REPETIR_TODA_QUINTA", nullable = true)
+	private Boolean repetirTodaQuinta;
+	
+	@Column(name = "REPETIR_TODA_SEXTA", nullable = true)
+	private Boolean repetirTodaSexta;
+	
+	@Column(name = "REPETIR_TODA_SABADO", nullable = true)
+	private Boolean repetirTodoSabado;
+	
+	@Column(name = "REPETIR_TODA_DOMINGO", nullable = true)
+	private Boolean repetirTodoDomingo;
 	
 	@Id
 	@Column(name = "ID_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	
+	public Boolean getRepetirTodosDias() {
+		return repetirTodosDias;
+	}
+
+	public void setRepetirTodosDias(Boolean repetirTodosDias) {
+		this.repetirTodosDias = repetirTodosDias;
+	}
+
+	public Boolean getRepetirTodaSegunda() {
+		return repetirTodaSegunda;
+	}
+
+	public void setRepetirTodaSegunda(Boolean repetirTodaSegunda) {
+		this.repetirTodaSegunda = repetirTodaSegunda;
+	}
+
+	public Boolean getRepetirTodaTerca() {
+		return repetirTodaTerca;
+	}
+
+	public void setRepetirTodaTerca(Boolean repetirTodaTerca) {
+		this.repetirTodaTerca = repetirTodaTerca;
+	}
+
+	public Boolean getRepetirTodaQuarta() {
+		return repetirTodaQuarta;
+	}
+
+	public void setRepetirTodaQuarta(Boolean repetirTodaQuarta) {
+		this.repetirTodaQuarta = repetirTodaQuarta;
+	}
+
+	public Boolean getRepetirTodaQuinta() {
+		return repetirTodaQuinta;
+	}
+
+	public void setRepetirTodaQuinta(Boolean repetirTodaQuinta) {
+		this.repetirTodaQuinta = repetirTodaQuinta;
+	}
+
+	public Boolean getRepetirTodaSexta() {
+		return repetirTodaSexta;
+	}
+
+	public void setRepetirTodaSexta(Boolean repetirTodaSexta) {
+		this.repetirTodaSexta = repetirTodaSexta;
+	}
+
+	public Boolean getRepetirTodoSabado() {
+		return repetirTodoSabado;
+	}
+
+	public void setRepetirTodoSabado(Boolean repetirTodoSabado) {
+		this.repetirTodoSabado = repetirTodoSabado;
+	}
+
+	public Boolean getRepetirTodoDomingo() {
+		return repetirTodoDomingo;
+	}
+
+	public void setRepetirTodoDomingo(Boolean repetirTodoDomingo) {
+		this.repetirTodoDomingo = repetirTodoDomingo;
+	}
+
 	public String getProfessor() {
 		return professor;
 	}

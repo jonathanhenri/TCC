@@ -4,6 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <wicket:head>
+	<script>
+		$('#myModal').on('shown.bs.modal', function () {
+		  $('#myInput').focus()
+		})
+	</script>
 	<style>
 
 #timeline {
@@ -52,7 +57,7 @@
   background-color: #ffffff;
   font-size: 1.7em;
   height: 35px;
-  margin-left: -18px;
+  margin-left: -16px;
   width: 35px;
   top: 40px;
 }
@@ -67,7 +72,7 @@
   width: 35px;
   font-size: 1.7em;
   top: -16px;
-  margin-left: -18px;
+  margin-left: -16px;
 }
 
 #timeline .timeline-badge.timeline-future-movement a span {
@@ -103,6 +108,7 @@
 }
 #timeline .timeline-movement .timeline-item .timeline-panel.credits .timeline-panel-ul {
   text-align: right;
+  cursor: pointer;
 }
 #timeline .timeline-movement .timeline-item .timeline-panel.credits .timeline-panel-ul li {
   color: #666;
@@ -132,32 +138,22 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<div wicket:id="divEvento">
-						<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="formEvento">
-							<div class="col-md-2">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<div class="panel-title">
-											<h1>Eventos</h1>
-										</div>
-									</div>
-									<div class="panel-body">	
-										<input value="Novo" type="button" name ="novo" wicket:id="buttonNovoEvento" class="btn btn-success " />
-									</div>
-								</div>
-							</div>
-							
-							<div wicket:id="modalIncluirEditar"></div>
-						</form>
-					</div>
-					
 					<div wicket:id="divListagem">
 						<form data-toggle="validator" novalidate="true" class="form-horizontal" wicket:id="form">
-							<div class="col-md-10">
+							<div class="col-md-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<div class="panel-title">
-											<h1>Listagem dos compromissos</h1>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="col-md-9" >	
+														<label><h1>Linha do tempo</h1></label>
+													</div>
+													<div class="col-md-3"style="text-align: right;">	
+														<input value="Novo Evento" type="button" name ="novo" wicket:id="buttonNovoEvento" class="btn btn-info" />
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="panel-body ">
@@ -181,18 +177,46 @@
 												        <span class="timeline-balloon-date-month" wicket:id="mon"></span>
 												    </div>
 												    <div class="row">
-												    	<div wicket:id="eventosDoDia">
+												    	<div wicket:id="eventosDoDia" data-toggle="modal" id="alterar">
 														    <div class="col-md-6  timeline-item">
 													            <div class="col-md-12 row">
-													                <div class="timeline-panel credits">
-													                    <ul class="timeline-panel-ul">
-													                       <li><span class="importo"><label wicket:id="descricao"></label></span></li>
-													                        <li><span class="causale">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </span> </li>
-													                        <li><p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small></p> </li>
+													                <div class="timeline-panel credits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
+													                    <ul class="timeline-panel-ul" >
+													                       <li class="row" >
+														                       <span class="col-md-1" style="text-align: left !important;">
+														                       		<a  class="btn btn-default" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
+														                       	</span>
+														                       	<span class="importo col-md-11"><label wicket:id="descricao"></label></span>
+													                       	</li>
+													                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
+													                        <li><p>
+													                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
+													                        	</p> 
+													                        </li>
 													                    </ul>
 													                </div>
 													            </div>
 														    </div>
+														    
+														    
+														    	<!-- Modal -->
+														    	
+																<div class="modal fade" wicket:id="testeIdModal" tabindex="-1" role="dialog" aria-hidden="true">
+																  <div class="modal-dialog" role="document">
+																    <div class="modal-content">
+																      <div class="modal-header">
+																        <h3 class="modal-title" style="text-align: center;" id="exampleModalLabel">Informações detalhadas do evento</h3>
+																      </div>
+																      <div class="modal-body">
+																        	<label wicket:id="observacao"></label>
+																        	<label>teste</label>
+																      </div>
+																      <div class="modal-footer">
+																        <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+																      </div>
+																    </div>
+																  </div>
+																</div>
 														 </div>
 												    </div>
 												</div>
@@ -201,6 +225,7 @@
 									</div>
 								</div>
 							</div>
+							<div wicket:id="modalIncluirEditar"></div>
 						</form>
 					</div>
 				</div>

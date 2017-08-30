@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -14,14 +17,11 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
-import com.mycompany.feedback.Mensagem;
-import com.mycompany.feedback.Retorno;
 import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.services.interfaces.IMateriaServico;
@@ -36,8 +36,6 @@ public class CalendarioPanel extends Panel {
 	private Agenda agenda;
 	private Evento evento;
 	private WebMarkupContainer divListagem;
-	private WebMarkupContainer divEvento;
-	private Form<Evento> formEvento;
 	private HashMap<Date, List<Evento>> hashMapEventoAgrupado;
 	protected ModalWindow modalIncluirEditar;
 
@@ -64,9 +62,7 @@ public class CalendarioPanel extends Panel {
 	
 	private void adicionarCampos(){
 		evento = new Evento();
-	
 		popularHashMapEventoAgrupado();
-		criarFormEvento();
 		criarFormEventosCalendario();
 		
 	}
@@ -74,14 +70,16 @@ public class CalendarioPanel extends Panel {
 	private ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(600);
+		modalIncluirEditar.setInitialHeight(750);
 		modalIncluirEditar.setInitialWidth(900);
 		modalIncluirEditar.setCloseButtonCallback(null);
 		return modalIncluirEditar;
 	}
 	
 	private void popularHashMapEventoAgrupado(){
+		agenda = (Agenda) agendaServico.searchFechId(agenda);
 		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
+		
 		List<Evento> listaEventos = Util.toList(agenda.getEventos());
 		
 		if(listaEventos!=null && listaEventos.size()>0){
@@ -92,7 +90,6 @@ public class CalendarioPanel extends Panel {
 				}else{
 					listaAux = new ArrayList<Evento>();
 				}
-				
 				listaAux.add(evento);
 				hashMapEventoAgrupado.put(evento.getDataInicio(),listaAux);
 			}
@@ -103,26 +100,16 @@ public class CalendarioPanel extends Panel {
 	private void criarFormEventosCalendario(){
 		divListagem = new WebMarkupContainer("divListagem");
 		divListagem.setOutputMarkupId(true);
+		
 		Form<Agenda> formListagem = new Form<Agenda>("form");
 		formListagem.setOutputMarkupId(true);
 		
 		formListagem.add(criarListViewEventosCalendario());
+		formListagem.add(criarButtonNovo(formListagem));
+		formListagem.add(criarModalIncluirEditar());
 	
 		divListagem.add(formListagem);
 		add(divListagem);
-	}
-	
-	private void criarFormEvento(){
-		divEvento = new WebMarkupContainer("divEvento");
-		divEvento.setOutputMarkupId(true);
-		
-		formEvento = new Form<Evento>("formEvento",new CompoundPropertyModel<Evento>(evento));
-		formEvento.setOutputMarkupId(true);
-		formEvento.add(	criarModalIncluirEditar());
-		formEvento.add(criarButtonNovo(formEvento));
-		divEvento.add(formEvento);
-		
-		addOrReplace(divEvento);
 	}
 	
 
@@ -141,16 +128,40 @@ public class CalendarioPanel extends Panel {
 
 			@Override
 			protected void populateItem(ListItem<Evento> item) {
-				Evento dataDoEvento = (Evento) item.getModelObject();
+				Evento evento = (Evento) item.getModelObject();
 				
-				item.add(new Label("descricao", dataDoEvento.getDescricao()));
-				item.add(new Label("dataInicio", Util.getDateFormat(dataDoEvento.getDataInicio())));
-				item.add(new Label("dataFim", Util.getDateFormat(dataDoEvento.getDataFim())));
+				item.add(new Label("descricao", evento.getDescricao()));
+				item.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
+				item.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
+				item.add(new Label("local",evento.getLocal()));
 				
+				WebMarkupContainer divTeste = new WebMarkupContainer("testeIdModal");
+				divTeste.add(new AttributeAppender("id", "#myModal"));
+				divTeste.add(new Label("observacao",evento.getObservacao()));
+				item.add(divTeste);
+				
+				item.add(criarLinkExcluirEvento(evento));
+			}
+		};
+		listViewPermissaoAcesso.add(new AttributeModifier("id", "#myModal"));
+		listViewPermissaoAcesso.setOutputMarkupId(true);
+		return listViewPermissaoAcesso;
+	}
+	
+	private AjaxLink<Evento> criarLinkExcluirEvento(final Evento evento){
+		AjaxLink<Evento> linkExcluirEvento = new AjaxLink<Evento>("linkExcluirEvento") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				agenda.getEventos().remove(evento);
+				agendaServico.save(agenda);
+				eventoServico.remove(evento);
+				target.add(divListagem);
 			}
 		};
 		
-		return listViewPermissaoAcesso;
+		return linkExcluirEvento;
 	}
 	private ListView<Date> criarListViewEventosCalendario(){
 		LoadableDetachableModel<List<Date>> loadEventosCalendario = new LoadableDetachableModel<List<Date>>() {
@@ -175,11 +186,11 @@ public class CalendarioPanel extends Panel {
 				item.add(criarListViewEventosDoDiaCalendario(dataDoEvento));
 			}
 		};
-		
+		listViewPermissaoAcesso.setOutputMarkupId(true);
 		return listViewPermissaoAcesso;
 	}
 
-	private AjaxButton criarButtonNovo(Form<Evento> form){
+	private AjaxButton criarButtonNovo(Form<Agenda> form){
 		AjaxButton ajaxButton =  new AjaxButton("buttonNovoEvento",form) {
 			private static final long serialVersionUID = 1L;
 			@Override

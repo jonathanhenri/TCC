@@ -95,6 +95,8 @@ public class EventoEditForm extends EditForm<Evento> {
 		};
 		
 		final DropDownChoice<Evento> tipoRadioChoice = new DropDownChoice<Evento>("eventos",new PropertyModel<Evento>(this, "evento") ,eventos,choiceRenderer){
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isVisible() {
 				if(getAbstractBean().getId()!=null){
