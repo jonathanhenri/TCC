@@ -130,17 +130,26 @@ public class CalendarioPanel extends Panel {
 			protected void populateItem(ListItem<Evento> item) {
 				Evento evento = (Evento) item.getModelObject();
 				
-				item.add(new Label("descricao", evento.getDescricao()));
-				item.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
-				item.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
-				item.add(new Label("local",evento.getLocal()));
+				WebMarkupContainer divTeste2 = new WebMarkupContainer("testeIdModal2");
+				divTeste2.add(new AttributeAppender("data-target", "#"+evento.getId()));
+				divTeste2.add(criarLinkExcluirEvento(evento));
+				
+				divTeste2.add(new Label("descricao", evento.getDescricao()));
+		
+				divTeste2.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
+				divTeste2.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
+				divTeste2.add(new Label("local",evento.getLocal()));
 				
 				WebMarkupContainer divTeste = new WebMarkupContainer("testeIdModal");
-				divTeste.add(new AttributeAppender("id", "#myModal"));
+				divTeste.add(new AttributeAppender("id", evento.getId()));
 				divTeste.add(new Label("observacao",evento.getObservacao()));
-				item.add(divTeste);
+				divTeste.add(new Label("descricao2", evento.getDescricao()));
+				item.add(divTeste);	
 				
-				item.add(criarLinkExcluirEvento(evento));
+			
+				item.add(divTeste2);	
+				
+				
 			}
 		};
 		listViewPermissaoAcesso.add(new AttributeModifier("id", "#myModal"));
