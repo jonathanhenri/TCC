@@ -9,7 +9,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -22,6 +21,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
+import com.mycompany.feedback.Mensagem;
+import com.mycompany.feedback.Retorno;
 import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.services.interfaces.IMateriaServico;
@@ -105,7 +106,7 @@ public class CalendarioPanel extends Panel {
 		formListagem.setOutputMarkupId(true);
 		
 		formListagem.add(criarListViewEventosCalendario());
-		formListagem.add(criarButtonNovo(formListagem));
+		formListagem.add(criarButtonIncluir(formListagem));
 		formListagem.add(criarModalIncluirEditar());
 	
 		divListagem.add(formListagem);
@@ -130,26 +131,24 @@ public class CalendarioPanel extends Panel {
 			protected void populateItem(ListItem<Evento> item) {
 				Evento evento = (Evento) item.getModelObject();
 				
-				WebMarkupContainer divTeste2 = new WebMarkupContainer("testeIdModal2");
-				divTeste2.add(new AttributeAppender("data-target", "#"+evento.getId()));
-				divTeste2.add(criarLinkExcluirEvento(evento));
+				WebMarkupContainer divConteinerItens = new WebMarkupContainer("containerItens");
+				divConteinerItens.add(new AttributeModifier("data-target", "#"+evento.getId()));
+				divConteinerItens.add(criarLinkExcluirEvento(evento));
 				
-				divTeste2.add(new Label("descricao", evento.getDescricao()));
+				divConteinerItens.add(new Label("descricao", evento.getDescricao()));
 		
-				divTeste2.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
-				divTeste2.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
-				divTeste2.add(new Label("local",evento.getLocal()));
+				divConteinerItens.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
+				divConteinerItens.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
+				divConteinerItens.add(new Label("local",evento.getLocal()));
 				
-				WebMarkupContainer divTeste = new WebMarkupContainer("testeIdModal");
-				divTeste.add(new AttributeAppender("id", evento.getId()));
-				divTeste.add(new Label("observacao",evento.getObservacao()));
-				divTeste.add(new Label("descricao2", evento.getDescricao()));
-				item.add(divTeste);	
+				WebMarkupContainer divContainerModal = new WebMarkupContainer("containerModal");
+				divContainerModal.add(new AttributeModifier("id", evento.getId()));
+				divContainerModal.add(new Label("observacao",evento.getObservacao()));
+				divContainerModal.add(new Label("descricao2", evento.getDescricao()));
+				item.add(divContainerModal);	
 				
 			
-				item.add(divTeste2);	
-				
-				
+				item.add(divConteinerItens);	
 			}
 		};
 		listViewPermissaoAcesso.add(new AttributeModifier("id", "#myModal"));
@@ -163,9 +162,15 @@ public class CalendarioPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				agenda.getEventos().remove(evento);
-				agendaServico.save(agenda);
-				eventoServico.remove(evento);
+				Retorno retorno = eventoServico.remove(evento);
+				if(retorno.getSucesso()){
+					agenda.getEventos().remove(evento);
+					retorno = agendaServico.save(agenda);;
+				}
+				
+				 for(Mensagem mensagem:retorno.getListaMensagem()){
+					 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+		        }
 				target.add(divListagem);
 			}
 		};
@@ -189,8 +194,12 @@ public class CalendarioPanel extends Panel {
 			@Override
 			protected void populateItem(ListItem<Date> item) {
 				Date dataDoEvento = (Date) item.getModelObject();
-				item.add(new Label("mon", Util.getMesAbreviadoDate(dataDoEvento)));
-				item.add(new Label("day", Util.getDiaSemanaDate(dataDoEvento)));
+				
+				AjaxLink<String> linkIncluirDia = criarButtonIncluirDiaEvento(dataDoEvento);
+				linkIncluirDia.add(new Label("mon", Util.getMesAbreviadoDate(dataDoEvento)));
+				linkIncluirDia.add(new Label("day", Util.getDiaSemanaDate(dataDoEvento)));
+				
+				item.add(linkIncluirDia);
 				
 				item.add(criarListViewEventosDoDiaCalendario(dataDoEvento));
 			}
@@ -199,7 +208,34 @@ public class CalendarioPanel extends Panel {
 		return listViewPermissaoAcesso;
 	}
 
-	private AjaxButton criarButtonNovo(Form<Agenda> form){
+	private AjaxLink<String> criarButtonIncluirDiaEvento(final Date date){
+		AjaxLink<String> ajaxButton =  new AjaxLink<String>("buttonNovoEventoDia") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			
+			public void onClick(AjaxRequestTarget target) {
+				EventoPanel editPanel = new EventoPanel(modalIncluirEditar.getContentId());
+				editPanel.setOutputMarkupId(true);
+				
+				Evento evento = new Evento();
+				evento.setDataFim(date);
+				evento.setDataInicio(date);
+				evento.setAgenda(agenda);
+				
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,divListagem,modalIncluirEditar);
+				cadastroAlunoEditForm.setOutputMarkupId(true);
+				editPanel.add(cadastroAlunoEditForm);
+				
+				modalIncluirEditar.setContent(editPanel);
+				modalIncluirEditar.show(target);
+			};
+		};
+		
+		return ajaxButton;
+	}
+	
+	
+	private AjaxButton criarButtonIncluir(Form<Agenda> form){
 		AjaxButton ajaxButton =  new AjaxButton("buttonNovoEvento",form) {
 			private static final long serialVersionUID = 1L;
 			@Override

@@ -167,25 +167,22 @@
 										<div id="timeline">
 											<div class="row timeline-movement timeline-movement-top">
 											    <div class="timeline-badge timeline-future-movement">
-											        <a href="#">
-											            <span class="glyphicon glyphicon-plus"></span>
-											        </a>
 											    </div>
 											    <div class="timeline-badge timeline-filter-movement">
-											        <a href="#">
+											        <a>
 											            <span class="glyphicon glyphicon-time"></span>
 											        </a>
 											    </div>
 											</div>
 										 	<div wicket:id="diaEventosCalendario">
 												<div class="row timeline-movement content scaffold-list">
-												    <div class="timeline-badge">
+												    <a href="#" wicket:id="buttonNovoEventoDia" class="timeline-badge" data-toggle="tooltip" title="Clique para adicionar um evento para este dia">
 												        <span class="timeline-balloon-date-day" wicket:id="day"></span><br>
 												        <span class="timeline-balloon-date-month" wicket:id="mon"></span>
-												    </div>
+												    </a>
 												    <div class="row">
 												    	<div wicket:id="eventosDoDia">
-												    		<div data-toggle="modal" wicket:id="testeIdModal2">
+												    		<div data-toggle="modal" wicket:id="containerItens" data-target="">
 															    <div class="col-md-6  timeline-item">
 														            <div class="col-md-12 row">
 														                <div class="timeline-panel credits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
@@ -207,7 +204,7 @@
 															    </div>
 														   </div>
 													    	<!-- Modal -->
-															<div class="modal fade"  wicket:id="testeIdModal" tabindex="-1" role="dialog" >
+															<div class="modal fade" id="" wicket:id="containerModal" tabindex="-1" role="dialog" >
 															  	<div class="modal-dialog">
 														            <div class="modal-content">
 														                <div class="modal-header modal-header-info">
