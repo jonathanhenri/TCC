@@ -3,6 +3,7 @@ package com.mycompany.visao.agenda;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -13,12 +14,18 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
+import com.mycompany.domain.Agenda;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.feedback.Mensagem;
+import com.mycompany.feedback.Retorno;
 import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.util.Util;
+import com.mycompany.visao.comum.MensagemExcluirPanel;
 import com.mycompany.visao.comum.Menu;
 
 public class AgendaPage extends Menu {
@@ -114,10 +121,63 @@ public class AgendaPage extends Menu {
 				
 				item.add(new Label("nome", agenda.getNome()));
 				item.add(criarButtonVisualizarCalendario(agenda));
+				item.add(criarLinkExcluirAgenda(agenda));
+				
 			}
 		};
 		
 		return listViewPermissaoAcesso;
+	}
+	
+	private AjaxLink<Agenda> criarLinkExcluirAgenda(final Agenda agenda){
+		AjaxLink<Agenda> linkExcluirEvento = new AjaxLink<Agenda>("linkExcluirAgenda") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(modalExcluir.getContentId(), Util.getMensagemExclusao(agenda)){
+					private static final long serialVersionUID = 1L;
+
+					protected void executarAoClicarNao(AjaxRequestTarget target) {
+						target.add(divAtualizar);
+						modalExcluir.close(target);
+					};
+					
+					protected void executarAoClicarSim(AjaxRequestTarget target) {
+						Retorno retorno = new Retorno();
+						try{
+							retorno = agendaServico.remove(agenda);	
+						}catch(Exception e){
+							retorno.setSucesso(false);
+							
+							if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+								retorno.addMensagem(new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+							}else{
+								retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+							}
+							
+							e.printStackTrace();
+						}
+						
+						if(retorno.getSucesso()){
+							target.add(divAtualizar);
+							modalExcluir.close(target);
+						}
+						
+						for(Mensagem mensagem:retorno.getListaMensagem()){
+							 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+						 }
+						
+					};
+				};
+				
+				add(excluirPanel);
+				modalExcluir.setContent(excluirPanel);
+				modalExcluir.show(target);
+			}
+		};
+		
+		return linkExcluirEvento;
 	}
 	
 	private AjaxButton criarButtonVisualizarCalendario(final Agenda agenda){

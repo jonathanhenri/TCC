@@ -9,6 +9,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -151,7 +152,6 @@ public class CalendarioPanel extends Panel {
 				item.add(divConteinerItens);	
 			}
 		};
-		listViewPermissaoAcesso.add(new AttributeModifier("id", "#myModal"));
 		listViewPermissaoAcesso.setOutputMarkupId(true);
 		return listViewPermissaoAcesso;
 	}
@@ -171,6 +171,7 @@ public class CalendarioPanel extends Panel {
 				 for(Mensagem mensagem:retorno.getListaMensagem()){
 					 Util.notify(target, mensagem.toString(), mensagem.getTipo());
 		        }
+				 
 				target.add(divListagem);
 			}
 		};
@@ -228,6 +229,8 @@ public class CalendarioPanel extends Panel {
 				
 				modalIncluirEditar.setContent(editPanel);
 				modalIncluirEditar.show(target);
+				
+				target.add(divListagem);
 			};
 		};
 		
