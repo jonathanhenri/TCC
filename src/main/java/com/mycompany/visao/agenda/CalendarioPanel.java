@@ -5,11 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,6 +17,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import wicket.contrib.input.events.EventType;
+import wicket.contrib.input.events.InputBehavior;
+import wicket.contrib.input.events.key.KeyType;
 
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
@@ -40,7 +42,8 @@ public class CalendarioPanel extends Panel {
 	private WebMarkupContainer divListagem;
 	private HashMap<Date, List<Evento>> hashMapEventoAgrupado;
 	protected ModalWindow modalIncluirEditar;
-
+	
+	private Boolean focusGained;
 	@SpringBean(name="agendaServico")
 	private  IAgendaServico agendaServico;
 
@@ -59,6 +62,7 @@ public class CalendarioPanel extends Panel {
 	public CalendarioPanel(String id,Agenda agenda) {
 		super(id);
 		this.agenda = agenda;
+		focusGained = true;
 		adicionarCampos();
 	}
 	
@@ -109,11 +113,52 @@ public class CalendarioPanel extends Panel {
 		formListagem.add(criarListViewEventosCalendario());
 		formListagem.add(criarButtonIncluir(formListagem));
 		formListagem.add(criarModalIncluirEditar());
-	
+		formListagem.add(criarBotaoVoltar());
 		divListagem.add(formListagem);
 		add(divListagem);
 	}
 	
+	private WebMarkupContainer criarDivEsquerda(Evento evento,final Boolean visible){
+		WebMarkupContainer containerEsquerda = new WebMarkupContainer("divEsquerda"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return visible;
+			}
+		};
+		containerEsquerda.setOutputMarkupId(true);
+		containerEsquerda.add(new Label("descricao",evento.getDescricao()));
+		
+		containerEsquerda.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
+		containerEsquerda.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
+		containerEsquerda.add(new Label("local",evento.getLocal()));
+		containerEsquerda.add(criarLinkExcluirEvento(evento));
+		containerEsquerda.add(criarLinkEditarEvento(evento));
+		
+		return containerEsquerda;
+	}
+	
+	private WebMarkupContainer criarDivDireita(Evento evento,final Boolean visible){
+		WebMarkupContainer containerEsquerda = new WebMarkupContainer("divDireita"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return visible;
+			}
+		};
+		containerEsquerda.setOutputMarkupId(true);
+		containerEsquerda.add(new Label("descricao",evento.getDescricao()));
+		
+		containerEsquerda.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
+		containerEsquerda.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
+		containerEsquerda.add(new Label("local",evento.getLocal()));
+		containerEsquerda.add(criarLinkExcluirEvento(evento));
+		containerEsquerda.add(criarLinkEditarEvento(evento));
+		
+		return containerEsquerda;
+	}
 
 	private ListView<Evento> criarListViewEventosDoDiaCalendario(final Date diaCalendario){
 		LoadableDetachableModel<List<Evento>> loadEventosCalendario = new LoadableDetachableModel<List<Evento>>() {
@@ -130,31 +175,57 @@ public class CalendarioPanel extends Panel {
 
 			@Override
 			protected void populateItem(ListItem<Evento> item) {
+				
 				Evento evento = (Evento) item.getModelObject();
-				
-				WebMarkupContainer divConteinerItens = new WebMarkupContainer("containerItens");
-				divConteinerItens.add(new AttributeModifier("data-target", "#"+evento.getId()));
-				divConteinerItens.add(criarLinkExcluirEvento(evento));
-				
-				divConteinerItens.add(new Label("descricao", evento.getDescricao()));
-		
-				divConteinerItens.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
-				divConteinerItens.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
-				divConteinerItens.add(new Label("local",evento.getLocal()));
-				
-				WebMarkupContainer divContainerModal = new WebMarkupContainer("containerModal");
-				divContainerModal.add(new AttributeModifier("id", evento.getId()));
-				divContainerModal.add(new Label("observacao",evento.getObservacao()));
-				divContainerModal.add(new Label("descricao2", evento.getDescricao()));
-				item.add(divContainerModal);	
-				
-			
-				item.add(divConteinerItens);	
+				item.add(criarDivEsquerda(evento,item.getIndex() % 2 == 0)); // par vai pra esquerda
+				item.add(criarDivDireita(evento,!(item.getIndex() % 2 == 0))); // impar vai pra direita
 			}
 		};
 		listViewPermissaoAcesso.setOutputMarkupId(true);
 		return listViewPermissaoAcesso;
 	}
+	
+	
+	
+	private AjaxLink<Evento> criarLinkEditarEvento(final Evento evento){
+		AjaxLink<Evento> linkExcluirEvento = new AjaxLink<Evento>("linkEditarEvento") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				EventoPanel editPanel = new EventoPanel(modalIncluirEditar.getContentId());
+				editPanel.setOutputMarkupId(true);
+				
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm((Evento)eventoServico.searchFechId(evento),editPanel,null,divListagem,modalIncluirEditar);
+				cadastroAlunoEditForm.setOutputMarkupId(true);
+				editPanel.add(cadastroAlunoEditForm);
+				
+				modalIncluirEditar.setContent(editPanel);
+				modalIncluirEditar.show(target);
+				
+				target.add(divListagem);
+			}
+		};
+		
+		return linkExcluirEvento;
+	}
+	
+	private AjaxLink<String> criarBotaoVoltar(){
+		AjaxLink<String> botaoVoltar = new  AjaxLink<String>("voltar"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				if(focusGained){
+					modalIncluirEditar.close(target);
+				}
+			}
+			 
+		 };
+		 botaoVoltar.add(new InputBehavior(new KeyType[] { KeyType.Escape }, EventType.click));
+		 return botaoVoltar;
+	}
+	
 	
 	private AjaxLink<Evento> criarLinkExcluirEvento(final Evento evento){
 		AjaxLink<Evento> linkExcluirEvento = new AjaxLink<Evento>("linkExcluirEvento") {
@@ -229,8 +300,6 @@ public class CalendarioPanel extends Panel {
 				
 				modalIncluirEditar.setContent(editPanel);
 				modalIncluirEditar.show(target);
-				
-				target.add(divListagem);
 			};
 		};
 		

@@ -119,13 +119,6 @@
 		  color: #e2001a;
 		  font-size: 1.3em;
 		}
-		
-		.modal-header-info {
-	    color:#fff;
-	    padding:9px 15px;
-	    border-bottom:1px solid #eee;
-	    background-color: #5bc0de;
-	}
 	</style>
 </wicket:head>
 
@@ -177,16 +170,42 @@
 												    </a>
 												    <div class="row">
 												    	<div wicket:id="eventosDoDia">
-												    		<div data-toggle="modal" wicket:id="containerItens" data-target="">
-															    <div class="col-md-6  timeline-item">
+												    		<wicket:enclosure child="divEsquerda">
+															    <div class="col-md-6  timeline-item" wicket:id="divEsquerda" >
 														            <div class="col-md-12 row">
-														                <div class="timeline-panel credits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
+														                <div class="timeline-panel credits"  data-toggle="tooltip" title="Clique na edição para visualizar informações detalhadas">
 														                    <ul class="timeline-panel-ul" >
 														                       <li class="row" >
-															                       <span class="col-md-1" style="text-align: left !important;">
-															                       		<a  class="btn btn-default" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
+															                       <span class="col-md-2" style="text-align: left !important;">
+															                       		<a  class="btn btn-danger" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
+															                       		<a  class="btn btn-primary" wicket:id="linkEditarEvento"><span class="glyphicon glyphicon-pencil"></span></a>
 															                       	</span>
-															                       	<span class="importo col-md-11"><label wicket:id="descricao"></label></span>
+															                       	<span class="importo col-md-10"><label wicket:id="descricao"></label></span>
+														                       	</li>
+														                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
+														                        <li><p>
+														                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
+														                        	</p> 
+														                        </li>
+														                    </ul>
+														                    
+														                </div>
+														            </div>
+															    </div>
+															</wicket:enclosure>
+														    
+														    <wicket:enclosure child="divDireita">
+															    <div class="col-md-6  timeline-item" wicket:id="divDireita">
+														              <div class="col-md-12 row">
+														                <div class="timeline-panel debits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
+														                    <ul class="timeline-panel-ul" >
+														                       <li class="row" >
+														                       	   <span class="importo col-md-10"><label wicket:id="descricao"></label></span>
+														                       	   
+															                        <span class="col-md-2" style="text-align: right !important;">
+															                       		<a  class="btn btn-primary" wicket:id="linkEditarEvento"><span class="glyphicon glyphicon-pencil"></span></a>
+															                       		<a  class="btn btn-danger" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
+															                       	</span>
 														                       	</li>
 														                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
 														                        <li><p>
@@ -197,24 +216,7 @@
 														                </div>
 														            </div>
 															    </div>
-														   </div>
-													    	<!-- Modal -->
-															<div class="modal fade" id="" wicket:id="containerModal" tabindex="-1" role="dialog" >
-															  	<div class="modal-dialog">
-														            <div class="modal-content">
-														                <div class="modal-header modal-header-info">
-														                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-														                    <h1> Detalhes de <label wicket:id="descricao2"></label></h1>
-														                </div>
-														                <div class="modal-body">
-														                        <label wicket:id="observacao"></label>
-														                </div>
-														                <div class="modal-footer">
-														                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-														                </div>
-														            </div><!-- /.modal-content -->
-														        </div><!-- /.modal-dialog -->
-															</div>
+															</wicket:enclosure> 
 															
 														 </div>
 												    </div>
@@ -225,6 +227,7 @@
 								</div>
 							</div>
 							<div wicket:id="modalIncluirEditar"></div>
+							<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-default"></input>
 						</form>
 					</div>
 				</div>
