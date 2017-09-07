@@ -6,10 +6,8 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.datetime.PatternDateConverter;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
+import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -177,48 +175,16 @@ public class EventoEditForm extends EditForm<Evento> {
 		return tipoRadioChoice;
 	}
 	
-	private DateTextField criarCampoDataFim(){
-		
-		DatePicker datePicker = new DatePicker(){
-			private static final long serialVersionUID = 1L;
-			
-			
-			@Override
-			protected boolean alignWithIcon() {
-				return true;
-			}
-			@Override
-			protected boolean enableMonthYearSelection() {
-				return false;
-			}			
-		};
-		DateTextField dataFim = new DateTextField("dataFim",new PatternDateConverter("dd/MM/yyyy", true));
-		datePicker.setAutoHide(true);		
-		dataFim.add(datePicker);
+	private DateTimeField criarCampoDataFim(){
+		DateTimeField dataFim = new DateTimeField("dataFim",new PropertyModel<Date>(getAbstractBean(), "dataFim"));
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
-
-	private DateTextField criarCampoDataInicio(){
-		
-		DatePicker datePicker = new DatePicker(){
-			private static final long serialVersionUID = 1L;
-			
-			
-			@Override
-			protected boolean alignWithIcon() {
-				return true;
-			}
-			@Override
-			protected boolean enableMonthYearSelection() {
-				return false;
-			}			
-		};
-		DateTextField dataInicio = new DateTextField("dataInicio",new PatternDateConverter("dd/MM/yyyy", true));
-		datePicker.setAutoHide(true);		
-		dataInicio.add(datePicker);
-		dataInicio.setOutputMarkupId(true);
-		return dataInicio;
+	
+	private DateTimeField criarCampoDataInicio(){
+		DateTimeField dataFim = new DateTimeField("dataInicio",new PropertyModel<Date>(getAbstractBean(), "dataInicio"));
+		dataFim.setOutputMarkupId(true);
+		return dataFim;
 	}
 
 

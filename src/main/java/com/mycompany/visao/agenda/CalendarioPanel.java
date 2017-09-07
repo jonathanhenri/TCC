@@ -130,8 +130,8 @@ public class CalendarioPanel extends Panel {
 		containerEsquerda.setOutputMarkupId(true);
 		containerEsquerda.add(new Label("descricao",evento.getDescricao()));
 		
-		containerEsquerda.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
-		containerEsquerda.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
+		containerEsquerda.add(new Label("dataInicio", Util.formataDataComHoraSemLocale(evento.getDataInicio())));
+		containerEsquerda.add(new Label("dataFim", Util.formataDataComHoraSemLocale(evento.getDataFim())));
 		containerEsquerda.add(new Label("local",evento.getLocal()));
 		containerEsquerda.add(criarLinkExcluirEvento(evento));
 		containerEsquerda.add(criarLinkEditarEvento(evento));

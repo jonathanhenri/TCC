@@ -291,6 +291,11 @@
 			<artifactId>search</artifactId>
 			<version>1.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.wicket-jquery-ui</groupId>
+			<artifactId>wicket-jquery-ui-core</artifactId>
+			<version>8.0.0-M1.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
