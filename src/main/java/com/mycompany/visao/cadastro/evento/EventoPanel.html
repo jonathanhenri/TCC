@@ -9,6 +9,28 @@
 	<script src="js/notify.js"></script>
 	<script src="js/notify.min.js"></script>
 	<script src="js/jquery.mask.js"></script>
+	<style>
+		.weekDays-selector input {
+		  display: none!important;
+		}
+
+		.weekDays-selector input[type=checkbox] + label {
+		  display: inline-block;
+		  border-radius: 6px;
+		  background: #dddddd;
+		  height: 40px;
+		  width: 30px;
+		  margin-right: 3px;
+		  line-height: 40px;
+		  text-align: center;
+		  cursor: pointer;
+		}
+		
+		.weekDays-selector input[type=checkbox]:checked + label {
+		  background: #2AD705;
+		  color: #ffffff;
+		}
+	</style>
 	<script>
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
@@ -33,25 +55,79 @@
 						</div>
 					</div>
 					<div class="panel-body">
-						<wicket:enclosure="eventos">
-							<div class="form-group">
-								<div class="col-md-12">	
+						<div class="form-group">
+							<div class="fieldcontain col-lg-6">
+						        <label >
+						           Repetir Evento
+						        </label>
+								<div class="switch-toggle switch-candy large-3" style="width: 57%">
+									<div class="switch-toggle switch-candy large-3">
+									 	<div wicket:id="repetirEvento" >
+										    <input id="repetirEventoSim" wicket:id="repetirEventoSim"  name="repetirEventoSim" type="radio">
+										    <label for="repetirEventoSim" onclick="">Sim</label>
+										
+										    <input id="repetirEventoNao" wicket:id="repetirEventoNao"  name="repetirepetirEventoNaorEventoNao" type="radio">
+										    <label for="repetirEventoNao" onclick="">Não</label>
+				
+										    <a></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<wicket:enclosure child="eventos">
+								<div class="col-md-6">	
 									<label class="control-label">Listagem dos eventos recorrentes <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="Eventos recorrentes usados como base para novos eventos"></a></label>
 									<select class="form-control" wicket:id="eventos"></select>
 								</div>
-							</div>
-						</wicket:enclosure>
-						<div class="form-group ">
-							<div class="col-md-6">	
-								<label class="control-label">Data inicio</label>
-								<span wicket:id="dataInicio" placeholder="Data Inicial"></span>
-							</div>
-							<div class="col-md-6">	
-								<label class="control-label">Data final</label>
-								<span  wicket:id="dataFim" placeholder="Data final"></span>
-							</div>
-							
+							</wicket:enclosure>
 						</div>
+						<div class="form-group">
+							<div wicket:id="divRepetirEvento" >
+								<div class="weekDays-selector">
+									<wicket:enclosure child="repetirTodaSegunda">
+										<div class="col-md-12">	
+											<label>Escolha os dias para repetição</label><br>
+											<input type="checkbox" id="segunda" wicket:id="repetirTodaSegunda"  class="weekday" />
+		  									<label for="segunda">S</label>
+		  									
+											<input type="checkbox" id="terca" wicket:id="repetirTodaTerca"  class="weekday" />
+		  									<label for="terca">T</label>
+											
+											<input type="checkbox" id="quarta" wicket:id="repetirTodaQuarta"  class="weekday" />
+		  									<label for="quarta">Q</label>
+		  									
+		  									<input type="checkbox" id="quinta" wicket:id="repetirTodaQuinta"  class="weekday" />
+		  									<label for="quinta">QI</label>
+		  									
+											<input type="checkbox" id="sexta" wicket:id="repetirTodaSexta"  class="weekday" />
+		  									<label for="sexta">SE</label>
+		  									
+		  									<input type="checkbox" id="sabado" wicket:id="repetirTodoSabado"  class="weekday" />
+		  									<label for="sabado">SA</label>
+		  									
+		  									<input type="checkbox" id="domingo" wicket:id="repetirTodoDomingo"  class="weekday" />
+		  									<label for="domingo">D</label>
+	  									</div>
+									</wicket:enclosure>
+								</div>
+								
+								<wicket:enclosure child="dataInicio">
+									<div class="col-md-6">	
+										<label class="control-label">Data inicio</label>
+										<span wicket:id="dataInicio" placeholder="Data Inicial"></span>
+									</div>
+								</wicket:enclosure>
+								
+								<wicket:enclosure child="dataFim">
+									<div class="col-md-6">	
+										<label class="control-label">Data final</label>
+										<span wicket:id="dataFim" placeholder="Data final"></span>
+									</div>
+								</wicket:enclosure>
+							
+							</div>
+							</div>
 						<div class="form-group">
 							<div class="col-md-6">	
 								<label class="control-label">Descrição</label>

@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.NumberTextField;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
@@ -50,6 +56,9 @@ public class EventoEditForm extends EditForm<Evento> {
 	@SpringBean(name="origemEventoServico")
 	private  IOrigemEventoServico origemEventoServico;
 	
+	private WebMarkupContainer divRepetirEvento;
+	
+	
 	private Evento evento;
 	
 	public EventoEditForm(Evento evento,Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
@@ -63,13 +72,161 @@ public class EventoEditForm extends EditForm<Evento> {
 		this.evento = evento;
 	}
 	
+	
 	@Override
 	protected void setServicoComum() {
 		serviceComum = eventoServico;
 	}
 	
+	private CheckBox criarCheckBoxRepetirDomingo(){
+		CheckBox checkBox = new CheckBox("repetirTodoDomingo"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	
+	private CheckBox criarCheckBoxRepetirSabado(){
+		CheckBox checkBox = new CheckBox("repetirTodoSabado"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	private CheckBox criarCheckBoxRepetirSexta(){
+		CheckBox checkBox = new CheckBox("repetirTodaSexta"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	private CheckBox criarCheckBoxRepetirQuinta(){
+		CheckBox checkBox = new CheckBox("repetirTodaQuinta"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	
+	private CheckBox criarCheckBoxRepetirQuarta(){
+		CheckBox checkBox = new CheckBox("repetirTodaQuarta"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	
+	private CheckBox criarCheckBoxRepetirTerca(){
+		CheckBox checkBox = new CheckBox("repetirTodaTerca"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	private CheckBox criarCheckBoxRepetirTodosDias(){
+		CheckBox checkBox = new CheckBox("repetirTodosDias"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	
+	
+	private CheckBox criarCheckBoxRepetirSegunda(){
+		CheckBox checkBox = new CheckBox("repetirTodaSegunda"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+			}
+		};
+		checkBox.setOutputMarkupId(true);
+		return checkBox;
+	}
+	private RadioGroup<Boolean> criarCampoRepetirEvento() {
+		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("repetirEvento");
+		radioGroupAtivo.add(new Radio<Boolean>("repetirEventoSim", new Model<Boolean>(true)).add(new AttributeModifier("id", "repetirEventoSim")));
+		radioGroupAtivo.add(new Radio<Boolean>("repetirEventoNao", new Model<Boolean>(false)).add(new AttributeModifier("id", "repetirEventoNao")));
+		radioGroupAtivo.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				target.add(divRepetirEvento);
+			}
+		});
+		radioGroupAtivo.setOutputMarkupId(true);
+		return radioGroupAtivo;
+	}
+	
+	
+	private WebMarkupContainer criarDivRepetirEvento(){
+		divRepetirEvento = new WebMarkupContainer("divRepetirEvento");
+//		divRepetirEvento.add(criarCheckBoxRepetirTodosDias());
+		divRepetirEvento.add(criarCheckBoxRepetirSegunda());
+		divRepetirEvento.add(criarCheckBoxRepetirTerca());
+		divRepetirEvento.add(criarCheckBoxRepetirQuarta());
+		divRepetirEvento.add(criarCheckBoxRepetirQuinta());
+		divRepetirEvento.add(criarCheckBoxRepetirSexta());
+		divRepetirEvento.add(criarCheckBoxRepetirSabado());
+		divRepetirEvento.add(criarCheckBoxRepetirDomingo());
+		
+		
+		divRepetirEvento.add(criarCampoDataFim());
+		divRepetirEvento.add(criarCampoDataInicio());
+		
+		divRepetirEvento.setOutputMarkupId(true);
+		divRepetirEvento.setOutputMarkupPlaceholderTag(true);
+		
+		return divRepetirEvento;
+	}
+	
 	private DropDownChoice<Evento> criarListEventosRecorrentes(){
 		IChoiceRenderer<Evento> choiceRenderer = new ChoiceRenderer<Evento>("descricao", "id"){
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Object getDisplayValue(Evento object) {
 				return super.getDisplayValue(object)+" - "+Util.getDateFormat(object.getDataInicio());
@@ -176,13 +333,27 @@ public class EventoEditForm extends EditForm<Evento> {
 	}
 	
 	private DateTimeField criarCampoDataFim(){
-		DateTimeField dataFim = new DateTimeField("dataFim",new PropertyModel<Date>(getAbstractBean(), "dataFim"));
+		DateTimeField dataFim = new DateTimeField("dataFim",new PropertyModel<Date>(getAbstractBean(), "dataFim")){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?!evento.getRepetirEvento():true;
+			}
+		};
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
 	
 	private DateTimeField criarCampoDataInicio(){
-		DateTimeField dataFim = new DateTimeField("dataInicio",new PropertyModel<Date>(getAbstractBean(), "dataInicio"));
+		DateTimeField dataFim = new DateTimeField("dataInicio",new PropertyModel<Date>(getAbstractBean(), "dataInicio")){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return evento.getRepetirEvento()!=null?!evento.getRepetirEvento():true;
+			}
+		};
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
@@ -252,9 +423,9 @@ public class EventoEditForm extends EditForm<Evento> {
 		add(criarCampoProfessor());
 		add(criarCampoOrigemEvento());
 		add(criarCampoTipoEvento());
-		add(criarCampoDataFim());
-		add(criarCampoDataInicio());
 		add(criarCampoMateria());
+		add(criarDivRepetirEvento());
+		add(criarCampoRepetirEvento());
 		add(criarCampoCodigoCor());
 		add(criarListEventosRecorrentes());
 		add(criarCampoPeriodo());

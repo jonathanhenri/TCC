@@ -25,7 +25,7 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_ADMINISTRACAO",nullable=true)
 	private Administracao administracao;
 	
-	@Column(name = "DATA_INICIO", nullable = false)
+	@Column(name = "DATA_INICIO", nullable = true)
 	private Date dataInicio;
 	
 	@Column(name = "DATA_FIM", nullable = true)
@@ -66,6 +66,10 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;
 	
+	
+	@Column(name = "REPETIR_EVENTO", nullable = true)
+	private Boolean repetirEvento;
+	
 	@Column(name = "REPETIR_TODOS_DIAS", nullable = true)
 	private Boolean repetirTodosDias;
 	
@@ -95,6 +99,15 @@ public class Evento extends AbstractBean<Evento> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	
+	public Boolean getRepetirEvento() {
+		return repetirEvento;
+	}
+
+	public void setRepetirEvento(Boolean repetirEvento) {
+		this.repetirEvento = repetirEvento;
+	}
+
 	public Boolean getRepetirTodosDias() {
 		return repetirTodosDias;
 	}
