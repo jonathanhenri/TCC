@@ -31,9 +31,6 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "DATA_FIM", nullable = true)
 	private Date dataFim;
 	
-	@Column(name = "CODIGO_COR", nullable = true, length = 50)
-	private String codigoCor;
-	
 	@Column(name = "PROFESSOR", nullable = true, length = 200)
 	private String professor;
 	
@@ -47,6 +44,7 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
 	
+	@ListarPageAnotacao(nomeColuna="Tipo de evento",filtro = true)
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_TIPO_EVENTO",nullable = true)
 	private TipoEvento tipoEvento;
@@ -198,14 +196,6 @@ public class Evento extends AbstractBean<Evento> {
 
 	public TipoEvento getTipoEvento() {
 		return tipoEvento;
-	}
-	
-	public void setCodigoCor(String codigoCor) {
-		this.codigoCor = codigoCor;
-	}
-	
-	public String getCodigoCor() {
-		return codigoCor;
 	}
 
 	public void setTipoEvento(TipoEvento tipoEvento) {

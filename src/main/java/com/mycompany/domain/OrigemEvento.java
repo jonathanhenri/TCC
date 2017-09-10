@@ -24,10 +24,6 @@ public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@ListarPageAnotacao(nomeColuna="Código cor")
-	@Column(name = "CODIGO_COR", nullable = true,length = 50)
-	private String codigoCor;
-	
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
@@ -47,14 +43,6 @@ public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	@Override
 	public Administracao getAdministracao() {
 		return administracao;
-	}
-	
-	
-	public void setCodigoCor(String codigoCor) {
-		this.codigoCor = codigoCor;
-	}
-	public String getCodigoCor() {
-		return codigoCor;
 	}
 
 	

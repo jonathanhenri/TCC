@@ -65,11 +65,13 @@ public class EventoEditForm extends EditForm<Evento> {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.evento = evento;
 		this.evento.setAgenda(agenda);
+		this.evento.setRepetirEvento(false);
 	}
 	
 	public EventoEditForm(Evento evento,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.evento = evento;
+		this.evento.setRepetirEvento(false);
 	}
 	
 	
@@ -280,13 +282,6 @@ public class EventoEditForm extends EditForm<Evento> {
 		
 		return tipoRadioChoice;
 	}
-	
-	private ColorTextField criarCampoCodigoCor(){
-		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
-		textFieldCodigoCor.setOutputMarkupId(true);
-		textFieldCodigoCor.add(StringValidator.lengthBetween(1, 40));
-		return textFieldCodigoCor;
-	}
 
 	private DropDownChoice<Materia> criarCampoMateria(){
 		IChoiceRenderer<Materia> choiceRenderer = new ChoiceRenderer<Materia>("nome", "id");
@@ -426,7 +421,6 @@ public class EventoEditForm extends EditForm<Evento> {
 		add(criarCampoMateria());
 		add(criarDivRepetirEvento());
 		add(criarCampoRepetirEvento());
-		add(criarCampoCodigoCor());
 		add(criarListEventosRecorrentes());
 		add(criarCampoPeriodo());
 	}

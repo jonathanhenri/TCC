@@ -55,13 +55,6 @@ public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
 		return textFieldNome;
 	}
 	
-	private ColorTextField criarCampoCodigoCor(){
-		ColorTextField textFieldCodigoCor = new ColorTextField("codigoCor");
-		textFieldCodigoCor.setOutputMarkupId(true);
-		textFieldCodigoCor.add(StringValidator.lengthBetween(1, 50));
-		return textFieldCodigoCor;
-	}
-	
 	private DropDownChoice<Curso> criarCampoCurso(){
 		IChoiceRenderer<Curso> choiceRenderer = new ChoiceRenderer<Curso>("nome", "id");
 		LoadableDetachableModel<List<Curso>> cursos = new LoadableDetachableModel<List<Curso>>() {
@@ -88,7 +81,6 @@ public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
 	protected void adicionarCampos() {
 		add(criarCampoNome());
 		add(criarCampoCurso());
-		add(criarCampoCodigoCor());
 	}
 	
 	private static final long serialVersionUID = 1L;

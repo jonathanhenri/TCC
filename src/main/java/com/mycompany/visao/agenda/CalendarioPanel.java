@@ -9,14 +9,18 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.validator.StringValidator;
 
 import wicket.contrib.input.events.EventType;
 import wicket.contrib.input.events.InputBehavior;
@@ -24,8 +28,11 @@ import wicket.contrib.input.events.key.KeyType;
 
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
+import com.mycompany.domain.FiltroDinamicoAgrupador;
+import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
+import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.services.interfaces.IMateriaServico;
@@ -34,6 +41,7 @@ import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.evento.EventoEditForm;
 import com.mycompany.visao.cadastro.evento.EventoPanel;
+import com.mycompany.visao.comum.ListagemFiltrosDinamicosPanel;
 
 public class CalendarioPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -42,6 +50,9 @@ public class CalendarioPanel extends Panel {
 	private WebMarkupContainer divListagem;
 	private HashMap<Date, List<Evento>> hashMapEventoAgrupado;
 	protected ModalWindow modalIncluirEditar;
+	protected ModalWindow modalFiltros;
+	
+	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
 	
 	private Boolean focusGained;
 	@SpringBean(name="agendaServico")
@@ -63,6 +74,7 @@ public class CalendarioPanel extends Panel {
 		super(id);
 		this.agenda = agenda;
 		focusGained = true;
+		filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
 		adicionarCampos();
 	}
 	
@@ -103,6 +115,68 @@ public class CalendarioPanel extends Panel {
 		}
 	}
 	
+	private DateTimeField criarCampoDataFim(){
+		DateTimeField dataFim = new DateTimeField("dataFim",new PropertyModel<Date>(evento, "dataFim"));
+		dataFim.setOutputMarkupId(true);
+		return dataFim;
+	}
+	
+	private DateTimeField criarCampoDataInicio(){
+		DateTimeField dataFim = new DateTimeField("dataInicio",new PropertyModel<Date>(evento, "dataInicio"));
+		dataFim.setOutputMarkupId(true);
+		return dataFim;
+	}
+	
+	
+	private ModalWindow criarModalFiltros() {
+		modalFiltros = new ModalWindow("modalFiltros");
+		modalFiltros.setOutputMarkupId(true);
+		modalFiltros.setInitialHeight(400);
+		modalFiltros.setInitialWidth(500);
+		
+		modalFiltros.setCloseButtonCallback(null);
+		
+		return modalFiltros;
+	}
+	
+	private AjaxButton criarButtonListagemFiltrosDinamicos(){
+		AjaxButton ajaxButton =  new AjaxButton("buttonListagemFiltrosDinamicos") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				List<FiltroDinamicoAtributo> listaAtributos = Reflexao.nomesAtributosFiltros(evento);
+				if(listaAtributos!=null && listaAtributos.size() > 0){
+					ListagemFiltrosDinamicosPanel filtrosDinamicosPanel = new ListagemFiltrosDinamicosPanel(modalFiltros.getContentId(),modalFiltros,filtroDinamicoAgrupador,listaAtributos) {
+						private static final long serialVersionUID = 1L;
+	
+						@Override
+						protected void executarAoPesquisar(AjaxRequestTarget target) {
+							modalFiltros.close(target);
+							target.add(divListagem);
+							
+							if(Util.getAlunoLogado().getListaMensagensSistema()!=null && Util.getAlunoLogado().getListaMensagensSistema().size()>0){
+								for(Mensagem mensagem:Util.getAlunoLogado().getListaMensagensSistema()){
+									Util.notify(target, mensagem.toString(), mensagem.getTipo());
+								}
+								Util.getAlunoLogado().setListaMensagensSistema(new ArrayList<Mensagem>());
+							}
+							
+						}
+					};
+					getForm().add(filtrosDinamicosPanel);
+					
+					filtrosDinamicosPanel.setOutputMarkupId(true);
+					modalFiltros.setContent(filtrosDinamicosPanel);
+					modalFiltros.show(target);
+				}else{
+					Util.notifyInfo(target, "Não existe filtros adicionais.");
+				}
+			}
+		};
+		
+		return ajaxButton;
+	}
+	
 	private void criarFormEventosCalendario(){
 		divListagem = new WebMarkupContainer("divListagem");
 		divListagem.setOutputMarkupId(true);
@@ -114,8 +188,21 @@ public class CalendarioPanel extends Panel {
 		formListagem.add(criarButtonIncluir(formListagem));
 		formListagem.add(criarModalIncluirEditar());
 		formListagem.add(criarBotaoVoltar());
+		formListagem.add(criarModalFiltros());
+		formListagem.add(criarButtonListagemFiltrosDinamicos());
+		
+		formListagem.add(criarCampoDescricao());
+		formListagem.add(criarCampoDataFim());
+		formListagem.add(criarCampoDataInicio());
 		divListagem.add(formListagem);
 		add(divListagem);
+	}
+	
+	private TextField<String> criarCampoDescricao(){
+		TextField<String> textFieldNome = new TextField<String>("descricao", new PropertyModel<String>(evento, "descricao"));
+		textFieldNome.setOutputMarkupId(true);
+		textFieldNome.add(StringValidator.lengthBetween(1, 600));
+		return textFieldNome;
 	}
 	
 	private WebMarkupContainer criarDivEsquerda(Evento evento,final Boolean visible){

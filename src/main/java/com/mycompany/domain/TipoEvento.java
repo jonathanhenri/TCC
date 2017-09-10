@@ -20,14 +20,9 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class TipoEvento extends AbstractBean<TipoEvento> {
 	private static final long serialVersionUID = 1L;
 
-	@ListarPageAnotacao
+	@ListarPageAnotacao(identificadorEstrangeiro = true,nomeColuna="Nome")
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
-	
-	@ListarPageAnotacao
-	@Column(name = "CODIGO_COR", nullable = true, length = 50)
-	private String codigoCor;
-	
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
@@ -48,20 +43,7 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	public Administracao getAdministracao() {
 		return administracao;
 	}
-	
-	
-	
-	
-	
-	
-	public void setCodigoCor(String codigoCor) {
-		this.codigoCor = codigoCor;
-	}
-	
-	public String getCodigoCor() {
-		return codigoCor;
-	}
-	
+
 	public String getNome() {
 		return nome;
 	}
