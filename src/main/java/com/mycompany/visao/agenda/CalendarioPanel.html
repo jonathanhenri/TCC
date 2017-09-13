@@ -134,9 +134,14 @@
 <body>
 	<wicket:panel>
 	<script>
+	 	$("#content").toggleClass("show");
+	 	
 		$("#filtrosPagina").on("click", function(){
 		  $("#content").toggleClass("show");
+		  $("#classeButton").toggleClass("glyphicon glyphicon-resize-full glyphicon glyphicon-resize-small");
 		});
+		
+		
 	</script>
 		<div class="" style="padding: 15px">
 			<div class="panel panel-info">
@@ -158,7 +163,10 @@
 														<label><h1>Linha do tempo</h1></label>
 													</div>
 													<div class="col-md-4"style="text-align: right;">
-														<input  value="Filtros" id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" ></input>	
+														<a  id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" >
+															<span id="classeButton" class="glyphicon glyphicon-resize-full"></span>
+															<label>Filtro</label>
+														</a>	
 														<input  value="Mais Filtros" id ="maisFiltros" name ="maisFiltros" wicket:id="buttonListagemFiltrosDinamicos" type="submit" class="btn btn-default" ></input>
 														<input value="Novo Evento" type="button" name ="novo" wicket:id="buttonNovoEvento" class="btn btn-success" style="width: 40%"/>
 													</div>
@@ -264,6 +272,7 @@
 							</div>
 							<div wicket:id="modalIncluirEditar"></div>
 							<div wicket:id="modalFiltros"></div>
+							<div wicket:id="modalExcluir"></div>
 							<input wicket:id="voltar" type="submit"  value="voltar" class="btn btn-default"></input>
 						</form>
 					</div>

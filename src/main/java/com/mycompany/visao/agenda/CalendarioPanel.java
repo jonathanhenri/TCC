@@ -1,6 +1,8 @@
 package com.mycompany.visao.agenda;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
+import org.apache.wicket.extensions.yui.calendar.TimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -21,6 +24,8 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import wicket.contrib.input.events.EventType;
 import wicket.contrib.input.events.InputBehavior;
@@ -42,6 +47,7 @@ import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.evento.EventoEditForm;
 import com.mycompany.visao.cadastro.evento.EventoPanel;
 import com.mycompany.visao.comum.ListagemFiltrosDinamicosPanel;
+import com.mycompany.visao.comum.MensagemExcluirPanel;
 
 public class CalendarioPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -51,6 +57,7 @@ public class CalendarioPanel extends Panel {
 	private HashMap<Date, List<Evento>> hashMapEventoAgrupado;
 	protected ModalWindow modalIncluirEditar;
 	protected ModalWindow modalFiltros;
+	protected ModalWindow modalExcluir;
 	
 	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
 	
@@ -80,6 +87,18 @@ public class CalendarioPanel extends Panel {
 	
 	private void adicionarCampos(){
 		evento = new Evento();
+		Calendar calendarInicio = Calendar.getInstance();
+		calendarInicio.set(Calendar.DAY_OF_MONTH, calendarInicio.getActualMinimum(Calendar.DAY_OF_MONTH));
+		calendarInicio.set(Calendar.HOUR_OF_DAY, calendarInicio.getActualMinimum(Calendar.HOUR_OF_DAY));
+		calendarInicio.set(Calendar.MINUTE, calendarInicio.getActualMinimum(Calendar.MINUTE));
+		evento.setDataInicio(calendarInicio.getTime());
+		
+		Calendar calendarFim = Calendar.getInstance();
+		calendarFim.set(Calendar.DAY_OF_MONTH, calendarFim.getActualMaximum(Calendar.DAY_OF_MONTH));
+		calendarFim.set(Calendar.HOUR_OF_DAY, calendarFim.getActualMaximum(Calendar.HOUR_OF_DAY));
+		calendarFim.set(Calendar.MINUTE, calendarFim.getActualMaximum(Calendar.MINUTE));
+		evento.setDataFim(calendarFim.getTime());
+		
 		popularHashMapEventoAgrupado();
 		criarFormEventosCalendario();
 		
@@ -94,11 +113,73 @@ public class CalendarioPanel extends Panel {
 		return modalIncluirEditar;
 	}
 	
+	private ModalWindow criarModalExcluir(){
+		modalExcluir= new ModalWindow("modalExcluir");
+		modalExcluir.setInitialHeight(250);
+		modalExcluir.setInitialWidth(600);
+		modalExcluir.setOutputMarkupId(true);
+		return modalExcluir;
+	}
+	
+	
+	
 	private void popularHashMapEventoAgrupado(){
 		agenda = (Agenda) agendaServico.searchFechId(agenda);
 		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 		
 		List<Evento> listaEventos = Util.toList(agenda.getEventos());
+		
+		boolean sair = true;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(evento.getDataInicio());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
+		
+		while(sair){
+			System.out.println("Dia = " + calendar.get(Calendar.DAY_OF_MONTH));
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			System.out.println("Dia +1 = " + calendar.get(Calendar.DAY_OF_MONTH));
+			
+			// Seg
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+			
+			// Ter
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+
+			// Quarta
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+			
+			// Quinta
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+			
+			// Sexta
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+			
+			
+			// Sab
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+			
+			
+			// Domingo
+			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+				System.out.println(dateFormat.format(calendar.getTime()));
+			}
+			
+			if(Util.comparaDatas(calendar.getTime(), evento.getDataFim(), false) == 0){
+				break;
+			}
+		}
 		
 		if(listaEventos!=null && listaEventos.size()>0){
 			for(Evento evento:listaEventos){
@@ -180,13 +261,13 @@ public class CalendarioPanel extends Panel {
 	private void criarFormEventosCalendario(){
 		divListagem = new WebMarkupContainer("divListagem");
 		divListagem.setOutputMarkupId(true);
-		
 		Form<Agenda> formListagem = new Form<Agenda>("form");
 		formListagem.setOutputMarkupId(true);
 		
 		formListagem.add(criarListViewEventosCalendario());
 		formListagem.add(criarButtonIncluir(formListagem));
 		formListagem.add(criarModalIncluirEditar());
+		formListagem.add(criarModalExcluir());
 		formListagem.add(criarBotaoVoltar());
 		formListagem.add(criarModalFiltros());
 		formListagem.add(criarButtonListagemFiltrosDinamicos());
@@ -320,17 +401,50 @@ public class CalendarioPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				Retorno retorno = eventoServico.remove(evento);
-				if(retorno.getSucesso()){
-					agenda.getEventos().remove(evento);
-					retorno = agendaServico.save(agenda);;
-				}
+				MensagemExcluirPanel excluirPanel = new MensagemExcluirPanel(modalExcluir.getContentId(), Util.getMensagemExclusao(evento)){
+					private static final long serialVersionUID = 1L;
+
+					protected void executarAoClicarNao(AjaxRequestTarget target) {
+						target.add(divListagem);
+						modalExcluir.close(target);
+					};
+					
+					protected void executarAoClicarSim(AjaxRequestTarget target) {
+						Retorno retorno = new Retorno();
+						try{
+							retorno = eventoServico.remove((Evento) eventoServico.searchFechId(evento));	
+							
+							if(retorno.getSucesso()){
+								agenda.getEventos().remove(evento);
+								retorno = agendaServico.save(agenda);;
+							}
+						}catch(Exception e){
+							retorno.setSucesso(false);
+							
+							if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
+								retorno.addMensagem(new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+							}else{
+								retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
+							}
+							
+							e.printStackTrace();
+						}
+						
+						if(retorno.getSucesso()){
+							target.add(divListagem);
+							modalExcluir.close(target);
+						}
+						
+						for(Mensagem mensagem:retorno.getListaMensagem()){
+							 Util.notify(target, mensagem.toString(), mensagem.getTipo());
+						 }
+						
+					};
+				};
 				
-				 for(Mensagem mensagem:retorno.getListaMensagem()){
-					 Util.notify(target, mensagem.toString(), mensagem.getTipo());
-		        }
-				 
-				target.add(divListagem);
+				add(excluirPanel);
+				modalExcluir.setContent(excluirPanel);
+				modalExcluir.show(target);
 			}
 		};
 		

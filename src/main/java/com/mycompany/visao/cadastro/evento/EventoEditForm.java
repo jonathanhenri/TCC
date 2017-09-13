@@ -10,6 +10,7 @@ import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
+import org.apache.wicket.extensions.yui.calendar.TimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -65,13 +66,19 @@ public class EventoEditForm extends EditForm<Evento> {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.evento = evento;
 		this.evento.setAgenda(agenda);
-		this.evento.setRepetirEvento(false);
+		if(this.evento.getRepetirEvento() == null){
+			this.evento.setRepetirEvento(false);
+		}
+		this.evento = (Evento) getAbstractBean();
 	}
 	
 	public EventoEditForm(Evento evento,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
 		this.evento = evento;
-		this.evento.setRepetirEvento(false);
+		if(this.evento.getRepetirEvento() == null){
+			this.evento.setRepetirEvento(false);
+		}
+		this.evento = (Evento) getAbstractBean();
 	}
 	
 	
@@ -161,20 +168,6 @@ public class EventoEditForm extends EditForm<Evento> {
 		return checkBox;
 	}
 	
-	private CheckBox criarCheckBoxRepetirTodosDias(){
-		CheckBox checkBox = new CheckBox("repetirTodosDias"){
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
-			}
-		};
-		checkBox.setOutputMarkupId(true);
-		return checkBox;
-	}
-	
-	
 	private CheckBox criarCheckBoxRepetirSegunda(){
 		CheckBox checkBox = new CheckBox("repetirTodaSegunda"){
 			private static final long serialVersionUID = 1L;
@@ -188,10 +181,10 @@ public class EventoEditForm extends EditForm<Evento> {
 		return checkBox;
 	}
 	private RadioGroup<Boolean> criarCampoRepetirEvento() {
-		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("repetirEvento");
-		radioGroupAtivo.add(new Radio<Boolean>("repetirEventoSim", new Model<Boolean>(true)).add(new AttributeModifier("id", "repetirEventoSim")));
-		radioGroupAtivo.add(new Radio<Boolean>("repetirEventoNao", new Model<Boolean>(false)).add(new AttributeModifier("id", "repetirEventoNao")));
-		radioGroupAtivo.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+		RadioGroup<Boolean> radioGroupRepetirEvento = new RadioGroup<Boolean>("repetirEvento");
+		radioGroupRepetirEvento.add(new Radio<Boolean>("repetirEventoSim", new Model<Boolean>(true)).add(new AttributeModifier("id", "repetirEventoSim")));
+		radioGroupRepetirEvento.add(new Radio<Boolean>("repetirEventoNao", new Model<Boolean>(false)).add(new AttributeModifier("id", "repetirEventoNao")));
+		radioGroupRepetirEvento.add(new AjaxFormChoiceComponentUpdatingBehavior() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -199,14 +192,13 @@ public class EventoEditForm extends EditForm<Evento> {
 				target.add(divRepetirEvento);
 			}
 		});
-		radioGroupAtivo.setOutputMarkupId(true);
-		return radioGroupAtivo;
+		radioGroupRepetirEvento.setOutputMarkupId(true);
+		return radioGroupRepetirEvento;
 	}
 	
 	
 	private WebMarkupContainer criarDivRepetirEvento(){
 		divRepetirEvento = new WebMarkupContainer("divRepetirEvento");
-//		divRepetirEvento.add(criarCheckBoxRepetirTodosDias());
 		divRepetirEvento.add(criarCheckBoxRepetirSegunda());
 		divRepetirEvento.add(criarCheckBoxRepetirTerca());
 		divRepetirEvento.add(criarCheckBoxRepetirQuarta());
@@ -215,6 +207,8 @@ public class EventoEditForm extends EditForm<Evento> {
 		divRepetirEvento.add(criarCheckBoxRepetirSabado());
 		divRepetirEvento.add(criarCheckBoxRepetirDomingo());
 		
+		divRepetirEvento.add(criarCampoTimeInicio());
+		divRepetirEvento.add(criarCampoTimeFim());
 		
 		divRepetirEvento.add(criarCampoDataFim());
 		divRepetirEvento.add(criarCampoDataInicio());
@@ -267,12 +261,17 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				Evento eventoNovo = evento.clonar(false);
+				Evento eventoNovo = new Evento();
+				eventoNovo.setRepetirEvento(false);
+				if(evento!=null){
+					eventoNovo = evento.clonar(false);
+				}else{
+					evento = new Evento();
+				}
 				eventoNovo.setAdministracao(null);
 				setAbstractBean(eventoNovo);
 				setModelObject(eventoNovo);
 				target.add(getRootForm());
-				
 			}
 			
 		});
@@ -402,6 +401,20 @@ public class EventoEditForm extends EditForm<Evento> {
 		textFieldNome.setOutputMarkupId(true);
 		textFieldNome.add(StringValidator.lengthBetween(1, 600));
 		return textFieldNome;
+	}
+	
+	
+	private TimeField criarCampoTimeFim(){
+		TimeField timeField = new TimeField("timeFim", new PropertyModel<Date>(getAbstractBean(), "dataFim"));
+		timeField.setOutputMarkupId(true);
+		return timeField;
+	}
+	
+	
+	private TimeField criarCampoTimeInicio(){
+		TimeField timeField = new TimeField("timeInicio", new PropertyModel<Date>(getAbstractBean(), "dataInicio"));
+		timeField.setOutputMarkupId(true);
+		return timeField;
 	}
 	
 	private NumberTextField<Integer> criarCampoPeriodo(){

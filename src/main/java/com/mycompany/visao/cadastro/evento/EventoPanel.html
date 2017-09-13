@@ -84,33 +84,46 @@
 						</div>
 						<div class="form-group">
 							<div wicket:id="divRepetirEvento" >
-								<div class="weekDays-selector">
-									<wicket:enclosure child="repetirTodaSegunda">
-										<div class="col-md-12">	
-											<label>Escolha os dias para repetição</label><br>
-											<input type="checkbox" id="segunda" wicket:id="repetirTodaSegunda"  class="weekday" />
-		  									<label for="segunda">S</label>
-		  									
-											<input type="checkbox" id="terca" wicket:id="repetirTodaTerca"  class="weekday" />
-		  									<label for="terca">T</label>
-											
-											<input type="checkbox" id="quarta" wicket:id="repetirTodaQuarta"  class="weekday" />
-		  									<label for="quarta">Q</label>
-		  									
-		  									<input type="checkbox" id="quinta" wicket:id="repetirTodaQuinta"  class="weekday" />
-		  									<label for="quinta">QI</label>
-		  									
-											<input type="checkbox" id="sexta" wicket:id="repetirTodaSexta"  class="weekday" />
-		  									<label for="sexta">SE</label>
-		  									
-		  									<input type="checkbox" id="sabado" wicket:id="repetirTodoSabado"  class="weekday" />
-		  									<label for="sabado">SA</label>
-		  									
-		  									<input type="checkbox" id="domingo" wicket:id="repetirTodoDomingo"  class="weekday" />
-		  									<label for="domingo">D</label>
-	  									</div>
-									</wicket:enclosure>
-								</div>
+								<wicket:enclosure child="repetirTodaSegunda">
+									<div class="col-md-12">	
+										<div class="col-md-6">	
+											<span class="weekDays-selector">
+												<label>Escolha os dias para repetição</label><br>
+												<input type="checkbox" id="segunda" wicket:id="repetirTodaSegunda"  class="weekday" />
+			  									<label for="segunda">S</label>
+			  									
+												<input type="checkbox" id="terca" wicket:id="repetirTodaTerca"  class="weekday" />
+			  									<label for="terca">T</label>
+												
+												<input type="checkbox" id="quarta" wicket:id="repetirTodaQuarta"  class="weekday" />
+			  									<label for="quarta">Q</label>
+			  									
+			  									<input type="checkbox" id="quinta" wicket:id="repetirTodaQuinta"  class="weekday" />
+			  									<label for="quinta">QI</label>
+			  									
+												<input type="checkbox" id="sexta" wicket:id="repetirTodaSexta"  class="weekday" />
+			  									<label for="sexta">SE</label>
+			  									
+			  									<input type="checkbox" id="sabado" wicket:id="repetirTodoSabado"  class="weekday" />
+			  									<label for="sabado">SA</label>
+			  									
+			  									<input type="checkbox" id="domingo" wicket:id="repetirTodoDomingo"  class="weekday" />
+			  									<label for="domingo">D</label>
+		  									</span>
+		  								</div>
+		  								
+	  									<div class="col-md-3">
+											<label class="control-label">Hora inicio</label><br>
+		 									<span wicket:id="timeInicio"></span>
+		 								</div>
+		 								<div class="col-md-3">
+		 									<label class="control-label">Hora Fim</label><br>
+		 									<span wicket:id="timeFim"></span>
+	 									</div>
+	  								</div>
+	  								
+								</wicket:enclosure>
+								
 								
 								<wicket:enclosure child="dataInicio">
 									<div class="col-md-6">	
@@ -125,6 +138,8 @@
 										<span wicket:id="dataFim" placeholder="Data final"></span>
 									</div>
 								</wicket:enclosure>
+								
+								
 							
 							</div>
 							</div>
