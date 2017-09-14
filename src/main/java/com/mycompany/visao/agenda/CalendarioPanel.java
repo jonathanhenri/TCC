@@ -148,28 +148,28 @@ public class CalendarioPanel extends Panel {
 	}
 	private void replicarEventoPorDiaEspecifico(Evento evento,Integer diaSemana){
 		boolean sair = true;
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(evento.getDataInicio());
-		Locale locale = new Locale("pt", "BR");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy", locale);
+		Calendar calendarInicio = Calendar.getInstance();
+		calendarInicio.setTime(evento.getDataInicio());
+		
+		Calendar calendarFim = Calendar.getInstance();
+		calendarFim.setTime(evento.getDataFim());
+		
 		while(sair){
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			System.out.println("Inicio: "+calendarInicio.getTime()+" Fim: "+calendarFim.getTime());
 			
-			if(calendar.get(Calendar.DAY_OF_WEEK) == diaSemana){
-				Evento eventoNovo = evento.clonar(true);
-				eventoNovo.setDataAuxiliar(calendar.getTime());
-				listaTodosEventos.add(eventoNovo);
-			}
-			
-			System.out.println("Calendar: " +dateFormat.format(calendar.getTime()) + " Data Fim: "+evento.getDataFim());
-			if(Util.comparaDatas(calendar.getTime(), evento.getDataFim(), false) == 0){
+			if(Util.comparaDatas(calendarInicio.getTime(),calendarFim.getTime(), false) == 0){
 				break;
 			}
+			calendarInicio.add(Calendar.DAY_OF_MONTH, 1);
 			
+			System.out.println("Inicio2: "+calendarInicio.getTime()+" Fim2: "+calendarFim.getTime());
+			
+			if(calendarInicio.get(Calendar.DAY_OF_WEEK) == diaSemana){
+				Evento eventoNovo = evento.clonar(true);
+				eventoNovo.setDataAuxiliar(calendarInicio.getTime());
+				listaTodosEventos.add(eventoNovo);
+			}
 		}
-		
-		
-		
 	}
 	
 	private void replicarPopularListaEventos(){
@@ -463,11 +463,6 @@ public class CalendarioPanel extends Panel {
 						Retorno retorno = new Retorno();
 						try{
 							retorno = eventoServico.remove((Evento) eventoServico.searchFechId(evento));	
-							
-							if(retorno.getSucesso()){
-								agenda.getEventos().remove(evento);
-								retorno = agendaServico.save(agenda);;
-							}
 						}catch(Exception e){
 							retorno.setSucesso(false);
 							
@@ -500,6 +495,7 @@ public class CalendarioPanel extends Panel {
 		
 		return linkExcluirEvento;
 	}
+	
 	private ListView<Date> criarListViewEventosCalendario(){
 		LoadableDetachableModel<List<Date>> loadEventosCalendario = new LoadableDetachableModel<List<Date>>() {
 			private static final long serialVersionUID = 1L;
@@ -507,7 +503,11 @@ public class CalendarioPanel extends Panel {
 			@Override
 			protected List<Date> load() {
 				popularHashMapEventoAgrupado();
-				return Util.toList(hashMapEventoAgrupado.keySet());
+				
+				List<Date> listaDatas = new ArrayList<Date>();
+				listaDatas.addAll(Util.toList(hashMapEventoAgrupado.keySet()));
+				
+				return listaDatas;
 			}
 		};
 			

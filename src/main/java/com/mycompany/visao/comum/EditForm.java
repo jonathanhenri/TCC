@@ -328,8 +328,12 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return titulo;
 	}
 
-	public AbstractBean<?> getAbstractBean() {
-		return abstractBean;
+//	public AbstractBean<?> getAbstractBean() {
+//		return abstractBean;
+//	}
+	
+	protected T getAbstractBean() {
+		return getModelObject();
 	}
 	
 //	protected abstract void inicializarEditForm(String id,AbstractBean<?> abstractBean,Panel editPanel);
