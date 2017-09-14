@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.mycompany.anotacao.ListarPageAnotacao;
 
@@ -30,6 +31,9 @@ public class Evento extends AbstractBean<Evento> {
 	
 	@Column(name = "DATA_FIM", nullable = true)
 	private Date dataFim;
+	
+	@Transient
+	private Date dataAuxiliar;
 	
 	@Column(name = "PROFESSOR", nullable = true, length = 200)
 	private String professor;
@@ -98,6 +102,13 @@ public class Evento extends AbstractBean<Evento> {
 	private Long id;
 	
 	
+	public void setDataAuxiliar(Date dataAuxiliar) {
+		this.dataAuxiliar = dataAuxiliar;
+	}
+	
+	public Date getDataAuxiliar() {
+		return dataAuxiliar;
+	}
 	public Boolean getRepetirEvento() {
 		return repetirEvento;
 	}

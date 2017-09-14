@@ -6,13 +6,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
-import org.apache.wicket.extensions.yui.calendar.TimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -58,6 +58,7 @@ public class CalendarioPanel extends Panel {
 	protected ModalWindow modalIncluirEditar;
 	protected ModalWindow modalFiltros;
 	protected ModalWindow modalExcluir;
+	private List<Evento> listaTodosEventos;
 	
 	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
 	
@@ -82,6 +83,7 @@ public class CalendarioPanel extends Panel {
 		this.agenda = agenda;
 		focusGained = true;
 		filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
+		listaTodosEventos = new ArrayList<Evento>();
 		adicionarCampos();
 	}
 	
@@ -122,75 +124,123 @@ public class CalendarioPanel extends Panel {
 	}
 	
 	
+	private void replicarEventoPorPeriodoTempo(Evento evento,Date dataInicio, Date dataFim){
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dataInicio);
+		
+		boolean sair = true;
+		while(sair){
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			
+			Evento eventoNovo = evento.clonar(true);
+			eventoNovo.setDataAuxiliar(calendar.getTime());
+			listaTodosEventos.add(eventoNovo);
+			
+//			System.out.println("Dia = " + calendar.get(Calendar.DAY_OF_MONTH));
+//			
+//			System.out.println("Dia +1 = " + calendar.get(Calendar.DAY_OF_MONTH));
+//			
+			if(Util.comparaDatas(calendar.getTime(), dataFim, false) == 0){
+				break;
+			}
+			
+		}
+	}
+	private void replicarEventoPorDiaEspecifico(Evento evento,Integer diaSemana){
+		boolean sair = true;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(evento.getDataInicio());
+		Locale locale = new Locale("pt", "BR");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy", locale);
+		while(sair){
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			
+			if(calendar.get(Calendar.DAY_OF_WEEK) == diaSemana){
+				Evento eventoNovo = evento.clonar(true);
+				eventoNovo.setDataAuxiliar(calendar.getTime());
+				listaTodosEventos.add(eventoNovo);
+			}
+			
+			System.out.println("Calendar: " +dateFormat.format(calendar.getTime()) + " Data Fim: "+evento.getDataFim());
+			if(Util.comparaDatas(calendar.getTime(), evento.getDataFim(), false) == 0){
+				break;
+			}
+			
+		}
+		
+		
+		
+	}
+	
+	private void replicarPopularListaEventos(){
+		List<Evento> listaAux = new ArrayList<Evento>();
+		listaAux.addAll(listaTodosEventos);
+		
+		if(listaAux!=null && listaAux.size()>0){
+			for(Evento evento:listaAux){
+				if(evento.getRepetirEvento()!=null && evento.getRepetirEvento()){
+					// Seg
+					if(evento.getRepetirTodaSegunda()!=null && evento.getRepetirTodaSegunda()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.MONDAY);
+					}
+					
+					// Ter
+					if(evento.getRepetirTodaTerca()!=null && evento.getRepetirTodaTerca()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.TUESDAY);
+					}
+
+					// Quarta
+					if(evento.getRepetirTodaQuarta()!=null && evento.getRepetirTodaQuarta()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.WEDNESDAY);
+					}
+					// Quinta
+					if(evento.getRepetirTodaQuinta()!=null && evento.getRepetirTodaQuinta()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.THURSDAY);
+					}
+					
+					// Sexta
+					if(evento.getRepetirTodaSexta()!=null && evento.getRepetirTodaSexta()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.FRIDAY);
+					}
+					
+					// Sab
+					if(evento.getRepetirTodoSabado()!=null && evento.getRepetirTodoSabado()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.SATURDAY);
+					}
+					
+					// Domingo
+					if(evento.getRepetirTodoDomingo()!=null && evento.getRepetirTodoDomingo()){
+						replicarEventoPorDiaEspecifico(evento, Calendar.SUNDAY);
+					}
+				}else{
+					if(Util.comparaDatas(evento.getDataInicio(), evento.getDataFim(), false) == -1){
+						replicarEventoPorPeriodoTempo(evento, evento.getDataInicio(), evento.getDataFim());
+					}
+				}
+			}
+		}
+	}
 	
 	private void popularHashMapEventoAgrupado(){
 		agenda = (Agenda) agendaServico.searchFechId(agenda);
 		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 		
-		List<Evento> listaEventos = Util.toList(agenda.getEventos());
-		
-		boolean sair = true;
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(evento.getDataInicio());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE");
-		
-		while(sair){
-			System.out.println("Dia = " + calendar.get(Calendar.DAY_OF_MONTH));
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-			System.out.println("Dia +1 = " + calendar.get(Calendar.DAY_OF_MONTH));
-			
-			// Seg
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-			
-			// Ter
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-
-			// Quarta
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-			
-			// Quinta
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-			
-			// Sexta
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-			
-			
-			// Sab
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-			
-			
-			// Domingo
-			if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
-				System.out.println(dateFormat.format(calendar.getTime()));
-			}
-			
-			if(Util.comparaDatas(calendar.getTime(), evento.getDataFim(), false) == 0){
-				break;
-			}
-		}
-		
-		if(listaEventos!=null && listaEventos.size()>0){
-			for(Evento evento:listaEventos){
+		listaTodosEventos = Util.toList(agenda.getEventos());
+		replicarPopularListaEventos();
+		if(listaTodosEventos!=null && listaTodosEventos.size()>0){
+			for(Evento evento:listaTodosEventos){
+				if(evento.getDataAuxiliar() == null){
+					evento.setDataAuxiliar(evento.getDataInicio());
+				}
+				
 				List<Evento> listaAux;
-				if(hashMapEventoAgrupado.containsKey(evento.getDataInicio())){
-					listaAux = hashMapEventoAgrupado.get(evento.getDataInicio());
+				if(hashMapEventoAgrupado.containsKey(evento.getDataAuxiliar())){
+					listaAux = hashMapEventoAgrupado.get(evento.getDataAuxiliar());
 				}else{
 					listaAux = new ArrayList<Evento>();
 				}
 				listaAux.add(evento);
-				hashMapEventoAgrupado.put(evento.getDataInicio(),listaAux);
+				hashMapEventoAgrupado.put(evento.getDataAuxiliar(),listaAux);
 			}
 			
 		}
