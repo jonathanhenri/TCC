@@ -146,7 +146,7 @@ public class CalendarioPanel extends Panel {
 			
 		}
 	}
-	private void replicarEventoPorDiaEspecifico(Evento evento,Integer diaSemana){
+	private void replicarEventoPorDiaEspecifico(Evento eventoParametro,Integer diaSemana){
 		boolean sair = true;
 		Calendar calendarInicio = Calendar.getInstance();
 		calendarInicio.setTime(evento.getDataInicio());
@@ -155,17 +155,13 @@ public class CalendarioPanel extends Panel {
 		calendarFim.setTime(evento.getDataFim());
 		
 		while(sair){
-			System.out.println("Inicio: "+calendarInicio.getTime()+" Fim: "+calendarFim.getTime());
-			
 			if(Util.comparaDatas(calendarInicio.getTime(),calendarFim.getTime(), false) == 0){
 				break;
 			}
 			calendarInicio.add(Calendar.DAY_OF_MONTH, 1);
 			
-			System.out.println("Inicio2: "+calendarInicio.getTime()+" Fim2: "+calendarFim.getTime());
-			
 			if(calendarInicio.get(Calendar.DAY_OF_WEEK) == diaSemana){
-				Evento eventoNovo = evento.clonar(true);
+				Evento eventoNovo = eventoParametro.clonar(true);
 				eventoNovo.setDataAuxiliar(calendarInicio.getTime());
 				listaTodosEventos.add(eventoNovo);
 			}
@@ -175,6 +171,8 @@ public class CalendarioPanel extends Panel {
 	private void replicarPopularListaEventos(){
 		List<Evento> listaAux = new ArrayList<Evento>();
 		listaAux.addAll(listaTodosEventos);
+		
+//		listaTodosEventos = new ArrayList<Evento>();
 		
 		if(listaAux!=null && listaAux.size()>0){
 			for(Evento evento:listaAux){

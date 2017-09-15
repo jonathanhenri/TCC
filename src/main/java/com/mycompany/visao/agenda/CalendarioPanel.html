@@ -32,7 +32,7 @@
 		  position: absolute;
 		  top: 20px;
 		  left: 50%;
-		  margin-left: -25px;
+		  margin-left: -16px;
 		  background-color: #4997cd;
 		  z-index: 100;
 		  border-top-right-radius: 50%;
@@ -54,12 +54,12 @@
 		  height: 35px;
 		  margin-left: -16px;
 		  width: 35px;
-		  top: 40px;
+		  top: 24px;
 		}
 		#timeline .timeline-badge.timeline-filter-movement a span {
 		  color: #4997cd;
 		  font-size: 1.3em;
-		  top: -1px;
+		  top: 1px;
 		}
 		#timeline .timeline-badge.timeline-future-movement {
 		  background-color: #ffffff;
@@ -126,6 +126,18 @@
 		#content.show{
 		  display:block; /* P.S: Use `!important` if missing `#content` (selector specificity). */
 		}
+		
+		.scrollGrande{
+			height: 520px;
+			overflow-y:scroll;
+			overflow-x:hidden;
+		}
+		
+		.scrollPequeno{
+			overflow-y:scroll;
+			overflow-x:hidden;
+			height: 400px;
+		}
 	</style>
 	<script src="js/jquery.js"></script>
 </wicket:head>
@@ -139,6 +151,7 @@
 		$("#filtrosPagina").on("click", function(){
 		  $("#content").toggleClass("show");
 		  $("#classeButton").toggleClass("glyphicon glyphicon-resize-full glyphicon glyphicon-resize-small");
+		  $('#scroll').toggleClass("scrollPequeno scrollGrande");
 		});
 		
 		
@@ -206,64 +219,66 @@
 											        </a>
 											    </div>
 											</div>
-										 	<div wicket:id="diaEventosCalendario">
-												<div class="row timeline-movement content scaffold-list">
-												    <a href="#" wicket:id="buttonNovoEventoDia" class="timeline-badge" data-toggle="tooltip" title="Clique para adicionar um evento para este dia">
-												        <span class="timeline-balloon-date-day" wicket:id="day"></span><br>
-												        <span class="timeline-balloon-date-month" wicket:id="mon"></span>
-												    </a>
-												    <div class="row">
-												    	<div wicket:id="eventosDoDia">
-												    		<wicket:enclosure child="divEsquerda">
-															    <div class="col-md-6  timeline-item" wicket:id="divEsquerda" >
-														            <div class="col-md-12 row">
-														                <div class="timeline-panel credits"  data-toggle="tooltip" title="Clique na edição para visualizar informações detalhadas">
-														                    <ul class="timeline-panel-ul" >
-														                       <li class="row" >
-															                       <span class="col-md-2" style="text-align: left !important;">
-															                       		<a  class="btn btn-danger" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
-															                       		<a  class="btn btn-primary" wicket:id="linkEditarEvento"><span class="glyphicon glyphicon-pencil"></span></a>
-															                       	</span>
-															                       	<span class="importo col-md-10"><label wicket:id="descricao"></label></span>
-														                       	</li>
-														                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
-														                        <li><p>
-														                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
-														                        	</p> 
-														                        </li>
-														                    </ul>
-														                    
-														                </div>
-														            </div>
-															    </div>
-															</wicket:enclosure>
-														    
-														    <wicket:enclosure child="divDireita">
-															    <div class="col-md-6  timeline-item" wicket:id="divDireita">
-														              <div class="col-md-12 row">
-														                <div class="timeline-panel debits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
-														                    <ul class="timeline-panel-ul" >
-														                       <li class="row" >
-														                       	   <span class="importo col-md-10"><label wicket:id="descricao"></label></span>
-														                       	   
-															                        <span class="col-md-2" style="text-align: right !important;">
-															                       		<a  class="btn btn-primary" wicket:id="linkEditarEvento"><span class="glyphicon glyphicon-pencil"></span></a>
-															                       		<a  class="btn btn-danger" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
-															                       	</span>
-														                       	</li>
-														                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
-														                        <li><p>
-														                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
-														                        	</p> 
-														                        </li>
-														                    </ul>
-														                </div>
-														            </div>
-															    </div>
-															</wicket:enclosure> 
-															
-														 </div>
-												    </div>
+											<div style="overflow-y: scroll;overflow-x:hidden;" id="scroll" class="scrollPequeno">
+											 	<div wicket:id="diaEventosCalendario">
+													<div class="row timeline-movement">
+													    <a href="#" wicket:id="buttonNovoEventoDia" class="timeline-badge" data-toggle="tooltip" title="Clique para adicionar um evento para este dia">
+													        <span class="timeline-balloon-date-day" wicket:id="day"></span><br>
+													        <span class="timeline-balloon-date-month" wicket:id="mon"></span>
+													    </a>
+													    <div class="row">
+													    	<div wicket:id="eventosDoDia">
+													    		<wicket:enclosure child="divEsquerda">
+																    <div class="col-md-6  timeline-item" wicket:id="divEsquerda" >
+															            <div class="col-md-12 row">
+															                <div class="timeline-panel credits"  data-toggle="tooltip" title="Clique na edição para visualizar informações detalhadas">
+															                    <ul class="timeline-panel-ul" >
+															                       <li class="row" >
+																                       <span class="col-md-2" style="text-align: left !important;">
+																                       		<a  class="btn btn-danger" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
+																                       		<a  class="btn btn-primary" wicket:id="linkEditarEvento"><span class="glyphicon glyphicon-pencil"></span></a>
+																                       	</span>
+																                       	<span class="importo col-md-10"><label wicket:id="descricao"></label></span>
+															                       	</li>
+															                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
+															                        <li><p>
+															                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
+															                        	</p> 
+															                        </li>
+															                    </ul>
+															                    
+															                </div>
+															            </div>
+																    </div>
+																</wicket:enclosure>
+															    
+															    <wicket:enclosure child="divDireita">
+																    <div class="col-md-6  timeline-item" wicket:id="divDireita">
+															              <div class="col-md-12 row">
+															                <div class="timeline-panel debits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
+															                    <ul class="timeline-panel-ul" >
+															                       <li class="row" >
+															                       	   <span class="importo col-md-10"><label wicket:id="descricao"></label></span>
+															                       	   
+																                        <span class="col-md-2" style="text-align: right !important;">
+																                       		<a  class="btn btn-primary" wicket:id="linkEditarEvento"><span class="glyphicon glyphicon-pencil"></span></a>
+																                       		<a  class="btn btn-danger" wicket:id="linkExcluirEvento"><span class="glyphicon glyphicon-trash"></span></a>
+																                       	</span>
+															                       	</li>
+															                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
+															                        <li><p>
+															                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
+															                        	</p> 
+															                        </li>
+															                    </ul>
+															                </div>
+															            </div>
+																    </div>
+																</wicket:enclosure> 
+																
+															 </div>
+													    </div>
+													</div>
 												</div>
 											</div>
 										</div>											

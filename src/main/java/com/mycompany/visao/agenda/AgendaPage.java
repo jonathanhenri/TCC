@@ -61,7 +61,7 @@ public class AgendaPage extends Menu {
 	private ModalWindow criarModalCalendario() {
 		modalCalendario = new ModalWindow("modalCalendario");
 		modalCalendario.setOutputMarkupId(true);
-		modalCalendario.setInitialHeight(800);
+		modalCalendario.setInitialHeight(870);
 		modalCalendario.setInitialWidth(1500);
 		
 		modalCalendario.setCloseButtonCallback(null);
