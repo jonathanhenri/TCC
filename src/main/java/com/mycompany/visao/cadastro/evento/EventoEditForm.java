@@ -40,7 +40,6 @@ import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.Util;
-import com.mycompany.visao.comum.ColorTextField;
 import com.mycompany.visao.comum.EditForm;
 
 public class EventoEditForm extends EditForm<Evento> {
@@ -59,26 +58,22 @@ public class EventoEditForm extends EditForm<Evento> {
 	
 	private WebMarkupContainer divRepetirEvento;
 	
-	
-	private Evento evento;
+	private Evento eventoAux = new Evento();
 	
 	public EventoEditForm(Evento evento,Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
-		this.evento = evento;
-		this.evento.setAgenda(agenda);
-		if(this.evento.getRepetirEvento() == null){
-			this.evento.setRepetirEvento(false);
+		getAbstractBean().setAgenda(agenda);
+		
+		if(getAbstractBean().getId() == null){
+			getAbstractBean().setRepetirEvento(false);
 		}
-		this.evento = (Evento) getAbstractBean();
 	}
 	
 	public EventoEditForm(Evento evento,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
-		this.evento = evento;
-		if(this.evento.getRepetirEvento() == null){
-			this.evento.setRepetirEvento(false);
+		if(getAbstractBean().getId() == null){
+			getAbstractBean().setRepetirEvento(false);
 		}
-		this.evento = (Evento) getAbstractBean();
 	}
 	
 	
@@ -93,7 +88,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -107,7 +102,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -120,7 +115,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -133,7 +128,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -147,7 +142,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -161,7 +156,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -174,7 +169,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?evento.getRepetirEvento():false;
+				return getAbstractBean().getRepetirEvento()!=null?getAbstractBean().getRepetirEvento():false;
 			}
 		};
 		checkBox.setOutputMarkupId(true);
@@ -245,7 +240,7 @@ public class EventoEditForm extends EditForm<Evento> {
 			
 		};
 		
-		final DropDownChoice<Evento> tipoRadioChoice = new DropDownChoice<Evento>("eventos",new PropertyModel<Evento>(this, "evento") ,eventos,choiceRenderer){
+		final DropDownChoice<Evento> tipoRadioChoice = new DropDownChoice<Evento>("eventos",new PropertyModel<Evento>(this, "eventoAux") ,eventos,choiceRenderer){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -263,10 +258,8 @@ public class EventoEditForm extends EditForm<Evento> {
 			protected void onUpdate(AjaxRequestTarget target) {
 				Evento eventoNovo = new Evento();
 				eventoNovo.setRepetirEvento(false);
-				if(evento!=null){
-					eventoNovo = evento.clonar(false);
-				}else{
-					evento = new Evento();
+				if(getAbstractBean()!=null){
+					eventoNovo = getAbstractBean().clonar(false);
 				}
 				eventoNovo.setAdministracao(null);
 				setAbstractBean(eventoNovo);
@@ -332,7 +325,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?!evento.getRepetirEvento():true;
+				return getAbstractBean().getRepetirEvento()!=null?!getAbstractBean().getRepetirEvento():true;
 			}
 		};
 		dataFim.setOutputMarkupId(true);
@@ -345,7 +338,7 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			public boolean isVisible() {
-				return evento.getRepetirEvento()!=null?!evento.getRepetirEvento():true;
+				return getAbstractBean().getRepetirEvento()!=null?!getAbstractBean().getRepetirEvento():true;
 			}
 		};
 		dataFim.setOutputMarkupId(true);
@@ -443,12 +436,8 @@ public class EventoEditForm extends EditForm<Evento> {
 		return super.validarRegrasAntesSalvarEditar(target);
 	}
 	private static final long serialVersionUID = 1L;
-
-	public void setEvento(Evento evento) {
-		this.evento = evento;
-	}
-	public Evento getEvento() {
-		return evento;
-	}
 	
+	public Evento getEventoAux() {
+		return eventoAux;
+	}
 }

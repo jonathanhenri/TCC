@@ -1,12 +1,12 @@
 package com.mycompany.visao.agenda;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -101,7 +101,7 @@ public class CalendarioPanel extends Panel {
 		calendarFim.set(Calendar.MINUTE, calendarFim.getActualMaximum(Calendar.MINUTE));
 		evento.setDataFim(calendarFim.getTime());
 		
-		popularHashMapEventoAgrupado();
+		pesquisaTodosEventosAgenda();
 		criarFormEventosCalendario();
 		
 	}
@@ -129,22 +129,42 @@ public class CalendarioPanel extends Panel {
 		calendar.setTime(dataInicio);
 		
 		boolean sair = true;
-		while(sair){
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-			
+		
+		if(Util.comparaDatas(calendar.getTime(), dataFim, false) == 0){
 			Evento eventoNovo = evento.clonar(true);
 			eventoNovo.setDataAuxiliar(calendar.getTime());
 			listaTodosEventos.add(eventoNovo);
+		}else{
+			Evento eventoNovo2 = evento.clonar(true);
+			eventoNovo2.setDataAuxiliar(calendar.getTime());
+			listaTodosEventos.add(eventoNovo2);
 			
-//			System.out.println("Dia = " + calendar.get(Calendar.DAY_OF_MONTH));
-//			
-//			System.out.println("Dia +1 = " + calendar.get(Calendar.DAY_OF_MONTH));
-//			
-			if(Util.comparaDatas(calendar.getTime(), dataFim, false) == 0){
-				break;
+			while(sair){
+				calendar.add(Calendar.DAY_OF_MONTH, 1);
+				
+				Evento eventoNovo = evento.clonar(true);
+				eventoNovo.setDataAuxiliar(calendar.getTime());
+				listaTodosEventos.add(eventoNovo);
+				
+				if(Util.comparaDatas(calendar.getTime(), dataFim, false) == 0){
+					break;
+				}
+				
 			}
-			
 		}
+	}
+	
+	private AjaxButton criarButtonPesquisa(Form<Agenda> form){
+		AjaxButton ajaxButton = new AjaxButton("pesquisar",form) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				super.onSubmit(target, form);
+			}
+		};
+		
+		return ajaxButton;
 	}
 	private void replicarEventoPorDiaEspecifico(Evento eventoParametro,Integer diaSemana){
 		boolean sair = true;
@@ -172,7 +192,7 @@ public class CalendarioPanel extends Panel {
 		List<Evento> listaAux = new ArrayList<Evento>();
 		listaAux.addAll(listaTodosEventos);
 		
-//		listaTodosEventos = new ArrayList<Evento>();
+		listaTodosEventos = new ArrayList<Evento>();
 		
 		if(listaAux!=null && listaAux.size()>0){
 			for(Evento evento:listaAux){
@@ -218,13 +238,15 @@ public class CalendarioPanel extends Panel {
 			}
 		}
 	}
-	
-	private void popularHashMapEventoAgrupado(){
+	private void pesquisaTodosEventosAgenda(){
 		agenda = (Agenda) agendaServico.searchFechId(agenda);
 		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
-		
 		listaTodosEventos = Util.toList(agenda.getEventos());
+	}
+	
+	private void popularHashMapEventoAgrupado(){
 		replicarPopularListaEventos();
+		
 		if(listaTodosEventos!=null && listaTodosEventos.size()>0){
 			for(Evento evento:listaTodosEventos){
 				if(evento.getDataAuxiliar() == null){
@@ -240,8 +262,8 @@ public class CalendarioPanel extends Panel {
 				listaAux.add(evento);
 				hashMapEventoAgrupado.put(evento.getDataAuxiliar(),listaAux);
 			}
-			
 		}
+		 
 	}
 	
 	private DateTimeField criarCampoDataFim(){
@@ -323,6 +345,7 @@ public class CalendarioPanel extends Panel {
 		formListagem.add(criarCampoDescricao());
 		formListagem.add(criarCampoDataFim());
 		formListagem.add(criarCampoDataInicio());
+		formListagem.add(criarButtonPesquisa(formListagem));
 		divListagem.add(formListagem);
 		add(divListagem);
 	}
@@ -412,7 +435,16 @@ public class CalendarioPanel extends Panel {
 				EventoPanel editPanel = new EventoPanel(modalIncluirEditar.getContentId());
 				editPanel.setOutputMarkupId(true);
 				
-				EventoEditForm cadastroAlunoEditForm = new EventoEditForm((Evento)eventoServico.searchFechId(evento),editPanel,null,divListagem,modalIncluirEditar);
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm((Evento)eventoServico.searchFechId(evento),editPanel,null,null,modalIncluirEditar){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void executarAoSalvarEditar(AjaxRequestTarget target) {
+						pesquisaTodosEventosAgenda();
+						target.add(divListagem);
+						super.executarAoSalvarEditar(target);
+					}
+				};
 				cadastroAlunoEditForm.setOutputMarkupId(true);
 				editPanel.add(cadastroAlunoEditForm);
 				
@@ -474,6 +506,7 @@ public class CalendarioPanel extends Panel {
 						}
 						
 						if(retorno.getSucesso()){
+							pesquisaTodosEventosAgenda();
 							target.add(divListagem);
 							modalExcluir.close(target);
 						}
@@ -505,6 +538,12 @@ public class CalendarioPanel extends Panel {
 				List<Date> listaDatas = new ArrayList<Date>();
 				listaDatas.addAll(Util.toList(hashMapEventoAgrupado.keySet()));
 				
+				 Collections.sort(listaDatas, new Comparator<Date>() {
+		            public int compare(Date o1, Date o2) {
+		                return (o2.compareTo(o1));
+		            }
+		         });
+				 
 				return listaDatas;
 			}
 		};
@@ -542,8 +581,16 @@ public class CalendarioPanel extends Panel {
 				evento.setDataFim(date);
 				evento.setDataInicio(date);
 				evento.setAgenda(agenda);
-				
-				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,divListagem,modalIncluirEditar);
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void executarAoSalvarEditar(AjaxRequestTarget target) {
+						pesquisaTodosEventosAgenda();
+						target.add(divListagem);
+						super.executarAoSalvarEditar(target);
+					}
+				};
 				cadastroAlunoEditForm.setOutputMarkupId(true);
 				editPanel.add(cadastroAlunoEditForm);
 				
@@ -568,7 +615,17 @@ public class CalendarioPanel extends Panel {
 				Evento evento = new Evento();
 				evento.setAgenda(agenda);
 				
-				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,divListagem,modalIncluirEditar);
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void executarAoSalvarEditar(AjaxRequestTarget target) {
+						pesquisaTodosEventosAgenda();
+						target.add(divListagem);
+						target.appendJavaScript("teste();");
+						super.executarAoSalvarEditar(target);
+					}
+				};
 				cadastroAlunoEditForm.setOutputMarkupId(true);
 				editPanel.add(cadastroAlunoEditForm);
 				

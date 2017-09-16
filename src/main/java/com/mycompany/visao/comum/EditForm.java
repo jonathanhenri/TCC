@@ -146,7 +146,9 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 							if(retorno.getSucesso()){
 								modalExcluir.close(target);
 								getModalIncluirEditar().close(target);
-								target.add(getDivAtualizar());
+								if(getDivAtualizar()!=null){
+									target.add(getDivAtualizar());
+								}
 								executarAoExcluir(target);
 							}
 							
@@ -296,12 +298,16 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	protected void executarAoEditar(AjaxRequestTarget target){
-		target.add(getDivAtualizar());
+		if(getDivAtualizar()!=null){
+			target.add(getDivAtualizar());
+		}
 		getModalIncluirEditar().close(target);
 	}
 	
 	protected void executarAoSalvar(AjaxRequestTarget target){
-		target.add(getDivAtualizar());
+		if(getDivAtualizar()!=null){
+			target.add(getDivAtualizar());
+		}
 		getModalIncluirEditar().close(target);
 	}
 	

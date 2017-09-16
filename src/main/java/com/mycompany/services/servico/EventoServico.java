@@ -84,15 +84,18 @@ public class EventoServico implements IEventoServico {
 		}
 		
 		if(evento.getRepetirEvento() == null){
+			retorno.setSucesso(false);
 			retorno.addMensagem(new Mensagem("Evento","Repetir Evento", Mensagem.MOTIVO_NULO, Mensagem.ERRO));
 		}else{
 			if(evento.getRepetirEvento()){
 				if(evento.getRepetirTodaSegunda() == null && evento.getRepetirTodaTerca() == null && evento.getRepetirTodaQuarta() == null && evento.getRepetirTodaQuinta() == null && evento.getRepetirTodaSexta() == null &&
 				   evento.getRepetirTodoSabado() == null && evento.getRepetirTodoDomingo() == null){
+					retorno.setSucesso(false);
 					retorno.addMensagem(new Mensagem("Evento","Dia da repetição", Mensagem.MOTIVO_NULO, Mensagem.ERRO));
 				}
 			}else{
 				if(evento.getDataInicio() == null || evento.getDataFim() == null){
+					retorno.setSucesso(false);
 					retorno.addMensagem(new Mensagem("Evento","Data de inicio e fim", Mensagem.MOTIVO_NULO, Mensagem.ERRO));
 				}
 			}

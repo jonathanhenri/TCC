@@ -147,14 +147,45 @@
 	<wicket:panel>
 	<script>
 	 	$("#content").toggleClass("show");
-	 	
-		$("#filtrosPagina").on("click", function(){
-		  $("#content").toggleClass("show");
-		  $("#classeButton").toggleClass("glyphicon glyphicon-resize-full glyphicon glyphicon-resize-small");
-		  $('#scroll').toggleClass("scrollPequeno scrollGrande");
-		});
-		
-		
+	
+	 		function teste(){
+			  $("#content").toggleClass("show");
+			  $("#classeButton").toggleClass("glyphicon glyphicon-resize-full glyphicon glyphicon-resize-small");
+			  toggleClass(document.getElementById("scroll"), 'scrollGrande ', 'scrollPequeno');
+	 		}
+			
+			function hasClass(ele, cls) {
+			    return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
+			}
+
+			function addClass(ele, cls) {
+			    if (!this.hasClass(ele, cls)) ele.className += " " + cls;
+			}
+
+			function removeClass(ele, cls) {
+			    if (hasClass(ele, cls)) {
+			        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
+			        ele.className = ele.className.replace(reg, ' ');
+			    }
+			}
+
+			function replaceClass(ele, oldClass, newClass){
+			    if(hasClass(ele, oldClass)){
+			        removeClass(ele, oldClass);
+			        addClass(ele, newClass);
+			    }
+			    return;
+			}
+
+			function toggleClass(ele, cls1, cls2){
+			    if(hasClass(ele, cls1)){
+			        replaceClass(ele, cls1, cls2);
+			    }else if(hasClass(ele, cls2)){
+			        replaceClass(ele, cls2, cls1);
+			    }else{
+			        addClass(ele, cls1);
+			    }
+			}
 	</script>
 		<div class="" style="padding: 15px">
 			<div class="panel panel-info">
@@ -176,7 +207,7 @@
 														<label><h1>Linha do tempo</h1></label>
 													</div>
 													<div class="col-md-4"style="text-align: right;">
-														<a  id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" >
+														<a  id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" onclick="teste();">
 															<span id="classeButton" class="glyphicon glyphicon-resize-full"></span>
 															<label>Filtro</label>
 														</a>	
@@ -192,12 +223,12 @@
 											<div class="panel-body ">
 												<div class="form-group">
 													<div class="col-md-12">
-														<div class="col-md-4">	
+														<div class="col-md-3">	
 															<label class="control-label">Data inicio</label><br>
 															<span wicket:id="dataInicio" placeholder="Data Inicial"></span>
 														</div>
 													
-														<div class="col-md-4">	
+														<div class="col-md-3">	
 															<label class="control-label">Data final</label><br>
 															<span wicket:id="dataFim" placeholder="Data final"></span>
 														</div>
@@ -205,6 +236,13 @@
 														<div class="col-md-4">	
 															<label class="control-label">Descrição</label>
 															<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
+														</div>
+														<div class="col-md-2">	
+														<br>
+															<a type="button" class="btn btn-info" wicket:id="pesquisar" style="margin-top: 9px">
+																<span class=" glyphicon glyphicon-search"></span>
+																<label>Pesquisar</label>
+															</a>
 														</div>
 													</div>
 												</div>
