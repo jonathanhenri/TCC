@@ -31,6 +31,7 @@ import wicket.contrib.input.events.EventType;
 import wicket.contrib.input.events.InputBehavior;
 import wicket.contrib.input.events.key.KeyType;
 
+import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.FiltroDinamicoAgrupador;
@@ -160,7 +161,23 @@ public class CalendarioPanel extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				super.onSubmit(target, form);
+				Search search = new Search(Evento.class);
+				if(evento.getDescricao()!=null){
+					search.addFilterEqual("descricao", evento.getDescricao());
+				}
+				
+				if(evento.getDataInicio()!=null && evento.getDataFim()!=null){
+					search.addFilterGreaterOrEqual("dataInicio", Util.zeraHoraData(evento.getDataInicio()));
+					search.addFilterLessOrEqual("dataFim", Util.ultimaHoraData(evento.getDataFim()));
+				}
+				
+				List<Evento> listaEventosEncontrados = eventoServico.search(search);
+				
+				if(listaEventosEncontrados!=null && listaEventosEncontrados.size()>0){
+					listaTodosEventos = new ArrayList<Evento>();
+					listaTodosEventos.addAll(listaEventosEncontrados);
+					target.add(divListagem);
+				}
 			}
 		};
 		
@@ -250,6 +267,7 @@ public class CalendarioPanel extends Panel {
 		replicarPopularListaEventos();
 		
 		if(listaTodosEventos!=null && listaTodosEventos.size()>0){
+			hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 			for(Evento evento:listaTodosEventos){
 				if(evento.getDataAuxiliar() == null){
 					evento.setDataAuxiliar(evento.getDataInicio());
@@ -306,6 +324,24 @@ public class CalendarioPanel extends Panel {
 						@Override
 						protected void executarAoPesquisar(AjaxRequestTarget target) {
 							modalFiltros.close(target);
+							
+							Search search = new Search(Evento.class);
+							
+							if(filtroDinamicoAgrupador!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos().size() >0){
+								for(FiltroDinamicoAtributo pesquisa:filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()){
+									search.addFilterEqual(pesquisa.getNomeCampo(), pesquisa.getValorCampo());
+								}
+							}
+							
+							filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
+							
+							List<Evento> listaEventosEncontrados = eventoServico.search(search);
+							
+							if(listaEventosEncontrados!=null && listaEventosEncontrados.size()>0){
+								listaTodosEventos = new ArrayList<Evento>();
+								listaTodosEventos.addAll(listaEventosEncontrados);
+							}
+							
 							target.add(divListagem);
 							
 							if(Util.getAlunoLogado().getListaMensagensSistema()!=null && Util.getAlunoLogado().getListaMensagensSistema().size()>0){

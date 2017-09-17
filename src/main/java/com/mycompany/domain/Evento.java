@@ -35,16 +35,18 @@ public class Evento extends AbstractBean<Evento> {
 	@Transient
 	private Date dataAuxiliar;
 	
+	@ListarPageAnotacao(filtro = true,nomeColuna = "Professor")
 	@Column(name = "PROFESSOR", nullable = true, length = 200)
 	private String professor;
 	
+	@ListarPageAnotacao(filtro = true,nomeColuna = "Local")
 	@Column(name = "LOCAL", nullable = true, length = 100)
 	private String local;
 	
+	@ListarPageAnotacao(filtro = true,nomeColuna="Observação")
 	@Column(name = "OBSERVACAO", nullable = true, length = 600)
 	private String observacao;
 	
-	@ListarPageAnotacao
 	@Column(name = "DESCRICAO", nullable = false, length = 600)
 	private String descricao;
 	
@@ -53,6 +55,7 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_TIPO_EVENTO",nullable = true)
 	private TipoEvento tipoEvento;
 	
+	@ListarPageAnotacao(nomeColuna="Matéria",filtro = true)
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_MATERIA",nullable = true)
 	private Materia materia;
@@ -61,10 +64,12 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_AGENDA",nullable = true)
 	private Agenda agenda;
 	
+	@ListarPageAnotacao(nomeColuna="Origem do evento",filtro = true)
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = true)
 	private OrigemEvento origemEvento;
 	
+	@ListarPageAnotacao(filtro = true)
 	@Column(name = "PERIODO", nullable = true)
 	private Integer periodo;
 	

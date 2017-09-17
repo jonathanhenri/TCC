@@ -20,7 +20,7 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	private static final long serialVersionUID = 1L;
 
-	@ListarPageAnotacao
+	@ListarPageAnotacao(identificadorEstrangeiro = true)
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
