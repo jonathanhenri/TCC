@@ -258,8 +258,8 @@ public class EventoEditForm extends EditForm<Evento> {
 			protected void onUpdate(AjaxRequestTarget target) {
 				Evento eventoNovo = new Evento();
 				eventoNovo.setRepetirEvento(false);
-				if(getAbstractBean()!=null){
-					eventoNovo = getAbstractBean().clonar(false);
+				if(getEventoAux()!=null){
+					eventoNovo = getEventoAux().clonar(false);
 				}
 				eventoNovo.setAdministracao(null);
 				setAbstractBean(eventoNovo);
@@ -320,7 +320,7 @@ public class EventoEditForm extends EditForm<Evento> {
 	}
 	
 	private DateTimeField criarCampoDataFim(){
-		DateTimeField dataFim = new DateTimeField("dataFim",new PropertyModel<Date>(getAbstractBean(), "dataFim")){
+		DateTimeField dataFim = new DateTimeField("dataFim"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -333,7 +333,7 @@ public class EventoEditForm extends EditForm<Evento> {
 	}
 	
 	private DateTimeField criarCampoDataInicio(){
-		DateTimeField dataFim = new DateTimeField("dataInicio",new PropertyModel<Date>(getAbstractBean(), "dataInicio")){
+		DateTimeField dataFim = new DateTimeField("dataInicio"){
 			private static final long serialVersionUID = 1L;
 
 			@Override

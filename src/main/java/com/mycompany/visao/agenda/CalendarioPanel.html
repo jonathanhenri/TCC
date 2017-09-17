@@ -2,10 +2,11 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
 
 <head>
+<script src="js/notify.js"></script>
+<script src="js/notify.min.js"></script>
 <meta charset="UTF-8">
 <wicket:head>
 	<style>
-
 		#timeline {
 		  list-style: none;
 		  position: relative;
@@ -143,49 +144,23 @@
 </wicket:head>
 
 </head>
-<body>
+<body class="calendarioPage">
 	<wicket:panel>
 	<script>
 	 	$("#content").toggleClass("show");
 	
-	 		function teste(){
+	 		function scrollPagina(){
 			  $("#content").toggleClass("show");
 			  $("#classeButton").toggleClass("glyphicon glyphicon-resize-full glyphicon glyphicon-resize-small");
-			  toggleClass(document.getElementById("scroll"), 'scrollGrande ', 'scrollPequeno');
+			  
+			  if (document.getElementById("scroll").classList.contains('scrollPequeno')){
+				  document.getElementById("scroll").classList.remove('scrollPequeno');
+				  document.getElementById("scroll").classList.add('scrollGrande');
+			  }else if(document.getElementById("scroll").classList.contains('scrollGrande')){
+				  document.getElementById("scroll").classList.remove('scrollGrande');
+				  document.getElementById("scroll").classList.add('scrollPequeno');
+			  }
 	 		}
-			
-			function hasClass(ele, cls) {
-			    return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-			}
-
-			function addClass(ele, cls) {
-			    if (!this.hasClass(ele, cls)) ele.className += " " + cls;
-			}
-
-			function removeClass(ele, cls) {
-			    if (hasClass(ele, cls)) {
-			        var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');
-			        ele.className = ele.className.replace(reg, ' ');
-			    }
-			}
-
-			function replaceClass(ele, oldClass, newClass){
-			    if(hasClass(ele, oldClass)){
-			        removeClass(ele, oldClass);
-			        addClass(ele, newClass);
-			    }
-			    return;
-			}
-
-			function toggleClass(ele, cls1, cls2){
-			    if(hasClass(ele, cls1)){
-			        replaceClass(ele, cls1, cls2);
-			    }else if(hasClass(ele, cls2)){
-			        replaceClass(ele, cls2, cls1);
-			    }else{
-			        addClass(ele, cls1);
-			    }
-			}
 	</script>
 		<div class="" style="padding: 15px">
 			<div class="panel panel-info">
@@ -207,7 +182,7 @@
 														<label><h1>Linha do tempo</h1></label>
 													</div>
 													<div class="col-md-4"style="text-align: right;">
-														<a  id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" onclick="teste();">
+														<a  id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" onclick="scrollPagina();">
 															<span id="classeButton" class="glyphicon glyphicon-resize-full"></span>
 															<label>Filtro</label>
 														</a>	
@@ -293,7 +268,7 @@
 															    <wicket:enclosure child="divDireita">
 																    <div class="col-md-6  timeline-item" wicket:id="divDireita">
 															              <div class="col-md-12 row">
-															                <div class="timeline-panel debits" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
+															                <div class="timeline-panel debits" style="margin-left: 51px; margin-right: 15px" data-toggle="tooltip" title="Clique para visualizar informações detalhadas">
 															                    <ul class="timeline-panel-ul" >
 															                       <li class="row" >
 															                       	   <span class="importo col-md-10"><label wicket:id="descricao"></label></span>

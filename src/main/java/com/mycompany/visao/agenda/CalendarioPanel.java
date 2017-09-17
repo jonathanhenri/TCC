@@ -233,6 +233,8 @@ public class CalendarioPanel extends Panel {
 				}else{
 					if(Util.comparaDatas(evento.getDataInicio(), evento.getDataFim(), false) == -1){
 						replicarEventoPorPeriodoTempo(evento, evento.getDataInicio(), evento.getDataFim());
+					}else{
+						listaTodosEventos.add(evento);
 					}
 				}
 			}
@@ -252,6 +254,7 @@ public class CalendarioPanel extends Panel {
 				if(evento.getDataAuxiliar() == null){
 					evento.setDataAuxiliar(evento.getDataInicio());
 				}
+				evento.setDataAuxiliar(Util.zeraHoraData(evento.getDataAuxiliar()));
 				
 				List<Evento> listaAux;
 				if(hashMapEventoAgrupado.containsKey(evento.getDataAuxiliar())){
@@ -442,6 +445,10 @@ public class CalendarioPanel extends Panel {
 					protected void executarAoSalvarEditar(AjaxRequestTarget target) {
 						pesquisaTodosEventosAgenda();
 						target.add(divListagem);
+						target.appendJavaScript("$('#scroll').removeClass('scrollPequeno');");
+						
+						target.appendJavaScript("$('#scroll').addClass('scrollGrande');");
+						target.appendJavaScript("scrollPagina();");
 						super.executarAoSalvarEditar(target);
 					}
 				};
@@ -508,6 +515,11 @@ public class CalendarioPanel extends Panel {
 						if(retorno.getSucesso()){
 							pesquisaTodosEventosAgenda();
 							target.add(divListagem);
+							
+							target.appendJavaScript("$('#scroll').removeClass('scrollPequeno');");
+							
+							target.appendJavaScript("$('#scroll').addClass('scrollGrande');");
+							target.appendJavaScript("scrollPagina();");
 							modalExcluir.close(target);
 						}
 						
@@ -588,6 +600,10 @@ public class CalendarioPanel extends Panel {
 					protected void executarAoSalvarEditar(AjaxRequestTarget target) {
 						pesquisaTodosEventosAgenda();
 						target.add(divListagem);
+						target.appendJavaScript("$('#scroll').removeClass('scrollPequeno');");
+						
+						target.appendJavaScript("$('#scroll').addClass('scrollGrande');");
+						target.appendJavaScript("scrollPagina();");
 						super.executarAoSalvarEditar(target);
 					}
 				};
@@ -622,10 +638,15 @@ public class CalendarioPanel extends Panel {
 					protected void executarAoSalvarEditar(AjaxRequestTarget target) {
 						pesquisaTodosEventosAgenda();
 						target.add(divListagem);
-						target.appendJavaScript("teste();");
+						target.appendJavaScript("$('#scroll').removeClass('scrollPequeno');");
+						
+						target.appendJavaScript("$('#scroll').addClass('scrollGrande');");
+						target.appendJavaScript("scrollPagina();");
 						super.executarAoSalvarEditar(target);
 					}
+					
 				};
+				 
 				cadastroAlunoEditForm.setOutputMarkupId(true);
 				editPanel.add(cadastroAlunoEditForm);
 				

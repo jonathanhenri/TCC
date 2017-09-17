@@ -325,7 +325,6 @@ public class Util {
 	}
 	
 	public static void notify(AjaxRequestTarget target,String mensagem,String tipo){
-//		target.appendJavaScript("$.notify('"+mensagem+"',\""+tipo+"\");");
 		target.appendJavaScript("$.notify('"+mensagem+"',{"
 				+ "className: '"+tipo+"',"
 				+ "clickToHide: true,"
