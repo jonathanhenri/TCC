@@ -20,7 +20,6 @@ import com.mycompany.domain.TipoEvento;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
-import com.mycompany.visao.comum.ColorTextField;
 import com.mycompany.visao.comum.EditForm;
 
 public class TipoEventoEditForm extends EditForm<TipoEvento> {

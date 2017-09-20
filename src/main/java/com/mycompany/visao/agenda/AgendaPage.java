@@ -19,7 +19,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
-import com.mycompany.domain.Agenda;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;

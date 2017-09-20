@@ -16,7 +16,6 @@ public class DataTextField extends DateTextField {
 	public DataTextField(String id, IModel<Date> model, DateConverter converter){
 		super(id, model, converter);
 	}
-	
 
 	@Override
 	protected String getInputType() {

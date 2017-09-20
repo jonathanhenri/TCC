@@ -318,22 +318,15 @@ public class CalendarioPanel extends Panel {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				List<FiltroDinamicoAtributo> listaAtributos = Reflexao.nomesAtributosFiltros(evento);
 				if(listaAtributos!=null && listaAtributos.size() > 0){
-					ListagemFiltrosDinamicosPanel filtrosDinamicosPanel = new ListagemFiltrosDinamicosPanel(modalFiltros.getContentId(),modalFiltros,filtroDinamicoAgrupador,listaAtributos) {
+					 ListagemFiltrosDinamicosPanel dinamicosPage = new ListagemFiltrosDinamicosPanel(modalFiltros.getContentId(),modalFiltros,evento) {
 						private static final long serialVersionUID = 1L;
-	
+
 						@Override
-						protected void executarAoPesquisar(AjaxRequestTarget target) {
+						public void getListaFiltrosDinamicosSelecionados(AjaxRequestTarget target,List<FiltroDinamicoAtributo> listafiltrodinamico) {
+							
 							modalFiltros.close(target);
 							
-							Search search = new Search(Evento.class);
-							
-							if(filtroDinamicoAgrupador!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos().size() >0){
-								for(FiltroDinamicoAtributo pesquisa:filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()){
-									search.addFilterEqual(pesquisa.getNomeCampo(), pesquisa.getValorCampo());
-								}
-							}
-							
-							filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
+							Search search = Util.montarSearchFiltroDinamico(listafiltrodinamico);
 							
 							List<Evento> listaEventosEncontrados = eventoServico.search(search);
 							
@@ -351,12 +344,16 @@ public class CalendarioPanel extends Panel {
 								Util.getAlunoLogado().setListaMensagensSistema(new ArrayList<Mensagem>());
 							}
 							
+							
+							
+							// TODO Auto-generated method stub
+							
 						}
 					};
-					getForm().add(filtrosDinamicosPanel);
+					getForm().add(dinamicosPage);
 					
-					filtrosDinamicosPanel.setOutputMarkupId(true);
-					modalFiltros.setContent(filtrosDinamicosPanel);
+					dinamicosPage.setOutputMarkupId(true);
+					modalFiltros.setContent(dinamicosPage);
 					modalFiltros.show(target);
 				}else{
 					Util.notifyInfo(target, "Não existe filtros adicionais.");

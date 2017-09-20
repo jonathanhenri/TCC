@@ -10,6 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -46,9 +49,13 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.context.SecurityContextHolder;
 
+import com.googlecode.genericdao.search.Filter;
+import com.googlecode.genericdao.search.Search;
 import com.mycompany.WicketApplication;
+import com.mycompany.anotacao.ListarPageAnotacao;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -1251,6 +1258,43 @@ public class Util {
         return StringUtils.leftPad(texto, tamanho, "0");
     }
 	
+	
+	 // Metodo de reflexão para os filtros dinamicos
+    public static List<FiltroDinamicoAtributo>  getNameFieldEntity(AbstractBean<?> abstractBean, boolean buscarAbstractBean){
+        List<FiltroDinamicoAtributo> listaDeAtributos = new ArrayList<FiltroDinamicoAtributo>();
+        Class<?> cls = abstractBean.getClass();
+        Field[] fld = cls.getDeclaredFields();
+        for(int i = 0; i < fld.length; i++){
+        	ListarPageAnotacao cmp = fld[i].getAnnotation(ListarPageAnotacao.class); // Procura somente atributos com a anotação
+            if(cmp!=null){
+                FiltroDinamicoAtributo filtroDinamicoAtributo = new FiltroDinamicoAtributo();
+                if(!buscarAbstractBean && AbstractBean.class.isAssignableFrom(fld[i].getType())){ // Usado para não buscar atributo do 3°nivel
+                    continue;
+                }
+                if(Collection.class.isAssignableFrom(fld[i].getType())){
+                    //Pega o tipo da lista ex: Set<EnderecoCliente> = EnderecoCliente
+                    Class<?> listClass = getFirstParameterType(fld[i].getGenericType());
+                    filtroDinamicoAtributo.setTypeCampo(listClass);
+                }else{
+                    filtroDinamicoAtributo.setTypeCampo(fld[i].getType());
+                }
+                if(cmp.nomeColuna()!=null && !cmp.nomeColuna().isEmpty()){ // Nome personalidado pela anotação
+                    filtroDinamicoAtributo.setNomeCampoPersonalidado(cmp.nomeColuna());
+                }
+                if(cmp.fetch()!=null && !cmp.fetch().isEmpty()){
+                    filtroDinamicoAtributo.setFetchAuxiliar(cmp.fetch());
+                    if(cmp.nomeMetodoReferencia()!=null && !cmp.nomeMetodoReferencia().isEmpty()){
+                        filtroDinamicoAtributo.setNomeAtributoReferenciaAuxiliar(cmp.nomeMetodoReferencia());
+                    }
+                }
+                filtroDinamicoAtributo.setNomeCampo(fld[i].getName());
+                listaDeAtributos.add(filtroDinamicoAtributo);
+            }
+        }
+        return listaDeAtributos;
+    }
+    
+	
 	public static String replaceZeros(Integer texto, int tamanho) {
         return replaceZeros(texto.toString(), tamanho);
     }
@@ -1338,6 +1382,16 @@ public class Util {
 	    return null;
 	}
 	
+	 /**
+     * Pega o primeiro parâmetro do tipo
+     * @param java.lang.reflect.Type type
+     * @return Class<?>
+     */
+    public static Class<?> getFirstParameterType(Type type){
+        ParameterizedType listType = (ParameterizedType) type;
+        return (Class<?>) listType.getActualTypeArguments()[0];
+    }
+	
 	public static boolean isEan13(String eanCode) {
 		
 		if(eanCode==null || eanCode.trim().equals(""))
@@ -1405,5 +1459,78 @@ public class Util {
 		
 	    return true;
 	}
+	
+	 public static String getStringValueField(FiltroDinamicoAtributo filtroDinamicoAtributo){
+        String value = "";
+        Class<?> typeCampo;
+        if(filtroDinamicoAtributo.getAtributoEstrangeiro()==null){
+            typeCampo = filtroDinamicoAtributo.getTypeCampo();
+        }else{
+            if(filtroDinamicoAtributo.getAtributoEstrangeiro().getAtributoEstrangeiro() == null){
+                typeCampo = filtroDinamicoAtributo.getAtributoEstrangeiro().getTypeCampo();
+            }else{
+                typeCampo = filtroDinamicoAtributo.getAtributoEstrangeiro().getAtributoEstrangeiro().getTypeCampo();
+            }
+        }
+        if(filtroDinamicoAtributo.getValorCampo()!=null){
+            if(String.class.isAssignableFrom(typeCampo)){
+                value = String.valueOf(filtroDinamicoAtributo.getValorCampo());
+            }else if(Date.class.isAssignableFrom(typeCampo)){
+                value = formataDataSemLocale((Date) filtroDinamicoAtributo.getValorCampo());
+            }else if(Integer.class.isAssignableFrom(typeCampo) || Double.class.isAssignableFrom(typeCampo) || Long.class.isAssignableFrom(typeCampo)){
+                value = String.valueOf(filtroDinamicoAtributo.getValorCampo());
+            }else if(Boolean.class.isAssignableFrom(typeCampo)){
+                Boolean valor = (Boolean) filtroDinamicoAtributo.getValorCampo();
+                if(valor){
+                    value = "Sim";
+                }else{
+                    value = "Não";
+                }
+            }
+        }
+        return value;
+    }
+	 
+	 public static Search montarSearchFiltroDinamico(List<FiltroDinamicoAtributo> listaFiltroDinamicoAtributo){
+	        Search search = new Search();
+	        if(listaFiltroDinamicoAtributo!=null && listaFiltroDinamicoAtributo.size() > 0){
+	            Filter filterAnd = Filter.and();
+	            for(FiltroDinamicoAtributo atributo: listaFiltroDinamicoAtributo){
+	                if(atributo.getAtributoEstrangeiro()!=null){ // Atributo de 2° Nivel.
+	                    String nomeCampoSearch = atributo.getNomeCampo();
+	                    if(atributo.getAtributoEstrangeiro().getAtributoEstrangeiro()!=null){ //Atributo do 3°Nivel
+	                        nomeCampoSearch +="."+atributo.getAtributoEstrangeiro().getNomeCampo();
+	                    }
+	                    search.addFetch(nomeCampoSearch);
+	                }
+	                if(atributo.getOperador().equals(FiltroDinamicoAtributo.EQUALS)){
+	                    if(Date.class.isAssignableFrom(atributo.getValorCampo().getClass())){
+	                        Date date = (Date)atributo.getValorCampo();
+	                        filterAnd.add(Filter.and(Filter.greaterOrEqual(atributo.getNomeCampoSearch(), Util.zeraHoraData(date)),Filter.lessOrEqual(atributo.getNomeCampoSearch(), Util.ultimaHoraData(date))));
+	                    }else{
+	                        filterAnd.add(Filter.equal(atributo.getNomeCampoSearch(), atributo.getValorCampo()));
+	                    }
+	                }else if(atributo.getOperador().equals(FiltroDinamicoAtributo.LIKE)){
+	                    filterAnd.add(Filter.like(atributo.getNomeCampoSearch(), "%" + String.valueOf(atributo.getValorCampo())+"%"));
+	                }else if(atributo.getOperador().equals(FiltroDinamicoAtributo.MAIOR_IQUAL)){
+	                    if(Date.class.isAssignableFrom(atributo.getValorCampo().getClass())){
+	                        Date date = (Date)atributo.getValorCampo();
+	                        filterAnd.add(Filter.greaterOrEqual(atributo.getNomeCampoSearch(), Util.zeraHoraData(date)));
+	                    }else{
+	                        filterAnd.add(Filter.greaterOrEqual(atributo.getNomeCampoSearch(), atributo.getValorCampo()));
+	                    }
+	                }else if(atributo.getOperador().equals(FiltroDinamicoAtributo.MENOR_IQUAL)){
+	                    if(Date.class.isAssignableFrom(atributo.getValorCampo().getClass())){
+	                        Date date = (Date)atributo.getValorCampo();
+	                        filterAnd.add(Filter.lessOrEqual(atributo.getNomeCampoSearch(), Util.ultimaHoraData(date)));
+	                    }else{
+	                        filterAnd.add(Filter.lessOrEqual(atributo.getNomeCampoSearch(), atributo.getValorCampo()));
+	                    }
+	                }
+	            }
+	            search.addFilter(filterAnd);
+	        }
+	        return search;
+	    }
 
 }

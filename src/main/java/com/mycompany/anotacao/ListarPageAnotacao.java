@@ -15,4 +15,8 @@ public @interface ListarPageAnotacao {
 	String nomeColuna() default "";
 	boolean identificadorEstrangeiro() default false;
 	boolean filtro() default false;
+	
+    //Logica criada para passar do 3° nivel em alguns casos, ai ele coloca qual o fetch que deve ser feito e o atributo referenciado
+    String fetch() default "";
+    String nomeMetodoReferencia() default "";
 }

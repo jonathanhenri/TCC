@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -27,6 +26,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.FiltroDinamicoAgrupador;
@@ -57,8 +57,8 @@ public abstract class ListarPageGenerico extends Menu {
 	protected IColumn[] columns;
 	protected int quantidadeRegistrosVisiveis = 10;
 	protected String nomeTituloListarPage;
+	private Search searchFiltroDinamico;
 	
-	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
 	
 	protected ListarPageGenerico(AbstractBean<?> abstractBean){
 		this.abstractBean = abstractBean;
@@ -135,11 +135,12 @@ public abstract class ListarPageGenerico extends Menu {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				List<FiltroDinamicoAtributo> listaAtributos = Reflexao.nomesAtributosFiltros(abstractBean);
 				if(listaAtributos!=null && listaAtributos.size() > 0){
-					ListagemFiltrosDinamicosPanel filtrosDinamicosPanel = new ListagemFiltrosDinamicosPanel(getModalFiltros().getContentId(),getModalFiltros(),getFiltroDinamicoAgrupador(),listaAtributos) {
+					 ListagemFiltrosDinamicosPanel dinamicosPage = new ListagemFiltrosDinamicosPanel(modalFiltros.getContentId(),modalFiltros,abstractBean) {
 						private static final long serialVersionUID = 1L;
-	
 						@Override
-						protected void executarAoPesquisar(AjaxRequestTarget target) {
+						public void getListaFiltrosDinamicosSelecionados(AjaxRequestTarget target,List<FiltroDinamicoAtributo> listaFiltroDinamico) {
+							searchFiltroDinamico = Util.montarSearchFiltroDinamico(listaFiltroDinamico);
+							
 							getModalFiltros().close(target);
 							target.add(getAtualizarListarPage());
 							
@@ -149,13 +150,12 @@ public abstract class ListarPageGenerico extends Menu {
 								}
 								Util.getAlunoLogado().setListaMensagensSistema(new ArrayList<Mensagem>());
 							}
-							
 						}
 					};
-					getForm().add(filtrosDinamicosPanel);
+					getForm().add(dinamicosPage);
 					
-					filtrosDinamicosPanel.setOutputMarkupId(true);
-					getModalFiltros().setContent(filtrosDinamicosPanel);
+					dinamicosPage.setOutputMarkupId(true);
+					getModalFiltros().setContent(dinamicosPage);
 					getModalFiltros().show(target);
 				}else{
 					Util.notifyInfo(target, "Não existe filtros adicionais.");
@@ -250,22 +250,24 @@ public abstract class ListarPageGenerico extends Menu {
 			public void addFilters() {
 				setColPropertyExpression(new String[6]);
 				this.pesquisaPadrao = ListarPageGenerico.this.addFilters(search);
-				atualizarFiltrosGenericos(search);
+				
+				 if(searchFiltroDinamico!=null && searchFiltroDinamico.getFilters().size()>0){
+                    for(String fetch:searchFiltroDinamico.getFetches()){
+                        search.addFetch(fetch);
+                    }
+                    for(Filter filter:searchFiltroDinamico.getFilters()){
+                        search.addFilter(filter);
+                    }
+                    searchFiltroDinamico = null;
+                  }
+				 
+				 
 				super.addFilters();
 			}
 		};
 		dataDataProvider.setFilterState(abstractBean);
 	}
 	
-	private void atualizarFiltrosGenericos(Search search){
-		if(filtroDinamicoAgrupador!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()!=null && filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos().size() >0){
-			for(FiltroDinamicoAtributo pesquisa:filtroDinamicoAgrupador.getListaFiltroDinamicoAtributos()){
-				search.addFilterEqual(pesquisa.getNomeCampo(), pesquisa.getValorCampo());
-			}
-		}
-		
-		filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
-	}
 	
 	protected Boolean addFilters(Search search) {
 		return true;
@@ -441,19 +443,5 @@ public abstract class ListarPageGenerico extends Menu {
 	public void setModalFiltros(ModalWindow modalFiltros) {
 		this.modalFiltros = modalFiltros;
 	}
-
-
-	public FiltroDinamicoAgrupador getFiltroDinamicoAgrupador() {
-		if(filtroDinamicoAgrupador == null){
-			filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
-		}
-		return filtroDinamicoAgrupador;
-	}
-
-
-	public void setFiltroDinamicoAgrupador(FiltroDinamicoAgrupador filtroDinamicoAgrupador) {
-		this.filtroDinamicoAgrupador = filtroDinamicoAgrupador;
-	}
-	
 	
 }
