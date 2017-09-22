@@ -8,139 +8,138 @@
 </head>
 <body>
 	<wicket:panel>
-            <div class="" style="padding-left: 15px; padding-top: 10px; padding-right: 15px;">
-                <div class="matter">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="widget wred">
-                                <div class="widget-head">
-                                    <div wicket:id="newHeader">
-                                        <i class="fa fa-lock"></i> Novo Filtro
-                                    </div>
-                                </div>
-                                <div id="edit-cliente" class="form" role="main">
-                                    <div class="padd">
-                                        <div>
-                                            <fieldset>
-                                                <div class="tab-content" style="padding-left: 5px;">
-                                                    <form wicket:id="formIncluirFiltroDinamico" class="form-horizontal">
-                                                        <fieldset class="form">
-                                                            <div class="form-group">
-                                                                <div class="fieldcontain col-lg-6">
-                                                                    <label>
-                                                                        Nome Campo 1°
-                                                                        <span class="required-indicator">*</span>
-                                                                    </label>
-                                                                    <select wicket:id="nomeCampo" id="nomeCampo" class="form-control" />
-                                                                </div>
-                                                                <div wicket:id="divAtributoEstrangeiro">
-                                                                    <wicket:enclosure child="atributoEstrangeiroNivel2">
-                                                                        <div class="fieldcontain col-lg-6">
-                                                                            <label>
-                                                                                Nome Campo 2°
-                                                                                <span class="required-indicator">*</span>
-                                                                            </label>
-                                                                            <select wicket:id="atributoEstrangeiroNivel2" id = "atributoEstrangeiroNivel2" class="form-control" />
-                                                                        </div>
-                                                                    </wicket:enclosure>
-                                                                    <wicket:enclosure child="atributoEstrangeiroNivel3">
-                                                                        <div class="fieldcontain col-lg-6">
-                                                                            <label>
-                                                                                Nome Campo 3°
-                                                                                <span class="required-indicator">*</span>
-                                                                            </label>
-                                                                            <select wicket:id="atributoEstrangeiroNivel3" id = "atributoEstrangeiroNivel3" class="form-control" />
-                                                                        </div>
-                                                                    </wicket:enclosure>
-                                                                </div>
-                                                                <div wicket:id="divOperadores">
-                                                                    <wicket:enclosure child="operadores">
-                                                                        <div class="fieldcontain col-lg-6">
-                                                                            <label>
-                                                                                Tipo de pesquisa
-                                                                                <span class="required-indicator">*</span>
-                                                                            </label>
-                                                                            <select wicket:id="operadores" id="operadores" class="form-control" />
-                                                                        </div>
-                                                                    </wicket:enclosure>
-                                                                </div>
-                                                                <div wicket:id="divCamposValorCampo">
-                                                                    <wicket:enclosure child="valorCampoText">
-                                                                        <div class="fieldcontain col-lg-6">
-                                                                            <label>
-                                                                                Valor Campo
-                                                                                <span class="required-indicator">*</span>
-                                                                                <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
-                                                                                    <span class="glyphicon glyphicon-question-sign"></span>
-                                                                                  </a>
-                                                                            </label>
-                                                                            <input wicket:id="valorCampoText" type="text" class="form-control alinhamento">
-                                                                        </div>
-                                                                     </wicket:enclosure>
-                                                                     <wicket:enclosure child="valorCampoNumber">
-                                                                         <div class="fieldcontain col-lg-6">
-                                                                             <label>
-                                                                                Valor Campo
-                                                                                <span class="required-indicator">*</span>
-                                                                                <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
-                                                                                    <span class="glyphicon glyphicon-question-sign"></span>
-                                                                                  </a>
-                                                                             </label>
-                                                                            <input  wicket:id="valorCampoNumber" type="number" class="form-control alinhamento">
-                                                                        </div>
-                                                                    </wicket:enclosure>
-                                                                    <wicket:enclosure child="valorCampoData">
-                                                                        <div class="fieldcontain col-lg-6">
-                                                                            <label>
-                                                                                Valor Campo
-                                                                                <span class="required-indicator">*</span>
-                                                                                <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
-                                                                                    <span class="glyphicon glyphicon-question-sign"></span>
-                                                                                  </a>
-                                                                            </label>
-                                                                             <input type="text" wicket:id="valorCampoData" class="form-data">
-                                                                        </div>
-                                                                    </wicket:enclosure>
-                                                                    <wicket:enclosure child="valorCampoBoolean">
-                                                                        <div class="fieldcontain col-lg-6">
-                                                                            <label>
-                                                                                 Valor Campo
-                                                                                 <span class="required-indicator">*</span>
-                                                                                 <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
-                                                                                    <span class="glyphicon glyphicon-question-sign"></span>
-                                                                                   </a>
-                                                                            </label>
-                                                                            <div class="switch-toggle switch-candy large-6">
-                                                                                <div class="switch-toggle switch-candy large-6">
-                                                                                    <div wicket:id="valorCampoBoolean">
-                                                                                        <input wicket:id="sim" name="sim" type="radio"/><label onclick="" for="sim">Sim</label>
-                                                                                        <input wicket:id="nao" name="nao" type="radio"/><label onclick="" for="nao">Não</label>
-                                                                                    </div>
-                                                                                </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </wicket:enclosure>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                        <div class="form-group">
-                                                            <br>
-                                                            <div class="fieldcontain col-lg-12">
-                                                                <input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"/>
-                                                                <a href="#" wicket:id="voltar" class="btn btn-default">Voltar</a>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                            </div>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+		<br>
+        <div class="col-lg-12">
+           <div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="panel-title" wicket:id="newHeader">
+                   		Novo Filtro
+                   	</div>
+               	</div>
+                   
+                   
+               <div class="panel-body">   
+	                <div id="edit-cliente" class="form" role="main">
+	                    <div class="padd">
+	                        <div>
+	                            <fieldset>
+	                                <div class="tab-content" style="padding-left: 5px;">
+	                                    <form wicket:id="formIncluirFiltroDinamico" class="form-horizontal">
+	                                        <fieldset class="form">
+	                                            <div class="form-group">
+	                                                <div class="fieldcontain col-lg-6">
+	                                                    <label>
+	                                                        Nome Campo 1°
+	                                                        <span class="required-indicator">*</span>
+	                                                    </label>
+	                                                    <select wicket:id="nomeCampo" id="nomeCampo" class="form-control" />
+	                                                </div>
+	                                                <div wicket:id="divAtributoEstrangeiro">
+	                                                    <wicket:enclosure child="atributoEstrangeiroNivel2">
+	                                                        <div class="fieldcontain col-lg-6">
+	                                                            <label>
+	                                                                Nome Campo 2°
+	                                                                <span class="required-indicator">*</span>
+	                                                            </label>
+	                                                            <select wicket:id="atributoEstrangeiroNivel2" id = "atributoEstrangeiroNivel2" class="form-control" />
+	                                                        </div>
+	                                                    </wicket:enclosure>
+	                                                    <wicket:enclosure child="atributoEstrangeiroNivel3">
+	                                                        <div class="fieldcontain col-lg-6">
+	                                                            <label>
+	                                                                Nome Campo 3°
+	                                                                <span class="required-indicator">*</span>
+	                                                            </label>
+	                                                            <select wicket:id="atributoEstrangeiroNivel3" id = "atributoEstrangeiroNivel3" class="form-control" />
+	                                                        </div>
+	                                                    </wicket:enclosure>
+	                                                </div>
+	                                                <div wicket:id="divOperadores">
+	                                                    <wicket:enclosure child="operadores">
+	                                                        <div class="fieldcontain col-lg-6">
+	                                                            <label>
+	                                                                Tipo de pesquisa
+	                                                                <span class="required-indicator">*</span>
+	                                                            </label>
+	                                                            <select wicket:id="operadores" id="operadores" class="form-control" />
+	                                                        </div>
+	                                                    </wicket:enclosure>
+	                                                </div>
+	                                                <div wicket:id="divCamposValorCampo">
+	                                                    <wicket:enclosure child="valorCampoText">
+	                                                        <div class="fieldcontain col-lg-6">
+	                                                            <label>
+	                                                                Valor Campo
+	                                                                <span class="required-indicator">*</span>
+	                                                                <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
+	                                                                    <span class="glyphicon glyphicon-question-sign"></span>
+	                                                                  </a>
+	                                                            </label>
+	                                                            <input wicket:id="valorCampoText" type="text" class="form-control alinhamento">
+	                                                        </div>
+	                                                     </wicket:enclosure>
+	                                                     <wicket:enclosure child="valorCampoNumber">
+	                                                         <div class="fieldcontain col-lg-6">
+	                                                             <label>
+	                                                                Valor Campo
+	                                                                <span class="required-indicator">*</span>
+	                                                                <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
+	                                                                    <span class="glyphicon glyphicon-question-sign"></span>
+	                                                                  </a>
+	                                                             </label>
+	                                                            <input  wicket:id="valorCampoNumber" type="number" class="form-control alinhamento">
+	                                                        </div>
+	                                                    </wicket:enclosure>
+	                                                    <wicket:enclosure child="valorCampoData">
+	                                                        <div class="fieldcontain col-lg-6">
+	                                                            <label>
+	                                                                Valor Campo
+	                                                                <span class="required-indicator">*</span>
+	                                                                <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
+	                                                                    <span class="glyphicon glyphicon-question-sign"></span>
+	                                                                  </a>
+	                                                            </label>
+	                                                             <input type="text" wicket:id="valorCampoData" class="form-data">
+	                                                        </div>
+	                                                    </wicket:enclosure>
+	                                                    <wicket:enclosure child="valorCampoBoolean">
+	                                                        <div class="fieldcontain col-lg-6">
+	                                                            <label>
+	                                                                 Valor Campo
+	                                                                 <span class="required-indicator">*</span>
+	                                                                 <a href="#" tabindex="-1" title="Informe o que deseja pesquisar" rel="tooltip">
+	                                                                    <span class="glyphicon glyphicon-question-sign"></span>
+	                                                                   </a>
+	                                                            </label>
+	                                                            <div class="switch-toggle switch-candy large-6">
+	                                                                <div class="switch-toggle switch-candy large-6">
+	                                                                    <div wicket:id="valorCampoBoolean">
+	                                                                        <input wicket:id="sim" name="sim" type="radio"/><label onclick="" for="sim">Sim</label>
+	                                                                        <input wicket:id="nao" name="nao" type="radio"/><label onclick="" for="nao">Não</label>
+	                                                                    </div>
+	                                                                </div>
+	                                                                </div>
+	                                                            </div>
+	                                                        </wicket:enclosure>
+	                                                </div>
+	                                            </div>
+	                                        </fieldset>
+	                                        <div class="form-group">
+	                                            <br>
+	                                            <div class="fieldcontain col-lg-12">
+	                                                <input type="submit" wicket:id="salvar" value="Salvar" class="btn btn-success"/>
+	                                                <a href="#" wicket:id="voltar" class="btn btn-default">Voltar</a>
+	                                            </div>
+	                                        </div>
+	                                    </form>
+	                            </div>
+	                            </fieldset>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
             </div>
+        </div>
         </wicket:panel>
 </body>
 </html>

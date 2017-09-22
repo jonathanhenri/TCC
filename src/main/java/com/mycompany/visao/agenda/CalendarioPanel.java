@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -56,9 +57,9 @@ public class CalendarioPanel extends Panel {
 	private Evento evento;
 	private WebMarkupContainer divListagem;
 	private HashMap<Date, List<Evento>> hashMapEventoAgrupado;
-	protected ModalWindow modalIncluirEditar;
-	protected ModalWindow modalFiltros;
-	protected ModalWindow modalExcluir;
+	private ModalWindow modalIncluirEditar;
+	private ModalWindow modalFiltros;
+	private ModalWindow modalExcluir;
 	private List<Evento> listaTodosEventos;
 	
 	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
@@ -108,16 +109,15 @@ public class CalendarioPanel extends Panel {
 	}
 	
 	private ModalWindow criarModalIncluirEditar() {
-		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
+		modalIncluirEditar = new ModalWindow("modalIncluirEditar2");
 		modalIncluirEditar.setOutputMarkupId(true);
 		modalIncluirEditar.setInitialHeight(750);
 		modalIncluirEditar.setInitialWidth(900);
-		modalIncluirEditar.setCloseButtonCallback(null);
 		return modalIncluirEditar;
 	}
 	
 	private ModalWindow criarModalExcluir(){
-		modalExcluir= new ModalWindow("modalExcluir");
+		modalExcluir= new ModalWindow("modalExcluir2");
 		modalExcluir.setInitialHeight(250);
 		modalExcluir.setInitialWidth(600);
 		modalExcluir.setOutputMarkupId(true);
@@ -370,9 +370,10 @@ public class CalendarioPanel extends Panel {
 		Form<Agenda> formListagem = new Form<Agenda>("form");
 		formListagem.setOutputMarkupId(true);
 		
+		formListagem.add(criarModalIncluirEditar());
 		formListagem.add(criarListViewEventosCalendario());
 		formListagem.add(criarButtonIncluir(formListagem));
-		formListagem.add(criarModalIncluirEditar());
+	
 		formListagem.add(criarModalExcluir());
 		formListagem.add(criarBotaoVoltar());
 		formListagem.add(criarModalFiltros());
@@ -484,6 +485,20 @@ public class CalendarioPanel extends Panel {
 						target.appendJavaScript("scrollPagina();");
 						super.executarAoSalvarEditar(target);
 					}
+					
+					@Override
+					protected void executarAoExcluir(AjaxRequestTarget target) {
+						this.modalExcluir.close(target);
+						modalIncluirEditar.close(target);
+						
+						pesquisaTodosEventosAgenda();
+						target.add(divListagem);
+						target.appendJavaScript("$('#scroll').removeClass('scrollPequeno');");
+						
+						target.appendJavaScript("$('#scroll').addClass('scrollGrande');");
+						target.appendJavaScript("scrollPagina();");
+//						super.executarAoExcluir(target);
+					}
 				};
 				cadastroAlunoEditForm.setOutputMarkupId(true);
 				editPanel.add(cadastroAlunoEditForm);
@@ -525,7 +540,6 @@ public class CalendarioPanel extends Panel {
 					private static final long serialVersionUID = 1L;
 
 					protected void executarAoClicarNao(AjaxRequestTarget target) {
-						target.add(divListagem);
 						modalExcluir.close(target);
 					};
 					

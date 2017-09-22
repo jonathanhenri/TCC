@@ -78,13 +78,13 @@ public class FiltroDinamicoAtributo extends AbstractBean<FiltroDinamicoAtributo>
     public String getOperadorNome(){
         if(operador!=null){
             if (operador.equals(FiltroDinamicoAtributo.LIKE)) {
-                return Util.getProperty("operador.like");
+                return "Que Contenha";
             } else if (operador.equals(FiltroDinamicoAtributo.EQUALS)) {
-                return Util.getProperty("operador.equals");
+                return "Seja Igual";
             }else if (operador.equals(FiltroDinamicoAtributo.MAIOR_IQUAL)) {
-                return Util.getProperty("operador.maior_iqual");
+                return "Maior Igual";
             }else if (operador.equals(FiltroDinamicoAtributo.MENOR_IQUAL)) {
-                return Util.getProperty("operador.menor_iqual");
+                return "Menor igual";
             }
         }
         return null;

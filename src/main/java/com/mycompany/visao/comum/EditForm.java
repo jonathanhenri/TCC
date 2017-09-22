@@ -1,9 +1,13 @@
 package com.mycompany.visao.comum;
 
-	import org.apache.wicket.ajax.AjaxRequestTarget;
+	import java.lang.reflect.Method;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow.WindowClosedCallback;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -40,7 +44,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	private WebMarkupContainer divAtualizar;
 	private ModalWindow modalIncluirEditar;
 	
-	private ModalWindow modalExcluir;
+	protected ModalWindow modalExcluir;
 	
 	protected IServiceComum serviceComum;
 	
@@ -94,10 +98,28 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	
 	
 	private ModalWindow criarModalExcluir(){
-		modalExcluir= new ModalWindow("modalExcluir");
+		modalExcluir= new ModalWindow("modalExcluir"){
+			private static final long serialVersionUID = 642885877550448069L;
+
+			@Override
+			public boolean canCallListenerInterface(Method method) {
+			    if(method.getDeclaringClass().equals(org.apache.wicket.behavior.IBehaviorListener.class) &&
+			            method.getName().equals("onRequest")){
+			        return true;
+			    }
+				return super.canCallListenerInterface(method);
+			}
+		
+		};
 		modalExcluir.setInitialHeight(300);
 		modalExcluir.setInitialWidth(600);
 		modalExcluir.setOutputMarkupId(true);
+		modalExcluir.setWindowClosedCallback(new WindowClosedCallback(){
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void onClose(AjaxRequestTarget target) {
+            }
+        });
 		return modalExcluir;
 	}
 	
@@ -144,11 +166,6 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 							}
 							
 							if(retorno.getSucesso()){
-								modalExcluir.close(target);
-								getModalIncluirEditar().close(target);
-								if(getDivAtualizar()!=null){
-									target.add(getDivAtualizar());
-								}
 								executarAoExcluir(target);
 							}
 							
@@ -312,7 +329,11 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 	
 	protected void executarAoExcluir(AjaxRequestTarget target){
-		
+		modalExcluir.close(target);
+		getModalIncluirEditar().close(target);
+		if(getDivAtualizar()!=null){
+			target.add(getDivAtualizar());
+		}
 	}
 	protected void iniciarPagina(){
 		
@@ -391,6 +412,9 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		return modalIncluirEditar;
 	}
 
+	public ModalWindow getModalExcluir(){
+		return modalExcluir;
+	}
 
 	public void setModalIncluirEditar(ModalWindow modalIncluirEditar) {
 		this.modalIncluirEditar = modalIncluirEditar;

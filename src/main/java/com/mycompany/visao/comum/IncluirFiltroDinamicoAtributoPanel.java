@@ -37,6 +37,7 @@ import wicket.contrib.input.events.key.KeyType;
 
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.FiltroDinamicoAtributo;
+import com.mycompany.feedback.Mensagem;
 import com.mycompany.util.Util;
 import com.mycompany.util.WicketUtil;
 
@@ -135,9 +136,11 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 	}
 
 	private Boolean verificarCampoData(){
-		if(filtroDinamicoSelecionado.getTypeCampo()!=null && filtroDinamicoSelecionado.getTypeCampo().isInstance(new Date()) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Date()))
-				|| dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Date()))){
-			return true;
+		if(filtroDinamicoSelecionado!=null){
+			if(filtroDinamicoSelecionado.getTypeCampo()!=null && filtroDinamicoSelecionado.getTypeCampo().isInstance(new Date()) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Date()))
+					|| dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Date()))){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -173,10 +176,12 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 	}
 
 	private Boolean verificarCampoNumber(){
-		if(   filtroDinamicoSelecionado.getTypeCampo()!=null && (filtroDinamicoSelecionado.getTypeCampo().isInstance(new Long(1)) || filtroDinamicoSelecionado.getTypeCampo().isInstance(new Integer(1)) || filtroDinamicoSelecionado.getTypeCampo().isInstance(new Double(1))) || 
-			  dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && ((dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Long(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Integer(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Double(1)))))
-			  || dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && ((dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Long(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Integer(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Double(1)))))){
-			return true;
+		if(filtroDinamicoSelecionado!=null){
+			if(   filtroDinamicoSelecionado.getTypeCampo()!=null && (filtroDinamicoSelecionado.getTypeCampo().isInstance(new Long(1)) || filtroDinamicoSelecionado.getTypeCampo().isInstance(new Integer(1)) || filtroDinamicoSelecionado.getTypeCampo().isInstance(new Double(1))) || 
+				  dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && ((dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Long(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Integer(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Double(1)))))
+				  || dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && ((dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Long(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Integer(1)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Double(1)))))){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -194,9 +199,11 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 	}
 	
 	private Boolean verificarCampoBoolean(){
-		if(filtroDinamicoSelecionado!=null && filtroDinamicoSelecionado.getTypeCampo()!=null && filtroDinamicoSelecionado.getTypeCampo().isInstance(new Boolean(true)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Boolean(true)))
-				|| dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Boolean(true)))){
-			return true;
+		if(filtroDinamicoSelecionado!=null){
+			if(filtroDinamicoSelecionado!=null && filtroDinamicoSelecionado.getTypeCampo()!=null && filtroDinamicoSelecionado.getTypeCampo().isInstance(new Boolean(true)) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new Boolean(true)))
+					|| dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new Boolean(true)))){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -215,9 +222,11 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 	}
 	
 	private Boolean verificarCampoTextFieldString(){
-		if(filtroDinamicoSelecionado.getTypeCampo()!=null && filtroDinamicoSelecionado.getTypeCampo().isInstance(new String()) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new String()))
-				|| dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new String()))){
-			return true;
+		if(filtroDinamicoSelecionado!=null){
+			if(filtroDinamicoSelecionado.getTypeCampo()!=null && filtroDinamicoSelecionado.getTypeCampo().isInstance(new String()) || dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getTypeCampo().isInstance(new String()))
+					|| dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && (dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getTypeCampo().isInstance(new String()))){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -425,7 +434,6 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 			}
 		});
 		
-		dropDownFiltroDinamicoAtributo.setRequired(true);
 		dropDownFiltroDinamicoAtributo.setNullValid(true);
 		dropDownFiltroDinamicoAtributo.setOutputMarkupId(true);
 		return dropDownFiltroDinamicoAtributo;
@@ -472,7 +480,6 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 		};
 		tipoRadioChoiceOperadores.setNullValid(false);
 		tipoRadioChoiceOperadores.setOutputMarkupId(true);
-		tipoRadioChoiceOperadores.setRequired(true);
 		tipoRadioChoiceOperadores.add(new AjaxFormComponentUpdatingBehavior("onchange") {
 			private static final long serialVersionUID = 1L;
 
@@ -492,24 +499,22 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				filtroDinamicoSelecionado.setValorCampo(valorCampo);
-				filtroDinamicoSelecionado.setOperador(operador);
-				if(dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getNomeCampo()!=null){	
-					filtroDinamicoSelecionado.setAtributoEstrangeiro(dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject());
-					
-					if(dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getNomeCampo()!=null){
-						filtroDinamicoSelecionado.getAtributoEstrangeiro().setAtributoEstrangeiro(dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject());
+				if(valorCampo !=null && operador!=null){
+					filtroDinamicoSelecionado.setValorCampo(valorCampo);
+					filtroDinamicoSelecionado.setOperador(operador);
+					if(dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject().getNomeCampo()!=null){	
+						filtroDinamicoSelecionado.setAtributoEstrangeiro(dropDownFiltroDinamicoAtributoEstrangeiroNivel2.getModelObject());
+						
+						if(dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject()!=null && dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject().getNomeCampo()!=null){
+							filtroDinamicoSelecionado.getAtributoEstrangeiro().setAtributoEstrangeiro(dropDownFiltroDinamicoAtributoEstrangeiroNivel3.getModelObject());
+						}
 					}
+					
+					executarAoSalvar(target, filtroDinamicoSelecionado);
+				}else{
+					Util.notifyError(target, "Informar o Valor do campo e o Tipo de pesquisa");
 				}
-				
-				executarAoSalvar(target, filtroDinamicoSelecionado);
 			}
-			
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				super.onError(target, form);
-			}
-			
 		};
 		
 		botaoVoltar.setOutputMarkupId(true);

@@ -21,79 +21,76 @@
 </head>
 <body>
 	<wicket:panel>
-            <div class="" style="padding-left: 15px; padding-top: 10px; padding-right: 15px;">
-                <div class="matter">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="widget wred">
-                                <div class="widget-head">
-                                    <div wicket:id="newHeader">
-                                        <i class="fa fa-lock"></i> Filtros Dinamicos <label wicket:id="nomeClasse" class="control-label" ></label>
-                                        <a href="#" tabindex="-1" title="O conjunto dos filtros selecionados irá retornar um ou mais registros que contenha estes filtros" rel="tooltip">
-                                            <span class="glyphicon glyphicon-question-sign"></span>
-                                          </a>
-                                    </div>
-                                </div>
-                                <div id="edit-cliente" class="form" role="main">
-                                    <div class="padd">
-                                        <div>
-                                            <fieldset>
-                                                <div class="tab-content" style="padding-left: 5px;">
-                                                    <form wicket:id="formFiltrosDinamicos" class="form-horizontal">
-                                                        <fieldset class="form">
-                                                            <div class="form-group">
-                                                                <div class="fieldcontain col-lg-12">
-                                                                    <button href="#" wicket:id="botaoNovoFiltro" class="btn btn-success">Novo Filtro</button>
-                                                                </div>
-                                                                <div class="fieldcontain col-lg-12">
-                                                                <br>
-                                                                    <div class="table-responsive scrollbar1">
-                                                                        <div wicket:id="divListViewFiltrosDinamicos">
-                                                                              <table  class="table table-striped table-bordered table-hover table-condensed">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <td class="info">Nome campo</td>
-                                                                                        <td class="info">Valor campo</td>
-                                                                                        <td class="info">Tipo de pesquisa</td>
-                                                                                        <td class="info">Ações</td>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    <tr  wicket:id="listFiltrosDinamicos">
-                                                                                        <td wicket:id="nomeCampo"></td>
-                                                                                        <td wicket:id="valorCampo"></td>
-                                                                                        <td wicket:id="operador"></td>
-                                                                                        <td>
+			<br>
+             <div class="col-lg-12">
+           		<div class="panel panel-info">
+					<div class="panel-heading">
+						<div class="panel-title" wicket:id="newHeader">
+							Filtros Dinamicos de <label wicket:id="nomeClasse" class="control-label" ></label>
+	                            <a href="#" tabindex="-1" title="O conjunto dos filtros selecionados irá retornar um ou mais registros que contenha estes filtros" rel="tooltip">
+	                                <span class="glyphicon glyphicon-question-sign"></span>
+	                              </a>
+						</div>
+					</div>
+                     <div class="panel-body">    
+                     <div id="edit-cliente" class="form" role="main">
+                         <div class="padd">
+                             <div>
+                                 <fieldset>
+                                     <div class="tab-content" style="padding-left: 5px;">
+                                         <form wicket:id="formFiltrosDinamicos" class="form-horizontal">
+                                             <fieldset class="form">
+                                                 <div class="form-group">
+                                                     <div class="fieldcontain col-lg-12">
+                                                         <button href="#" wicket:id="botaoNovoFiltro" class="btn btn-success">Novo Filtro</button>
+                                                     </div>
+                                                     <div class="fieldcontain col-lg-12">
+                                                     <br>
+                                                         <div class="table table-striped table-bordered table-hover scrollbar1">
+                                                             <div wicket:id="divListViewFiltrosDinamicos">
+                                                                   <table  class="table table-striped table-bordered table-hover table-condensed">
+                                                                     <thead>
+                                                                         <tr>
+                                                                             <td class="info">Nome campo</td>
+                                                                             <td class="info">Valor campo</td>
+                                                                             <td class="info">Tipo de pesquisa</td>
+                                                                             <td class="info">Ações</td>
+                                                                         </tr>
+                                                                     </thead>
+                                                                     <tbody>
+                                                                         <tr  wicket:id="listFiltrosDinamicos">
+                                                                             <td wicket:id="nomeCampo"></td>
+                                                                             <td wicket:id="valorCampo"></td>
+                                                                             <td wicket:id="operador"></td>
+                                                                             <td>
 <!--                                                                                             <a href="#" style="padding: 1px 2px;" wicket:id="linkEditarFiltroDinamico" class="btn btn-mini" rel="tooltip" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a> -->
-                                                                                            <a href="#" style="padding: 1px 2px;" wicket:id="linkExcluirFiltroDinamicoPage" class="btn btn-mini" rel="tooltip" title="Excluir"><span class="glyphicon glyphicon-trash"></span></a>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                              </table>
-                                                                          </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                        <div class="form-group">
-                                                            <br>
-                                                            <div class="fieldcontain col-lg-12">
-                                                                <input type="submit" wicket:id="pesquisar" value="Pesquisar" class="btn btn-info"/>
-                                                                <a href="#" wicket:id="voltar" class="btn btn-default">Voltar</a>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                <div wicket:id="modalFiltro"></div>
-                                            </div>
-                                            </fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                                                                 <a class="btn btn-danger btn3d"  wicket:id="linkExcluirFiltroDinamicoPage"><span class="glyphicon glyphicon-trash"></span></a>
+                                                                             </td>
+                                                                         </tr>
+                                                                     </tbody>
+                                                                   </table>
+                                                               </div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </fieldset>
+                                             <div class="form-group">
+                                                 <br>
+                                                 <div class="fieldcontain col-lg-12">
+                                                     <input type="submit" wicket:id="pesquisar" value="Pesquisar" class="btn btn-info"/>
+                                                     <a href="#" wicket:id="voltar" class="btn btn-default">Voltar</a>
+                                                 </div>
+                                             </div>
+                                         </form>
+                                     <div wicket:id="modalFiltro"></div>
+                                 </div>
+                                 </fieldset>
+                             </div>
+                         </div>
+                     </div>
+                   </div>
+                 </div>
+             </div>
         </wicket:panel>
 </body>
 </html>
