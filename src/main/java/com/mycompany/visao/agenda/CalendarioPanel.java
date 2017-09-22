@@ -1,5 +1,6 @@
 package com.mycompany.visao.agenda;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -12,6 +13,7 @@ import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -505,8 +507,6 @@ public class CalendarioPanel extends Panel {
 				
 				modalIncluirEditar.setContent(editPanel);
 				modalIncluirEditar.show(target);
-				
-				target.add(divListagem);
 			}
 		};
 		
@@ -620,11 +620,22 @@ public class CalendarioPanel extends Panel {
 				
 				item.add(linkIncluirDia);
 				
-				item.add(criarListViewEventosDoDiaCalendario(dataDoEvento));
+				WebMarkupContainer divDiaDaSemana = new WebMarkupContainer("diaDaSemana");
+				divDiaDaSemana.setOutputMarkupId(true);
+				divDiaDaSemana.add(new AttributeAppender("title", getStringDiaSemana(dataDoEvento)));
+				
+				divDiaDaSemana.add(criarListViewEventosDoDiaCalendario(dataDoEvento));
+				
+				item.add(divDiaDaSemana);
 			}
 		};
 		listViewPermissaoAcesso.setOutputMarkupId(true);
 		return listViewPermissaoAcesso;
+	}
+	
+	private String getStringDiaSemana(Date date){
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEEEE");
+		return simpleDateFormat.format(date);
 	}
 
 	private AjaxLink<String> criarButtonIncluirDiaEvento(final Date date){
