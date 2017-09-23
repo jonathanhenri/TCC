@@ -2,6 +2,7 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
 
 <head>
+<meta charset="UTF-8">
 <wicket:head>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -39,6 +40,9 @@
 						<div class="form-group">
 							<div class="col-md-6">	
 								<label class="control-label">Senha</label>
+								<a href="#" tabindex="-1" title="Se não for preenchida não haverá alteração de senha." rel="tooltip">
+	                                <span class="glyphicon glyphicon-question-sign"></span>
+	                            </a>
 								<input type="password" class="form-control" id="Senha" wicket:id="senha" placeholder="Senha" maxlength="20">
 							</div>
 							<div class="col-md-6">	

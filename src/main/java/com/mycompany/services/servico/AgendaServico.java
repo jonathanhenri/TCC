@@ -18,10 +18,12 @@ import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IAgendaDAO;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IAgendaServico;
+import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.util.Util;
 
 public class AgendaServico implements IAgendaServico {
 	private IAgendaDAO agendaDAO;
+	private IEventoServico eventoServico;
 	
 	public AgendaServico() {
 	}
@@ -69,7 +71,7 @@ public class AgendaServico implements IAgendaServico {
 		
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			
-			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarMateria()){
+			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarAgenda()){
 				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharMateria", true));
 				filterOr.add(filterCompartilhar);
 			}
@@ -114,10 +116,15 @@ public class AgendaServico implements IAgendaServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			if(agendaDAO.remove(agenda)){
-				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
-			}else{
-				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+			agenda =(Agenda)searchFechId(agenda);
+			retorno.addRetorno(eventoServico.remove(Util.toList(agenda.getEventos())));
+				
+			if(retorno.getSucesso()){
+				if(agendaDAO.remove(agenda)){
+					mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				}else{
+					mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				}
 			}
 			
 			retorno.addMensagem(mensagem);
@@ -215,6 +222,10 @@ public class AgendaServico implements IAgendaServico {
 		}
 		
 		return retorno;
+	}
+	
+	public void setEventoServico(IEventoServico eventoServico) {
+		this.eventoServico = eventoServico;
 	}
 	
 	public void setAgendaDAO(IAgendaDAO agendaDAO) {

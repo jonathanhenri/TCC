@@ -40,23 +40,6 @@
 				return false;
 			}
 
-			var Hoffset=100; // largura
-			var Voffset=70; //altura
-			
-			var ieHoffset_extra=15;
-			var cross_obj= document.getElementById("divFeedbackJGrowl");
-			
-			function positionit(){
-			    var dsocleft=$(window).scrollLeft();
-			    var dsoctop=$(window).scrollTop();
-			    var window_width=document.body.clientWidth+ieHoffset_extra;
-			    var window_height=document.body.clientHeight;
-			    //190 é a largura do divFeedbackJGrowl 
-			    cross_obj.style.left=parseInt(dsocleft)+parseInt(window_width)-Hoffset - 190 + 'px';
-			    cross_obj.style.top=dsoctop + 'px';
-			}
-			
-
 			$('#toggle').click(function () {
 				screenfull.toggle($('#container')[0]);
 			});	

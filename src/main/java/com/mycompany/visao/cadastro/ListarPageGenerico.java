@@ -436,6 +436,8 @@ public abstract class ListarPageGenerico extends Menu {
 
 
 	public ModalWindow getModalFiltros() {
+		modalFiltros.setInitialHeight(400);
+		modalFiltros.setInitialWidth(700);
 		return modalFiltros;
 	}
 

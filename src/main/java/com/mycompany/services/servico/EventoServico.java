@@ -131,6 +131,21 @@ public class EventoServico implements IEventoServico {
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	public Retorno remove(List<Evento> listaEvento) {
+		Retorno retorno = new Retorno();
+		retorno.setSucesso(false);
+		
+		if(listaEvento!=null && listaEvento.size()>0){
+			retorno = validaRegrasAntesRemover(listaEvento.get(0));
+			
+			for(Evento evento:listaEvento){
+				retorno.setSucesso(remove(evento).getSucesso());
+			}
+		}
+		
+		return retorno;
+	}
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno remove(Evento evento) {
 		Retorno retorno = validaRegrasAntesRemover(evento);
 		

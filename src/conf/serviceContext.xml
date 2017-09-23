@@ -39,6 +39,7 @@
     
      <bean id="agendaServico"  class="com.mycompany.services.servico.AgendaServico">
     	<property name="agendaDAO" ref="agendaDAO" />
+    	<property name="eventoServico" ref="eventoServico" />
     </bean>
     
     <bean id="permissaoAcessoServico"  class="com.mycompany.services.servico.PermissaoAcessoServico">

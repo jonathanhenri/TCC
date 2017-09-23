@@ -25,6 +25,7 @@ import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IPerfilAcessoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.visao.comum.EditForm;
+import com.mycompany.visao.comum.PassowordTextFieldPersonalizado;
 
 public class AlunoEditForm extends EditForm<Aluno> {
 	@SpringBean(name="alunoServico")
@@ -40,7 +41,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	
 	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
-		senhaAux = aluno.getSenha();
+		senhaAux = aluno.getSenha()!=null? aluno.getSenha():"";
 	}
 	
 	@Override
@@ -52,7 +53,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-		textFieldNome.add(StringValidator.lengthBetween(1, 300));
+		textFieldNome.add(StringValidator.lengthBetween(0, 300));
 		return textFieldNome;
 	}
 	
@@ -60,16 +61,27 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private TextField<String> criarCampoLogin(){
 		TextField<String> textField = new TextField<String>("login");
 		textField.setOutputMarkupId(true);
-		textField.add(StringValidator.lengthBetween(1, 40));
+		textField.add(StringValidator.lengthBetween(0, 40));
 		return textField;
 	}
 	
 	
-	private PasswordTextField criarCampoSenha(){
-		PasswordTextField passwordTextField = new PasswordTextField("senha");
+	private PassowordTextFieldPersonalizado criarCampoSenha(){
+		PassowordTextFieldPersonalizado passwordTextField = new PassowordTextFieldPersonalizado("senha",false);
 		passwordTextField.setOutputMarkupId(true);
-		passwordTextField.add(StringValidator.lengthBetween(1, 50));
+		passwordTextField.add(StringValidator.lengthBetween(0, 50));
 		return passwordTextField;
+	}
+	
+	@Override
+	protected void beforeSave() {
+		if(getAbstractBean().getSenha() == null){
+			getAbstractBean().setSenha(senhaAux);
+		}else if(getAbstractBean().getSenha().equals(senhaAux)){
+			getAbstractBean().setSenha(senhaAux);
+		}
+		
+		super.beforeSave();
 	}
 	
 	private DropDownChoice<PerfilAcesso> criarCampoPerfilAcesso(){

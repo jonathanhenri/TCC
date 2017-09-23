@@ -240,6 +240,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				Util.notify(target, "Dados incorretos", Mensagem.ALERTA);
+				
 				super.onError(target, form);
 			}
 		};
@@ -417,6 +418,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	}
 
 	public void setModalIncluirEditar(ModalWindow modalIncluirEditar) {
+		
 		this.modalIncluirEditar = modalIncluirEditar;
 	}
 	

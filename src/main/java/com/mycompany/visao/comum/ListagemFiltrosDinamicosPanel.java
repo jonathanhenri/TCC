@@ -130,6 +130,11 @@ public abstract class ListagemFiltrosDinamicosPanel extends Panel {
                         focusGained = true;
                         modalFiltro.close(target);
                     }
+                    
+                    @Override
+                    public void executarAoVoltar(AjaxRequestTarget target) {
+                    	focusGained = true;                    	
+                    }
                 };
                 focusGained = false;
                 modalFiltro.setContent(incluirFiltrosDinamicosPage);
@@ -152,6 +157,11 @@ public abstract class ListagemFiltrosDinamicosPanel extends Panel {
                         target.add(divListViewFiltrosDinamicos);
                         focusGained = true;
                         modalFiltro.close(target);
+                    }
+                    
+                    @Override
+                    public void executarAoVoltar(AjaxRequestTarget target) {
+                    	focusGained = true;                    	
                     }
                 };
                 focusGained = false;

@@ -181,13 +181,13 @@
 													<div class="col-md-8" >	
 														<label><h1>Linha do tempo</h1></label>
 													</div>
-													<div class="col-md-4"style="text-align: right;">
+													<div class="col-md-4 pull-right">
 														<a  id="filtrosPagina"  name ="Filtros" type="button" class="btn btn-info" onclick="scrollPagina();">
 															<span id="classeButton" class="glyphicon glyphicon-resize-full"></span>
 															<label>Filtro</label>
 														</a>	
 														<input  value="Mais Filtros" id ="maisFiltros" name ="maisFiltros" wicket:id="buttonListagemFiltrosDinamicos" type="submit" class="btn btn-default" ></input>
-														<input value="Novo Evento" type="button" name ="novo" wicket:id="buttonNovoEvento" class="btn btn-success" style="width: 40%"/>
+														<a type="button" name ="novo" wicket:id="buttonNovoEvento" class="btn btn-success"><span class="glyphicon glyphicon-plus">Evento</span></a>
 													</div>
 												</div>
 											</div>
@@ -198,6 +198,11 @@
 											<div class="panel-body ">
 												<div class="form-group">
 													<div class="col-md-12">
+														<div class="col-md-4">	
+															<label class="control-label">Descrição</label>
+															<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
+														</div>
+														
 														<div class="col-md-3">	
 															<label class="control-label">Data inicio</label><br>
 															<span wicket:id="dataInicio" placeholder="Data Inicial"></span>
@@ -206,11 +211,6 @@
 														<div class="col-md-3">	
 															<label class="control-label">Data final</label><br>
 															<span wicket:id="dataFim" placeholder="Data final"></span>
-														</div>
-														
-														<div class="col-md-4">	
-															<label class="control-label">Descrição</label>
-															<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
 														</div>
 														<div class="col-md-2">	
 														<br>

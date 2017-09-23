@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.wicket.ajax.AjaxChannel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -37,7 +36,6 @@ import wicket.contrib.input.events.key.KeyType;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
-import com.mycompany.domain.FiltroDinamicoAgrupador;
 import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
@@ -64,8 +62,6 @@ public class CalendarioPanel extends Panel {
 	private ModalWindow modalExcluir;
 	private List<Evento> listaTodosEventos;
 	
-	private FiltroDinamicoAgrupador filtroDinamicoAgrupador;
-	
 	private Boolean focusGained;
 	@SpringBean(name="agendaServico")
 	private  IAgendaServico agendaServico;
@@ -86,7 +82,6 @@ public class CalendarioPanel extends Panel {
 		super(id);
 		this.agenda = agenda;
 		focusGained = true;
-		filtroDinamicoAgrupador = new FiltroDinamicoAgrupador();
 		listaTodosEventos = new ArrayList<Evento>();
 		adicionarCampos();
 	}
@@ -306,7 +301,7 @@ public class CalendarioPanel extends Panel {
 		modalFiltros = new ModalWindow("modalFiltros");
 		modalFiltros.setOutputMarkupId(true);
 		modalFiltros.setInitialHeight(400);
-		modalFiltros.setInitialWidth(500);
+		modalFiltros.setInitialWidth(700);
 		
 		modalFiltros.setCloseButtonCallback(null);
 		

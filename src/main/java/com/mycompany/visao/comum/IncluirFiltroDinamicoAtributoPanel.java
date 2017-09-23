@@ -527,8 +527,10 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				if(focusGained)
+				if(focusGained){
+					executarAoVoltar(target);
 					modalEdit.close(target);
+				}
 			}
 			
 		};
@@ -562,6 +564,8 @@ public abstract class IncluirFiltroDinamicoAtributoPanel extends Panel{
 	public Integer getOperador() {
 		return operador;
 	}
+	
+	public abstract void executarAoVoltar(AjaxRequestTarget target);
 	
 	public abstract void executarAoSalvar(AjaxRequestTarget target,FiltroDinamicoAtributo filtroDinamicoAtributo);
 	
