@@ -2,6 +2,7 @@
 <html xmlns:wicket="http://wicket.apache.org" lang="pt-br">
 
 <head>
+<meta charset="UTF-8">
 <wicket:head>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -34,6 +35,17 @@
 							<div class="col-md-6">	
 								<label class="control-label">Curso</label>
 								<select class="form-control" wicket:id="administracao.curso"></select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="col-md-6">	
+								<label class="control-label">Descrição</label>
+								<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
+							</div>
+							<div class="col-md-6">	
+								<label class="control-label">Periodo</label>
+								<input type="number" class="form-control" id="duracao" wicket:id="periodo" placeholder="Periodo">
 							</div>
 						</div>
 						

@@ -9,7 +9,6 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.NumberTextField;
-import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -106,6 +105,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	
 	private DropDownChoice<Curso> criarCampoCurso(){
 		IChoiceRenderer<Curso> choiceRenderer = new ChoiceRenderer<Curso>("nome", "id");
+		
 		LoadableDetachableModel<List<Curso>> cursos = new LoadableDetachableModel<List<Curso>>() {
 			private static final long serialVersionUID = 1L;
 
@@ -114,7 +114,6 @@ public class AlunoEditForm extends EditForm<Aluno> {
 				List<Curso> cursos = new ArrayList<Curso>();
 				
 				cursos = cursoServico.search(new Search(Curso.class));
-				
 				return cursos;
 			}
 		};

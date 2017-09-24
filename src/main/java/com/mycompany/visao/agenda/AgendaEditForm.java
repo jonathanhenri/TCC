@@ -8,6 +8,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -30,16 +31,12 @@ public class AgendaEditForm extends EditForm<Agenda> {
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
 	
-	private Agenda agenda;
-	
 	public AgendaEditForm(String id, Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super(id, agenda,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
-		this.agenda = agenda;
 	}
 	
 	public AgendaEditForm(Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", agenda,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
-		this.agenda = agenda;
 	}
 	
 	@Override
@@ -47,10 +44,18 @@ public class AgendaEditForm extends EditForm<Agenda> {
 		serviceComum = agendaServico;
 	}
 	
+	private TextField<String> criarCampodescricao(){
+		TextField<String> textFieldDescricao = new TextField<String>("descricao");
+		textFieldDescricao.setOutputMarkupId(true);
+		textFieldDescricao.add(StringValidator.lengthBetween(0, 300));
+		return textFieldDescricao;
+	}
+	
+	
 	private TextField<String> criarCampoNome(){
 		TextField<String> textFieldNome = new TextField<String>("nome");
 		textFieldNome.setOutputMarkupId(true);
-		textFieldNome.add(StringValidator.lengthBetween(1, 300));
+		textFieldNome.add(StringValidator.lengthBetween(0, 300));
 		return textFieldNome;
 	}
 	
@@ -77,8 +82,17 @@ public class AgendaEditForm extends EditForm<Agenda> {
 	}
 	
 	
+	private NumberTextField<Integer> criarCampoPeriodo(){
+		NumberTextField<Integer> periodo = new NumberTextField<Integer>("periodo");
+		periodo.setOutputMarkupId(true);
+		return periodo;
+	}
+	
+	
 	@Override
 	protected void adicionarCampos() {
+		add(criarCampoPeriodo());
+		add(criarCampodescricao());
 		add(criarCampoNome());
 		add(criarCampoCurso());
 	}

@@ -89,7 +89,7 @@ public class AgendaPage extends Menu {
 	}
 	
 	private void adicionarCampos(){
-		Form<Agenda> form = new Form<Agenda>("form", new CompoundPropertyModel<Agenda>(agendaPesquisa	));
+		Form<Agenda> form = new Form<Agenda>("form", new CompoundPropertyModel<Agenda>(agendaPesquisa));
 		form.setOutputMarkupId(true);
 		
 		form.add(criarDivAtualizar());
@@ -120,12 +120,42 @@ public class AgendaPage extends Menu {
 				
 				item.add(new Label("nome", agenda.getNome()));
 				item.add(criarButtonVisualizarCalendario(agenda));
+				item.add(criarLinkEditarAgenda(agenda));
 				item.add(criarLinkExcluirAgenda(agenda));
 				
 			}
 		};
 		
 		return listViewPermissaoAcesso;
+	}
+	
+	private AjaxLink<Agenda> criarLinkEditarAgenda(final Agenda agenda){
+		AjaxLink<Agenda> linkEditarEvento = new AjaxLink<Agenda>("linkEditarAgenda") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				AgendaPanel agendaPanel = new AgendaPanel(modalIncluirEditar.getContentId());
+				agendaPanel.setOutputMarkupId(true);
+				
+				AgendaEditForm agendaEditForm = new AgendaEditForm((Agenda)agendaServico.searchFechId(agenda), agendaPanel, null, divAtualizar, modalIncluirEditar);
+				agendaEditForm.setOutputMarkupId(true);
+				agendaPanel.add(agendaEditForm);
+				
+				modalIncluirEditar.setContent(agendaPanel);
+				modalIncluirEditar.show(target);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				if(!Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AGENDA_ALTERAR, PermissaoAcesso.OPERACAO_ALTERAR)){
+					return false;
+				}
+				return true;
+			}
+		};
+		
+		return linkEditarEvento;
 	}
 	
 	private AjaxLink<Agenda> criarLinkExcluirAgenda(final Agenda agenda){

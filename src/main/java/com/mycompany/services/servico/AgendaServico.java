@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PermissaoAcesso;
@@ -72,7 +71,7 @@ public class AgendaServico implements IAgendaServico {
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			
 			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarAgenda()){
-				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharMateria", true));
+				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharAgenda", true));
 				filterOr.add(filterCompartilhar);
 			}
 			

@@ -88,6 +88,8 @@ public class CalendarioPanel extends Panel {
 	
 	private void adicionarCampos(){
 		evento = new Evento();
+		
+		add(new Label("nomeAgenda", agenda.getNome()));
 		Calendar calendarInicio = Calendar.getInstance();
 		calendarInicio.set(Calendar.DAY_OF_MONTH, calendarInicio.getActualMinimum(Calendar.DAY_OF_MONTH));
 		calendarInicio.set(Calendar.HOUR_OF_DAY, calendarInicio.getActualMinimum(Calendar.HOUR_OF_DAY));
@@ -403,13 +405,54 @@ public class CalendarioPanel extends Panel {
 		containerEsquerda.setOutputMarkupId(true);
 		containerEsquerda.add(new Label("descricao",evento.getDescricao()));
 		
-		containerEsquerda.add(new Label("dataInicio", Util.formataDataComHoraSemLocale(evento.getDataInicio())));
-		containerEsquerda.add(new Label("dataFim", Util.formataDataComHoraSemLocale(evento.getDataFim())));
+		containerEsquerda.add(new Label("diasRepeticao",concatenarDiasRepeticao(evento)).setVisible(evento.getRepetirEvento()));
+		
+		containerEsquerda.add(new Label("dataInicio", Util.formataDataComHoraSemLocale(evento.getDataInicio())).setVisible(!evento.getRepetirEvento()));
+		containerEsquerda.add(new Label("dataFim", Util.formataDataComHoraSemLocale(evento.getDataFim())).setVisible(!evento.getRepetirEvento()));
 		containerEsquerda.add(new Label("local",evento.getLocal()));
 		containerEsquerda.add(criarLinkExcluirEvento(evento));
 		containerEsquerda.add(criarLinkEditarEvento(evento));
 		
 		return containerEsquerda;
+	}
+	
+	private String concatenarDiasRepeticao(Evento evento){
+		String string = new String();
+		
+		if(evento.getRepetirTodaSegunda()!=null && evento.getRepetirTodaSegunda()){
+			string +="|Seg";
+		}
+		
+		if(evento.getRepetirTodaTerca()!=null && evento.getRepetirTodaTerca()){
+			string +="|Ter";
+		}
+
+		if(evento.getRepetirTodaQuarta()!=null && evento.getRepetirTodaQuarta()){
+			string +="|Qua";
+		}
+		
+		if(evento.getRepetirTodaQuinta()!=null && evento.getRepetirTodaQuinta()){
+			string +="|Qui";
+		}
+		
+
+		if(evento.getRepetirTodaSexta()!=null && evento.getRepetirTodaSexta()){
+			string +="|Sex";
+		}
+		
+
+		if(evento.getRepetirTodoSabado()!=null && evento.getRepetirTodoSabado()){
+			string +="|Sab";
+		}
+		
+
+		if(evento.getRepetirTodoDomingo()!=null && evento.getRepetirTodoDomingo()){
+			string +="|Dom";
+		}
+		
+		string +="|";
+		
+		return string;
 	}
 	
 	private WebMarkupContainer criarDivDireita(Evento evento,final Boolean visible){
