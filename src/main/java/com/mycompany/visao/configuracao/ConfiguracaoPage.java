@@ -3,6 +3,7 @@ package com.mycompany.visao.configuracao;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
@@ -13,6 +14,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Configuracao;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.services.interfaces.IConfiguracaoServico;
@@ -31,31 +33,68 @@ public class ConfiguracaoPage extends Menu {
 	
 	public ConfiguracaoPage() {
 		inicializarConfiguracao();
+		
+		criarDivEsconderCompartilhar();
+		
+		criarDivEsconderSincronizar();
+		
 		adicionarCampos();
+	}
+
+	private void criarDivEsconderSincronizar() {
+		WebMarkupContainer esconderDivSincronizar = new WebMarkupContainer("esconderSincronizar"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(Util.getAlunoLogado(), configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR);
+			}
+		};
+		esconderDivSincronizar.setOutputMarkupId(true);
+		add(esconderDivSincronizar);
+	}
+
+	private void criarDivEsconderCompartilhar() {
+		WebMarkupContainer esconderDivCompartilhar = new WebMarkupContainer("esconderCompartilhar"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(Util.getAlunoLogado(), configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR);
+			}
+		};
+		esconderDivCompartilhar.setOutputMarkupId(true);
+		add(esconderDivCompartilhar);
 	}
 	
 	private void inicializarConfiguracao(){
 		configuracao = configuracaoServico.searchUnique(new Search());
 		if(configuracao == null){
 			configuracao = new Configuracao();
+			configuracao.setCompartilharEvento(false);
+			configuracao.setCompartilharTipoEvento(false);
+			configuracao.setCompartilharOrigemEvento(false);
+			configuracao.setCompartilharMateria(false);
+			configuracao.setCompartilharAgenda(false);
+			configuracao.setCompartilharPerfilAcesso(false);
+			
+			configuracao.setSincronizarEvento(true);
+			configuracao.setSincronizarTipoEvento(true);
+			configuracao.setSincronizarOrigemEvento(true);
+			configuracao.setSincronizarMateria(true);
+			configuracao.setSincronizarAgenda(true);
+			configuracao.setSincronizarPerfilAcesso(true);
 		}
-		configuracao.setCompartilharEvento(false);
-		configuracao.setCompartilharTipoEvento(false);
-		configuracao.setCompartilharOrigemEvento(false);
-		configuracao.setCompartilharMateria(false);
-		configuracao.setCompartilharAgenda(false);
-		configuracao.setCompartilharPerfilAcesso(false);
-		
-		configuracao.setSincronizarEvento(true);
-		configuracao.setSincronizarTipoEvento(true);
-		configuracao.setSincronizarOrigemEvento(true);
-		configuracao.setSincronizarMateria(true);
-		configuracao.setSincronizarAgenda(true);
-		configuracao.setSincronizarPerfilAcesso(true);
-		
 	}
 	private WebMarkupContainer criarDivSincronizar(){
-		divSincronizar = new WebMarkupContainer("divSincronizar");
+		divSincronizar = new WebMarkupContainer("divSincronizar"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(Util.getAlunoLogado(), configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR);
+			}
+		};
 		
 		divSincronizar.add(criarCampoSincronizarEvento());
 		divSincronizar.add(criarCampoSincronizarTipoEvento());
@@ -67,7 +106,14 @@ public class ConfiguracaoPage extends Menu {
 		return divSincronizar;
 	}
 	private WebMarkupContainer criarDivCompartilhar(){
-		divCompartilhar = new WebMarkupContainer("divCompartilhar");
+		divCompartilhar = new WebMarkupContainer("divCompartilhar"){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(Util.getAlunoLogado(), configuracao, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR);
+			}
+		};
 		
 		divCompartilhar.add(criarCampoCompartilharEvento());
 		divCompartilhar.add(criarCampoCompartilharTipoEvento());
@@ -203,7 +249,11 @@ public class ConfiguracaoPage extends Menu {
 				Retorno retorno = new Retorno(); 
 				retorno.setSucesso(true);
 				
-				retorno = configuracaoServico.persist(configuracao);
+				if(configuracao!=null && configuracao.getId() == null){
+					retorno = configuracaoServico.persist(configuracao);
+				}else{
+					retorno = configuracaoServico.save(configuracao);
+				}
 				
 				for(Mensagem mensagem:retorno.getListaMensagem()){
 					 Util.notify(target, mensagem.toString(), mensagem.getTipo());

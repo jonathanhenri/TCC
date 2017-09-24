@@ -32,8 +32,13 @@ $('#tab a').on('click', function(e) {
 				   			<div class="panel-heading">
 								<div class="panel-title">
 										<ul class="nav nav-pills">
-											<li class="active"><a href="#compartilhar" data-toggle="tab">Compartilhar</a></li>
-											<li><a href="#sincronizar" data-toggle="tab">Sincronizar</a></li>
+											<wicket:enclosure child="esconderCompartilhar">
+												<li wicket:id="esconderCompartilhar" class="active"><a  href="#compartilhar" data-toggle="tab">Compartilhar</a></li>
+											</wicket:enclosure>
+											
+											<wicket:enclosure child="esconderSincronizar">
+												<li  wicket:id="esconderSincronizar" ><a href="#sincronizar" data-toggle="tab">Sincronizar</a></li>
+											</wicket:enclosure>
 										</ul>
 								</div>
 							</div>
