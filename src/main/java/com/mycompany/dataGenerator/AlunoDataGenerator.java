@@ -30,7 +30,6 @@ public class AlunoDataGenerator {
 		alunoAdministrador.setNome("Administrador");
 		alunoAdministrador.setSenha("admin");
 		alunoAdministrador.setLogin("admin");
-		alunoAdministrador.setPeriodo(5); 
 		alunooDAO.persist(alunoAdministrador);
 		
 		

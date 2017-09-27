@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,10 +15,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.acls.sid.Sid;
 import org.springframework.security.userdetails.UserDetails;
@@ -25,8 +26,6 @@ import org.springframework.security.userdetails.UserDetails;
 import com.mycompany.anotacao.ListarPageAnotacao;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.security.AtribuicaoAdmin;
-import com.mycompany.services.interfaces.IAlunoServico;
-import com.mycompany.util.Util;
 
 @Entity
 @Table(name = "ALUNO")
@@ -37,7 +36,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="PERFIL_ACESSO")
 	private PerfilAcesso perfilAcesso;
 	
@@ -66,8 +65,9 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 //	@JoinColumn(name="ID_ARQUIVO")
 //	private Arquivo imagem;
 	
-	@Column(name = "PERIODO", nullable = true)
-	private Integer periodo;
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "aluno",cascade = CascadeType.ALL)
+	@Column(name = "ID_ALUNO")
+	private Set<AlunoPeriodo> listaPeriodosPertecentes;
 	
 	@Transient
 	private List<Mensagem> listaMensagensSistema;
@@ -96,12 +96,13 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 		return login;
 	}
 	
-	public void setPeriodo(Integer periodo) {
-		this.periodo = periodo;
+	public void setListaPeriodosPertecentes(
+			Set<AlunoPeriodo> listaPeriodosPertecentes) {
+		this.listaPeriodosPertecentes = listaPeriodosPertecentes;
 	}
 	
-	public Integer getPeriodo() {
-		return periodo;
+	public Set<AlunoPeriodo> getListaPeriodosPertecentes() {
+		return listaPeriodosPertecentes;
 	}
 	
 	public String getNome() {

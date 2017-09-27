@@ -3,26 +3,35 @@ package com.mycompany.visao.cadastro.aluno;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.AlunoPeriodo;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.PerfilAcesso;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IPerfilAcessoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
+import com.mycompany.util.Util;
 import com.mycompany.visao.comum.EditForm;
 import com.mycompany.visao.comum.PassowordTextFieldPersonalizado;
 
@@ -31,12 +40,17 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private static IAlunoServico alunoServico;
 	
 	private String senhaAux;
+	private Integer periodoAux = 0;
 	
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
 	
+	private WebMarkupContainer divPeriodos;
+	
 	@SpringBean(name="perfilAcessoServico")
 	private  IPerfilAcessoServico perfilAcessoServico;
+	private NumberTextField<Integer> campoNumberPeriodoAux;
+	private List<AlunoPeriodo> listaPeriodosSelecionados;
 	
 	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
@@ -79,6 +93,8 @@ public class AlunoEditForm extends EditForm<Aluno> {
 		}else if(getAbstractBean().getSenha().equals(senhaAux)){
 			getAbstractBean().setSenha(senhaAux);
 		}
+		
+		getAbstractBean().setListaPeriodosPertecentes(Util.toSet(listaPeriodosSelecionados));
 		
 		super.beforeSave();
 	}
@@ -125,21 +141,82 @@ public class AlunoEditForm extends EditForm<Aluno> {
 		return tipoRadioChoice;
 	}
 	
-	
-	private NumberTextField<Integer> criarCampoPeriodo(){
-		NumberTextField<Integer> periodo = new NumberTextField<Integer>("periodo");
-		periodo.setOutputMarkupId(true);
-		return periodo;
+	private WebMarkupContainer criarListViewPeriodos(){
+		divPeriodos = new WebMarkupContainer("divPeriodos");
+		divPeriodos.setOutputMarkupId(true);
+		LoadableDetachableModel<List<AlunoPeriodo>> loadPermissao = new LoadableDetachableModel<List<AlunoPeriodo>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<AlunoPeriodo> load() {
+				return listaPeriodosSelecionados;
+			}
+		};
+			
+		ListView<AlunoPeriodo> listViewPermissaoAcesso = new ListView<AlunoPeriodo>("listaPeriodosSelecionados",loadPermissao) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem<AlunoPeriodo> item) {
+				AlunoPeriodo periodo = (AlunoPeriodo) item.getModelObject();		
+				item.add(new Label("periodo", periodo.getPeriodo()));
+			}
+		};
+		
+		divPeriodos.add(listViewPermissaoAcesso);
+		listViewPermissaoAcesso.setOutputMarkupId(true);
+		return divPeriodos;
 	}
 	
+	private NumberTextField<Integer> criarCampoPeriodoAux(){
+		campoNumberPeriodoAux = new NumberTextField<Integer>("periodoAux",new PropertyModel<Integer>(this, "periodoAux"));
+		campoNumberPeriodoAux.setOutputMarkupId(true);
+		return campoNumberPeriodoAux;
+	}
+	
+	
+	private AjaxButton criarButtonAdicionarPeriodo(){
+		AjaxButton ajaxButton = new AjaxButton("adicionarPeriodo",this) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target,Form<?> form) {
+				if(getPeriodoAux()!=null && getPeriodoAux()>0){
+					listaPeriodosSelecionados.add(new AlunoPeriodo(getPeriodoAux(), getAbstractBean()));
+					setPeriodoAux(0);
+					campoNumberPeriodoAux.modelChanged();
+					target.add(campoNumberPeriodoAux);
+					target.add(divPeriodos);
+				}else{
+					Util.notifyInfo(target, "Período deve ser maior que zero");
+				}
+			}
+		};
+		
+		return ajaxButton;
+	}
 	@Override
 	protected void adicionarCampos() {
+		if(getAbstractBean().getListaPeriodosPertecentes()!=null && getAbstractBean().getListaPeriodosPertecentes().size()>0){
+			listaPeriodosSelecionados = Util.toList(getAbstractBean().getListaPeriodosPertecentes());
+		}else{
+			listaPeriodosSelecionados = new ArrayList<AlunoPeriodo>();
+		}
+		add(criarButtonAdicionarPeriodo());
+		add(criarCampoPeriodoAux());
+		add(criarListViewPeriodos());
 		add(criarCampoNome());
 		add(criarCampoLogin());
 		add(criarCampoSenha());
-		add(criarCampoPeriodo());
 		add(criarCampoCurso());
 		add(criarCampoPerfilAcesso());
+	}
+	
+	public void setPeriodoAux(Integer periodoAux) {
+		this.periodoAux = periodoAux;
+	}
+	public Integer getPeriodoAux() {
+		return periodoAux;
 	}
 	
 	private static final long serialVersionUID = 1L;

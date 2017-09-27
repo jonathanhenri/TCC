@@ -33,7 +33,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(400);
+		modalIncluirEditar.setInitialHeight(600);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
