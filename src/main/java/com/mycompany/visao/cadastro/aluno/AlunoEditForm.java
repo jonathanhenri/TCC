@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -24,9 +25,9 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
-import com.mycompany.domain.AlunoPeriodo;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.PerfilAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IPerfilAcessoServico;
@@ -40,17 +41,18 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private static IAlunoServico alunoServico;
 	
 	private String senhaAux;
-	private Integer periodoAux = 0;
 	
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
 	
+	private Integer periodoAux = 0;
 	private WebMarkupContainer divPeriodos;
+	private NumberTextField<Integer> campoNumberPeriodoAux;
+	private List<RelacaoPeriodo> listaPeriodosSelecionados;
 	
 	@SpringBean(name="perfilAcessoServico")
 	private  IPerfilAcessoServico perfilAcessoServico;
-	private NumberTextField<Integer> campoNumberPeriodoAux;
-	private List<AlunoPeriodo> listaPeriodosSelecionados;
+	
 	
 	public AlunoEditForm(Aluno aluno,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
 		super("formCadastro", aluno,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
@@ -144,27 +146,28 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private WebMarkupContainer criarListViewPeriodos(){
 		divPeriodos = new WebMarkupContainer("divPeriodos");
 		divPeriodos.setOutputMarkupId(true);
-		LoadableDetachableModel<List<AlunoPeriodo>> loadPermissao = new LoadableDetachableModel<List<AlunoPeriodo>>() {
+		LoadableDetachableModel<List<RelacaoPeriodo>> loadPermissao = new LoadableDetachableModel<List<RelacaoPeriodo>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected List<AlunoPeriodo> load() {
+			protected List<RelacaoPeriodo> load() {
 				return listaPeriodosSelecionados;
 			}
 		};
 			
-		ListView<AlunoPeriodo> listViewPermissaoAcesso = new ListView<AlunoPeriodo>("listaPeriodosSelecionados",loadPermissao) {
+		ListView<RelacaoPeriodo> listViewPeriodos = new ListView<RelacaoPeriodo>("listaPeriodosSelecionados",loadPermissao) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(ListItem<AlunoPeriodo> item) {
-				AlunoPeriodo periodo = (AlunoPeriodo) item.getModelObject();		
+			protected void populateItem(ListItem<RelacaoPeriodo> item) {
+				RelacaoPeriodo periodo = (RelacaoPeriodo) item.getModelObject();		
 				item.add(new Label("periodo", periodo.getPeriodo()));
+				item.add(criarExcluirPeriodo(periodo));
 			}
 		};
 		
-		divPeriodos.add(listViewPermissaoAcesso);
-		listViewPermissaoAcesso.setOutputMarkupId(true);
+		divPeriodos.add(listViewPeriodos);
+		listViewPeriodos.setOutputMarkupId(true);
 		return divPeriodos;
 	}
 	
@@ -182,7 +185,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target,Form<?> form) {
 				if(getPeriodoAux()!=null && getPeriodoAux()>0){
-					listaPeriodosSelecionados.add(new AlunoPeriodo(getPeriodoAux(), getAbstractBean()));
+					listaPeriodosSelecionados.add(new RelacaoPeriodo(getPeriodoAux(), getAbstractBean()));
 					setPeriodoAux(0);
 					campoNumberPeriodoAux.modelChanged();
 					target.add(campoNumberPeriodoAux);
@@ -195,12 +198,30 @@ public class AlunoEditForm extends EditForm<Aluno> {
 		
 		return ajaxButton;
 	}
+	
+	private AjaxLink<String> criarExcluirPeriodo(final RelacaoPeriodo relacaoPeriodo){
+		AjaxLink<String> ajaxLink = new AjaxLink<String>("linkExcluirPeriodo") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				if(listaPeriodosSelecionados!=null && listaPeriodosSelecionados.size()>0){
+					listaPeriodosSelecionados.remove(relacaoPeriodo);
+					target.add(divPeriodos);
+				}
+				
+			}
+		};
+		
+		return ajaxLink;
+	}
+	
 	@Override
 	protected void adicionarCampos() {
 		if(getAbstractBean().getListaPeriodosPertecentes()!=null && getAbstractBean().getListaPeriodosPertecentes().size()>0){
 			listaPeriodosSelecionados = Util.toList(getAbstractBean().getListaPeriodosPertecentes());
 		}else{
-			listaPeriodosSelecionados = new ArrayList<AlunoPeriodo>();
+			listaPeriodosSelecionados = new ArrayList<RelacaoPeriodo>();
 		}
 		add(criarButtonAdicionarPeriodo());
 		add(criarCampoPeriodoAux());

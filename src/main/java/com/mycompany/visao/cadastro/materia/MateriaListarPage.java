@@ -2,7 +2,6 @@ package com.mycompany.visao.cadastro.materia;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,7 +30,6 @@ public class MateriaListarPage extends ListarPageGenerico {
 		serviceComum = materiaServico;
 	}
 	private void addFiltros(){
-		form.add(criarCampoPeriodo());
 		form.add(criarCampoNome());
 	}
 	
@@ -43,12 +41,6 @@ public class MateriaListarPage extends ListarPageGenerico {
 		modalIncluirEditar.setInitialHeight(350);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
-	}
-	
-	private NumberTextField<Integer> criarCampoPeriodo(){
-		NumberTextField<Integer> duracao = new NumberTextField<Integer>("periodo");
-		duracao.setOutputMarkupId(true);
-		return duracao;
 	}
 	
 	private TextField<String> criarCampoNome(){

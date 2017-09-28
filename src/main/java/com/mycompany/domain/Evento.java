@@ -2,6 +2,7 @@ package com.mycompany.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -69,10 +71,9 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = true)
 	private OrigemEvento origemEvento;
 	
-	@ListarPageAnotacao(filtro = true)
-	@Column(name = "PERIODO", nullable = true)
-	private Integer periodo;
-	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "evento",cascade = CascadeType.ALL)
+	@Column(name = "ID_EVENTO")
+	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	
 	@Column(name = "REPETIR_EVENTO", nullable = true)
 	private Boolean repetirEvento;
@@ -241,13 +242,14 @@ public class Evento extends AbstractBean<Evento> {
 	public Agenda getAgenda() {
 		return agenda;
 	}
-
-	public void setPeriodo(Integer periodo) {
-		this.periodo = periodo;
+	
+	public void setListaPeriodosPertecentes(
+			Set<RelacaoPeriodo> listaPeriodosPertecentes) {
+		this.listaPeriodosPertecentes = listaPeriodosPertecentes;
 	}
 	
-	public Integer getPeriodo() {
-		return periodo;
+	public Set<RelacaoPeriodo> getListaPeriodosPertecentes() {
+		return listaPeriodosPertecentes;
 	}
 	
 	public Date getDataInicio() {

@@ -39,9 +39,9 @@ public class Agenda extends AbstractBean<Agenda> {
 	@Column(name = "DESCRICAO", nullable = true, length = 300)
 	private String descricao;
 	
-	@Column(name = "PERIODO", nullable = true)
-	private Integer periodo;	
-	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "agenda",cascade = CascadeType.ALL)
+	@Column(name = "ID_AGENDA")
+	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	
 	@Id
 	@Column(name = "ID_AGENDA")
@@ -99,15 +99,14 @@ public class Agenda extends AbstractBean<Agenda> {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-
-	public Integer getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(Integer periodo) {
-		this.periodo = periodo;
+	public void setListaPeriodosPertecentes(
+			Set<RelacaoPeriodo> listaPeriodosPertecentes) {
+		this.listaPeriodosPertecentes = listaPeriodosPertecentes;
 	}
 	
+	public Set<RelacaoPeriodo> getListaPeriodosPertecentes() {
+		return listaPeriodosPertecentes;
+	}
 	@Override
 	public void setAdministracao(Administracao administracao) {
 		this.administracao = administracao;

@@ -67,7 +67,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "aluno",cascade = CascadeType.ALL)
 	@Column(name = "ID_ALUNO")
-	private Set<AlunoPeriodo> listaPeriodosPertecentes;
+	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	
 	@Transient
 	private List<Mensagem> listaMensagensSistema;
@@ -97,11 +97,11 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	}
 	
 	public void setListaPeriodosPertecentes(
-			Set<AlunoPeriodo> listaPeriodosPertecentes) {
+			Set<RelacaoPeriodo> listaPeriodosPertecentes) {
 		this.listaPeriodosPertecentes = listaPeriodosPertecentes;
 	}
 	
-	public Set<AlunoPeriodo> getListaPeriodosPertecentes() {
+	public Set<RelacaoPeriodo> getListaPeriodosPertecentes() {
 		return listaPeriodosPertecentes;
 	}
 	

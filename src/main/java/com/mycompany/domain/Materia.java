@@ -1,6 +1,7 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.mycompany.anotacao.ListarPageAnotacao;
@@ -24,13 +26,13 @@ public class Materia extends AbstractBean<Materia> {
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@ListarPageAnotacao
-	@Column(name = "PERIODO", nullable = false)
-	private Integer periodo;	
-	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
+	
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "materia",cascade = CascadeType.ALL)
+	@Column(name = "ID_MATERIA")
+	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	
 	@Id
 	@Column(name = "ID_MATERIA")
@@ -61,14 +63,14 @@ public class Materia extends AbstractBean<Materia> {
 		return id;
 	}
 
-	public void setPeriodo(Integer periodo) {
-		this.periodo = periodo;
+	public void setListaPeriodosPertecentes(
+			Set<RelacaoPeriodo> listaPeriodosPertecentes) {
+		this.listaPeriodosPertecentes = listaPeriodosPertecentes;
 	}
 	
-	public Integer getPeriodo() {
-		return periodo;
+	public Set<RelacaoPeriodo> getListaPeriodosPertecentes() {
+		return listaPeriodosPertecentes;
 	}
-		
 	@Override
 	public Class<Materia> getJavaType() {
 		return Materia.class;

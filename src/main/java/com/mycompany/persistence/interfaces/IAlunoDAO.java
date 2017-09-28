@@ -5,6 +5,7 @@ import java.util.List;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
+import com.mycompany.domain.RelacaoPeriodo;
 
 public interface IAlunoDAO extends IDAOComum<Aluno, Long>{
 	
@@ -19,6 +20,8 @@ public interface IAlunoDAO extends IDAOComum<Aluno, Long>{
 	public Boolean save(Arquivo arquivo);
 	
 	public Boolean remove(Arquivo arquivo);
+	
+	public void remove(List<RelacaoPeriodo> listaRelacaoPeriodos);
 	
 	
 	

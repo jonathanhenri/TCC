@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.persistence.interfaces.IAlunoDAO;
 
 public class AlunoDAO extends DAOComumHibernateImpl<Aluno, Long> implements IAlunoDAO{	
@@ -53,6 +54,11 @@ public class AlunoDAO extends DAOComumHibernateImpl<Aluno, Long> implements IAlu
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
 	public boolean remove(Aluno aluno) {
 		return super.remove(aluno);
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
+	public void remove(List<RelacaoPeriodo> listaRelacaoPeriodos){
+		super._deleteEntities(listaRelacaoPeriodos);
 	}
 	
 	
