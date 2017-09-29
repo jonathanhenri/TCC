@@ -15,6 +15,7 @@ import com.mycompany.domain.Arquivo;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.ContadorAcesso;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IAlunoDAO;
@@ -22,12 +23,14 @@ import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICodigoAlunoServico;
 import com.mycompany.services.interfaces.IContadorAcessoServico;
+import com.mycompany.services.interfaces.IRelacaoPeriodoServico;
 import com.mycompany.util.Util;
 
 public class AlunoServico implements IAlunoServico{
 	private IAlunoDAO alunoDAO;
 	private ICodigoAlunoServico codigoAlunoServico;
 	private IContadorAcessoServico contadorAcessoServico;
+	private IRelacaoPeriodoServico relacaoPeriodoServico;
 	
 	public AlunoServico() {
 	}
@@ -43,11 +46,13 @@ public class AlunoServico implements IAlunoServico{
 			administracao.setAluno(aluno);
 			administracao.setCurso(aluno.getAdministracao().getCurso());
 			aluno.setAdministracao(administracao);
+		
 			if(alunoDAO.persist(aluno)){
 				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
 				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
+			atualizarListaPeriodosAluno(aluno);
 			retorno.addMensagem(mensagem);
 		}else{
 			retorno.addMensagem(new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
@@ -104,7 +109,37 @@ public class AlunoServico implements IAlunoServico{
 			codigoAlunoServico.save(codigoAluno);
 		}
 	}
-
+	private void atualizarListaPeriodosAluno(Aluno aluno){
+		Search search = new Search(RelacaoPeriodo.class);
+		search.addFilterEqual("aluno.id", aluno.getId());
+		
+		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
+		
+		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
+			if(aluno.getListaPeriodosPertecentes()!=null && aluno.getListaPeriodosPertecentes().size()>0){
+				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){
+					boolean excluir = true;
+					for(RelacaoPeriodo periodoNovo:aluno.getListaPeriodosPertecentes()){
+						if(periodoNovo.getId() == null){
+							relacaoPeriodoServico.persist(periodoNovo);
+						}
+						
+						if(periodoAntigo.getId().equals(periodoNovo.getId())){
+							excluir = false;
+						}
+					}
+					
+					if(excluir){
+						relacaoPeriodoServico.remove(periodoAntigo);
+					}
+				}
+			}else{
+				relacaoPeriodoServico.remove(listaRelacaoPeriodoAntiga);
+			}
+		}else if(aluno.getListaPeriodosPertecentes()!=null && aluno.getListaPeriodosPertecentes().size()>0){
+			relacaoPeriodoServico.persist(Util.toList(aluno.getListaPeriodosPertecentes()));
+		}
+	}
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno save(Aluno aluno) {
 		Retorno retorno = validaRegrasAntesAlterar(aluno);
@@ -112,6 +147,7 @@ public class AlunoServico implements IAlunoServico{
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			desativarCodigoAluno(aluno);
+			atualizarListaPeriodosAluno(aluno);
 			if(alunoDAO.save(aluno)){
 				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
@@ -149,6 +185,10 @@ public class AlunoServico implements IAlunoServico{
 			if(acesso!=null){
 				contadorAcessoServico.remove(acesso);
 			}
+			
+			Search searchPeriodo = new Search(RelacaoPeriodo.class);
+			searchPeriodo.addFilterEqual("aluno.id", aluno.getId());
+			relacaoPeriodoServico.remove(relacaoPeriodoServico.search(searchPeriodo));
 			
 			if(alunoDAO.remove(aluno)){
 				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
@@ -284,6 +324,11 @@ public class AlunoServico implements IAlunoServico{
 		}
 	}
 
+	
+	public void setRelacaoPeriodoServico(
+			IRelacaoPeriodoServico relacaoPeriodoServico) {
+		this.relacaoPeriodoServico = relacaoPeriodoServico;
+	}
 	public void setContadorAcessoServico(
 			IContadorAcessoServico contadorAcessoServico) {
 		this.contadorAcessoServico = contadorAcessoServico;

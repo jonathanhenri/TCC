@@ -1,5 +1,8 @@
 package com.mycompany.domain;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +15,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "RELACAO_PERIODO")
-public class RelacaoPeriodo {
+public class RelacaoPeriodo extends AbstractBean<RelacaoPeriodo>{
+	private static final long serialVersionUID = 1L;
+	
+	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name="ID_ADMINISTRACAO")
+	private Administracao administracao;
+	
 	@Column(name = "PERIODO",nullable=false)
 	private Integer periodo;
 	
@@ -105,5 +114,25 @@ public class RelacaoPeriodo {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Override
+	public Serializable getIdentifier() {
+		return id;
+	}
+
+	@Override
+	public Class<RelacaoPeriodo> getJavaType() {
+		return RelacaoPeriodo.class;
+	}
+
+	@Override
+	public void setAdministracao(Administracao administracao) {
+		this.administracao = administracao;
+	}
+
+	@Override
+	public Administracao getAdministracao() {
+		return administracao;
 	}
 }

@@ -18,7 +18,11 @@
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
-      <bean id="contadorAcessoDAO"  class="com.mycompany.persistence.dao.ContadorAcessoDAO">
+     <bean id="contadorAcessoDAO"  class="com.mycompany.persistence.dao.ContadorAcessoDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+   <bean id="relacaoPeriodoDAO"  class="com.mycompany.persistence.dao.RelacaoPeriodoDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
     </bean>
     

@@ -14,6 +14,7 @@
     	<property name="alunoDAO" ref="alunoDAO" />
     	<property name="codigoAlunoServico" ref="codigoAlunoServico" />
     	<property name="contadorAcessoServico" ref="contadorAcessoServico" />
+    	<property name="relacaoPeriodoServico" ref="relacaoPeriodoServico" />
     </bean>
     
     <bean id="cursoServico"  class="com.mycompany.services.servico.CursoServico">
@@ -36,6 +37,11 @@
     <bean id="materiaServico"  class="com.mycompany.services.servico.MateriaServico">
     	<property name="materiaDAO" ref="materiaDAO" />
     </bean>
+    
+      <bean id="relacaoPeriodoServico"  class="com.mycompany.services.servico.RelacaoPeriodoServico">
+    	<property name="relacaoPeriodoDAO" ref="relacaoPeriodoDAO" />
+    </bean>
+    
     
      <bean id="agendaServico"  class="com.mycompany.services.servico.AgendaServico">
     	<property name="agendaDAO" ref="agendaDAO" />

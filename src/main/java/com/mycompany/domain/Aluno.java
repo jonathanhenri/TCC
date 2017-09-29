@@ -65,7 +65,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 //	@JoinColumn(name="ID_ARQUIVO")
 //	private Arquivo imagem;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy = "aluno",cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "aluno")
 	@Column(name = "ID_ALUNO")
 	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	
