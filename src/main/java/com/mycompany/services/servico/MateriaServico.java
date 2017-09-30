@@ -1,5 +1,6 @@
 package com.mycompany.services.servico;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Isolation;
@@ -34,6 +35,13 @@ public class MateriaServico implements IMateriaServico {
 		
 		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
 		
+		if(materia.getListaPeriodosPertecentes()!=null && materia.getListaPeriodosPertecentes().size()>0){
+			for(RelacaoPeriodo periodoNovo:materia.getListaPeriodosPertecentes()){
+				if(periodoNovo.getAdministracao() == null){
+					periodoNovo.setAdministracao(Util.clonar(materia.getAdministracao(),false));
+				}
+			}
+		}
 		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
 			if(materia.getListaPeriodosPertecentes()!=null && materia.getListaPeriodosPertecentes().size()>0){
 				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){
@@ -112,8 +120,19 @@ public class MateriaServico implements IMateriaServico {
 			}
 			
 			if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
-				search.addFetch("listaPeriodosPertecentes");
-				search.addFilterEqual("listaPeriodosPertecentes.materia.id", 1);
+				
+				Search search2 = new Search(RelacaoPeriodo.class);
+				search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
+				search2.addFilterNotNull("materia");
+				List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
+				List<Long> idsMaterias = new ArrayList<Long>();
+				if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
+					for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
+						idsMaterias.add(relacaoPeriodo.getMateria().getId());
+					}
+				}
+				
+				filterOr.add(Filter.in("id", idsMaterias));
 			}
 			search.addFilter(filterOr);
 		}

@@ -214,6 +214,14 @@ public class AgendaServico implements IAgendaServico {
 		
 		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
 		
+		if(agenda.getListaPeriodosPertecentes()!=null && agenda.getListaPeriodosPertecentes().size()>0){
+			for(RelacaoPeriodo periodoNovo:agenda.getListaPeriodosPertecentes()){
+				if(periodoNovo.getAdministracao() == null){
+					periodoNovo.setAdministracao(Util.clonar(agenda.getAdministracao(),false));
+				}
+			}
+		}
+		
 		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
 			if(agenda.getListaPeriodosPertecentes()!=null && agenda.getListaPeriodosPertecentes().size()>0){
 				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){

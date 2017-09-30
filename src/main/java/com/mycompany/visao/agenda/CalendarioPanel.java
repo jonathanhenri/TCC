@@ -260,6 +260,10 @@ public class CalendarioPanel extends Panel {
 		agenda = (Agenda) agendaServico.searchFechId(agenda);
 		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 		listaTodosEventos = Util.toList(agenda.getEventos());
+		
+		Search search = new Search(Agenda.class);
+		search.addFilterEqual("eventos.id",1);
+		agendaServico.search(search);
 	}
 	
 	private void popularHashMapEventoAgrupado(){

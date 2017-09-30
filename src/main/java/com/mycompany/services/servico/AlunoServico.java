@@ -115,6 +115,14 @@ public class AlunoServico implements IAlunoServico{
 		
 		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
 		
+		if(aluno.getListaPeriodosPertecentes()!=null && aluno.getListaPeriodosPertecentes().size()>0){
+			for(RelacaoPeriodo periodoNovo:aluno.getListaPeriodosPertecentes()){
+				if(periodoNovo.getAdministracao() == null){
+					periodoNovo.setAdministracao(Util.clonar(aluno.getAdministracao(),false));
+				}
+			}
+		}
+		
 		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
 			if(aluno.getListaPeriodosPertecentes()!=null && aluno.getListaPeriodosPertecentes().size()>0){
 				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){

@@ -36,6 +36,14 @@ public class EventoServico implements IEventoServico {
 		
 		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
 		
+		if(evento.getListaPeriodosPertecentes()!=null && evento.getListaPeriodosPertecentes().size()>0){
+			for(RelacaoPeriodo periodoNovo:evento.getListaPeriodosPertecentes()){
+				if(periodoNovo.getAdministracao() == null){
+					periodoNovo.setAdministracao(Util.clonar(evento.getAdministracao(),false));
+				}
+			}
+		}
+		
 		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
 			if(evento.getListaPeriodosPertecentes()!=null && evento.getListaPeriodosPertecentes().size()>0){
 				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){

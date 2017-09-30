@@ -1545,5 +1545,36 @@ public class Util {
 	        }
 	        return search;
 	    }
+	 
+	 
+	 public static <T> T clonar(T entity,boolean clonarComId){
+			try{
+			
+				@SuppressWarnings("all")
+				Class<T> classeDestino = (Class<T>) entity.getClass();
+				
+				T objetoDestino = classeDestino.newInstance();
+				
+				PropertyDescriptor[] atributos = PropertyUtils.getPropertyDescriptors(entity);
+				
+				for(PropertyDescriptor atributo : atributos){
+					
+					if("class".equals(atributo.getName()) || "identifier".equals(atributo.getName()) || ("id".equals(atributo.getName()) && !clonarComId) ){
+						continue;
+					}
+					
+					// Copia o valor dos atributos não persisitidos para o objeto de destino
+					Object value = PropertyUtils.getSimpleProperty(entity, atributo.getName());
+					
+					if(value != null){
+						BeanUtils.setProperty(objetoDestino, atributo.getName(), value);
+					}
+				}
+				return objetoDestino;
+			}catch (Exception e){
+				throw new RuntimeException(e);
+			}
+				
+		}
 
 }

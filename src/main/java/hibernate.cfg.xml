@@ -31,6 +31,8 @@
 		<property name="hbm2ddl.auto">update</property>
 		
 		
-		<mapping class="com.mycompany.domain.Aluno"/>
+		<mapping class="com.mycompany.domain.Aluno" />
+		<mapping class="com.mycompany.domain.RelacaoPeriodo"/>
+		<mapping class="com.mycompany.domain.Materia"/>
 	</session-factory>
 </hibernate-configuration>
