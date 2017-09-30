@@ -1,5 +1,6 @@
 package com.mycompany.services.servico;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -302,6 +303,21 @@ public class EventoServico implements IEventoServico {
 			
 			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
 				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			}
+			
+			if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
+				
+				Search search2 = new Search(RelacaoPeriodo.class);
+				search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
+				search2.addFilterNotNull("evento");
+				List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
+				List<Long> idsEvento = new ArrayList<Long>();
+				if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
+					for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
+						idsEvento.add(relacaoPeriodo.getEvento().getId());
+					}
+				}
+				filterOr.add(Filter.in("id", idsEvento));
 			}
 					
 			search.addFilter(filterOr);

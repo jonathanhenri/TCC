@@ -131,7 +131,6 @@ public class MateriaServico implements IMateriaServico {
 						idsMaterias.add(relacaoPeriodo.getMateria().getId());
 					}
 				}
-				
 				filterOr.add(Filter.in("id", idsMaterias));
 			}
 			search.addFilter(filterOr);

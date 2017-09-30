@@ -693,6 +693,8 @@ public class CalendarioPanel extends Panel {
 				evento.setDataFim(date);
 				evento.setDataInicio(date);
 				evento.setAgenda(agenda);
+				evento.setListaPeriodosPertecentes(agenda.getListaPeriodosPertecentes());
+				
 				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
 					private static final long serialVersionUID = 1L;
 
@@ -730,6 +732,7 @@ public class CalendarioPanel extends Panel {
 				
 				Evento evento = new Evento();
 				evento.setAgenda(agenda);
+				evento.setListaPeriodosPertecentes(agenda.getListaPeriodosPertecentes());
 				
 				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
 					private static final long serialVersionUID = 1L;
