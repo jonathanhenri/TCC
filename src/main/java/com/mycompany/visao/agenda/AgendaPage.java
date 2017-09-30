@@ -73,7 +73,7 @@ public class AgendaPage extends Menu {
 	private ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(300);
+		modalIncluirEditar.setInitialHeight(500);
 		modalIncluirEditar.setInitialWidth(600);
 		
 		modalIncluirEditar.setCloseButtonCallback(null);

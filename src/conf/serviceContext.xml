@@ -32,10 +32,12 @@
     
     <bean id="eventoServico"  class="com.mycompany.services.servico.EventoServico">
     	<property name="eventoDAO" ref="eventoDAO" />
+    	<property name="relacaoPeriodoServico" ref="relacaoPeriodoServico" />
     </bean>
     
     <bean id="materiaServico"  class="com.mycompany.services.servico.MateriaServico">
     	<property name="materiaDAO" ref="materiaDAO" />
+    	<property name="relacaoPeriodoServico" ref="relacaoPeriodoServico" />
     </bean>
     
       <bean id="relacaoPeriodoServico"  class="com.mycompany.services.servico.RelacaoPeriodoServico">
@@ -46,6 +48,7 @@
      <bean id="agendaServico"  class="com.mycompany.services.servico.AgendaServico">
     	<property name="agendaDAO" ref="agendaDAO" />
     	<property name="eventoServico" ref="eventoServico" />
+    	<property name="relacaoPeriodoServico" ref="relacaoPeriodoServico" />
     </bean>
     
     <bean id="permissaoAcessoServico"  class="com.mycompany.services.servico.PermissaoAcessoServico">

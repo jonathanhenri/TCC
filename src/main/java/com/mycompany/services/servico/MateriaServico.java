@@ -12,19 +12,54 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Materia;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IMateriaDAO;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IMateriaServico;
+import com.mycompany.services.interfaces.IRelacaoPeriodoServico;
 import com.mycompany.util.Util;
 
 public class MateriaServico implements IMateriaServico {
 	private IMateriaDAO materiaDAO;
+	private IRelacaoPeriodoServico relacaoPeriodoServico;
 	
 	public MateriaServico() {
 	}
 
+	private void atualizarListaRelacaoPeriodos(Materia materia){
+		Search search = new Search(RelacaoPeriodo.class);
+		search.addFilterEqual("materia.id", materia.getId());
+		
+		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
+		
+		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
+			if(materia.getListaPeriodosPertecentes()!=null && materia.getListaPeriodosPertecentes().size()>0){
+				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){
+					boolean excluir = true;
+					for(RelacaoPeriodo periodoNovo:materia.getListaPeriodosPertecentes()){
+						if(periodoNovo.getId() == null){
+							relacaoPeriodoServico.persist(periodoNovo);
+						}
+						
+						if(periodoAntigo.getId().equals(periodoNovo.getId())){
+							excluir = false;
+						}
+					}
+					
+					if(excluir){
+						relacaoPeriodoServico.remove(periodoAntigo);
+					}
+				}
+			}else{
+				relacaoPeriodoServico.remove(listaRelacaoPeriodoAntiga);
+			}
+		}else if(materia.getListaPeriodosPertecentes()!=null && materia.getListaPeriodosPertecentes().size()>0){
+			relacaoPeriodoServico.persist(Util.toList(materia.getListaPeriodosPertecentes()));
+		}
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Materia materia) {
 		Retorno retorno = validaRegrasAntesIncluir(materia);
@@ -36,6 +71,7 @@ public class MateriaServico implements IMateriaServico {
 			}else{
 				mensagem  = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
+			atualizarListaRelacaoPeriodos(materia);
 			retorno.addMensagem(mensagem);
 		}else{
 			retorno.addMensagem(new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
@@ -71,10 +107,14 @@ public class MateriaServico implements IMateriaServico {
 				filterOr.add(filterCompartilhar);
 			}
 			
-			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
-				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
+			if(aluno!=null){
+				filterOr.add(Filter.equal("administracao.aluno.id", aluno.getId()));
 			}
-					
+			
+			if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
+				search.addFetch("listaPeriodosPertecentes");
+				search.addFilterEqual("listaPeriodosPertecentes.materia.id", 1);
+			}
 			search.addFilter(filterOr);
 		}
 	}
@@ -91,6 +131,7 @@ public class MateriaServico implements IMateriaServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			atualizarListaRelacaoPeriodos(materia);
 			if(materiaDAO.save(materia)){
 				mensagem = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
@@ -208,13 +249,20 @@ public class MateriaServico implements IMateriaServico {
 		}
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
+			Search searchPeriodo = new Search(RelacaoPeriodo.class);
+			searchPeriodo.addFilterEqual("materia.id", materia.getId());
+			relacaoPeriodoServico.remove(relacaoPeriodoServico.search(searchPeriodo));
 		}
 		
 		return retorno;
 	}
 	
 
+	public void setRelacaoPeriodoServico(
+			IRelacaoPeriodoServico relacaoPeriodoServico) {
+		this.relacaoPeriodoServico = relacaoPeriodoServico;
+	}
+	
 	public void setMateriaDAO(IMateriaDAO materiaDAO) {
 		this.materiaDAO = materiaDAO;
 	}

@@ -53,7 +53,7 @@ public class Mensagem {
 	}
 	
 	public String toString(){
-		if(motivo.equals(Mensagem.MOTIVO_REPETIDO)){
+		if(motivo.equals(Mensagem.MOTIVO_REPETIDO) || motivo.equals(Mensagem.MOTIVO_NULO)){
 			return "Campo "+getCampo()+" em " + getNomeEntidade()+" "+getMotivo();
 		}else if(motivo.equals(Mensagem.MOTIVO_CADASTRO_ERRO) || motivo.equals(Mensagem.MOTIVO_ALTERADO_ERRO) || motivo.equals(Mensagem.MOTIVO_EXCLUIDO_ERRO)){
 			return getMotivo()+" "+getCampo();

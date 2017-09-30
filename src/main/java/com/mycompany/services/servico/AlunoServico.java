@@ -52,7 +52,7 @@ public class AlunoServico implements IAlunoServico{
 			}else{
 				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
-			atualizarListaPeriodosAluno(aluno);
+			atualizarListaRelacaoPeriodos(aluno);
 			retorno.addMensagem(mensagem);
 		}else{
 			retorno.addMensagem(new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
@@ -109,7 +109,7 @@ public class AlunoServico implements IAlunoServico{
 			codigoAlunoServico.save(codigoAluno);
 		}
 	}
-	private void atualizarListaPeriodosAluno(Aluno aluno){
+	private void atualizarListaRelacaoPeriodos(Aluno aluno){
 		Search search = new Search(RelacaoPeriodo.class);
 		search.addFilterEqual("aluno.id", aluno.getId());
 		
@@ -147,7 +147,7 @@ public class AlunoServico implements IAlunoServico{
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			desativarCodigoAluno(aluno);
-			atualizarListaPeriodosAluno(aluno);
+			atualizarListaRelacaoPeriodos(aluno);
 			if(alunoDAO.save(aluno)){
 				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{

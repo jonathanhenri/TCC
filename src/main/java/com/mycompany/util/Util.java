@@ -57,6 +57,7 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.services.interfaces.IAlunoServico;
@@ -818,6 +819,18 @@ public class Util {
 		Date sdate2 = cal2.getTime();
 		
 		return diferencaDatas(sdate1, sdate2, tipoRetorno, null);
+	}
+	
+	public static List<Integer> getPeriodosListaRelacaoPeriodos(Set<RelacaoPeriodo> relacaoPeriodos){
+		List<Integer> listaPeriodos = new ArrayList<Integer>();
+		
+		if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
+			for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
+				listaPeriodos.add(relacaoPeriodo.getPeriodo());
+			}
+		}
+		
+		return listaPeriodos;
 	}
 	
 	/**

@@ -102,6 +102,7 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "REPETIR_TODA_DOMINGO", nullable = true)
 	private Boolean repetirTodoDomingo;
 	
+	
 	@Id
 	@Column(name = "ID_EVENTO")
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -43,7 +43,7 @@ public class RelacaoPeriodo extends AbstractBean<RelacaoPeriodo>{
 	
 	
 	@Id
-	@Column(name = "ID_ALUNO_PERIODO")
+	@Column(name = "ID_RELACAO_PERIODO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

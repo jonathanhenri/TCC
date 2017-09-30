@@ -8,19 +8,25 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.extensions.yui.calendar.TimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.Radio;
 import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -33,6 +39,7 @@ import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.Materia;
 import com.mycompany.domain.OrigemEvento;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.domain.TipoEvento;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.services.interfaces.IMateriaServico;
@@ -57,6 +64,11 @@ public class EventoEditForm extends EditForm<Evento> {
 	private  IOrigemEventoServico origemEventoServico;
 	
 	private WebMarkupContainer divRepetirEvento;
+	
+	private Integer periodoAux = 0;
+	private WebMarkupContainer divPeriodos;
+	private NumberTextField<Integer> campoNumberPeriodoAux;
+	private List<RelacaoPeriodo> listaPeriodosSelecionados;
 	
 	private Evento eventoAux = new Evento();
 	
@@ -410,14 +422,95 @@ public class EventoEditForm extends EditForm<Evento> {
 		return timeField;
 	}
 	
-	private NumberTextField<Integer> criarCampoPeriodo(){
-		NumberTextField<Integer> periodo = new NumberTextField<Integer>("periodo");
-		periodo.setOutputMarkupId(true);
-		return periodo;
+	private WebMarkupContainer criarListViewPeriodos(){
+		divPeriodos = new WebMarkupContainer("divPeriodos");
+		divPeriodos.setOutputMarkupId(true);
+		LoadableDetachableModel<List<RelacaoPeriodo>> loadPermissao = new LoadableDetachableModel<List<RelacaoPeriodo>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<RelacaoPeriodo> load() {
+				return listaPeriodosSelecionados;
+			}
+		};
+			
+		ListView<RelacaoPeriodo> listViewPeriodos = new ListView<RelacaoPeriodo>("listaPeriodosSelecionados",loadPermissao) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem<RelacaoPeriodo> item) {
+				RelacaoPeriodo periodo = (RelacaoPeriodo) item.getModelObject();		
+				item.add(new Label("periodo", periodo.getPeriodo()));
+				item.add(criarExcluirPeriodo(periodo));
+			}
+		};
+		
+		divPeriodos.add(listViewPeriodos);
+		listViewPeriodos.setOutputMarkupId(true);
+		return divPeriodos;
+	}
+	
+	private NumberTextField<Integer> criarCampoPeriodoAux(){
+		campoNumberPeriodoAux = new NumberTextField<Integer>("periodoAux",new PropertyModel<Integer>(this, "periodoAux"));
+		campoNumberPeriodoAux.setOutputMarkupId(true);
+		return campoNumberPeriodoAux;
+	}
+	
+	
+	private AjaxButton criarButtonAdicionarPeriodo(){
+		AjaxButton ajaxButton = new AjaxButton("adicionarPeriodo",this) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSubmit(AjaxRequestTarget target,Form<?> form) {
+				if(getPeriodoAux()!=null && getPeriodoAux()>0){
+					listaPeriodosSelecionados.add(new RelacaoPeriodo(getPeriodoAux(), getAbstractBean()));
+					setPeriodoAux(0);
+					campoNumberPeriodoAux.modelChanged();
+					target.add(campoNumberPeriodoAux);
+					target.add(divPeriodos);
+				}else{
+					Util.notifyInfo(target, "Período deve ser maior que zero");
+				}
+			}
+		};
+		
+		return ajaxButton;
+	}
+	
+	private AjaxLink<String> criarExcluirPeriodo(final RelacaoPeriodo relacaoPeriodo){
+		AjaxLink<String> ajaxLink = new AjaxLink<String>("linkExcluirPeriodo") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				if(listaPeriodosSelecionados!=null && listaPeriodosSelecionados.size()>0){
+					listaPeriodosSelecionados.remove(relacaoPeriodo);
+					target.add(divPeriodos);
+				}
+				
+			}
+		};
+		
+		return ajaxLink;
+	}
+	
+	@Override
+	protected void beforeSave() {
+		getAbstractBean().setListaPeriodosPertecentes(Util.toSet(listaPeriodosSelecionados));
+		super.beforeSave();
 	}
 	
 	@Override
 	protected void adicionarCampos() {
+		if(getAbstractBean().getListaPeriodosPertecentes()!=null && getAbstractBean().getListaPeriodosPertecentes().size()>0){
+			listaPeriodosSelecionados = Util.toList(getAbstractBean().getListaPeriodosPertecentes());
+		}else{
+			listaPeriodosSelecionados = new ArrayList<RelacaoPeriodo>();
+		}
+		add(criarButtonAdicionarPeriodo());
+		add(criarCampoPeriodoAux());
+		add(criarListViewPeriodos());
 		add(criarCampoDescricao());
 		add(criarCampoObservacao());
 		add(criarCampoLocal());
@@ -428,7 +521,6 @@ public class EventoEditForm extends EditForm<Evento> {
 		add(criarDivRepetirEvento());
 		add(criarCampoRepetirEvento());
 		add(criarListEventosRecorrentes());
-		add(criarCampoPeriodo());
 	}
 	
 	@Override
@@ -439,5 +531,12 @@ public class EventoEditForm extends EditForm<Evento> {
 	
 	public Evento getEventoAux() {
 		return eventoAux;
+	}
+	
+	public void setPeriodoAux(Integer periodoAux) {
+		this.periodoAux = periodoAux;
+	}
+	public Integer getPeriodoAux() {
+		return periodoAux;
 	}
 }

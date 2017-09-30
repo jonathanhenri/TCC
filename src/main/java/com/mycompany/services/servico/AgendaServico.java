@@ -12,17 +12,20 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IAgendaDAO;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.IEventoServico;
+import com.mycompany.services.interfaces.IRelacaoPeriodoServico;
 import com.mycompany.util.Util;
 
 public class AgendaServico implements IAgendaServico {
 	private IAgendaDAO agendaDAO;
 	private IEventoServico eventoServico;
+	private IRelacaoPeriodoServico relacaoPeriodoServico;
 	
 	public AgendaServico() {
 	}
@@ -38,6 +41,7 @@ public class AgendaServico implements IAgendaServico {
 			}else{
 				mensagem  = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
+			atualizarListaRelacaoPeriodos(agenda);
 			retorno.addMensagem(mensagem);
 		}else{
 			retorno.addMensagem(new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
@@ -95,6 +99,7 @@ public class AgendaServico implements IAgendaServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			atualizarListaRelacaoPeriodos(agenda);
 			if(agendaDAO.save(agenda)){
 				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
@@ -115,15 +120,11 @@ public class AgendaServico implements IAgendaServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			agenda =(Agenda)searchFechId(agenda);
-			retorno.addRetorno(eventoServico.remove(Util.toList(agenda.getEventos())));
 				
-			if(retorno.getSucesso()){
-				if(agendaDAO.remove(agenda)){
-					mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
-				}else{
-					mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
-				}
+			if(agendaDAO.remove(agenda)){
+				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+			}else{
+				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
@@ -206,6 +207,38 @@ public class AgendaServico implements IAgendaServico {
 		
 		return retorno;
 	}
+	
+	private void atualizarListaRelacaoPeriodos(Agenda agenda){
+		Search search = new Search(RelacaoPeriodo.class);
+		search.addFilterEqual("agenda.id", agenda.getId());
+		
+		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
+		
+		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
+			if(agenda.getListaPeriodosPertecentes()!=null && agenda.getListaPeriodosPertecentes().size()>0){
+				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){
+					boolean excluir = true;
+					for(RelacaoPeriodo periodoNovo:agenda.getListaPeriodosPertecentes()){
+						if(periodoNovo.getId() == null){
+							relacaoPeriodoServico.persist(periodoNovo);
+						}
+						
+						if(periodoAntigo.getId().equals(periodoNovo.getId())){
+							excluir = false;
+						}
+					}
+					
+					if(excluir){
+						relacaoPeriodoServico.remove(periodoAntigo);
+					}
+				}
+			}else{
+				relacaoPeriodoServico.remove(listaRelacaoPeriodoAntiga);
+			}
+		}else if(agenda.getListaPeriodosPertecentes()!=null && agenda.getListaPeriodosPertecentes().size()>0){
+			relacaoPeriodoServico.persist(Util.toList(agenda.getListaPeriodosPertecentes()));
+		}
+	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesRemover(Agenda agenda) {
@@ -217,10 +250,20 @@ public class AgendaServico implements IAgendaServico {
 		}
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
+			agenda =(Agenda)searchFechId(agenda);
+			retorno.addRetorno(eventoServico.remove(Util.toList(agenda.getEventos())));
+			
+			Search searchPeriodo = new Search(RelacaoPeriodo.class);
+			searchPeriodo.addFilterEqual("agenda.id", agenda.getId());
+			relacaoPeriodoServico.remove(relacaoPeriodoServico.search(searchPeriodo));
 		}
 		
 		return retorno;
+	}
+	
+	public void setRelacaoPeriodoServico(
+			IRelacaoPeriodoServico relacaoPeriodoServico) {
+		this.relacaoPeriodoServico = relacaoPeriodoServico;
 	}
 	
 	public void setEventoServico(IEventoServico eventoServico) {

@@ -33,6 +33,7 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 		if(alunoLogado!=null && alunoLogado.getId()!=null){
 			Search search = new Search(Aluno.class);
 			search.addFilterEqual("id", alunoLogado.getId());
+			search.addFetch("listaPeriodosPertecentes");
 			
 			for(String fetch: Reflexao.getListaAtributosEstrangeiros(alunoLogado)){
 				search.addFetch(fetch);

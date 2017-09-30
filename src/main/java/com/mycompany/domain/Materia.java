@@ -1,6 +1,7 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -30,9 +31,9 @@ public class Materia extends AbstractBean<Materia> {
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy = "materia",cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "materia",cascade = CascadeType.ALL,targetEntity = RelacaoPeriodo.class)
 	@Column(name = "ID_MATERIA")
-	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
+	private List<RelacaoPeriodo> listaPeriodosPertecentes;
 	
 	@Id
 	@Column(name = "ID_MATERIA")
@@ -62,15 +63,16 @@ public class Materia extends AbstractBean<Materia> {
 	public Serializable getIdentifier() {
 		return id;
 	}
-
+	
 	public void setListaPeriodosPertecentes(
-			Set<RelacaoPeriodo> listaPeriodosPertecentes) {
+			List<RelacaoPeriodo> listaPeriodosPertecentes) {
 		this.listaPeriodosPertecentes = listaPeriodosPertecentes;
 	}
 	
-	public Set<RelacaoPeriodo> getListaPeriodosPertecentes() {
+	public List<RelacaoPeriodo> getListaPeriodosPertecentes() {
 		return listaPeriodosPertecentes;
 	}
+
 	@Override
 	public Class<Materia> getJavaType() {
 		return Materia.class;

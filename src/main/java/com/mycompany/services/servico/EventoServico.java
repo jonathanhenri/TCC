@@ -13,19 +13,56 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.persistence.interfaces.IEventoDAO;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.services.interfaces.IEventoServico;
+import com.mycompany.services.interfaces.IRelacaoPeriodoServico;
 import com.mycompany.util.Util;
 
 public class EventoServico implements IEventoServico {
 	private IEventoDAO eventoDAO;
+	private IRelacaoPeriodoServico relacaoPeriodoServico;
 	
 	public EventoServico() {
 	}
 
+	
+	private void atualizarListaRelacaoPeriodos(Evento evento){
+		Search search = new Search(RelacaoPeriodo.class);
+		search.addFilterEqual("evento.id", evento.getId());
+		
+		List<RelacaoPeriodo> listaRelacaoPeriodoAntiga = relacaoPeriodoServico.search(search);
+		
+		if(listaRelacaoPeriodoAntiga!=null && listaRelacaoPeriodoAntiga.size()>0){
+			if(evento.getListaPeriodosPertecentes()!=null && evento.getListaPeriodosPertecentes().size()>0){
+				for(RelacaoPeriodo periodoAntigo:listaRelacaoPeriodoAntiga){
+					boolean excluir = true;
+					for(RelacaoPeriodo periodoNovo:evento.getListaPeriodosPertecentes()){
+						if(periodoNovo.getId() == null){
+							relacaoPeriodoServico.persist(periodoNovo);
+						}
+						
+						if(periodoAntigo.getId().equals(periodoNovo.getId())){
+							excluir = false;
+						}
+					}
+					
+					if(excluir){
+						relacaoPeriodoServico.remove(periodoAntigo);
+					}
+				}
+			}else{
+				relacaoPeriodoServico.remove(listaRelacaoPeriodoAntiga);
+			}
+		}else if(evento.getListaPeriodosPertecentes()!=null && evento.getListaPeriodosPertecentes().size()>0){
+			relacaoPeriodoServico.persist(Util.toList(evento.getListaPeriodosPertecentes()));
+		}
+	}
+	
+	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Evento evento) {
 		if(evento.getDataInicio() == null){
@@ -41,6 +78,7 @@ public class EventoServico implements IEventoServico {
 			}else{
 				mensagem  = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
+			atualizarListaRelacaoPeriodos(evento);
 			retorno.addMensagem(mensagem);
 		}else{
 			retorno.addMensagem(new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
@@ -110,6 +148,7 @@ public class EventoServico implements IEventoServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			atualizarListaRelacaoPeriodos(evento);
 			if(eventoDAO.save(evento)){
 				mensagem = new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
@@ -133,13 +172,14 @@ public class EventoServico implements IEventoServico {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno remove(List<Evento> listaEvento) {
 		Retorno retorno = new Retorno();
-		retorno.setSucesso(false);
+		retorno.setSucesso(true);
 		
 		if(listaEvento!=null && listaEvento.size()>0){
-			retorno = validaRegrasAntesRemover(listaEvento.get(0));
-			
 			for(Evento evento:listaEvento){
-				retorno.setSucesso(remove(evento).getSucesso());
+				retorno = validaRegrasAntesRemover(evento);
+				if(retorno.getSucesso()){
+					retorno.setSucesso(remove(evento).getSucesso());
+				}
 			}
 		}
 		
@@ -224,13 +264,19 @@ public class EventoServico implements IEventoServico {
 		}
 		
 		if(retorno.getSucesso()){
-			// Se precisar de regras especificas;
+			Search searchPeriodo = new Search(RelacaoPeriodo.class);
+			searchPeriodo.addFilterEqual("evento.id", evento.getId());
+			relacaoPeriodoServico.remove(relacaoPeriodoServico.search(searchPeriodo));
 		}
 		
 		return retorno;
 	}
 	
 
+	public void setRelacaoPeriodoServico(
+			IRelacaoPeriodoServico relacaoPeriodoServico) {
+		this.relacaoPeriodoServico = relacaoPeriodoServico;
+	}
 	public void setEventoDAO(IEventoDAO eventoDAO) {
 		this.eventoDAO = eventoDAO;
 	}
