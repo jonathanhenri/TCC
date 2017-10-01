@@ -36,11 +36,14 @@ import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
+import com.mycompany.domain.Curso;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.Materia;
 import com.mycompany.domain.OrigemEvento;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.domain.TipoEvento;
+import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.services.interfaces.IMateriaServico;
 import com.mycompany.services.interfaces.IOrigemEventoServico;
@@ -62,6 +65,9 @@ public class EventoEditForm extends EditForm<Evento> {
 	
 	@SpringBean(name="origemEventoServico")
 	private  IOrigemEventoServico origemEventoServico;
+	
+	@SpringBean(name="cursoServico")
+	private  ICursoServico cursoServico;
 	
 	private WebMarkupContainer divRepetirEvento;
 	
@@ -88,6 +94,38 @@ public class EventoEditForm extends EditForm<Evento> {
 		}
 	}
 	
+	
+	private DropDownChoice<Curso> criarCampoCurso(){
+		IChoiceRenderer<Curso> choiceRenderer = new ChoiceRenderer<Curso>("nome", "id");
+		
+		LoadableDetachableModel<List<Curso>> cursos = new LoadableDetachableModel<List<Curso>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected List<Curso> load() {
+				List<Curso> cursos = new ArrayList<Curso>();
+				
+				cursos = cursoServico.search(new Search(Curso.class));
+				return cursos;
+			}
+		};
+		
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_CURSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
+					return false;
+				}
+				return true;
+			}
+		};
+		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setOutputMarkupId(true);
+		
+		return tipoRadioChoice;
+	}
 	
 	@Override
 	protected void setServicoComum() {
@@ -508,6 +546,8 @@ public class EventoEditForm extends EditForm<Evento> {
 		}else{
 			listaPeriodosSelecionados = new ArrayList<RelacaoPeriodo>();
 		}
+		
+		add(criarCampoCurso());
 		add(criarButtonAdicionarPeriodo());
 		add(criarCampoPeriodoAux());
 		add(criarListViewPeriodos());

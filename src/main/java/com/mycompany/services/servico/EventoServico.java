@@ -98,17 +98,17 @@ public class EventoServico implements IEventoServico {
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(Evento.class);
-			search.addFilterEqual("id", abstractBean.getId());
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
-				search.addFetch(fetch);
-			}
-			
-			return  (AbstractBean<?>) searchUnique(search);
-		}
-		return null;
+//		if(abstractBean!=null && abstractBean.getId()!=null){
+//			Search search = new Search(Evento.class);
+//			search.addFilterEqual("id", abstractBean.getId());
+//			
+//			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+//				search.addFetch(fetch);
+//			}
+//			
+//			return  (AbstractBean<?>) searchUnique(search);
+//		}
+		return eventoDAO.consultarPorIdFetch(abstractBean.getId());
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
@@ -297,28 +297,31 @@ public class EventoServico implements IEventoServico {
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			
 			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarEvento()){
-				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharEvento", true));
-				filterOr.add(filterCompartilhar);
+				Filter filterAnd = Filter.and();
+				
+				filterAnd.add(Filter.equal("administracao.aluno.configuracao.compartilharEvento", true));
+				
+				if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
+					
+					Search search2 = new Search(RelacaoPeriodo.class);
+					search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
+					search2.addFilterNotNull("evento");
+					List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
+					List<Long> idsEvento = new ArrayList<Long>();
+					if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
+						for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
+							idsEvento.add(relacaoPeriodo.getEvento().getId());
+						}
+					}
+					filterAnd.add(Filter.in("id", idsEvento));
+				}
+				filterOr.add(filterAnd);
 			}
 			
 			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
 				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
 			}
 			
-			if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
-				
-				Search search2 = new Search(RelacaoPeriodo.class);
-				search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
-				search2.addFilterNotNull("evento");
-				List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
-				List<Long> idsEvento = new ArrayList<Long>();
-				if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
-					for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
-						idsEvento.add(relacaoPeriodo.getEvento().getId());
-					}
-				}
-				filterOr.add(Filter.in("id", idsEvento));
-			}
 					
 			search.addFilter(filterOr);
 		}

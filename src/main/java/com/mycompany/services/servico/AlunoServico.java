@@ -58,6 +58,7 @@ public class AlunoServico implements IAlunoServico{
 		configuracao.setSincronizarMateria(true);
 		configuracao.setSincronizarAgenda(true);
 		configuracao.setSincronizarPerfilAcesso(true);
+		configuracao.setAdministracao(Util.clonar(administracao, false));
 		
 		aluno.setConfiguracao(configuracao);
 	}
@@ -99,16 +100,18 @@ public class AlunoServico implements IAlunoServico{
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(Aluno.class);
-			search.addFilterEqual("id", abstractBean.getId());
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
-				search.addFetch(fetch);
-			}
-			return  (AbstractBean<?>) searchUnique(search);
-		}
-		return null;
+//		if(abstractBean!=null && abstractBean.getId()!=null){
+//			Search search = new Search(Materia.class);
+//			search.addFilterEqual("id", abstractBean.getId());
+//			search.addFetch("listaPeriodosPertecentes");
+//			
+//			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+//				search.addFetch(fetch);
+//			}
+//			
+//			return  (AbstractBean<?>) searchUnique(search);
+//		}
+		return alunoDAO.consultarPorIdFetch(abstractBean.getId());
 	}
 	
 	

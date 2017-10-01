@@ -46,17 +46,17 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(OrigemEvento.class);
-			search.addFilterEqual("id", abstractBean.getId());
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
-				search.addFetch(fetch);
-			}
-			
-			return  (AbstractBean<?>) searchUnique(search);
-		}
-		return null;
+//		if(abstractBean!=null && abstractBean.getId()!=null){
+//			Search search = new Search(OrigemEvento.class);
+//			search.addFilterEqual("id", abstractBean.getId());
+//			
+//			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+//				search.addFetch(fetch);
+//			}
+//			
+//			return  (AbstractBean<?>) searchUnique(search);
+//		}
+		return origemEventoDAO.consultarPorIdFetch(abstractBean.getId());
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)

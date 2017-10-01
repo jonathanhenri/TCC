@@ -7,7 +7,6 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * A feedback panel that shows feedback messages with JGrowl (http://www.stanlemon.net/projects/jgrowl.html)

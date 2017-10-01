@@ -50,17 +50,17 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(Configuracao.class);
-			search.addFilterEqual("id", abstractBean.getId());
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
-				search.addFetch(fetch);
-			}
-			
-			return  (AbstractBean<?>) searchUnique(search);
-		}
-		return null;
+//		if(abstractBean!=null && abstractBean.getId()!=null){
+//			Search search = new Search(Configuracao.class);
+//			search.addFilterEqual("id", abstractBean.getId());
+//			
+//			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+//				search.addFetch(fetch);
+//			}
+//			
+//			return  (AbstractBean<?>) searchUnique(search);
+//		}
+		return configuracaoDAO.consultarPorIdFetch(abstractBean.getId());
 	}
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
@@ -139,8 +139,9 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
 		}
 		
-		
-		if(count(new Search())>0){
+		Search search = new Search(Configuracao.class);
+		search.addFilterEqual("administracao.aluno.id", Util.getAlunoLogado().getId());
+		if(count(search)>0){
 			retorno.addMensagem(new Mensagem("Configuração já existente",Mensagem.ALERTA));
 			retorno.setSucesso(false);
 		}
@@ -208,6 +209,7 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 	@Override
 	public void searchComum(Search search){
 		Filter filterOr = Filter.or();
+		
 		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null &&  Util.getAlunoLogado().getAdministracao().getAluno()!=null){
 			filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
 		}

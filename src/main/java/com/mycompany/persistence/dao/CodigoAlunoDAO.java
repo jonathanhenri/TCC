@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.DAOException;
 import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.CodigoAluno;
@@ -33,6 +35,41 @@ public class CodigoAlunoDAO extends DAOComumHibernateImpl<CodigoAluno, Long> imp
 		return super.save(codigoAluno);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
+    public CodigoAluno consultarPorIdFetch(Long id) throws DAOException {
+        if (id == null) {
+            throw new IllegalArgumentException("O id é obrigatorio.");
+        }
+        try {
+            StringBuffer hql = new StringBuffer();
+            hql.append(" SELECT u" +
+                       " FROM CodigoAluno u" +
+                       " JOIN FETCH u.administracao a" +
+                       " LEFT JOIN FETCH u.perfilAcesso pf" +
+                       " LEFT JOIN FETCH a.curso cur" +
+                       " LEFT JOIN FETCH a.aluno alua" +
+                       " WHERE u.id = :id");
+
+            Query query = getSession().createQuery(hql.toString());
+
+            query.setParameter("id", id);
+
+            Object resultado = null;
+
+            resultado = query.uniqueResult();
+
+            if(resultado!=null){
+            	CodigoAluno codigoAluno = (CodigoAluno)resultado;
+                return codigoAluno;
+            }
+
+        } catch (Exception e) {
+            throw new DAOException("Erro ao buscar saida de estoque por id: " + id, e);
+        }
+        return null;
+    }
+	
+	
 	
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
 	public boolean remove(CodigoAluno codigoAluno) {

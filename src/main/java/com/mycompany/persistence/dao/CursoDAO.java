@@ -2,16 +2,16 @@ package com.mycompany.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.googlecode.genericdao.search.ISearch;
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.DAOException;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Materia;
 import com.mycompany.persistence.interfaces.ICursoDAO;
-import com.mycompany.util.Util;
 
 
 public class CursoDAO extends DAOComumHibernateImpl<Curso, Long> implements ICursoDAO{	
@@ -20,15 +20,39 @@ public class CursoDAO extends DAOComumHibernateImpl<Curso, Long> implements ICur
 	}
 	
 	
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
+    public Curso consultarPorIdFetch(Long id) throws DAOException {
+        if (id == null) {
+            throw new IllegalArgumentException("O id é obrigatorio.");
+        }
+        try {
+            StringBuffer hql = new StringBuffer();
+            hql.append(" SELECT u" +
+                       " FROM Curso u" +
+                       " JOIN FETCH u.administracao a" +
+                       " LEFT JOIN FETCH a.curso cur" +
+                       " LEFT JOIN FETCH a.aluno alua" +
+                       " WHERE u.id = :id");
+
+            Query query = getSession().createQuery(hql.toString());
+
+            query.setParameter("id", id);
+
+            Object resultado = null;
+
+            resultado = query.uniqueResult();
+
+            if(resultado!=null){
+            	Curso curso = (Curso) resultado;
+                return curso;
+            }
+
+        } catch (Exception e) {
+            throw new DAOException("Erro ao buscar saida de estoque por id: " + id, e);
+        }
+        return null;
+    }
 	
-	@Override
-	public <Curso> List<Curso> search(ISearch search) {
-		Search searchAux = new Search();
-		searchAux.addFilterEqual("ID_ADMINISTRACAO", Util.getAlunoLogado().getAdministracao().getId());
-		
-		return _search(searchAux);
-		
-	}
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = java.lang.Exception.class, timeout = 1200)
 	public boolean persist(Curso curso) {
 		return super.persist(curso);

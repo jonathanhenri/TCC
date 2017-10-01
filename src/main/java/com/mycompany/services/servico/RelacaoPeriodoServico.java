@@ -61,8 +61,7 @@ public class RelacaoPeriodoServico implements IRelacaoPeriodoServico{
 	
 	@Override
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		// TODO Auto-generated method stub
-		return null;
+		return relacaoPeriodoDAO.consultarPorIdFetch(abstractBean.getId());
 	}
 	@Override
 	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {

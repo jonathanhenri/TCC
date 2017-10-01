@@ -90,18 +90,18 @@ public class MateriaServico implements IMateriaServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(Materia.class);
-			search.addFilterEqual("id", abstractBean.getId());
-			search.addFetch("listaPeriodosPertecentes");
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
-				search.addFetch(fetch);
-			}
-			
-			return  (AbstractBean<?>) searchUnique(search);
-		}
-		return null;
+//		if(abstractBean!=null && abstractBean.getId()!=null){
+//			Search search = new Search(Materia.class);
+//			search.addFilterEqual("id", abstractBean.getId());
+//			search.addFetch("listaPeriodosPertecentes");
+//			
+//			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+//				search.addFetch(fetch);
+//			}
+//			
+//			return  (AbstractBean<?>) searchUnique(search);
+//		}
+		return materiaDAO.consultarPorIdFetch(abstractBean.getId());
 	}
 	
 	@Override
@@ -112,27 +112,29 @@ public class MateriaServico implements IMateriaServico {
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			
 			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarMateria()){
-				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharMateria", true));
-				filterOr.add(filterCompartilhar);
+				Filter filterAnd = Filter.and();
+				
+				filterAnd.add(Filter.equal("administracao.aluno.configuracao.compartilharMateria", true));
+				
+				if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
+					
+					Search search2 = new Search(RelacaoPeriodo.class);
+					search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
+					search2.addFilterNotNull("materia");
+					List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
+					List<Long> idsMaterias = new ArrayList<Long>();
+					if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
+						for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
+							idsMaterias.add(relacaoPeriodo.getMateria().getId());
+						}
+					}
+					filterAnd.add(Filter.in("id", idsMaterias));
+				}
+				filterOr.add(filterAnd);
 			}
 			
 			if(aluno!=null){
 				filterOr.add(Filter.equal("administracao.aluno.id", aluno.getId()));
-			}
-			
-			if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
-				
-				Search search2 = new Search(RelacaoPeriodo.class);
-				search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
-				search2.addFilterNotNull("materia");
-				List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
-				List<Long> idsMaterias = new ArrayList<Long>();
-				if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
-					for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
-						idsMaterias.add(relacaoPeriodo.getMateria().getId());
-					}
-				}
-				filterOr.add(Filter.in("id", idsMaterias));
 			}
 			search.addFilter(filterOr);
 		}

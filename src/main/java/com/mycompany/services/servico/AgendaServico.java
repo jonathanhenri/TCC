@@ -54,20 +54,19 @@ public class AgendaServico implements IAgendaServico {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public AbstractBean<?> searchFechId(AbstractBean<?> abstractBean) {
-		if(abstractBean!=null && abstractBean.getId()!=null){
-			Search search = new Search(Agenda.class);
-			search.addFilterEqual("id", abstractBean.getId());
-			search.addFetch("eventos");
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
-				search.addFetch(fetch);
-			}
-			
-			return  (AbstractBean<?>) searchUnique(search);
-		}
-		return null;
+//		if(abstractBean!=null && abstractBean.getId()!=null){
+//			Search search = new Search(Agenda.class);
+//			search.addFilterEqual("id", abstractBean.getId());
+//			search.addFetch("eventos");
+//			
+//			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
+//				search.addFetch(fetch);
+//			}
+//			
+//			return  (AbstractBean<?>) searchUnique(search);
+//		}
+		return agendaDAO.consultarPorIdFetch(abstractBean.getId());
 	}
-	
 	@Override
 	public void searchComum(Search search){
 		Filter filterOr = Filter.or();
@@ -76,28 +75,33 @@ public class AgendaServico implements IAgendaServico {
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			
 			if(aluno.getConfiguracao()!=null && aluno.getConfiguracao().getSincronizarAgenda()){
-				Filter filterCompartilhar = Filter.or(Filter.equal("administracao.aluno.configuracao.compartilharAgenda", true));
-				filterOr.add(filterCompartilhar);
+				Filter filterAnd = Filter.and();
+				
+				filterAnd.add(Filter.equal("administracao.aluno.configuracao.compartilharAgenda", true));
+				
+				if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
+					
+					Search search2 = new Search(RelacaoPeriodo.class);
+					search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
+					search2.addFilterNotNull("agenda");
+					List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
+					List<Long> idsAgenda = new ArrayList<Long>();
+					if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
+						for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
+							idsAgenda.add(relacaoPeriodo.getAgenda().getId());
+						}
+					}
+					filterAnd.add(Filter.in("id", idsAgenda));
+				}
+				
+				filterOr.add(filterAnd);
 			}
 			
 			if(Util.getAlunoLogado().getAdministracao().getAluno()!=null){
 				filterOr.add(Filter.equal("administracao.aluno.id", Util.getAlunoLogado().getAdministracao().getAluno().getId()));
 			}
 			
-			if(aluno!=null && aluno.getListaPeriodosPertecentes().size()>0){
-				
-				Search search2 = new Search(RelacaoPeriodo.class);
-				search2.addFilterIn("periodo", Util.getPeriodosListaRelacaoPeriodos(aluno.getListaPeriodosPertecentes()));
-				search2.addFilterNotNull("agenda");
-				List<RelacaoPeriodo> relacaoPeriodos =  relacaoPeriodoServico.search(search2);
-				List<Long> idsAgenda = new ArrayList<Long>();
-				if(relacaoPeriodos!=null && relacaoPeriodos.size()>0){
-					for(RelacaoPeriodo relacaoPeriodo:relacaoPeriodos){
-						idsAgenda.add(relacaoPeriodo.getAgenda().getId());
-					}
-				}
-				filterOr.add(Filter.in("id", idsAgenda));
-			}
+		
 					
 			search.addFilter(filterOr);
 		}

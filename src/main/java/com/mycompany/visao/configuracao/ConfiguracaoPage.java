@@ -3,7 +3,6 @@ package com.mycompany.visao.configuracao;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.Radio;
@@ -68,7 +67,9 @@ public class ConfiguracaoPage extends Menu {
 	}
 	
 	private void inicializarConfiguracao(){
-		configuracao = configuracaoServico.searchUnique(new Search());
+		Search search = new Search(Configuracao.class);
+		search.addFilterEqual("administracao.aluno.id", Util.getAlunoLogado().getId());
+		configuracao = configuracaoServico.searchUnique(search);
 		if(configuracao == null){
 			configuracao = new Configuracao();
 			configuracao.setCompartilharEvento(false);

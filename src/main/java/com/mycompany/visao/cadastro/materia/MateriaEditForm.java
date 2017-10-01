@@ -60,7 +60,7 @@ public class MateriaEditForm extends EditForm<Materia> {
 	}
 	@Override
 	protected void beforeSave() {
-		getAbstractBean().setListaPeriodosPertecentes(listaPeriodosSelecionados);
+		getAbstractBean().setListaPeriodosPertecentes(Util.toSet(listaPeriodosSelecionados));
 		super.beforeSave();
 	}
 	
