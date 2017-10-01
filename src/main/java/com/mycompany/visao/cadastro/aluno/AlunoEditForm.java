@@ -27,6 +27,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.PerfilAcesso;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICursoServico;
@@ -114,7 +115,17 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			}
 		};
 		
-		final DropDownChoice<PerfilAcesso> tipoRadioChoice = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer);
+		final DropDownChoice<PerfilAcesso> tipoRadioChoice = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_PERFIL_ACESSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
+					return false;
+				}
+				return true;
+			}
+		};
 		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
@@ -136,7 +147,17 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			}
 		};
 		
-		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
+		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer){
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_CURSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
+					return false;
+				}
+				return true;
+			}
+		};
 		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		

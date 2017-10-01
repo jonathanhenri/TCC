@@ -9,7 +9,6 @@ import org.springframework.security.acls.objectidentity.ObjectIdentity;
 
 public abstract class AbstractBean<T> implements ObjectIdentity{
 	private static final long serialVersionUID = 1L;
-
 	
 	public abstract void setAdministracao(Administracao administracao);
 	
@@ -19,6 +18,7 @@ public abstract class AbstractBean<T> implements ObjectIdentity{
 
 	public abstract void setId(Long id);
 	
+	public abstract String getNomeClass();
 	
     public T clonar(boolean clonarComId){
 		try{

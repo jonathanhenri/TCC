@@ -140,25 +140,44 @@ public class Util {
 		return result;
 	}
     
-    
+    /*
+     * Usar nos Serviços
+     */
     public static Boolean possuiPermissao(Aluno alunoLogado,AbstractBean<?> abstractBean,Integer operacao){
+    	Boolean permissaoCasoUso = false;
+    	Boolean permissaoCompartilhado = false;
     	
     	if(alunoLogado!=null){
-//    		if(aluno.getAdministracao()!=null && aluno.getAdministracao().getAdministradorCampus()){
-//    			return true;
-//    		}
+    		if(alunoLogado.getAdministracao()!=null && alunoLogado.getAdministracao().getAdministradorCampus()){
+    			return true;
+    		}
     		if(alunoLogado.getPerfilAcesso()!=null && alunoLogado.getPerfilAcesso().getPermissoesAcesso()!=null && alunoLogado.getPerfilAcesso().getPermissoesAcesso().size()>0){
-    			
     			for(PermissaoAcesso permissaoAcesso:alunoLogado.getPerfilAcesso().getPermissoesAcesso()){
-    				if(permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
+    				if(permissaoAcesso.getCasoDeUso()!=null && permissaoAcesso.getCasoDeUso().isInstance(abstractBean)){
     					if(permissaoAcesso.getOperacao().equals(operacao)){
-    						return true;
+    						permissaoCasoUso = true;
     					}
+    				}else{
+    					if((alunoLogado.getAdministracao()!=null && alunoLogado.getAdministracao().getAluno()!=null && abstractBean.getAdministracao()!=null && abstractBean.getAdministracao().getAluno()!=null)
+        					&& !alunoLogado.getAdministracao().getAluno().getId().equals(abstractBean.getAdministracao().getAluno().getId())){
+        						
+    						if(operacao.equals(PermissaoAcesso.OPERACAO_ALTERAR)){
+    							if(permissaoAcesso.getPermissao().equals(PermissaoAcesso.PERMISSAO_ALTERAR_ITENS_COMPARTILHADOS)){
+    								permissaoCompartilhado = true;
+    							}
+    						}else if(operacao.equals(PermissaoAcesso.OPERACAO_EXCLUIR)){
+    							if(permissaoAcesso.getPermissao().equals(PermissaoAcesso.PERMISSAO_EXCLUIR_ITENS_COMPARTILHADOS)){
+    								permissaoCompartilhado = true;
+    							}
+    						}
+        				}else{
+        					permissaoCompartilhado = true;
+        				}
     				}
     			}
     		}
     	}
-    	return false;
+    	return permissaoCasoUso && permissaoCompartilhado;
     }
     
     public static Boolean possuiPermissao(Aluno alunoLogado,Integer permissao,Integer operacao){
@@ -191,7 +210,7 @@ public class Util {
 	}
 	
 	public static String getMensagemExclusao(AbstractBean<?> abstractBean){
-		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()))+" realmente?";
+		return "Esta ação não pode ser revertida, deseja excluir "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getNomeClass()))+" realmente?";
 	}
 	
 	/**

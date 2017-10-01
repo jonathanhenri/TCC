@@ -76,6 +76,9 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	public static Integer PERMISSAO_CONFIGURACAO_SINCRONIZAR = 41;
 	public static Integer PERMISSAO_CONFIGURACAO_COMPARTILHAR = 41;
 	
+	public static Integer PERMISSAO_ALTERAR_ITENS_COMPARTILHADOS = 42;
+	public static Integer PERMISSAO_EXCLUIR_ITENS_COMPARTILHADOS = 43;
+	
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
@@ -88,7 +91,7 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 	@Column(name = "CODIGO", nullable = false)
 	private Integer codigo;
 
-	@Column(name = "CASO_DE_USO", nullable = false, length = 300)
+	@Column(name = "CASO_DE_USO", nullable = true, length = 300)
 	private Class<?> casoDeUso;
 	
 //	@ManyToMany(fetch=FetchType.LAZY)
@@ -179,6 +182,11 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Permissão Acesso";
 	}
 
 	public Class<?> getCasoDeUso() {

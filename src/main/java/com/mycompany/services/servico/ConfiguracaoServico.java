@@ -36,13 +36,13 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			aluno.setConfiguracao(configuracao);
 			if(configuracaoDAO.persist(configuracao) && alunoServico.save(aluno).getSucesso()){
-				mensagem  = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -76,14 +76,14 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(configuracaoDAO.save(configuracao)){
-				mensagem = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -98,9 +98,9 @@ public class ConfiguracaoServico implements IConfiguracaoServico {
 			Aluno aluno = searchFetchAlunoLogado(Util.getAlunoLogado());
 			aluno.setConfiguracao(null);
 			if(configuracaoDAO.remove(configuracao) && alunoServico.save(aluno).getSucesso()){
-				mensagem = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(configuracao.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(configuracao.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

@@ -122,6 +122,11 @@ public class Curso extends AbstractBean<Curso> {
 	public Integer getModalidade() {
 		return modalidade;
 	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Curso";
+	}
 
 	public void setModalidade(Integer modalidade) {
 		this.modalidade = modalidade;

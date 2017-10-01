@@ -32,13 +32,13 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(perfilAcessoDAO.persist(perfilAcesso)){
-				mensagem  = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -79,14 +79,14 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(perfilAcessoDAO.save(perfilAcesso)){
-				mensagem = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -99,9 +99,9 @@ public class PerfilAcessoServico implements IPerfilAcessoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(perfilAcessoDAO.remove(perfilAcesso)){
-				mensagem = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(perfilAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(perfilAcesso.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

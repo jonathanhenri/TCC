@@ -172,9 +172,13 @@ public class FiltroDinamicoAtributo extends AbstractBean<FiltroDinamicoAtributo>
     public void setId(Long id) {
         this.id = id;
     }
+    @Override
+	public String getNomeClass() {
+		return "Filtro Dinamico Atributo";
+	}
+    
 	@Override
 	public void setAdministracao(Administracao administracao) {
-		
 	}
 	@Override
 	public Administracao getAdministracao() {

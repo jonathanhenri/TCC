@@ -299,6 +299,11 @@ public class Evento extends AbstractBean<Evento> {
 	}
 
 	@Override
+	public String getNomeClass() {
+		return "Evento";
+	}
+	
+	@Override
 	public Serializable getIdentifier() {
 		return id;
 	}

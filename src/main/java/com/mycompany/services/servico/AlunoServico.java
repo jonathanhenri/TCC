@@ -13,6 +13,7 @@ import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Arquivo;
 import com.mycompany.domain.CodigoAluno;
+import com.mycompany.domain.Configuracao;
 import com.mycompany.domain.ContadorAcesso;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.domain.RelacaoPeriodo;
@@ -36,26 +37,47 @@ public class AlunoServico implements IAlunoServico{
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
+	private void atribuirAtributosPadroes(Aluno aluno){
+		Administracao administracao = new Administracao();
+		administracao.setAdministradorCampus(false);
+		administracao.setAluno(aluno);
+		administracao.setCurso(aluno.getAdministracao().getCurso());
+		aluno.setAdministracao(administracao);
+		
+		Configuracao configuracao = new Configuracao();
+		configuracao.setCompartilharEvento(false);
+		configuracao.setCompartilharTipoEvento(false);
+		configuracao.setCompartilharOrigemEvento(false);
+		configuracao.setCompartilharMateria(false);
+		configuracao.setCompartilharAgenda(false);
+		configuracao.setCompartilharPerfilAcesso(false);
+		
+		configuracao.setSincronizarEvento(true);
+		configuracao.setSincronizarTipoEvento(true);
+		configuracao.setSincronizarOrigemEvento(true);
+		configuracao.setSincronizarMateria(true);
+		configuracao.setSincronizarAgenda(true);
+		configuracao.setSincronizarPerfilAcesso(true);
+		
+		aluno.setConfiguracao(configuracao);
+	}
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno persist(Aluno aluno) {
 		Retorno retorno = validaRegrasAntesIncluir(aluno);
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
-			Administracao administracao = new Administracao();
-			administracao.setAdministradorCampus(false);
-			administracao.setAluno(aluno);
-			administracao.setCurso(aluno.getAdministracao().getCurso());
-			aluno.setAdministracao(administracao);
+			atribuirAtributosPadroes(aluno);
 		
 			if(alunoDAO.persist(aluno)){
-				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			atualizarListaRelacaoPeriodos(aluno);
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -157,14 +179,14 @@ public class AlunoServico implements IAlunoServico{
 			desativarCodigoAluno(aluno);
 			atualizarListaRelacaoPeriodos(aluno);
 			if(alunoDAO.save(aluno)){
-				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -188,10 +210,12 @@ public class AlunoServico implements IAlunoServico{
 			
 			Search searchContadorAcesso = new Search(ContadorAcesso.class);
 			searchContadorAcesso.addFilterEqual("administracao.aluno.id",aluno.getId());
-			ContadorAcesso acesso = contadorAcessoServico.searchUnique(searchContadorAcesso);
+			List<ContadorAcesso> listaAcesso = contadorAcessoServico.search(searchContadorAcesso);
 			
-			if(acesso!=null){
-				contadorAcessoServico.remove(acesso);
+			if(listaAcesso!=null && listaAcesso.size()>0){
+				for(ContadorAcesso contadorAcesso:listaAcesso){
+					contadorAcessoServico.remove(contadorAcesso);
+				}
 			}
 			
 			Search searchPeriodo = new Search(RelacaoPeriodo.class);
@@ -199,9 +223,9 @@ public class AlunoServico implements IAlunoServico{
 			relacaoPeriodoServico.remove(relacaoPeriodoServico.search(searchPeriodo));
 			
 			if(alunoDAO.remove(aluno)){
-				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(aluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(aluno.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			

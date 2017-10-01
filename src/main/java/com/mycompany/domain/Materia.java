@@ -85,4 +85,8 @@ public class Materia extends AbstractBean<Materia> {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@Override
+	public String getNomeClass() {
+		return "Matéria";
+	}
 }

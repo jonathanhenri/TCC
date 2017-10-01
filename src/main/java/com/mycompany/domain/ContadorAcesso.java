@@ -36,6 +36,9 @@ public class ContadorAcesso extends AbstractBean<ContadorAcesso> {
 		return id;
 	}
 	
+	public ContadorAcesso() {
+	}
+	
 	public ContadorAcesso(Date dataAcesso) {
 		setDataAcesso(dataAcesso);
 	}
@@ -68,6 +71,11 @@ public class ContadorAcesso extends AbstractBean<ContadorAcesso> {
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Contador Acesso";
 	}
 
 	@Override

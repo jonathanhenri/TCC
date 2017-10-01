@@ -128,6 +128,10 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	}
 
 	@Override
+	public String getNomeClass() {
+		return "Código Aluno";
+	}
+	@Override
 	public Class<CodigoAluno> getJavaType() {
 		return CodigoAluno.class;
 	}

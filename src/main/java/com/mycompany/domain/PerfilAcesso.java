@@ -82,6 +82,10 @@ public class PerfilAcesso extends AbstractBean<PerfilAcesso> {
 	}
 
 	@Override
+	public String getNomeClass() {
+		return "Perfil Acesso";
+	}
+	@Override
 	public Long getId() {
 		return id;
 	}

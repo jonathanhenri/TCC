@@ -125,6 +125,11 @@ public class RelacaoPeriodo extends AbstractBean<RelacaoPeriodo>{
 	public Class<RelacaoPeriodo> getJavaType() {
 		return RelacaoPeriodo.class;
 	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Relação Periodo";
+	}
 
 	@Override
 	public void setAdministracao(Administracao administracao) {

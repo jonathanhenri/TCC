@@ -172,7 +172,7 @@ public abstract class ListagemFiltrosDinamicosPanel extends Panel {
         return ajaxButton;
     }
     private Label criarCampoNomeClasseFiltro(){
-        Label label = new Label("nomeClasse", abstractBean.getClass().getSimpleName());
+        Label label = new Label("nomeClasse", abstractBean.getNomeClass());
         label.setOutputMarkupId(true);
         return label;
     }

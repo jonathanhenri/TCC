@@ -31,13 +31,13 @@ public class PermissaoAcessoServico implements IPermissaoAcessoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(permissaoAcessoDAO.persist(permissaoAcesso)){
-				mensagem  = new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -70,14 +70,14 @@ public class PermissaoAcessoServico implements IPermissaoAcessoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(permissaoAcessoDAO.save(permissaoAcesso)){
-				mensagem = new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -90,9 +90,9 @@ public class PermissaoAcessoServico implements IPermissaoAcessoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(permissaoAcessoDAO.remove(permissaoAcesso)){
-				mensagem = new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(permissaoAcesso.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(permissaoAcesso.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

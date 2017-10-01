@@ -183,6 +183,11 @@ public class Configuracao extends AbstractBean<Configuracao>{
 	public Serializable getIdentifier() {
 		return id;
 	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Configuração";
+	}
 
 	@Override
 	public Class<Configuracao> getJavaType() {

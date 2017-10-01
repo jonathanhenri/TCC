@@ -69,14 +69,14 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(codigoAlunoDAO.save(codigoAluno)){
-				mensagem = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(codigoAluno.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(codigoAluno.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(codigoAluno.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -89,9 +89,9 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(codigoAlunoDAO.remove(codigoAluno)){
-				mensagem = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(codigoAluno.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(codigoAluno.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(codigoAluno.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

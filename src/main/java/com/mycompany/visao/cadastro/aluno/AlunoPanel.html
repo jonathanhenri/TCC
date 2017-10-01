@@ -60,12 +60,14 @@
 												<select class="form-control" wicket:id="administracao.curso"></select>
 											</div>
 										</div>
-										<div class="form-group">
-											<div class="col-md-6">	
-												<label class="control-label">Perfil Acesso</label>
-												<select class="form-control" wicket:id="perfilAcesso"></select>
+										<wicket:enclosure child="perfilAcesso">
+											<div class="form-group">
+												<div class="col-md-6">	
+													<label class="control-label">Perfil Acesso</label>
+													<select class="form-control" wicket:id="perfilAcesso"></select>
+												</div>
 											</div>
-										</div>
+										</wicket:enclosure>
 									</div>
 									<div class="tab-pane" id="periodos">
 										<div class="form-group">

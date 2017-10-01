@@ -29,7 +29,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
-import com.mycompany.domain.FiltroDinamicoAgrupador;
 import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
@@ -341,7 +340,7 @@ public abstract class ListarPageGenerico extends Menu {
 	}
 	
 	protected String getNomeTituloListarPage(){
-		return "Listagem de "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()));
+		return "Listagem de "+Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getNomeClass()));
 	}
 	
 	protected AjaxLink<AbstractBean<?>> criarLinkExcluir(final AbstractBean<?> abstractBean) {
@@ -366,7 +365,7 @@ public abstract class ListarPageGenerico extends Menu {
 								retorno.setSucesso(false);
 								
 								if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
-									retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+									retorno.addMensagem(new Mensagem(abstractBean.getNomeClass(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
 								}else{
 									retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
 								}

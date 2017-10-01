@@ -62,6 +62,11 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	public Class<TipoEvento> getJavaType() {
 		return TipoEvento.class;
 	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Tipo Evento";
+	}
 
 	@Override
 	public Long getId() {

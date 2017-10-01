@@ -2,7 +2,6 @@ package com.mycompany.visao.comum;
 
 	import java.lang.reflect.Method;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -153,7 +152,7 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 									retorno.setSucesso(false);
 									
 									if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
-										retorno.addMensagem(new Mensagem(abstractBean.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+										retorno.addMensagem(new Mensagem(abstractBean.getNomeClass(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
 									}else{
 										retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
 									}
@@ -349,22 +348,18 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 	protected String getNomeTituloListarPage(){
 		String titulo = "";
 		if(abstractBean.getId()!=null){
-			titulo = "Editando "+ Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()));
+			titulo = "Editando "+ Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getNomeClass()));
 		}else{
-			titulo = "Incluindo " +Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getClass().getSimpleName()));
+			titulo = "Incluindo " +Util.firstToUpperCase(Util.separarToUpperCase(abstractBean.getNomeClass()));
 		}
 		return titulo;
 	}
 
-//	public AbstractBean<?> getAbstractBean() {
-//		return abstractBean;
-//	}
 	
 	protected T getAbstractBean() {
 		return getModelObject();
 	}
 	
-//	protected abstract void inicializarEditForm(String id,AbstractBean<?> abstractBean,Panel editPanel);
 			
 	private void adicionarCamposGerais(){
 		add(criarBotaoExcluir());

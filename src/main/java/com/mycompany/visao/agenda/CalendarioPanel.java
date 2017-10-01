@@ -37,6 +37,7 @@ import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.FiltroDinamicoAtributo;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
@@ -260,10 +261,6 @@ public class CalendarioPanel extends Panel {
 		agenda = (Agenda) agendaServico.searchFechId(agenda);
 		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 		listaTodosEventos = Util.toList(agenda.getEventos());
-		
-		Search search = new Search(Agenda.class);
-		search.addFilterEqual("eventos.id",1);
-		agendaServico.search(search);
 	}
 	
 	private void popularHashMapEventoAgrupado(){
@@ -593,7 +590,7 @@ public class CalendarioPanel extends Panel {
 							retorno.setSucesso(false);
 							
 							if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
-								retorno.addMensagem(new Mensagem(evento.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+								retorno.addMensagem(new Mensagem(evento.getNomeClass(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
 							}else{
 								retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
 							}
@@ -732,7 +729,8 @@ public class CalendarioPanel extends Panel {
 				
 				Evento evento = new Evento();
 				evento.setAgenda(agenda);
-				evento.setListaPeriodosPertecentes(agenda.getListaPeriodosPertecentes());
+				Agenda agendaAux = (Agenda)agendaServico.searchFechId(agenda);
+				evento.setListaPeriodosPertecentes(agendaAux.getListaPeriodosPertecentes());
 				
 				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
 					private static final long serialVersionUID = 1L;
@@ -755,6 +753,11 @@ public class CalendarioPanel extends Panel {
 				
 				modalIncluirEditar.setContent(editPanel);
 				modalIncluirEditar.show(target);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),agenda, PermissaoAcesso.OPERACAO_ALTERAR);
 			}
 		};
 		

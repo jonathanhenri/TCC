@@ -116,5 +116,10 @@ public class Agenda extends AbstractBean<Agenda> {
 	public Administracao getAdministracao() {
 		return administracao;
 	}
+
+	@Override
+	public String getNomeClass() {
+		return "Agenda";
+	}
 	
 }

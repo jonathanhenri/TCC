@@ -38,14 +38,14 @@ public class AgendaServico implements IAgendaServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(agendaDAO.persist(agenda)){
-				mensagem  = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			atualizarListaRelacaoPeriodos(agenda);
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -117,14 +117,14 @@ public class AgendaServico implements IAgendaServico {
 			Mensagem mensagem = new Mensagem();
 			atualizarListaRelacaoPeriodos(agenda);
 			if(agendaDAO.save(agenda)){
-				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -138,9 +138,9 @@ public class AgendaServico implements IAgendaServico {
 			Mensagem mensagem = new Mensagem();
 				
 			if(agendaDAO.remove(agenda)){
-				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

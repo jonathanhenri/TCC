@@ -32,13 +32,13 @@ public class TipoEventoServico implements ITipoEventoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(tipoEventoDAO.persist(tipoEvento)){
-				mensagem  = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -97,14 +97,14 @@ public class TipoEventoServico implements ITipoEventoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(tipoEventoDAO.save(tipoEvento)){
-				mensagem = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -117,9 +117,9 @@ public class TipoEventoServico implements ITipoEventoServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(tipoEventoDAO.remove(tipoEvento)){
-				mensagem = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(tipoEvento.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(tipoEvento.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

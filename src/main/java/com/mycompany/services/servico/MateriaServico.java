@@ -75,14 +75,14 @@ public class MateriaServico implements IMateriaServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(materiaDAO.persist(materia)){
-				mensagem  = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
+				mensagem  = new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
 			atualizarListaRelacaoPeriodos(materia);
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -93,6 +93,7 @@ public class MateriaServico implements IMateriaServico {
 		if(abstractBean!=null && abstractBean.getId()!=null){
 			Search search = new Search(Materia.class);
 			search.addFilterEqual("id", abstractBean.getId());
+			search.addFetch("listaPeriodosPertecentes");
 			
 			for(String fetch: Reflexao.getListaAtributosEstrangeiros(abstractBean)){
 				search.addFetch(fetch);
@@ -151,14 +152,14 @@ public class MateriaServico implements IMateriaServico {
 			Mensagem mensagem = new Mensagem();
 			atualizarListaRelacaoPeriodos(materia);
 			if(materiaDAO.save(materia)){
-				mensagem = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_ALTERADO, Mensagem.SUCESSO);
 			}else{
-				mensagem  = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
+				mensagem  = new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);
 		}else{
-			retorno.addMensagem(new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_ALTERADO_ERRO, Mensagem.ERRO));
 		}
 		
 		return retorno;
@@ -171,9 +172,9 @@ public class MateriaServico implements IMateriaServico {
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
 			if(materiaDAO.remove(materia)){
-				mensagem = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
+				mensagem = new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{
-				mensagem = new Mensagem(materia.getClass().getSimpleName(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
+				mensagem = new Mensagem(materia.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO_ERRO, Mensagem.ERRO);
 			}
 			
 			retorno.addMensagem(mensagem);

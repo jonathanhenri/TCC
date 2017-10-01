@@ -201,6 +201,11 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	}
 	
 	@Override
+	public String getNomeClass() {
+		return "Aluno";
+	}
+	
+	@Override
 	public GrantedAuthority[] getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new AtribuicaoAdmin());

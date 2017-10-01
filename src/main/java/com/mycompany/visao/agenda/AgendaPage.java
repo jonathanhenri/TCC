@@ -180,7 +180,7 @@ public class AgendaPage extends Menu {
 							retorno.setSucesso(false);
 							
 							if(e instanceof ConstraintViolationException || e instanceof DataIntegrityViolationException || (e.getCause()!=null && e.getCause() instanceof ConstraintViolationException)){
-								retorno.addMensagem(new Mensagem(agenda.getClass().getSimpleName(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
+								retorno.addMensagem(new Mensagem(agenda.getNomeClass(), Mensagem.MOTIVO_UTILIZADO, Mensagem.ERRO));
 							}else{
 								retorno.addMensagem(new Mensagem("Erro ao tentar realizar a ação",Mensagem.ERRO));
 							}

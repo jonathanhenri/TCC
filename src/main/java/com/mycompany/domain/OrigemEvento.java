@@ -64,6 +64,11 @@ public class OrigemEvento extends AbstractBean<OrigemEvento> {
 	public Class<OrigemEvento> getJavaType() {
 		return OrigemEvento.class;
 	}
+	
+	@Override
+	public String getNomeClass() {
+		return "Origem Evento";
+	}
 
 	@Override
 	public Long getId() {

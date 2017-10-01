@@ -79,6 +79,11 @@ public class Arquivo extends AbstractBean<Arquivo>{
 		return bytes;
 	}
 	
+	@Override
+	public String getNomeClass() {
+		return "Arquivo";
+	}
+	
 	public void setBytes(byte[] bytes) {
 		this.bytes = bytes;
 	}
