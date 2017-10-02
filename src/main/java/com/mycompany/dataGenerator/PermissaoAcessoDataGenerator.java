@@ -81,7 +81,7 @@ public class PermissaoAcessoDataGenerator {
 		
 		//Configuração
 		criarPermissao("Compartilhar", PermissaoAcesso.PERMISSAO_CONFIGURACAO_COMPARTILHAR, 32, AbstractBean.class, PermissaoAcesso.OPERACAO_CONFIGURACAO_COMPARTILHAR);
-		criarPermissao("Sincronizar", PermissaoAcesso.PERMISSAO_CONFIGURACAO_SINCRONIZAR, 33, AbstractBean.class, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR);
+		criarPermissao("Sincronizar", PermissaoAcesso.PERMISSAO_CONFIGURACAO_SINCRONIZAR, 33,AbstractBean.class, PermissaoAcesso.OPERACAO_CONFIGURACAO_SINCRONIZAR);
 		
 		//Alterar Excluir itens compartilhados
 		criarPermissao("Alterar Cadastros Compartilhados", PermissaoAcesso.PERMISSAO_ALTERAR_ITENS_COMPARTILHADOS, 34, null, PermissaoAcesso.OPERACAO_ALTERAR);
