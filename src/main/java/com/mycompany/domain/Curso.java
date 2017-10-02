@@ -1,8 +1,6 @@
 package com.mycompany.domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,9 +20,6 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class Curso extends AbstractBean<Curso> {
 	private static final long serialVersionUID = 1L;
 	
-	public static Integer MODALIDADE_ANUAL = 0;
-	public static Integer MODALIDADE_SEMESTRAL = 1;
-	
 	/*
 	 * A ordem dos atributos irar ser a ordem das colunas
 	 */
@@ -41,9 +36,6 @@ public class Curso extends AbstractBean<Curso> {
 	@ListarPageAnotacao
 	@Column(name = "DURACAO", nullable = false)
 	private Integer duracao;
-	
-	@Column(name = "MODALIDADE", nullable = true)
-	private Integer modalidade;
 	
 	@Column(name = "QUANTIDADE_PERIODO", nullable = true)
 	private Integer quantidadePeriodo;
@@ -93,10 +85,6 @@ public class Curso extends AbstractBean<Curso> {
 	public Long getId() {
 		return id;
 	}
-
-	public static List<Integer> getListaModalidades(){
-		return Arrays.asList(MODALIDADE_ANUAL,MODALIDADE_SEMESTRAL);
-	}
 	
 	@Override
 	public void setId(Long id) {
@@ -119,16 +107,8 @@ public class Curso extends AbstractBean<Curso> {
 		this.duracao = duracao;
 	}
 
-	public Integer getModalidade() {
-		return modalidade;
-	}
-	
 	@Override
 	public String getNomeClass() {
 		return "Curso";
-	}
-
-	public void setModalidade(Integer modalidade) {
-		this.modalidade = modalidade;
 	}
 }

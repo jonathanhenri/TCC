@@ -4,21 +4,18 @@ import java.util.List;
 
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.mycompany.domain.Curso;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
-import com.mycompany.util.WicketUtil;
 import com.mycompany.visao.comum.EditForm;
 
 public class CursoEditForm extends EditForm<Curso> {
@@ -45,15 +42,6 @@ public class CursoEditForm extends EditForm<Curso> {
 		serviceComum = cursoServico;
 	}
 	
-	private DropDownChoice<Integer> criarCampoSituacao(){
-		ListModel<Integer> tipos = new ListModel<Integer>(Curso.getListaModalidades());
-		
-		final DropDownChoice<Integer> tipoRadioChoice = new DropDownChoice<Integer>("modalidade", tipos, WicketUtil.getModalidadesCurso(this));
-		tipoRadioChoice.setNullValid(true);
-		tipoRadioChoice.setOutputMarkupId(true);
-		
-		return tipoRadioChoice;
-	}
 	
 	private FileUploadField criarCampoUploadLogo(){
 		uploadFieldLogo = new FileUploadField("logo",new PropertyModel<List<FileUpload>>(this, "file"));
@@ -86,7 +74,6 @@ public class CursoEditForm extends EditForm<Curso> {
 		add(criarCampoDuracao());
 		add(criarCampoQuantidadePeriodo());
 //		add(criarCampoUploadLogo());
-		add(criarCampoSituacao());
 	}
 	
 	public void setFile(String file) {

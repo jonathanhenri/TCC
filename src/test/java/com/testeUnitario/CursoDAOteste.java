@@ -33,7 +33,6 @@ public class CursoDAOteste extends BaseServiceTestCase {
 		Curso curso = new Curso();
 		curso.setNome("sistemas");
 		curso.setDuracao(5);
-		curso.setModalidade(Curso.MODALIDADE_ANUAL);
 		cursoServico.persist(curso);
 		assertNotNull(curso.getId());
 	}

@@ -10,7 +10,6 @@ public class CursoDataGenerator {
 		Curso curso = new Curso();
 		curso.setNome("Sistemas de Informação");
 		curso.setDuracao(4);
-		curso.setModalidade(Curso.MODALIDADE_ANUAL);
 		
 		Administracao administracao = new Administracao();
 		administracao.setCurso(curso);
