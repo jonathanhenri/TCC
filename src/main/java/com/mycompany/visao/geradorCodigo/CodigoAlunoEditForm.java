@@ -14,6 +14,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.CodigoAluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.PerfilAcesso;
@@ -76,6 +77,9 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 			protected List<PerfilAcesso> load() {
 				List<PerfilAcesso> perfis = new ArrayList<PerfilAcesso>();
 				perfis = perfilAcessoServico.search(new Search(PerfilAcesso.class));
+				if(perfis!=null && perfis.size() == 1){
+					getAbstractBean().setPerfilAcesso(perfis.get(0));
+				}
 				return perfis;
 			}
 		};
@@ -104,12 +108,17 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 				
 				cursos = cursoServico.search(new Search(Curso.class));
 				
+				if(cursos!=null && cursos.size() == 1){
+					getAbstractBean().setAdministracao(new Administracao());
+					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
+				}
+				
 				return cursos;
 			}
 		};
 		
 		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("cursoAux", cursos,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
+		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;

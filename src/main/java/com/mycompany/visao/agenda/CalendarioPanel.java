@@ -690,7 +690,8 @@ public class CalendarioPanel extends Panel {
 				evento.setDataFim(date);
 				evento.setDataInicio(date);
 				evento.setAgenda(agenda);
-				evento.setListaPeriodosPertecentes(agenda.getListaPeriodosPertecentes());
+				Agenda agendaAux = (Agenda) agendaServico.searchFechId(agenda);
+				evento.setListaPeriodosPertecentes(agendaAux.getListaPeriodosPertecentes());
 				
 				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
 					private static final long serialVersionUID = 1L;

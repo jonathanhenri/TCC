@@ -15,6 +15,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.TipoEvento;
 import com.mycompany.services.interfaces.ICursoServico;
@@ -65,12 +66,17 @@ public class TipoEventoEditForm extends EditForm<TipoEvento> {
 				
 				cursos = cursoServico.search(new Search(Curso.class));
 				
+				if(cursos!=null && cursos.size() == 1){
+					getAbstractBean().setAdministracao(new Administracao());
+					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
+				}
+				
 				return cursos;
 			}
 		};
 		
 		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
+		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;

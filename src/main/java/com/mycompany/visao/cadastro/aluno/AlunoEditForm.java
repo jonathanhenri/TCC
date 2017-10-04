@@ -24,6 +24,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.PerfilAcesso;
@@ -111,6 +112,10 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			protected List<PerfilAcesso> load() {
 				List<PerfilAcesso> perfis = new ArrayList<PerfilAcesso>();
 				perfis = perfilAcessoServico.search(new Search(PerfilAcesso.class));
+				
+				if(perfis!=null && perfis.size() == 1){
+					getAbstractBean().setPerfilAcesso(perfis.get(0));
+				}
 				return perfis;
 			}
 		};
@@ -143,6 +148,11 @@ public class AlunoEditForm extends EditForm<Aluno> {
 				List<Curso> cursos = new ArrayList<Curso>();
 				
 				cursos = cursoServico.search(new Search(Curso.class));
+				
+				if(cursos!=null && cursos.size() == 1){
+					getAbstractBean().setAdministracao(new Administracao());
+					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
+				}
 				return cursos;
 			}
 		};

@@ -35,6 +35,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.Evento;
@@ -106,6 +107,11 @@ public class EventoEditForm extends EditForm<Evento> {
 				List<Curso> cursos = new ArrayList<Curso>();
 				
 				cursos = cursoServico.search(new Search(Curso.class));
+				
+				if(cursos!=null && cursos.size() == 1){
+					getAbstractBean().setAdministracao(new Administracao());
+					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
+				}
 				return cursos;
 			}
 		};

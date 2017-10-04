@@ -15,12 +15,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Curso;
 import com.mycompany.domain.OrigemEvento;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
-import com.mycompany.visao.comum.ColorTextField;
 import com.mycompany.visao.comum.EditForm;
 
 public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
@@ -66,12 +66,17 @@ public class OrigemEventoEditForm extends EditForm<OrigemEvento> {
 				
 				cursos = cursoServico.search(new Search(Curso.class));
 				
+				if(cursos!=null && cursos.size() == 1){
+					getAbstractBean().setAdministracao(new Administracao());
+					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
+				}
+				
 				return cursos;
 			}
 		};
 		
 		final DropDownChoice<Curso> tipoRadioChoice = new DropDownChoice<Curso>("administracao.curso", cursos,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
+		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;
