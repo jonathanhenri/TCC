@@ -408,8 +408,18 @@ public class CalendarioPanel extends Panel {
 		
 		containerEsquerda.add(new Label("diasRepeticao",concatenarDiasRepeticao(evento)).setVisible(evento.getRepetirEvento()));
 		
-		containerEsquerda.add(new Label("dataInicio", Util.formataDataComHoraSemLocale(evento.getDataInicio())).setVisible(!evento.getRepetirEvento()));
-		containerEsquerda.add(new Label("dataFim", Util.formataDataComHoraSemLocale(evento.getDataFim())).setVisible(!evento.getRepetirEvento()));
+		String dataInicio = "";
+		String dataFim = "";
+		if(evento.getRepetirEvento()){
+			dataFim = Util.formataDataSomenteHora(evento.getDataFim());
+			dataInicio = Util.formataDataSomenteHora(evento.getDataInicio());
+		}else{
+			dataInicio = Util.formataDataComHoraSemLocale(evento.getDataInicio());
+			dataFim = Util.formataDataComHoraSemLocale(evento.getDataFim());
+		}
+		
+		containerEsquerda.add(new Label("dataInicio",dataInicio));
+		containerEsquerda.add(new Label("dataFim",dataFim));
 		containerEsquerda.add(new Label("local",evento.getLocal()));
 		containerEsquerda.add(criarLinkExcluirEvento(evento));
 		containerEsquerda.add(criarLinkEditarEvento(evento));
@@ -457,7 +467,7 @@ public class CalendarioPanel extends Panel {
 	}
 	
 	private WebMarkupContainer criarDivDireita(Evento evento,final Boolean visible){
-		WebMarkupContainer containerEsquerda = new WebMarkupContainer("divDireita"){
+		WebMarkupContainer containerDireita = new WebMarkupContainer("divDireita"){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -465,16 +475,28 @@ public class CalendarioPanel extends Panel {
 				return visible;
 			}
 		};
-		containerEsquerda.setOutputMarkupId(true);
-		containerEsquerda.add(new Label("descricao",evento.getDescricao()));
+		containerDireita.setOutputMarkupId(true);
+		containerDireita.add(new Label("descricao",evento.getDescricao()));
 		
-		containerEsquerda.add(new Label("dataInicio", Util.getDateFormat(evento.getDataInicio())));
-		containerEsquerda.add(new Label("dataFim", Util.getDateFormat(evento.getDataFim())));
-		containerEsquerda.add(new Label("local",evento.getLocal()));
-		containerEsquerda.add(criarLinkExcluirEvento(evento));
-		containerEsquerda.add(criarLinkEditarEvento(evento));
+		containerDireita.add(new Label("diasRepeticao",concatenarDiasRepeticao(evento)).setVisible(evento.getRepetirEvento()));
 		
-		return containerEsquerda;
+		String dataInicio = "";
+		String dataFim = "";
+		if(evento.getRepetirEvento()){
+			dataFim = Util.formataDataSomenteHora(evento.getDataFim());
+			dataInicio = Util.formataDataSomenteHora(evento.getDataInicio());
+		}else{
+			dataInicio = Util.formataDataComHoraSemLocale(evento.getDataInicio());
+			dataFim = Util.formataDataComHoraSemLocale(evento.getDataFim());
+		}
+		
+		containerDireita.add(new Label("dataInicio",dataInicio));
+		containerDireita.add(new Label("dataFim",dataFim));
+		containerDireita.add(new Label("local",evento.getLocal()));
+		containerDireita.add(criarLinkExcluirEvento(evento));
+		containerDireita.add(criarLinkEditarEvento(evento));
+		
+		return containerDireita;
 	}
 
 	private ListView<Evento> criarListViewEventosDoDiaCalendario(final Date diaCalendario){

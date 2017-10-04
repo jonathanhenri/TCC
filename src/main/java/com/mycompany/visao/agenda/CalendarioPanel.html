@@ -285,7 +285,12 @@
 															                       	</li>
 															                        <li><span class="causale">Local:<label wicket:id="local"></label> </span> </li>
 															                        <li><p>
-															                        		<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
+															                        		<wicket:enclosure child="diasRepeticao">
+															                        		<li><span class="causale"><label wicket:id="diasRepeticao"></label> </span></li>
+															                        		</wicket:enclosure>
+															                        		<wicket:enclosure child="dataInicio">
+															                        			<small class="text-muted"><i class="glyphicon glyphicon-time"></i> <label wicket:id="dataInicio"></label> a <label wicket:id="dataFim"></label></small>
+															                        		</wicket:enclosure>
 															                        	</p> 
 															                        </li>
 															                    </ul>

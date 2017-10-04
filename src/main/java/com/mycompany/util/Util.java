@@ -759,6 +759,14 @@ public class Util {
 		return null;
 	}
 	
+	public static String formataDataSomenteHora(Date data) {
+		if(data!=null){
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+			return dateFormat.format(data);
+		}
+		return null;
+	}
+	
 	/**
 	 * Retorna a diferenca entre duas datas.
 	 * @param 	Date 	(Data "DD/MM/AAAA HH:MM")
