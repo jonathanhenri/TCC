@@ -13,6 +13,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.datetime.PatternDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -287,14 +289,14 @@ public class CalendarioPanel extends Panel {
 		 
 	}
 	
-	private DateTimeField criarCampoDataFim(){
-		DateTimeField dataFim = new DateTimeField("dataFim",new PropertyModel<Date>(evento, "dataFim"));
+	private DateTextField criarCampoDataFim(){
+		DateTextField dataFim = new DateTextField("dataFim",new PropertyModel<Date>(evento, "dataFim"), new PatternDateConverter("dd/mm/yyyy",false));
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
 	
-	private DateTimeField criarCampoDataInicio(){
-		DateTimeField dataFim = new DateTimeField("dataInicio",new PropertyModel<Date>(evento, "dataInicio"));
+	private DateTextField criarCampoDataInicio(){
+		DateTextField dataFim = new DateTextField("dataInicio",new PropertyModel<Date>(evento, "dataInicio"), new PatternDateConverter("dd/mm/yyyy",false));
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}

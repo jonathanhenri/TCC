@@ -204,6 +204,14 @@ public class AgendaPage extends Menu {
 				modalExcluir.setContent(excluirPanel);
 				modalExcluir.show(target);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				if(agenda!=null &&agenda.getId()!=null){
+					return Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),agenda, PermissaoAcesso.OPERACAO_EXCLUIR);
+				}
+				return false;
+			}
 		};
 		
 		return linkExcluirEvento;

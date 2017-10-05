@@ -417,5 +417,12 @@ public abstract class EditForm<T extends AbstractBean<?>> extends Form<T>{
 		this.modalIncluirEditar = modalIncluirEditar;
 	}
 	
+	public void setEditPanel(Panel editPanel) {
+		this.editPanel = editPanel;
+	}
+	
+	public Panel getEditPanel() {
+		return editPanel;
+	}
 	
 }

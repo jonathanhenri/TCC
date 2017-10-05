@@ -28,6 +28,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
@@ -77,6 +78,7 @@ public class EventoEditForm extends EditForm<Evento> {
 	private NumberTextField<Integer> campoNumberPeriodoAux;
 	private List<RelacaoPeriodo> listaPeriodosSelecionados;
 	
+	private Form<Evento> formTeste;
 	private Evento eventoAux = new Evento();
 	
 	public EventoEditForm(Evento evento,Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
@@ -287,12 +289,12 @@ public class EventoEditForm extends EditForm<Evento> {
 
 			@Override
 			protected List<Evento> load() {
-				List<Evento> tiposEvento = new ArrayList<Evento>();
+				List<Evento> eventosRecorrentes = new ArrayList<Evento>();
 				Search search = new Search(Evento.class);
 				search.addFilterNull("agenda");
-				tiposEvento = eventoServico.search(search);
+				eventosRecorrentes = eventoServico.search(search);
 				
-				return tiposEvento;
+				return eventosRecorrentes;
 			}
 			
 			
@@ -315,14 +317,14 @@ public class EventoEditForm extends EditForm<Evento> {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				Evento eventoNovo = new Evento();
-				eventoNovo.setRepetirEvento(false);
 				if(getEventoAux()!=null){
 					eventoNovo = getEventoAux().clonar(false);
 				}
 				eventoNovo.setAdministracao(null);
 				setAbstractBean(eventoNovo);
 				setModelObject(eventoNovo);
-				target.add(getRootForm());
+				formTeste.modelChanged();
+				target.add(formTeste);
 			}
 			
 		});
@@ -448,10 +450,10 @@ public class EventoEditForm extends EditForm<Evento> {
 		return textArea;
 	}
 	private TextField<String> criarCampoDescricao(){
-		TextField<String> textFieldNome = new TextField<String>("descricao");
-		textFieldNome.setOutputMarkupId(true);
-		textFieldNome.add(StringValidator.lengthBetween(1, 600));
-		return textFieldNome;
+		TextField<String> textFieldDescricao = new TextField<String>("descricao");
+		textFieldDescricao.setOutputMarkupId(true);
+		textFieldDescricao.add(StringValidator.lengthBetween(1, 600));
+		return textFieldDescricao;
 	}
 	
 	
@@ -555,20 +557,23 @@ public class EventoEditForm extends EditForm<Evento> {
 			listaPeriodosSelecionados = new ArrayList<RelacaoPeriodo>();
 		}
 		
-		add(criarCampoCurso());
-		add(criarButtonAdicionarPeriodo());
-		add(criarCampoPeriodoAux());
-		add(criarListViewPeriodos());
-		add(criarCampoDescricao());
-		add(criarCampoObservacao());
-		add(criarCampoLocal());
-		add(criarCampoProfessor());
-		add(criarCampoOrigemEvento());
-		add(criarCampoTipoEvento());
-		add(criarCampoMateria());
-		add(criarDivRepetirEvento());
-		add(criarCampoRepetirEvento());
-		add(criarListEventosRecorrentes());
+		formTeste = new Form<Evento>("formTeste");
+		formTeste.add(criarCampoDescricao());
+		formTeste.add(criarCampoCurso());
+		formTeste.add(criarButtonAdicionarPeriodo());
+		formTeste.add(criarCampoPeriodoAux());
+		formTeste.add(criarListViewPeriodos());
+		formTeste.add(criarCampoObservacao());
+		formTeste.add(criarCampoLocal());
+		formTeste.add(criarCampoProfessor());
+		formTeste.add(criarCampoOrigemEvento());
+		formTeste.add(criarCampoTipoEvento());
+		formTeste.add(criarCampoMateria());
+		formTeste.add(criarDivRepetirEvento());
+		formTeste.add(criarCampoRepetirEvento());
+		formTeste.add(criarListEventosRecorrentes());
+		formTeste.setOutputMarkupId(true);
+		addOrReplace(formTeste);
 	}
 	
 	@Override
