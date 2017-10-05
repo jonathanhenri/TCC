@@ -20,6 +20,16 @@ public abstract class AbstractBean<T> implements ObjectIdentity{
 	
 	public abstract String getNomeClass();
 	
+	private Boolean resalvarAdministracao;
+	
+	public void setResalvarAdministracao(Boolean resalvarAdministracao){
+		this.resalvarAdministracao = resalvarAdministracao;
+	}
+	
+	public Boolean getResalvarAdministracao(){
+		return resalvarAdministracao;
+	}
+	
     public T clonar(boolean clonarComId){
 		try{
 		

@@ -117,8 +117,4 @@ public class AlunoDAO extends DAOComumHibernateImpl<Aluno, Long> implements IAlu
 		
 		return null;
 	}
-	
-
-	
-	
 }

@@ -34,6 +34,7 @@ public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
+//	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Administracao administracao;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)

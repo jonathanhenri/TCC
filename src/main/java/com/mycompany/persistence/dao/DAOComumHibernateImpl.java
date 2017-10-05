@@ -11,6 +11,7 @@ import com.mycompany.DAOException;
 import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
+import com.mycompany.domain.Curso;
 import com.mycompany.persistence.interfaces.IDAOComum;
 import com.mycompany.reflexao.Reflexao;
 import com.mycompany.util.Util;
@@ -112,12 +113,19 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	private void inicializarAdministracao(T entity){
 		if(entity instanceof AbstractBean){
 			if(entity.getAdministracao()!=null ){
-				if(entity.getAdministracao().getAluno() == null){
-					entity.getAdministracao().setAluno(Util.getAlunoLogado());
+				if(entity instanceof Aluno){
+					entity.getAdministracao().setAluno((Aluno)entity);
+				}else{
+					if(entity.getAdministracao().getAluno() == null){
+						entity.getAdministracao().setAluno(Util.getAlunoLogado());
+					}
 				}
-				
-				if(entity.getAdministracao().getCurso() == null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
-					entity.getAdministracao().setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+				if(entity instanceof Curso){
+					entity.getAdministracao().setCurso((Curso) entity);
+				}else{
+					if(entity.getAdministracao().getCurso() == null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
+						entity.getAdministracao().setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+					}
 				}
 				
 				if(entity.getAdministracao().getId()==null){
@@ -125,10 +133,18 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 				}
 			}else{
 				Administracao administracao = new Administracao();
-				administracao.setAluno(Util.getAlunoLogado());
+				if(entity instanceof Aluno){
+					administracao.setAluno((Aluno)entity);
+				}else{
+					administracao.setAluno(Util.getAlunoLogado());
+				}
 				
-				if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao().getCurso()!=null){
-					administracao.setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+				if(entity instanceof Curso){
+					administracao.setCurso((Curso) entity);
+				}else{
+					if(Util.getAlunoLogado().getAdministracao()!=null && Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao().getCurso()!=null){
+						administracao.setCurso(Util.getAlunoLogado().getAdministracao().getCurso());
+					}
 				}
 				entity.setAdministracao(administracao);
 				
@@ -143,6 +159,11 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 		try{
 			inicializarAdministracao(entity);
 			super._save(entity);
+			
+			if(entity.getResalvarAdministracao()!=null && entity.getResalvarAdministracao()){
+				super._save(entity.getAdministracao());
+			}
+			
 		}catch(DAOException e ){
 			e.printStackTrace();
 			return false;

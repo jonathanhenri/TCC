@@ -36,6 +36,7 @@ public class CursoServico implements ICursoServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			curso.setResalvarAdministracao(true);
 			if(cursoDAO.persist(curso)){
 				mensagem  = new Mensagem(curso.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{

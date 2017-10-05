@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.feedback.Retorno;
 
