@@ -150,7 +150,9 @@ public class AlunoEditForm extends EditForm<Aluno> {
 				cursos = cursoServico.search(new Search(Curso.class));
 				
 				if(cursos!=null && cursos.size() == 1){
-					getAbstractBean().setAdministracao(new Administracao());
+					if(getAbstractBean().getAdministracao() == null){
+						getAbstractBean().setAdministracao(new Administracao());
+					}
 					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
 				}
 				return cursos;
