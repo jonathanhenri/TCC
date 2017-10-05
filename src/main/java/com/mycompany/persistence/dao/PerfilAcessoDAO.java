@@ -49,7 +49,7 @@ public class PerfilAcessoDAO extends DAOComumHibernateImpl<PerfilAcesso, Long> i
             }
 
         } catch (Exception e) {
-            throw new DAOException("Erro ao buscar saida de estoque por id: " + id, e);
+            throw new DAOException("Erro ao buscar registro por id: " + id, e);
         }
         return null;
     }

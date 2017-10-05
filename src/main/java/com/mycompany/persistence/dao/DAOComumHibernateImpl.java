@@ -3,6 +3,7 @@ package com.mycompany.persistence.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 import com.googlecode.genericdao.dao.hibernate.GenericDAOImpl;
@@ -32,17 +33,41 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	@Override
 	public Aluno searchFetchAlunoLogado(Aluno alunoLogado) {
 		if(alunoLogado!=null && alunoLogado.getId()!=null){
-			Search search = new Search(Aluno.class);
-			search.addFilterEqual("id", alunoLogado.getId());
-			search.addFetch("listaPeriodosPertecentes");
-			
-			for(String fetch: Reflexao.getListaAtributosEstrangeiros(alunoLogado)){
-				search.addFetch(fetch);
-			}
-			return  (Aluno)_searchUnique(search);
-		}else{
-			return null;
+		Long id = alunoLogado.getId();
+		
+		 if (id == null) {
+	            throw new IllegalArgumentException("O id é obrigatorio.");
+	        }
+	        try {
+	            StringBuffer hql = new StringBuffer();
+	            hql.append(" SELECT u" +
+	                       " FROM Aluno u" +
+	                       " JOIN FETCH u.administracao a" +
+	                       " LEFT JOIN FETCH u.perfilAcesso pf" +
+	                       " LEFT JOIN FETCH u.configuracao cf" +
+	                       " LEFT JOIN FETCH a.curso cur" +
+	                       " LEFT JOIN FETCH a.aluno alua" +
+	                       " WHERE u.id = :id");
+
+	            Query query = getSession().createQuery(hql.toString());
+
+	            query.setParameter("id", id);
+
+	            Object resultado = null;
+
+	            resultado = query.uniqueResult();
+
+	            if(resultado!=null){
+	                Aluno aluno = (Aluno) resultado;
+	                return aluno;
+	            }
+
+	        } catch (Exception e) {
+	            throw new DAOException("Erro ao buscar registro por id: " + id, e);
+	        }
 		}
+		
+	    return null;
 	}
 	
 	

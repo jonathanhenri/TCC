@@ -57,7 +57,7 @@ public class RelacaoPeriodoDAO extends DAOComumHibernateImpl<RelacaoPeriodo, Lon
             }
 
         } catch (Exception e) {
-            throw new DAOException("Erro ao buscar saida de estoque por id: " + id, e);
+            throw new DAOException("Erro ao buscar registro por id: " + id, e);
         }
         return null;
     }
