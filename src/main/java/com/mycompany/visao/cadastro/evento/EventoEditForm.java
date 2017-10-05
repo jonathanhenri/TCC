@@ -319,6 +319,7 @@ public class EventoEditForm extends EditForm<Evento> {
 				Evento eventoNovo = new Evento();
 				if(getEventoAux()!=null){
 					eventoNovo = getEventoAux().clonar(false);
+					eventoNovo.setAgenda(getAbstractBean().getAgenda());
 				}
 				eventoNovo.setAdministracao(null);
 				setAbstractBean(eventoNovo);

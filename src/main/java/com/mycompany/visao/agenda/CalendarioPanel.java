@@ -644,6 +644,14 @@ public class CalendarioPanel extends Panel {
 				modalExcluir.setContent(excluirPanel);
 				modalExcluir.show(target);
 			}
+			
+			@Override
+			public boolean isVisible() {
+				if(evento!=null &&evento.getId()!=null){
+					return Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),evento, PermissaoAcesso.OPERACAO_EXCLUIR);
+				}
+				return false;
+			}
 		};
 		
 		return linkExcluirEvento;
