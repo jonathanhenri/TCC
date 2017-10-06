@@ -113,6 +113,7 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 						getAbstractBean().setAdministracao(new Administracao());
 					}
 					getAbstractBean().getAdministracao().setCurso(cursos.get(0));
+					getAbstractBean().setCursoAux(cursos.get(0));
 				}
 				
 				return cursos;

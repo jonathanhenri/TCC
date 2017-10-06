@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.mycompany.anotacao.ListarPageAnotacao;
+
 @Entity
 @Table(name = "RELACAO_PERIODO")
 public class RelacaoPeriodo extends AbstractBean<RelacaoPeriodo>{
@@ -22,6 +24,7 @@ public class RelacaoPeriodo extends AbstractBean<RelacaoPeriodo>{
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	
+	@ListarPageAnotacao(nomeColuna = "Periodo")
 	@Column(name = "PERIODO",nullable=false)
 	private Integer periodo;
 	

@@ -9,6 +9,7 @@ import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -57,6 +58,19 @@ public class AgendaPage extends Menu {
 		return modalExcluir;
 	}
 	
+	private TextField<String> criarCampoDescricao(){
+		final TextField<String> descricao = new TextField<String>("descricao");
+		descricao.setOutputMarkupId(true);
+		return descricao;
+	}
+	
+	
+	private TextField<String> criarCampoNome(){
+		final TextField<String> nome = new TextField<String>("nome");
+		nome.setOutputMarkupId(true);
+		return nome;
+	}
+	
 	private ModalWindow criarModalCalendario() {
 		modalCalendario = new ModalWindow("modalCalendario");
 		modalCalendario.setOutputMarkupId(true);
@@ -93,10 +107,13 @@ public class AgendaPage extends Menu {
 		form.setOutputMarkupId(true);
 		
 		form.add(criarDivAtualizar());
+		form.add(criarButtonPesquisar());
 		form.add(criarButtonIncluir());
 		form.add(criarModalExcluir());
 		form.add(criarModalIncluirEditar());
 		form.add(criarModalCalendario());
+		form.add(criarCampoDescricao());
+		form.add(criarCampoNome());
 		add(form);
 	}
 	
@@ -107,7 +124,16 @@ public class AgendaPage extends Menu {
 
 			@Override
 			protected List<Agenda> load() {
-				return agendaServico.search(new Search(Agenda.class));
+				Search search = new Search(Agenda.class);
+				
+				if(agendaPesquisa.getNome()!=null){
+					search.addFilterEqual("nome", agendaPesquisa.getNome());
+				}
+				
+				if(agendaPesquisa.getDescricao()!=null){
+					search.addFilterEqual("descricao", agendaPesquisa.getDescricao());
+				}
+				return agendaServico.search(search);
 			}
 		};
 			
@@ -254,6 +280,26 @@ public class AgendaPage extends Menu {
 			@Override
 			public boolean isVisible() {
 				if(!Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AGENDA_INCLUIR, PermissaoAcesso.OPERACAO_INCLUIR)){
+					return false;
+				}
+				return true;
+			}
+		};
+		
+		return ajaxButton;
+	}
+	
+	private AjaxButton criarButtonPesquisar(){
+		AjaxButton ajaxButton =  new AjaxButton("pesquisar") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				target.add(divAtualizar);
+			}
+			
+			@Override
+			public boolean isVisible() {
+				if(!Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AGENDA_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
 					return false;
 				}
 				return true;

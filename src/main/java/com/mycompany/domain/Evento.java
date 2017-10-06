@@ -48,34 +48,37 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "LOCAL", nullable = true, length = 100)
 	private String local;
 	
+	@ListarPageAnotacao(nomeColuna = "Observação")
 	@Column(name = "OBSERVACAO", nullable = true, length = 600)
 	private String observacao;
 	
+	@ListarPageAnotacao(nomeColuna = "Tipo de Evento")
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_TIPO_EVENTO",nullable = true)
 	private TipoEvento tipoEvento;
 	
+	@ListarPageAnotacao(nomeColuna = "Materia")
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_MATERIA",nullable = true)
 	private Materia materia;
+	
 	
 	@ManyToOne(fetch=FetchType.LAZY,optional = true)
 	@JoinColumn(name="ID_AGENDA",nullable = true)
 	private Agenda agenda;
 	
+	@ListarPageAnotacao(nomeColuna = "Origem do Evento")
 	@ManyToOne(optional = true,fetch=FetchType.LAZY)
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = true)
 	private OrigemEvento origemEvento;
 	
+	@ListarPageAnotacao(nomeColuna = "Lista Periodos")
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "evento",cascade = CascadeType.ALL)
 	@Column(name = "ID_EVENTO")
 	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	
 	@Column(name = "REPETIR_EVENTO", nullable = true)
 	private Boolean repetirEvento;
-	
-	@Column(name = "REPETIR_TODOS_DIAS", nullable = true)
-	private Boolean repetirTodosDias;
 	
 	@Column(name = "REPETIR_TODA_SEGUNDA", nullable = true)
 	private Boolean repetirTodaSegunda;
@@ -118,14 +121,6 @@ public class Evento extends AbstractBean<Evento> {
 
 	public void setRepetirEvento(Boolean repetirEvento) {
 		this.repetirEvento = repetirEvento;
-	}
-
-	public Boolean getRepetirTodosDias() {
-		return repetirTodosDias;
-	}
-
-	public void setRepetirTodosDias(Boolean repetirTodosDias) {
-		this.repetirTodosDias = repetirTodosDias;
 	}
 
 	public Boolean getRepetirTodaSegunda() {

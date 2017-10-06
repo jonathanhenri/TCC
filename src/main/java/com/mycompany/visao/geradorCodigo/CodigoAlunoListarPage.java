@@ -50,7 +50,7 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	protected ModalWindow criarModalIncluirEditar() {
 		modalIncluirEditar = new ModalWindow("modalIncluirEditar");
 		modalIncluirEditar.setOutputMarkupId(true);
-		modalIncluirEditar.setInitialHeight(300);
+		modalIncluirEditar.setInitialHeight(350);
 		modalIncluirEditar.setInitialWidth(600);
 		return modalIncluirEditar;
 	}
