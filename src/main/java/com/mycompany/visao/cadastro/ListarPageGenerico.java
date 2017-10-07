@@ -287,7 +287,7 @@ public abstract class ListarPageGenerico extends Menu {
 			
 			int i = 0;
 			for(String nomeColunaPage:hashMapColunas.keySet()){
-				String campoEntiy = hashMapColunas.get(nomeColunaPage);
+				final String campoEntiy = hashMapColunas.get(nomeColunaPage);
 				columns[i] = new PropertyColumn<AbstractBean<?>,String>(new Model<String>(nomeColunaPage), campoEntiy, campoEntiy){
 					private static final long serialVersionUID = 1L;
 

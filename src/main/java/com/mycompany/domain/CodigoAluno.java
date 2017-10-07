@@ -33,9 +33,13 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@JoinColumn(name="PERFIL_ACESSO")
 	private PerfilAcesso perfilAcesso;
 	
-	@ListarPageAnotacao(filtro = true)
+	
 	@Column(name = "ATIVO", nullable = false)
 	private Boolean ativo;
+	
+	@ListarPageAnotacao(filtro = true,nomeColuna="Ativo")
+	@Transient
+	private String ativoNome;
 	
 	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
@@ -54,6 +58,16 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Transient
 	private Curso cursoAux;
 	
+	public String getAtivoNome(){
+		if(ativo!=null){
+			if(ativo){
+				return "Sim";
+			}else{
+				return "Não";
+			}
+		}
+		return null;
+	}
 	
 	public void setPerfilAcesso(PerfilAcesso perfilAcesso) {
 		this.perfilAcesso = perfilAcesso;
