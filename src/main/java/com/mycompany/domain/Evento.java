@@ -72,7 +72,6 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = true)
 	private OrigemEvento origemEvento;
 	
-	@ListarPageAnotacao(nomeColuna = "Lista Periodos")
 	@OneToMany(fetch=FetchType.LAZY,mappedBy = "evento",cascade = CascadeType.ALL)
 	@Column(name = "ID_EVENTO")
 	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
