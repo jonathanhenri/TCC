@@ -128,6 +128,9 @@ public class AlunoEditForm extends EditForm<Aluno> {
 				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_PERFIL_ACESSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
 					return false;
 				}
+				if(perfilAcessoServico.count(new Search(PerfilAcesso.class)) == 0 && getAbstractBean().getPerfilAcesso()!=null){
+					return false;
+				}
 				return true;
 			}
 		};

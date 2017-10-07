@@ -16,10 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/*Pensar no futuro para selecionar quais tipos de evento receber e de quem receber.
- * 
- * 
- */
 @Entity
 @Table(name = "AGENDA")
 public class Agenda extends AbstractBean<Agenda> {

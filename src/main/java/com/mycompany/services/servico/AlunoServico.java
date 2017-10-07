@@ -130,8 +130,7 @@ public class AlunoServico implements IAlunoServico{
 		CodigoAluno codigoAluno = codigoAlunoServico.searchUnique(search);
 		
 		if(codigoAluno!=null){
-			codigoAluno.setAtivo(false);
-			codigoAlunoServico.save(codigoAluno);
+			codigoAlunoServico.remove(codigoAluno);
 		}
 	}
 	private void atualizarListaRelacaoPeriodos(Aluno aluno){

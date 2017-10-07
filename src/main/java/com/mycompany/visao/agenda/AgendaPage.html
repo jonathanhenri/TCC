@@ -18,61 +18,63 @@ $('#tab a').on('click', function(e) {
 
 <body>
 	<wicket:extend>
-		<div class="main-grid">
-			<div class="agile-grids">	
-				<!-- input-forms -->
-				<div class="grids">
-					<div class="progressbar-heading grids-heading">
-						<h2>Agenda</h2>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="main-grid">
+				<div class="agile-grids">	
+					<!-- input-forms -->
+					<div class="grids">
+						<div class="progressbar-heading grids-heading">
+							<h2>Agenda</h2>
+						</div>
+						<form id="form" wicket:id="form">
+							<div class="panel panel-info">
+							 	<div class="panel-heading">Filtros <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="Filtros para auxiliar a busca pelo curso desejado"></a></div>
+								
+								<div class="panel-body">
+									<div class="col-md-3">
+										<label id="labelNome" for="nome">Nome</label> 
+										<input  wicket:id="nome" id="nome" name="nome" autofocus="autofocus"type="text" class="form-control" placeholder="Nome" />
+									</div>
+									<div class="col-md-3">
+										<label id="labelNome" for="nome">Descrição</label> 
+										<input  wicket:id="descricao" id="descricao" name="descricao" autofocus="autofocus"type="text" class="form-control" placeholder="Descrição" />
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12" style="text-align: right;">			
+									<input value="incluir" id ="incluir" type="button" name ="incluir" wicket:id="incluir" class="btn btn-success " />
+									 <input value="Pesquisar" id ="pesquisar" name ="pesquisar" wicket:id="pesquisar" type="submit" class="btn btn-primary  " />
+	<!-- 								 <input  value="Mais Filtros" id ="maisFiltros" name ="maisFiltros" wicket:id="buttonListagemFiltrosDinamicos" type="submit" class="btn btn-default" ></input> -->
+								</div>
+							</div>
+						
+						
+							<div wicket:id="divAtualizar"  id="list-caixa" class="content scaffold-list col-md-12" role="main">
+			                    <div style="padding:10px 20px;">
+			                    	<table class="table table-striped table-bordered table-hover">
+			                    		<thead>
+			                    			<th><a>Nome</a></th>
+			                    			<th><a>Ações</a></th>
+			                    		</thead>
+			                    		<tbody>
+			                    			<tr wicket:id="listAgendas">
+			                    				<td><label wicket:id="nome">[NOME]</label></td>
+			                    				<td style="text-align:left; white-space: nowrap; width:100px;vertical-align: top;">
+			                    					<a class="btn btn-success" style="width: 30%" wicket:id="visualizarCalendario" data-toggle="tooltip" title="Visualizar Calendario"><span class="glyphicon glyphicon-calendar"></span></a>
+			                    					<a class="btn btn-primary btn3d" wicket:id="linkEditarAgenda"><span class="glyphicon glyphicon-pencil"></span></a>
+			                    					<a  class="btn btn-danger" wicket:id="linkExcluirAgenda"><span class="glyphicon glyphicon-trash"></span></a>
+									        	</td>
+			                    			</tr>
+			                    		</tbody>
+			                    	</table>
+			                    </div>
+			                </div>
+							<div id="modalEditar" name = "modalEditar" wicket:id="modalIncluirEditar"></div>
+							<div id="modalExcluir" name="modalExcluir" wicket:id="modalExcluir"></div>
+							<div id="modalCalendario" name="modalCalendario" wicket:id="modalCalendario"></div>
+						</form>
 					</div>
-					<form id="form" wicket:id="form">
-						<div class="panel panel-info">
-						 	<div class="panel-heading">Filtros <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="Filtros para auxiliar a busca pelo curso desejado"></a></div>
-							
-							<div class="panel-body">
-								<div class="col-md-3">
-									<label id="labelNome" for="nome">Nome</label> 
-									<input  wicket:id="nome" id="nome" name="nome" autofocus="autofocus"type="text" class="form-control" placeholder="Nome" />
-								</div>
-								<div class="col-md-3">
-									<label id="labelNome" for="nome">Descrição</label> 
-									<input  wicket:id="descricao" id="descricao" name="descricao" autofocus="autofocus"type="text" class="form-control" placeholder="Descrição" />
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12" style="text-align: right;">			
-								<input value="incluir" id ="incluir" type="button" name ="incluir" wicket:id="incluir" class="btn btn-success " />
-								 <input value="Pesquisar" id ="pesquisar" name ="pesquisar" wicket:id="pesquisar" type="submit" class="btn btn-primary  " />
-<!-- 								 <input  value="Mais Filtros" id ="maisFiltros" name ="maisFiltros" wicket:id="buttonListagemFiltrosDinamicos" type="submit" class="btn btn-default" ></input> -->
-							</div>
-						</div>
-					
-					
-						<div wicket:id="divAtualizar"  id="list-caixa" class="content scaffold-list col-md-12" role="main">
-		                    <div style="padding:10px 20px;">
-		                    	<table class="table table-striped table-bordered table-hover">
-		                    		<thead>
-		                    			<th><a>Nome</a></th>
-		                    			<th><a>Ações</a></th>
-		                    		</thead>
-		                    		<tbody>
-		                    			<tr wicket:id="listAgendas">
-		                    				<td><label wicket:id="nome">[NOME]</label></td>
-		                    				<td style="text-align:left; white-space: nowrap; width:100px;vertical-align: top;">
-		                    					<a class="btn btn-success" style="width: 30%" wicket:id="visualizarCalendario" data-toggle="tooltip" title="Visualizar Calendario"><span class="glyphicon glyphicon-calendar"></span></a>
-		                    					<a class="btn btn-primary btn3d" wicket:id="linkEditarAgenda"><span class="glyphicon glyphicon-pencil"></span></a>
-		                    					<a  class="btn btn-danger" wicket:id="linkExcluirAgenda"><span class="glyphicon glyphicon-trash"></span></a>
-								        	</td>
-		                    			</tr>
-		                    		</tbody>
-		                    	</table>
-		                    </div>
-		                </div>
-						<div id="modalEditar" name = "modalEditar" wicket:id="modalIncluirEditar"></div>
-						<div id="modalExcluir" name="modalExcluir" wicket:id="modalExcluir"></div>
-						<div id="modalCalendario" name="modalCalendario" wicket:id="modalCalendario"></div>
-					</form>
 				</div>
 			</div>
 		</div>

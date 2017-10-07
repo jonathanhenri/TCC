@@ -182,7 +182,7 @@ public class AgendaServico implements IAgendaServico {
 		int i = count(searchLoginRepetido);
 		
 		if(i>0){
-			retorno.addMensagem(new Mensagem("Materia","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
+			retorno.addMensagem(new Mensagem("Agenda","nome", Mensagem.MOTIVO_REPETIDO, Mensagem.ERRO));
 			retorno.setSucesso(false);
 		}
 		
