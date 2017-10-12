@@ -24,6 +24,7 @@ import com.mycompany.visao.cadastro.tipoEvento.TipoEventoListarPage;
 import com.mycompany.visao.configuracao.ConfiguracaoPage;
 import com.mycompany.visao.geradorCodigo.CodigoAlunoListarPage;
 import com.mycompany.visao.login.Login;
+import com.mycompany.visao.relatorio.RelatorioPage;
 
 public class Menu extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -161,6 +162,20 @@ public class Menu extends WebPage {
 			@Override
 			public boolean isVisible() {
 				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_AGENDA_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR);
+			}
+		});
+		
+		
+		add(new AjaxLink<String>("link_relatorio") {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				setResponsePage(RelatorioPage.class);			
+			}
+			
+			@Override
+			public boolean isVisible() {
+				return Util.possuiPermissao(alunoServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_RELATORIOS, PermissaoAcesso.OPERACAO_RELATORIO);
 			}
 		});
 		
