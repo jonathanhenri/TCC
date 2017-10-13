@@ -1,8 +1,13 @@
 package com.mycompany.visao.relatorio;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -15,7 +20,9 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
@@ -399,6 +406,22 @@ public class RelatorioPage extends Menu {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
 				System.out.println(evento);
+				
+				 AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
+					 
+			            @Override
+			            public void write(OutputStream output) throws IOException {
+			                try {
+//								JasperPrint jasperPrint = new CriarRelatoriosOrcamentoJasper().processarOrcamento(modelOrcamento.getObject(),relatorioServico);
+//								JasperExportManager.exportReportToPdfStream(jasperPrint, output);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+			            }
+			        };
+			 
+			        ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, "Agenda "+evento.getAgenda().getNome() +".pdf");    	    
+			        getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
 			}
 			
 			@Override
