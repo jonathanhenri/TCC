@@ -405,15 +405,14 @@ public class RelatorioPage extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
-				System.out.println(evento);
-				
 				 AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
-					 
-			            @Override
+					private static final long serialVersionUID = 1L;
+
+						@Override
 			            public void write(OutputStream output) throws IOException {
 			                try {
-//								JasperPrint jasperPrint = new CriarRelatoriosOrcamentoJasper().processarOrcamento(modelOrcamento.getObject(),relatorioServico);
-//								JasperExportManager.exportReportToPdfStream(jasperPrint, output);
+								JasperPrint jasperPrint = new RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico);
+								JasperExportManager.exportReportToPdfStream(jasperPrint, output);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
@@ -20,26 +22,23 @@ import com.mycompany.domain.Materia;
 import com.mycompany.domain.OrigemEvento;
 import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.domain.TipoEvento;
-import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.util.Util;
+import com.mycompany.visao.comum.BasePage;
 
 public class RelatorioJasper {
-	private IAgendaServico agendaServico;
 	private IEventoServico eventoServico;
 	private Agenda agenda;
 	private Evento evento;
 	
 	private List<Evento> listaTodosEventos;
 	
-	public JasperPrint gerarRelatorioAgenda(Agenda agenda, Evento evento,IAgendaServico agendaServico,IEventoServico eventoServico) throws Exception{
-		this.agendaServico = agendaServico;
+	public JasperPrint gerarRelatorioAgenda(Evento evento,IEventoServico eventoServico) throws Exception{
 		this.eventoServico = eventoServico;
-		this.agenda = agenda;
+		this.agenda = evento.getAgenda();
 		this.evento = evento;
 		Map<String, Object> params = new HashMap<String, Object>();
 		
-		List<EventoBean> beanList = new ArrayList<EventoBean>();
 		String nomeAgenda = agenda.getNome();
 		String descricao = "";
 		if(evento.getDescricao()!=null){
@@ -89,6 +88,7 @@ public class RelatorioJasper {
 		}
 		
 		params.put("nomeAgenda",nomeAgenda);
+		params.put("descricao",descricao);
 		params.put("dataInicio", dataInicio);
 		params.put("dataFim",dataFim);
 		params.put("tipoEvento", tipoEvento);
@@ -120,24 +120,24 @@ public class RelatorioJasper {
 //				});
 				
 				
-				itemMap.put("diaAgrupado",key);
+				itemMap.put("diaAgrupado",Util.formataDataSemLocale(key));
 				itemMap.put("itens_eventos_dados",new JRBeanCollectionDataSource(eventosLista));
 				relatorioPaiFields.add(itemMap);
 			}
 //		}
 		
-		params.put("SUBREPORT_DIR","conferencia/");
+		params.put("SUBREPORT_DIR","jaspers/");
 		
 		
-		String baseReportPath = Util.fileSeparator("conferencia/conferencia_pdf_agrupado.jasper");
+		String baseReportPath = Util.fileSeparator("jaspers/agenda.jasper");
 		JasperPrint jasperPrint = null;
-//		try {
-//			jasperPrint = JasperFillManager.fillReport(BasePage.class.getClassLoader().getResourceAsStream(baseReportPath), params, new JRBeanCollectionDataSource2(relatorioPaiFields, false));
-//		} catch (JRException e) {
-//			e.printStackTrace();
-//		} catch (ClassCastException x) {
-//			x.printStackTrace();
-//		}
+		try {
+			jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("agenda.jasper"), params, new JRBeanCollectionDataSource(relatorioPaiFields, false));
+		} catch (JRException e) {
+			e.printStackTrace();
+		} catch (ClassCastException x) {
+			x.printStackTrace();
+		}
 		return jasperPrint;
 	}
 	

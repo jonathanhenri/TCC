@@ -16,6 +16,9 @@
 	<parameter name="periodosAgenda" class="java.lang.String"/>
 	<parameter name="nomeAgenda" class="java.lang.String"/>
 	<parameter name="nomeAlunoLogado" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{SUBREPORT_DIR}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -48,10 +51,6 @@
 				<reportElement x="120" y="171" width="42" height="18" uuid="f4fb80d2-3e67-44ee-9929-7e11d99d0e7b"/>
 				<text><![CDATA[Curso:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="0" y="140" width="80" height="20" uuid="83d83415-4aba-4266-8d11-de95df90d6c5"/>
-				<textFieldExpression><![CDATA[Tipo de evento:]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="180" y="140" width="100" height="20" uuid="c1f973d2-bcd0-45fc-8107-98ecf7eb35a3"/>
 				<text><![CDATA[Origem de Evento:]]></text>
@@ -129,6 +128,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Dados da " + $P{nomeAgenda}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="-1" y="140" width="81" height="20" uuid="887c61f4-393c-48e4-8224-7335cc62b624"/>
+				<text><![CDATA[Tipo de Evento:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<detail>
@@ -144,7 +147,7 @@
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<dataSourceExpression><![CDATA[$P{itens_eventos_dados}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{itens_eventos}]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "eventos_agenda.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
