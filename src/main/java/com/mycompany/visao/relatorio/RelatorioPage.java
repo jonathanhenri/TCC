@@ -11,7 +11,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -23,6 +23,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
+import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.validation.validator.StringValidator;
 
 import com.googlecode.genericdao.search.Search;
@@ -34,7 +35,6 @@ import com.mycompany.domain.Materia;
 import com.mycompany.domain.OrigemEvento;
 import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.domain.TipoEvento;
-import com.mycompany.feedback.Mensagem;
 import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IEventoServico;
@@ -42,6 +42,7 @@ import com.mycompany.services.interfaces.IMateriaServico;
 import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.Util;
+import com.mycompany.visao.comum.AJAXDownload;
 import com.mycompany.visao.comum.Menu;
 
 public class RelatorioPage extends Menu {
@@ -66,6 +67,8 @@ public class RelatorioPage extends Menu {
 	private IAgendaServico agendaServico;
 	
 	private Evento evento;
+	private JasperPrint jasperPrint;
+	private AJAXDownload ajaxDownloadPdf;
 	
 	private Form<Evento> form;
 	public RelatorioPage() {
@@ -105,7 +108,8 @@ public class RelatorioPage extends Menu {
 		form.add(criarCampoDescricao());
 		form.add(criarCampoProfessor());
 		form.add(criarCampoLocal());
-		form.add(criarBotaoImprimir(form));
+		form.add(criarImprimirPdfAjaxDownload());
+		form.add(criarDownloadPdfAgenda());
 		add(form);
 	}
 	
@@ -399,40 +403,67 @@ public class RelatorioPage extends Menu {
 	}
 	
 	
-	
-	private AjaxSubmitLink criarBotaoImprimir(Form<Evento> form){
-		AjaxSubmitLink salvar = new AjaxSubmitLink("imprimir",form){
+	private AjaxLink<String> criarDownloadPdfAgenda(){
+		AjaxLink<String> ajaxLink = new AjaxLink<String>("imprimir") {
 			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> formAux) {
-				 AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
-					private static final long serialVersionUID = 1L;
 
-						@Override
-			            public void write(OutputStream output) throws IOException {
-			                try {
-								JasperPrint jasperPrint = new RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico);
-								JasperExportManager.exportReportToPdfStream(jasperPrint, output);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-			            }
-			        };
-			 
-			        ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, "Agenda "+evento.getAgenda().getNome() +".pdf");    	    
-			        getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
-			}
-			
 			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				Util.notify(target, "Dados incorretos", Mensagem.ALERTA);
-				super.onError(target, form);
+			public void onClick(AjaxRequestTarget target) {
+				try {
+					jasperPrint =  new  RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico,agendaServico);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(jasperPrint!=null){
+					ajaxDownloadPdf.initiate(target);
+				}else{
+					error("Erro ao gerar o Espelho de nota fiscal.");
+				}
 			}
 		};
 		
-		salvar.setOutputMarkupId(true);
-		return salvar;
+		return ajaxLink;
 	}
+	
+	private AJAXDownload criarImprimirPdfAjaxDownload(){
+		
+	    ajaxDownloadPdf = new AJAXDownload() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected IResourceStream getResourceStream() {
+				AbstractResourceStreamWriter rstream = new AbstractResourceStreamWriter() {
+					private static final long serialVersionUID = 1L;
+					@Override
+		            public void write(OutputStream output) throws IOException {
+						try {
+							JasperExportManager.exportReportToPdfStream(jasperPrint, output); 
+							output.flush();
+		            		output.close();
+		            		
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				};
+
+				ResourceStreamRequestHandler handler = new ResourceStreamRequestHandler(rstream, "Agenda.pdf");        
+				getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+				
+				return rstream;
+			}
+			
+			@Override
+			protected String getFileName() {
+				return "Agenda.pdf";
+			}
+		};
+		
+		return ajaxDownloadPdf;
+	}
+	
+	
+	
 	
 	public void setEvento(Evento evento) {
 		this.evento = evento;

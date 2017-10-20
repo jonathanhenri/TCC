@@ -3,6 +3,7 @@ package com.mycompany.visao.relatorio;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,9 +23,9 @@ import com.mycompany.domain.Materia;
 import com.mycompany.domain.OrigemEvento;
 import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.domain.TipoEvento;
+import com.mycompany.services.interfaces.IAgendaServico;
 import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.util.Util;
-import com.mycompany.visao.comum.BasePage;
 
 public class RelatorioJasper {
 	private IEventoServico eventoServico;
@@ -33,54 +34,54 @@ public class RelatorioJasper {
 	
 	private List<Evento> listaTodosEventos;
 	
-	public JasperPrint gerarRelatorioAgenda(Evento evento,IEventoServico eventoServico) throws Exception{
+	public JasperPrint gerarRelatorioAgenda(Evento evento,IEventoServico eventoServico,IAgendaServico agendaServico) throws Exception{
 		this.eventoServico = eventoServico;
-		this.agenda = evento.getAgenda();
+		this.agenda = (Agenda) agendaServico.searchFechId(evento.getAgenda());
 		this.evento = evento;
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		String nomeAgenda = agenda.getNome();
-		String descricao = "";
+		String descricao = "Não informado";
 		if(evento.getDescricao()!=null){
 			descricao = evento.getDescricao();
 		}
 		
-		String dataInicio = "";
+		String dataInicio = "Não informado";
 		if(evento.getDataInicio()!=null){
 			dataInicio = Util.formataDataSemLocale(evento.getDataInicio());
 		}
 		
-		String dataFim = "";
+		String dataFim = "Não informado";
 		if(evento.getDataFim()!=null){
 			dataFim = Util.formataDataSemLocale(evento.getDataFim());
 		}
 		
-		String tipoEvento = "";
+		String tipoEvento = "Não informado";
 		if(evento.getTipoEvento()!=null){
 			tipoEvento = evento.getTipoEvento().getNome();
 		}
 		
-		String origemEvento = "";
+		String origemEvento = "Não informado";
 		if(evento.getOrigemEvento()!=null){
 			origemEvento = evento.getOrigemEvento().getNome();
 		}
 		
-		String professor = "";
+		String professor = "Não informado";
 		if(evento.getProfessor()!=null){
 			professor = evento.getProfessor();
 		}
 		
-		String local = "";
+		String local = "Não informado";
 		if(evento.getLocal()!=null){
 			local = evento.getLocal();
 		}
 		
-		String curso = "";
+		String curso = "Não informado";
 		if(evento.getAdministracao()!=null && evento.getAdministracao().getCurso()!=null){
 			curso = evento.getAdministracao().getCurso().getNome();
 		}
 		
-		String periodosAgenda = "";
+		String periodosAgenda = "Não informado";
 		if(agenda.getListaPeriodosPertecentes()!=null && agenda.getListaPeriodosPertecentes().size()>0){
 			for(RelacaoPeriodo relacaoPeriodo:agenda.getListaPeriodosPertecentes()){
 				periodosAgenda.concat(String.valueOf(relacaoPeriodo.getPeriodo()));
@@ -93,7 +94,7 @@ public class RelatorioJasper {
 		params.put("dataFim",dataFim);
 		params.put("tipoEvento", tipoEvento);
 		params.put("origemEvento",origemEvento);
-		
+		params.put("nomeAlunoLogado",Util.getAlunoLogado().getNome());
 		params.put("professor",professor);
 		params.put("local",local);
 		params.put("curso",curso);
@@ -103,6 +104,7 @@ public class RelatorioJasper {
 		buscaEvento();
 		List<Map<String, Object>> relatorioPaiFields = new ArrayList<Map<String, Object>>();
 		
+		SimpleDateFormat formataData = new SimpleDateFormat("EEEEEE");
 //		if(listaConferenciaProduto.size() > 0){
 			HashMap<Date, List<EventoBean>> hashListaProduto =  popularHashMapEventoAgrupado();
 			
@@ -119,20 +121,20 @@ public class RelatorioJasper {
 //					}
 //				});
 				
-				
-				itemMap.put("diaAgrupado",Util.formataDataSemLocale(key));
-				itemMap.put("itens_eventos_dados",new JRBeanCollectionDataSource(eventosLista));
+				String data = Util.formataDataSemLocale(key);
+				data+=" - "+formataData.format(key);
+				itemMap.put("diaAgrupado",data);
+				itemMap.put("eventos",new JRBeanCollectionDataSource(eventosLista));
 				relatorioPaiFields.add(itemMap);
 			}
 //		}
+		params.put("SUBREPORT_DIR","jaspers2/");
 		
-		params.put("SUBREPORT_DIR","jaspers/");
+		InputStream inputStreamAgenda = new ByteArrayInputStream(Util.lerArquivo("agenda.jasper", "jaspers2/", false));
 		
-		
-		String baseReportPath = Util.fileSeparator("jaspers/agenda.jasper");
 		JasperPrint jasperPrint = null;
 		try {
-			jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("agenda.jasper"), params, new JRBeanCollectionDataSource(relatorioPaiFields, false));
+			jasperPrint = JasperFillManager.fillReport(inputStreamAgenda, params, new JRBeanCollectionDataSource(relatorioPaiFields, false));
 		} catch (JRException e) {
 			e.printStackTrace();
 		} catch (ClassCastException x) {
@@ -356,8 +358,8 @@ public class RelatorioJasper {
 			String dataInicio = "";
 			String dataFim = "";
 			
-			dataFim = Util.formataDataSomenteHora(evento.getDataFim());
-			dataInicio = Util.formataDataSomenteHora(evento.getDataInicio());
+			dataFim = Util.formataDataSemLocale(evento.getDataFim());
+			dataInicio = Util.formataDataSemLocale(evento.getDataInicio());
 			
 			string =  dataInicio + " a "+dataFim;
 		}
@@ -393,7 +395,7 @@ public class RelatorioJasper {
 			return data;
 		}
 		public void setDescricao(String descricao) {
-			this.descricao = descricao;
+			this.descricao = descricao!=null?descricao:"";
 		}
 		
 		public String getDescricao() {
@@ -410,13 +412,13 @@ public class RelatorioJasper {
 			return materia;
 		}
 		public void setLocal(String local) {
-			this.local = local;
+			this.local = local!=null?local:"";
 		}
 		public String getLocal() {
 			return local;
 		}
 		public void setProfessor(String professor) {
-			this.professor = professor;
+			this.professor = professor!=null?professor:"";
 		}
 		public String getProfessor() {
 			return professor;
