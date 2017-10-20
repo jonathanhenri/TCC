@@ -130,7 +130,7 @@ public class RelatorioJasper {
 //		}
 		params.put("SUBREPORT_DIR","jaspers2/");
 		
-		InputStream inputStreamAgenda = new ByteArrayInputStream(Util.lerArquivo("agenda.jasper", "jaspers2/", false));
+		InputStream inputStreamAgenda = new ByteArrayInputStream(Util.lerArquivo("agenda_horizontal.jasper", "jaspers2/", false));
 		
 		JasperPrint jasperPrint = null;
 		try {

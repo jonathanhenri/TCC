@@ -162,9 +162,6 @@ public class RelatorioPage extends Menu {
 					search.addFilterEqual("administracao.curso.id",evento.getAdministracao().getCurso().getId());
 				}
 				origensEvento = origemEventoServico.search(search);
-				if(origensEvento!=null && origensEvento.size() == 1){
-					evento.setOrigemEvento(origensEvento.get(0));
-				}
 				return origensEvento;
 			}
 		};
@@ -193,7 +190,7 @@ public class RelatorioPage extends Menu {
 				target.add(form);
 			}
 		});
-		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;
@@ -215,9 +212,6 @@ public class RelatorioPage extends Menu {
 				}
 				tiposEventos = tipoEventoServico.search(search);
 				
-				if(tiposEventos!=null && tiposEventos.size() == 1){
-					evento.setTipoEvento(tiposEventos.get(0));
-				}
 				return tiposEventos;
 			}
 		};
@@ -246,7 +240,7 @@ public class RelatorioPage extends Menu {
 				target.add(form);
 			}
 		});
-		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;
@@ -268,9 +262,6 @@ public class RelatorioPage extends Menu {
 				}
 				materias = materiaServico.search(search);
 				
-				if(materias!=null && materias.size() == 1){
-					evento.setMateria(materias.get(0));
-				}
 				return materias;
 			}
 		};
@@ -299,7 +290,7 @@ public class RelatorioPage extends Menu {
 				target.add(form);
 			}
 		});
-		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;

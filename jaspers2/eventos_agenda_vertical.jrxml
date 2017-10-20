@@ -50,6 +50,7 @@
 	<parameter name="itens_eventos_dados" class="java.lang.Object">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="eventos" class="java.lang.Object"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -67,7 +68,7 @@
 		<band height="15">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement x="0" y="0" width="140" height="15" forecolor="#1017A1" uuid="c96dc8e1-4e01-48f1-9b91-7179cbb63aa7">
+				<reportElement x="0" y="0" width="70" height="15" forecolor="#01010D" uuid="c96dc8e1-4e01-48f1-9b91-7179cbb63aa7">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<box>
@@ -82,7 +83,7 @@
 				<text><![CDATA[Data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="0" width="60" height="15" forecolor="#1017A1" uuid="12ad96fc-2b90-478c-9e2b-2c75d86f98dc">
+				<reportElement x="70" y="0" width="130" height="15" forecolor="#01010D" uuid="12ad96fc-2b90-478c-9e2b-2c75d86f98dc">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -97,7 +98,7 @@
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="0" width="70" height="15" forecolor="#1017A1" uuid="c11de1de-ec73-4f00-9d39-2da8c8c8f376"/>
+				<reportElement x="200" y="0" width="70" height="15" forecolor="#01010D" uuid="c11de1de-ec73-4f00-9d39-2da8c8c8f376"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -110,7 +111,7 @@
 				<text><![CDATA[Materia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="0" width="60" height="15" forecolor="#1017A1" uuid="3702422e-c810-494d-a044-7b8f72863162"/>
+				<reportElement x="270" y="0" width="60" height="15" forecolor="#01010D" uuid="3702422e-c810-494d-a044-7b8f72863162"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -123,7 +124,7 @@
 				<text><![CDATA[Local]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="330" y="0" width="70" height="15" forecolor="#1017A1" uuid="b1057da7-4833-4d95-8c84-5c437e65ee6f">
+				<reportElement x="330" y="0" width="70" height="15" forecolor="#01010D" uuid="b1057da7-4833-4d95-8c84-5c437e65ee6f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -138,7 +139,7 @@
 				<text><![CDATA[Professor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="70" height="15" forecolor="#1017A1" uuid="fbfa9cc0-c090-4a55-88cb-25db87a7584e">
+				<reportElement x="400" y="0" width="70" height="15" forecolor="#01010D" uuid="fbfa9cc0-c090-4a55-88cb-25db87a7584e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -153,7 +154,7 @@
 				<text><![CDATA[Tipo Evento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="470" y="0" width="70" height="15" forecolor="#1017A1" uuid="35548c2e-49ff-4d44-a3b4-219a5770ea12">
+				<reportElement x="470" y="0" width="70" height="15" forecolor="#01010D" uuid="35548c2e-49ff-4d44-a3b4-219a5770ea12">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -172,56 +173,71 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<textField>
-				<reportElement x="0" y="0" width="140" height="20" uuid="4b61273e-efe6-4230-9a17-22d94dbfb08a"/>
-				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="140" y="0" width="60" height="20" uuid="ee0942d2-68ef-455f-9ece-1efc132cf039"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="70" y="0" width="130" height="20" uuid="ee0942d2-68ef-455f-9ece-1efc132cf039"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="200" y="0" width="70" height="20" uuid="ca278bf8-98f9-416c-b221-d33363b6b105"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="270" y="0" width="60" height="20" uuid="d16b9265-ba8b-4104-98db-99fe0db2f223"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textFieldExpression><![CDATA[$F{local}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="330" y="0" width="70" height="20" uuid="09647820-b8c9-43af-b91a-e3b1266e4919"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textFieldExpression><![CDATA[$F{professor}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="400" y="0" width="70" height="20" uuid="20709edc-8417-4b6c-906f-921137fc4b51"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textFieldExpression><![CDATA[$F{tipoEvento}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement x="470" y="0" width="70" height="20" uuid="0f16a363-a995-42a5-8a02-43a5677be3e3"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
 				<textFieldExpression><![CDATA[$F{origemEvento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="70" height="20" uuid="de97022b-d9ad-42ca-bda5-963d25083cfe"/>
+				<box leftPadding="1">
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="16">
-			<textField>
-				<reportElement x="410" y="1" width="130" height="15" uuid="e60eb0a2-a312-4c95-a85d-ff9b39a03e98">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="7"/>
-					<paragraph rightIndent="2"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="1" y="0" width="539" height="1" uuid="4350ae57-53ce-400c-b612-fed4d4a4f8af">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-			</line>
-		</band>
-	</pageFooter>
 	<lastPageFooter>
 		<band height="1">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
