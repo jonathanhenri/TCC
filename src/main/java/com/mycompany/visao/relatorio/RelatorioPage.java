@@ -11,7 +11,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -45,7 +45,7 @@ import com.mycompany.util.Util;
 import com.mycompany.visao.comum.AJAXDownload;
 import com.mycompany.visao.comum.Menu;
 
-public class RelatorioPage extends Menu {
+public class RelatorioPage extends Menu{
 	private static final long serialVersionUID = 1L;
 	
 	@SpringBean(name="eventoServico")
@@ -109,12 +109,19 @@ public class RelatorioPage extends Menu {
 		form.add(criarCampoProfessor());
 		form.add(criarCampoLocal());
 		form.add(criarImprimirPdfAjaxDownload());
-		form.add(criarDownloadPdfAgenda());
+		form.add(criarBaixarPdfAgenda());
 		add(form);
 	}
 	
 	private TextField<String> criarCampoLocal(){
 		TextField<String> textFieldNome = new TextField<String>("local");
+		textFieldNome.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+			}
+		});
 		textFieldNome.setOutputMarkupId(true);
 		textFieldNome.add(StringValidator.lengthBetween(0, 600));
 		return textFieldNome;
@@ -122,6 +129,13 @@ public class RelatorioPage extends Menu {
 	
 	private TextField<String> criarCampoProfessor(){
 		TextField<String> textFieldNome = new TextField<String>("professor");
+		textFieldNome.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+			}
+		});
 		textFieldNome.setOutputMarkupId(true);
 		textFieldNome.add(StringValidator.lengthBetween(0, 600));
 		return textFieldNome;
@@ -129,6 +143,13 @@ public class RelatorioPage extends Menu {
 	
 	private TextField<String> criarCampoDescricao(){
 		TextField<String> textFieldDescricao = new TextField<String>("descricao");
+		textFieldDescricao.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+			}
+		});
 		textFieldDescricao.setOutputMarkupId(true);
 		textFieldDescricao.add(StringValidator.lengthBetween(0, 600));
 		return textFieldDescricao;
@@ -136,12 +157,26 @@ public class RelatorioPage extends Menu {
 	
 	private DateTimeField criarCampoDataFim(){
 		DateTimeField dataFim = new DateTimeField("dataFim");
+		dataFim.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+			}
+		});
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
 	
 	private DateTimeField criarCampoDataInicio(){
 		DateTimeField dataFim = new DateTimeField("dataInicio");
+		dataFim.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+			}
+		});
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
@@ -394,21 +429,38 @@ public class RelatorioPage extends Menu {
 	}
 	
 	
-	private AjaxLink<String> criarDownloadPdfAgenda(){
-		AjaxLink<String> ajaxLink = new AjaxLink<String>("imprimir") {
+	private Boolean validarCamposObrigatorios(AjaxRequestTarget target){
+		Boolean isOk = true;
+		
+		if(evento.getAdministracao().getCurso() == null){
+			Util.notifyError(target, "Curso é obrigatório");
+			isOk = false;
+		}
+		
+		if(evento.getAgenda() == null){
+			Util.notifyError(target, "Agenda é obrigatório");
+			isOk = false;
+		}
+		
+		return isOk;
+	}
+	private AjaxButton criarBaixarPdfAgenda(){
+		AjaxButton ajaxLink = new AjaxButton("imprimir") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onClick(AjaxRequestTarget target) {
-				try {
-					jasperPrint =  new  RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico,agendaServico);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				if(jasperPrint!=null){
-					ajaxDownloadPdf.initiate(target);
-				}else{
-					error("Erro ao gerar o Espelho de nota fiscal.");
+			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				if(validarCamposObrigatorios(target)){
+					try {
+						jasperPrint =  new  RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico,agendaServico);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if(jasperPrint!=null){
+						ajaxDownloadPdf.initiate(target);
+					}else{
+						Util.notifyError(target, "Erro ao gerar o pdf de agenda.");
+					}
 				}
 			}
 		};
@@ -452,9 +504,6 @@ public class RelatorioPage extends Menu {
 		
 		return ajaxDownloadPdf;
 	}
-	
-	
-	
 	
 	public void setEvento(Evento evento) {
 		this.evento = evento;

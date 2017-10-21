@@ -98,7 +98,7 @@
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="348" y="0" width="100" height="15" forecolor="#01010D" uuid="c11de1de-ec73-4f00-9d39-2da8c8c8f376"/>
+				<reportElement x="348" y="0" width="152" height="15" forecolor="#01010D" uuid="c11de1de-ec73-4f00-9d39-2da8c8c8f376"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -111,7 +111,7 @@
 				<text><![CDATA[Materia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="448" y="0" width="81" height="15" forecolor="#01010D" uuid="3702422e-c810-494d-a044-7b8f72863162"/>
+				<reportElement x="500" y="0" width="100" height="15" forecolor="#01010D" uuid="3702422e-c810-494d-a044-7b8f72863162"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -124,7 +124,7 @@
 				<text><![CDATA[Local]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="529" y="0" width="90" height="15" forecolor="#01010D" uuid="b1057da7-4833-4d95-8c84-5c437e65ee6f">
+				<reportElement x="600" y="0" width="70" height="15" forecolor="#01010D" uuid="b1057da7-4833-4d95-8c84-5c437e65ee6f">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -139,7 +139,7 @@
 				<text><![CDATA[Professor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="619" y="0" width="90" height="15" forecolor="#01010D" uuid="fbfa9cc0-c090-4a55-88cb-25db87a7584e">
+				<reportElement x="670" y="0" width="70" height="15" forecolor="#01010D" uuid="fbfa9cc0-c090-4a55-88cb-25db87a7584e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -154,7 +154,7 @@
 				<text><![CDATA[Tipo Evento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="709" y="0" width="90" height="15" forecolor="#01010D" uuid="35548c2e-49ff-4d44-a3b4-219a5770ea12">
+				<reportElement x="740" y="0" width="58" height="15" forecolor="#01010D" uuid="35548c2e-49ff-4d44-a3b4-219a5770ea12">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<box>
@@ -183,7 +183,7 @@
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="348" y="0" width="100" height="20" uuid="ca278bf8-98f9-416c-b221-d33363b6b105"/>
+				<reportElement x="348" y="0" width="152" height="20" uuid="ca278bf8-98f9-416c-b221-d33363b6b105"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -192,7 +192,7 @@
 				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="448" y="0" width="81" height="20" uuid="d16b9265-ba8b-4104-98db-99fe0db2f223"/>
+				<reportElement x="500" y="0" width="100" height="20" uuid="d16b9265-ba8b-4104-98db-99fe0db2f223"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -201,7 +201,7 @@
 				<textFieldExpression><![CDATA[$F{local}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="529" y="0" width="90" height="20" uuid="09647820-b8c9-43af-b91a-e3b1266e4919"/>
+				<reportElement x="600" y="0" width="70" height="20" uuid="09647820-b8c9-43af-b91a-e3b1266e4919"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -210,7 +210,7 @@
 				<textFieldExpression><![CDATA[$F{professor}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="619" y="0" width="90" height="20" uuid="20709edc-8417-4b6c-906f-921137fc4b51"/>
+				<reportElement x="670" y="0" width="70" height="20" uuid="20709edc-8417-4b6c-906f-921137fc4b51"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -219,7 +219,7 @@
 				<textFieldExpression><![CDATA[$F{tipoEvento}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="709" y="0" width="90" height="20" uuid="0f16a363-a995-42a5-8a02-43a5677be3e3"/>
+				<reportElement x="740" y="0" width="58" height="20" uuid="0f16a363-a995-42a5-8a02-43a5677be3e3"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>

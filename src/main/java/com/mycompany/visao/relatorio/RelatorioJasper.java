@@ -83,9 +83,11 @@ public class RelatorioJasper {
 		
 		String periodosAgenda = "Não informado";
 		if(agenda.getListaPeriodosPertecentes()!=null && agenda.getListaPeriodosPertecentes().size()>0){
+			periodosAgenda = "";
 			for(RelacaoPeriodo relacaoPeriodo:agenda.getListaPeriodosPertecentes()){
-				periodosAgenda.concat(String.valueOf(relacaoPeriodo.getPeriodo()));
+				periodosAgenda += String.valueOf(relacaoPeriodo.getPeriodo())+",";
 			}
+			periodosAgenda = periodosAgenda.substring(0, periodosAgenda.length() -1);
 		}
 		
 		params.put("nomeAgenda",nomeAgenda);
@@ -164,6 +166,9 @@ public class RelatorioJasper {
 			search.addFilterEqual("origemEvento.id", evento.getOrigemEvento().getId());
 		}
 		
+		if(evento.getMateria()!=null){
+			search.addFilterEqual("materia.id", evento.getMateria().getId());
+		}
 		if(evento.getProfessor()!=null){
 			search.addFilterEqual("professor", evento.getProfessor());
 		}
