@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +33,15 @@ public class RelatorioJasper {
 	private IEventoServico eventoServico;
 	private Agenda agenda;
 	private Evento evento;
+	
+	private static Integer REPETIR_DOMINGO = 1;
+	private static Integer REPETIR_SEGUNDA = 2;
+	private static Integer REPETIR_TERCA = 3;
+	private static Integer REPETIR_QUARTA = 4;
+	private static Integer REPETIR_QUINTA = 5;
+	private static Integer REPETIR_SEXTA = 6;
+	private static Integer REPETIR_SABADO = 7;
+	
 	
 	private List<Evento> listaTodosEventos;
 	
@@ -107,21 +118,40 @@ public class RelatorioJasper {
 		List<Map<String, Object>> relatorioPaiFields = new ArrayList<Map<String, Object>>();
 		
 		SimpleDateFormat formataData = new SimpleDateFormat("EEEEEE");
-//		if(listaConferenciaProduto.size() > 0){
-			HashMap<Date, List<EventoBean>> hashListaProduto =  popularHashMapEventoAgrupado();
+		
+		if(evento.getAgruparPorDia()!=null && evento.getAgruparPorDia()){
+			HashMap<Integer, List<EventoBean>> hashListaProduto =  popularHashMapEventoAgrupadoPorDia();
 			
-			for(Date key:hashListaProduto.keySet()){
+			List<Integer> listaKeySet = new ArrayList<Integer>();
+			listaKeySet.addAll(hashListaProduto.keySet());
+			
+			for(Integer key:listaKeySet){
 				List <EventoBean> eventosLista = hashListaProduto.get(key);
 				Map<String, Object> itemMap = new HashMap<>();
 				
+				itemMap.put("diaAgrupado",getDiaSemana(key));
+				itemMap.put("eventos",new JRBeanCollectionDataSource(eventosLista));
+				relatorioPaiFields.add(itemMap);
+			}
+			
+			
+		}else{
+			HashMap<Date, List<EventoBean>> hashListaProduto =  popularHashMapEvento();
+			
+			List<Date> listaKeySet = new ArrayList<Date>();
+			listaKeySet.addAll(hashListaProduto.keySet());
+			
+			 Collections.sort(listaKeySet, new Comparator<Date>() {
+	            public int compare(Date o1, Date o2) {
+	                return (o2.compareTo(o1));
+	            }
+	         });
+				 
 				
-//				Collections.sort(conferenciaProdutoLista, new Comparator<EventoBean>() {
-//					Collator collator = Collator.getInstance(Locale.US);
-//					
-//					public int compare(EventoBean o1, EventoBean o2) {
-//					    return collator.compare(o1.getNomeProduto(), o2.getNomeProduto());
-//					}
-//				});
+				
+			for(Date key:listaKeySet){
+				List <EventoBean> eventosLista = hashListaProduto.get(key);
+				Map<String, Object> itemMap = new HashMap<>();
 				
 				String data = Util.formataDataSemLocale(key);
 				data+=" - "+formataData.format(key);
@@ -129,7 +159,9 @@ public class RelatorioJasper {
 				itemMap.put("eventos",new JRBeanCollectionDataSource(eventosLista));
 				relatorioPaiFields.add(itemMap);
 			}
-//		}
+		}
+		
+		
 		params.put("SUBREPORT_DIR","jaspers2/");
 		
 		InputStream inputStreamAgenda = new ByteArrayInputStream(Util.lerArquivo("agenda_horizontal.jasper", "jaspers2/", false));
@@ -203,6 +235,28 @@ public class RelatorioJasper {
 		}
 	}
 	
+	private String getDiaSemana(Integer dia){
+		
+	  switch (dia) {
+         case 1:
+             return "Domingo";
+         case 2:
+             return "Segunda-feira";
+         case 3:
+             return "Terça-feira";
+         case 4:
+             return "Quarta-feira";
+         case 5:
+             return "Quinta-feira";
+         case 6:
+             return "Sexta-feira";
+          case 7:
+             return "Sábado";
+      }
+	  
+	  return "";
+		 
+	}
 	private void replicarPopularListaEventos(){
 		List<Evento> listaAux = new ArrayList<Evento>();
 		listaAux.addAll(listaTodosEventos);
@@ -286,9 +340,111 @@ public class RelatorioJasper {
 		}
 	}
 	
-	private HashMap<Date, List<EventoBean>> popularHashMapEventoAgrupado(){
+	private HashMap<Integer, List<EventoBean>> popularHashMapEventoAgrupadoPorDia(){
+		HashMap<Integer, List<EventoBean>> hashMapAgrupadoAgrupadoDia = new HashMap<Integer, List<EventoBean>>();
+		if(listaTodosEventos!=null && listaTodosEventos.size()>0){
+			for(Evento evento:listaTodosEventos){
+				if(evento.getRepetirEvento()!=null && evento.getRepetirEvento()){
+					List<EventoBean> listaAux = new ArrayList<RelatorioJasper.EventoBean>();
+					
+					//Seg
+					if(evento.getRepetirTodaSegunda()!=null && evento.getRepetirTodaSegunda()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_SEGUNDA)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_SEGUNDA);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_SEGUNDA,listaAux);
+					}
+					
+					// Ter
+					if(evento.getRepetirTodaTerca()!=null && evento.getRepetirTodaTerca()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_TERCA)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_TERCA);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_TERCA,listaAux);
+					}
+
+					// Quarta
+					if(evento.getRepetirTodaQuarta()!=null && evento.getRepetirTodaQuarta()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_QUARTA)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_QUARTA);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_QUARTA,listaAux);
+					}
+					
+					// Quinta
+					if(evento.getRepetirTodaQuinta()!=null && evento.getRepetirTodaQuinta()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_QUINTA)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_QUINTA);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_QUINTA,listaAux);
+					}
+					
+					// Sexta
+					if(evento.getRepetirTodaSexta()!=null && evento.getRepetirTodaSexta()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_SEXTA)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_SEXTA);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_SEXTA,listaAux);
+					}
+					
+					// Sab
+					if(evento.getRepetirTodoSabado()!=null && evento.getRepetirTodoSabado()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_SABADO)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_SABADO);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_SABADO,listaAux);
+					}
+					
+					// Domingo
+					if(evento.getRepetirTodoDomingo()!=null && evento.getRepetirTodoDomingo()){
+						if(hashMapAgrupadoAgrupadoDia.containsKey(REPETIR_DOMINGO)){
+							listaAux = hashMapAgrupadoAgrupadoDia.get(REPETIR_DOMINGO);
+						}else{
+							listaAux = new ArrayList<EventoBean>();
+						}
+						
+						EventoBean eventoBean = new EventoBean(evento);
+						listaAux.add(eventoBean);
+						hashMapAgrupadoAgrupadoDia.put(REPETIR_DOMINGO,listaAux);
+					}
+				}
+			}
+		}
+		return hashMapAgrupadoAgrupadoDia;
+	}
+	
+	private HashMap<Date, List<EventoBean>> popularHashMapEvento(){
 		replicarPopularListaEventos();
 		HashMap<Date, List<EventoBean>> hashMapAgrupado = new HashMap<Date, List<EventoBean>>();
+		
+	
 		
 		if(listaTodosEventos!=null && listaTodosEventos.size()>0){
 			for(Evento evento:listaTodosEventos){
@@ -374,6 +530,7 @@ public class RelatorioJasper {
 	}
 	
 	public class EventoBean{
+		private Date dataOrganizar;
 		private String data;
 		private String descricao;
 		private String materia;
@@ -390,6 +547,15 @@ public class RelatorioJasper {
 			setProfessor(evento.getProfessor());
 			setTipoEvento(evento.getTipoEvento());
 			setOrigemEvento(evento.getOrigemEvento());
+			setDataOrganizar(evento.getDataInicio());
+		}
+		
+		public void setDataOrganizar(Date dataOrganizar) {
+			this.dataOrganizar = dataOrganizar;
+		}
+		
+		public Date getDataOrganizar() {
+			return dataOrganizar;
 		}
 		
 		public void setData(String data) {

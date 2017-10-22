@@ -36,93 +36,93 @@
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
 	<title>
-		<band height="196" splitType="Stretch">
+		<band height="147" splitType="Stretch">
 			<line>
-				<reportElement x="2" y="80" width="798" height="1" uuid="b399cc23-9e14-4ade-bfff-2a5e1802e07f">
+				<reportElement x="2" y="41" width="798" height="1" uuid="b399cc23-9e14-4ade-bfff-2a5e1802e07f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement x="0" y="184" width="799" height="1" uuid="e5cf560c-dba3-450d-8513-0a127a91ce81">
+				<reportElement x="0" y="146" width="799" height="1" uuid="e5cf560c-dba3-450d-8513-0a127a91ce81">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="210" y="0" width="397" height="60" uuid="57f3c35a-beb3-4022-89b5-826f7c4de2e6"/>
+				<reportElement x="210" y="0" width="397" height="40" uuid="57f3c35a-beb3-4022-89b5-826f7c4de2e6"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="20" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Ueg Agenda]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="128" width="34" height="18" uuid="f4fb80d2-3e67-44ee-9929-7e11d99d0e7b"/>
+				<reportElement x="0" y="90" width="34" height="18" uuid="f4fb80d2-3e67-44ee-9929-7e11d99d0e7b"/>
 				<text><![CDATA[Curso:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="251" y="146" width="100" height="20" uuid="c1f973d2-bcd0-45fc-8107-98ecf7eb35a3"/>
+				<reportElement x="251" y="108" width="100" height="20" uuid="c1f973d2-bcd0-45fc-8107-98ecf7eb35a3"/>
 				<text><![CDATA[Origem de Evento:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="501" y="146" width="49" height="20" uuid="36de5a44-1dc5-4470-8f8b-93c66c0ccea6"/>
+				<reportElement x="501" y="108" width="49" height="20" uuid="36de5a44-1dc5-4470-8f8b-93c66c0ccea6"/>
 				<text><![CDATA[Professor:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="166" width="34" height="18" uuid="da931642-9112-4e7f-8d03-55c7f5924613"/>
+				<reportElement x="0" y="128" width="34" height="18" uuid="da931642-9112-4e7f-8d03-55c7f5924613"/>
 				<text><![CDATA[Local:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="251" y="128" width="347" height="18" uuid="690d9640-0578-4840-ac0b-c74cbab07357"/>
+				<reportElement x="251" y="90" width="347" height="18" uuid="690d9640-0578-4840-ac0b-c74cbab07357"/>
 				<text><![CDATA[Periodos da agenda:]]></text>
 			</staticText>
 			<image hAlign="Right">
-				<reportElement x="607" y="0" width="193" height="60" uuid="fa98bbf5-166e-4e42-b5c6-ce390983650e">
+				<reportElement x="670" y="0" width="130" height="40" uuid="fa98bbf5-166e-4e42-b5c6-ce390983650e">
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
 				<imageExpression><![CDATA[$P{logo_path}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="34" y="128" width="217" height="18" uuid="acd33936-d132-47b8-8d5a-f46186b883d5"/>
+				<reportElement x="34" y="90" width="217" height="18" uuid="acd33936-d132-47b8-8d5a-f46186b883d5"/>
 				<textFieldExpression><![CDATA[$P{curso}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="146" width="171" height="20" uuid="26062508-8f65-4f38-83ed-2e547a08125f"/>
+				<reportElement x="80" y="108" width="171" height="20" uuid="26062508-8f65-4f38-83ed-2e547a08125f"/>
 				<textFieldExpression><![CDATA[$P{tipoEvento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="351" y="146" width="150" height="20" uuid="a457f8a5-ea39-4db8-955b-3b4de137b501"/>
+				<reportElement x="351" y="108" width="150" height="20" uuid="a457f8a5-ea39-4db8-955b-3b4de137b501"/>
 				<textFieldExpression><![CDATA[$P{origemEvento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="550" y="146" width="250" height="20" uuid="73cb291e-e5f1-4c9e-b0cd-fcf2fb701a88"/>
+				<reportElement x="550" y="108" width="250" height="20" uuid="73cb291e-e5f1-4c9e-b0cd-fcf2fb701a88"/>
 				<textFieldExpression><![CDATA[$P{professor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="166" width="346" height="18" uuid="b8d31dcf-6515-4520-9cc6-5ab7f6af2b00"/>
+				<reportElement x="30" y="128" width="346" height="18" uuid="b8d31dcf-6515-4520-9cc6-5ab7f6af2b00"/>
 				<textFieldExpression><![CDATA[$P{local}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="351" y="128" width="449" height="18" uuid="e238c072-ca2f-4bcb-8066-5d3eb9d3b74c"/>
+				<reportElement x="351" y="90" width="449" height="18" uuid="e238c072-ca2f-4bcb-8066-5d3eb9d3b74c"/>
 				<textFieldExpression><![CDATA[$P{periodosAgenda}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="80" width="799" height="29" uuid="975c13f0-4c30-41f8-85aa-9a94bdcff41f"/>
+				<reportElement x="0" y="42" width="799" height="29" uuid="975c13f0-4c30-41f8-85aa-9a94bdcff41f"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="16"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Dados da " + $P{nomeAgenda}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="146" width="80" height="20" uuid="887c61f4-393c-48e4-8224-7335cc62b624"/>
+				<reportElement x="0" y="108" width="80" height="20" uuid="887c61f4-393c-48e4-8224-7335cc62b624"/>
 				<text><![CDATA[Tipo de Evento:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="251" y="109" width="549" height="19" uuid="b30b024b-e564-49c6-babf-6e1632993fd2"/>
+				<reportElement x="251" y="71" width="549" height="19" uuid="b30b024b-e564-49c6-babf-6e1632993fd2"/>
 				<textFieldExpression><![CDATA["Data Inicio: "+$P{dataInicio} +"                Data Fim: "+$P{dataFim}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="109" width="251" height="19" uuid="7445b6ef-79b8-476a-8bf2-5cdac92e53f5"/>
+				<reportElement x="0" y="71" width="251" height="19" uuid="7445b6ef-79b8-476a-8bf2-5cdac92e53f5"/>
 				<textFieldExpression><![CDATA["Descrição: " +$P{descricao}]]></textFieldExpression>
 			</textField>
 		</band>

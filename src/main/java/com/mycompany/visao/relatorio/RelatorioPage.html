@@ -4,6 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <wicket:head>
+<link href="css/toggle-switch.css" rel='stylesheet'  />
+<link href="css/toggle-switch-px.css" rel='stylesheet'  />
+<link href="css/toggle-switch-rem.css" rel='stylesheet'  />
 <script>
 $('#tab a').on('click', function(e) {
   e.preventDefault();
@@ -74,6 +77,27 @@ $('#tab a').on('click', function(e) {
 							<div class="col-md-3">	
 								<label class="control-label">Descrição</label>
 								<input type="text" class="form-control"  id="descricao" wicket:id="descricao" placeholder="Descrição">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="fieldcontain col-lg-2">
+						        <label >
+						           Agrupar Por Dia <a href="#" data-toggle="tooltip" class="glyphicon glyphicon-question-sign" title="Irá agrupar apenas os eventos que estão para 'Repetir Evento'"></a>
+						        </label>
+								<div class="switch-toggle switch-candy large-3">
+									<div class="switch-toggle switch-candy large-3">
+									 	<div wicket:id="agruparPorDia" >
+										    <input id="agruparPorDiaSim" wicket:id="agruparPorDiaSim"  name="agruparPorDiaSim" type="radio">
+										    <label for="agruparPorDiaSim" onclick="">Sim</label>
+										
+										    <input id="agruparPorDiaNao" wicket:id="agruparPorDiaNao"  name="agruparPorDiaNao" type="radio">
+										    <label for="agruparPorDiaNao" onclick="">Não</label>
+				
+										    <a></a>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="form-group">

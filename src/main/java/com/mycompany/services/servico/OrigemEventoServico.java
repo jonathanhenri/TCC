@@ -64,6 +64,12 @@ public class OrigemEventoServico implements IOrigemEventoServico {
 		Retorno retorno = new Retorno();
 		retorno.setSucesso(true);
 		
+		if(origemEvento.getAdministracao()==null || (origemEvento.getAdministracao()!=null && origemEvento.getAdministracao().getCurso() == null)){
+			retorno.addMensagem(new Mensagem("Origem de evento","curso",Mensagem.MOTIVO_NULO,Mensagem.ERRO));
+			retorno.setSucesso(false);
+			return retorno;
+		}
+		
 		Search searchLoginRepetido = new Search(OrigemEvento.class);
 		searchLoginRepetido.addFilterEqual("nome", origemEvento.getNome());
 		Filter filterOr = Filter.or(Filter.equal("administracao.curso.id", origemEvento.getAdministracao().getCurso().getId()),Filter.equal("administracao.administradorCampus", true));

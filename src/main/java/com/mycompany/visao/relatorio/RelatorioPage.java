@@ -9,7 +9,9 @@ import java.util.List;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.yui.calendar.DateTimeField;
@@ -17,9 +19,12 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.form.Radio;
+import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.AbstractResourceStreamWriter;
@@ -92,6 +97,7 @@ public class RelatorioPage extends Menu{
 		calendarFim.set(Calendar.HOUR_OF_DAY, calendarFim.getActualMaximum(Calendar.HOUR_OF_DAY));
 		calendarFim.set(Calendar.MINUTE, calendarFim.getActualMaximum(Calendar.MINUTE));
 		evento.setDataFim(calendarFim.getTime());
+		evento.setAgruparPorDia(false);
 	}
 	
 	private void adicionarCampos(){
@@ -105,6 +111,7 @@ public class RelatorioPage extends Menu{
 		form.add(criarCampoOrigemEvento());
 		form.add(criarCampoDataFim());
 		form.add(criarCampoDataInicio());
+		form.add(criarCampoAgruparPorDia());
 		form.add(criarCampoDescricao());
 		form.add(criarCampoProfessor());
 		form.add(criarCampoLocal());
@@ -166,6 +173,24 @@ public class RelatorioPage extends Menu{
 		});
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
+	}
+	
+	private RadioGroup<Boolean> criarCampoAgruparPorDia() {
+		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("agruparPorDia");
+		radioGroupAtivo.add(new Radio<Boolean>("agruparPorDiaSim", new Model<Boolean>(true)).add(new AttributeModifier("id", "agruparPorDiaSim")));
+		radioGroupAtivo.add(new Radio<Boolean>("agruparPorDiaNao", new Model<Boolean>(false)).add(new AttributeModifier("id", "agruparPorDiaNao")));
+		radioGroupAtivo.setOutputMarkupId(true);
+		radioGroupAtivo.add(new AjaxFormChoiceComponentUpdatingBehavior() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+		return radioGroupAtivo;
 	}
 	
 	private DateTimeField criarCampoDataInicio(){
@@ -439,6 +464,21 @@ public class RelatorioPage extends Menu{
 		
 		if(evento.getAgenda() == null){
 			Util.notifyError(target, "Agenda é obrigatório");
+			isOk = false;
+		}
+		
+		Search search = new Search(Evento.class);
+		search.addFilterEqual("agenda.id", evento.getAgenda().getId());
+		
+		if(evento.getAgruparPorDia()!=null && evento.getAgruparPorDia()){
+			search.addFilterEqual("repetirEvento",true);
+		}
+		int i = 0;
+		
+		i = eventoServico.count(search);
+		
+		if(i<=0){
+			Util.notifyError(target, "Não existem eventos cadastrados para essa agenda.");
 			isOk = false;
 		}
 		

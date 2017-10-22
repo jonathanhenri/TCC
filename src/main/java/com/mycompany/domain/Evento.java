@@ -100,6 +100,10 @@ public class Evento extends AbstractBean<Evento> {
 	@Column(name = "REPETIR_TODA_DOMINGO", nullable = true)
 	private Boolean repetirTodoDomingo;
 	
+	//Usado no relatorio
+	@Transient
+	private Boolean agruparPorDia;
+	
 	
 	@Id
 	@Column(name = "ID_EVENTO")
@@ -302,5 +306,13 @@ public class Evento extends AbstractBean<Evento> {
 	public Class<Evento> getJavaType() {
 		return Evento.class;
 	}
+	
+	public void setAgruparPorDia(Boolean agruparPorDia) {
+		this.agruparPorDia = agruparPorDia;
+	}
+	public Boolean getAgruparPorDia() {
+		return agruparPorDia;
+	}
+	
 
 }
