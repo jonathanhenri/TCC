@@ -174,7 +174,7 @@
 		<band height="20" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="120" y="0" width="228" height="20" uuid="ee0942d2-68ef-455f-9ece-1efc132cf039"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="120" y="0" width="228" height="20" isPrintWhenDetailOverflows="true" uuid="ee0942d2-68ef-455f-9ece-1efc132cf039"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -183,7 +183,7 @@
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="348" y="0" width="152" height="20" uuid="ca278bf8-98f9-416c-b221-d33363b6b105"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="348" y="0" width="152" height="20" isPrintWhenDetailOverflows="true" uuid="ca278bf8-98f9-416c-b221-d33363b6b105"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -192,7 +192,7 @@
 				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="500" y="0" width="100" height="20" uuid="d16b9265-ba8b-4104-98db-99fe0db2f223"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="500" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="d16b9265-ba8b-4104-98db-99fe0db2f223"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -201,7 +201,7 @@
 				<textFieldExpression><![CDATA[$F{local}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="600" y="0" width="70" height="20" uuid="09647820-b8c9-43af-b91a-e3b1266e4919"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="600" y="0" width="70" height="20" isPrintWhenDetailOverflows="true" uuid="09647820-b8c9-43af-b91a-e3b1266e4919"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -210,7 +210,7 @@
 				<textFieldExpression><![CDATA[$F{professor}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="670" y="0" width="70" height="20" uuid="20709edc-8417-4b6c-906f-921137fc4b51"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="670" y="0" width="70" height="20" isPrintWhenDetailOverflows="true" uuid="20709edc-8417-4b6c-906f-921137fc4b51"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -219,7 +219,7 @@
 				<textFieldExpression><![CDATA[$F{tipoEvento}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="740" y="0" width="58" height="20" uuid="0f16a363-a995-42a5-8a02-43a5677be3e3"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="740" y="0" width="58" height="20" isPrintWhenDetailOverflows="true" uuid="0f16a363-a995-42a5-8a02-43a5677be3e3"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -228,7 +228,7 @@
 				<textFieldExpression><![CDATA[$F{origemEvento}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="120" height="20" uuid="de97022b-d9ad-42ca-bda5-963d25083cfe"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="120" height="20" isPrintWhenDetailOverflows="true" uuid="de97022b-d9ad-42ca-bda5-963d25083cfe"/>
 				<box leftPadding="1">
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
