@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,16 +43,21 @@ public class EventoDAOteste extends BaseServiceTestCase {
 	@Transactional(propagation=Propagation.REQUIRED)
 	@Rollback(true)
 	public void testeInserirEvento() {
-		Search search = new Search(Aluno.class);
-		search.addFilterEqual("administracao.administradorCampus", true);
-		Aluno aluno = alunoServico.searchUnique(search);
+		Aluno alunoLogado = new Aluno();
+		alunoLogado.setLogin("admin");
+		alunoLogado.setSenha("admin");
+		alunoLogado.setId(new Long(1));
+		
+		alunoLogado = alunoServico.searchFetchAlunoLogado(alunoLogado);
+
+		Authentication authRequest = new UsernamePasswordAuthenticationToken(alunoLogado, "admin", alunoLogado.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authRequest);
 		
 		Evento evento = new Evento();
 		evento.setDataInicio(new Date());
 		evento.setDataFim(new Date());
 		evento.setDescricao("Teste Junit");
-		
-		SecurityContextHolder.getContext().setAuthentication((Authentication)aluno);
+		evento.setRepetirEvento(false);
 		
 		Retorno retorno = eventoServico.persist(evento);
 		Assert.assertTrue(retorno.getSucesso());
@@ -63,16 +69,21 @@ public class EventoDAOteste extends BaseServiceTestCase {
 	@Transactional(propagation=Propagation.REQUIRED)
 	@Rollback(true)
 	public void testeAlterarEvento() {
-		Search search = new Search(Aluno.class);
-		search.addFilterEqual("administracao.administradorCampus", true);
-		Aluno aluno = alunoServico.searchUnique(search);
+		Aluno alunoLogado = new Aluno();
+		alunoLogado.setLogin("admin");
+		alunoLogado.setSenha("admin");
+		alunoLogado.setId(new Long(1));
+		
+		alunoLogado = alunoServico.searchFetchAlunoLogado(alunoLogado);
+
+		Authentication authRequest = new UsernamePasswordAuthenticationToken(alunoLogado, "admin", alunoLogado.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authRequest);
 		
 		Evento evento = new Evento();
 		evento.setDataInicio(new Date());
 		evento.setDataFim(new Date());
 		evento.setDescricao("Teste Junit");
-		
-		SecurityContextHolder.getContext().setAuthentication((Authentication)aluno);
+		evento.setRepetirEvento(false);
 		
 		Retorno retorno = eventoServico.persist(evento);
 		Assert.assertTrue(retorno.getSucesso());
@@ -98,16 +109,22 @@ public class EventoDAOteste extends BaseServiceTestCase {
 	@Transactional(propagation=Propagation.REQUIRED)
 	@Rollback(true)
 	public void testeExcluirEvento() {
-		Search search = new Search(Aluno.class);
-		search.addFilterEqual("administracao.administradorCampus", true);
-		Aluno aluno = alunoServico.searchUnique(search);
+		Aluno alunoLogado = new Aluno();
+		alunoLogado.setLogin("admin");
+		alunoLogado.setSenha("admin");
+		alunoLogado.setId(new Long(1));
+		
+		alunoLogado = alunoServico.searchFetchAlunoLogado(alunoLogado);
+
+		Authentication authRequest = new UsernamePasswordAuthenticationToken(alunoLogado, "admin", alunoLogado.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authRequest);
 		
 		Evento evento = new Evento();
 		evento.setDataInicio(new Date());
 		evento.setDataFim(new Date());
 		evento.setDescricao("Teste Junit");
+		evento.setRepetirEvento(false);
 		
-		SecurityContextHolder.getContext().setAuthentication((Authentication)aluno);
 		
 		Retorno retorno = eventoServico.persist(evento);
 		Assert.assertTrue(retorno.getSucesso());
