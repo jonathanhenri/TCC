@@ -11,6 +11,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxIndicatorAware;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -50,7 +51,7 @@ import com.mycompany.util.Util;
 import com.mycompany.visao.comum.AJAXDownload;
 import com.mycompany.visao.comum.Menu;
 
-public class RelatorioPage extends Menu{
+public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 	private static final long serialVersionUID = 1L;
 	
 	@SpringBean(name="eventoServico")
@@ -465,21 +466,21 @@ public class RelatorioPage extends Menu{
 		if(evento.getAgenda() == null){
 			Util.notifyError(target, "Agenda é obrigatório");
 			isOk = false;
-		}
-		
-		Search search = new Search(Evento.class);
-		search.addFilterEqual("agenda.id", evento.getAgenda().getId());
-		
-		if(evento.getAgruparPorDia()!=null && evento.getAgruparPorDia()){
-			search.addFilterEqual("repetirEvento",true);
-		}
-		int i = 0;
-		
-		i = eventoServico.count(search);
-		
-		if(i<=0){
-			Util.notifyError(target, "Não existem eventos cadastrados para essa agenda.");
-			isOk = false;
+		}else{
+			Search search = new Search(Evento.class);
+			search.addFilterEqual("agenda.id", evento.getAgenda().getId());
+			
+			if(evento.getAgruparPorDia()!=null && evento.getAgruparPorDia()){
+				search.addFilterEqual("repetirEvento",true);
+			}
+			int i = 0;
+			
+			i = eventoServico.count(search);
+			
+			if(i<=0){
+				Util.notifyError(target, "Não existem eventos cadastrados para essa agenda.");
+				isOk = false;
+			}
 		}
 		
 		return isOk;
@@ -487,7 +488,7 @@ public class RelatorioPage extends Menu{
 	private AjaxButton criarBaixarPdfAgenda(){
 		AjaxButton ajaxLink = new AjaxButton("imprimir") {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				if(validarCamposObrigatorios(target)){
@@ -502,6 +503,12 @@ public class RelatorioPage extends Menu{
 						Util.notifyError(target, "Erro ao gerar o pdf de agenda.");
 					}
 				}
+			}
+			
+			@Override
+			protected void onError(AjaxRequestTarget target, Form<?> form) {
+				Util.notifyError(target, "Erro ao gerar pdf de agenda.");
+				super.onError(target, form);
 			}
 		};
 		
@@ -551,5 +558,11 @@ public class RelatorioPage extends Menu{
 	
 	public Evento getEvento() {
 		return evento;
+	}
+
+
+	@Override
+	public String getAjaxIndicatorMarkupId() {
+		return "aguardePdf";
 	}
 }

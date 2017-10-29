@@ -7,6 +7,11 @@
 <link href="css/toggle-switch.css" rel='stylesheet'  />
 <link href="css/toggle-switch-px.css" rel='stylesheet'  />
 <link href="css/toggle-switch-rem.css" rel='stylesheet'  />
+<script src="js/bootstrap.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery2.0.3.min.js"></script>
+<script src="js/notify.js"></script>
+<script src="js/notify.min.js"></script>
 <script>
 $('#tab a').on('click', function(e) {
   e.preventDefault();
@@ -24,7 +29,7 @@ $('#tab a').on('click', function(e) {
 <body>
 	<wicket:extend>
 		<br>
-    	<div class="col-md-10 col-md-offset-1">
+    	<div class="col-md-12">
     		<div class="panel panel-info">
 				<div class="panel-heading">
 					<div class="panel-title">
@@ -48,12 +53,12 @@ $('#tab a').on('click', function(e) {
 								<select class="form-control" wicket:id="tipoEvento"></select>
 							</div>
 							<div class="col-md-3">	
-								<label class="control-label">Data inicio</label>
+								<label class="control-label">Data inicio</label><br>
 								<span wicket:id="dataInicio" placeholder="Data Inicial"></span>
 							</div>
 						
 							<div class="col-md-3">	
-								<label class="control-label">Data final</label>
+								<label class="control-label">Data final</label><br>
 								<span wicket:id="dataFim" placeholder="Data final"></span>
 							</div>
 						</div>
@@ -101,9 +106,13 @@ $('#tab a').on('click', function(e) {
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-md-12">	
-								<br>
-								<a type="submit" wicket:id="imprimir" class="btn btn-info pull-right"><span class="glyphicon glyphicon-print"></span> Imprimir</a>
+							<div class="col-md-2 col-md-offset-2 pull-right">	
+								<span id="aguardePdf" style="display: none;">
+                                       <img src="images/ajax-loader_pacman.gif" />
+                                       Aguarde
+                                 </span>
+								<a type="submit" wicket:id="imprimir" class="btn btn-info pull-right"><span class="glyphicon glyphicon-print"></span> Imprimir
+								</a>
 							</div>
 						</div>
 					</form>
