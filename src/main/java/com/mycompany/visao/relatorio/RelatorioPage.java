@@ -422,9 +422,6 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 				
 				cursos = cursoServico.search(new Search(Curso.class));
 				
-				if(cursos!=null && cursos.size() == 1){
-					evento.getAdministracao().setCurso(cursos.get(0));
-				}
 				return cursos;
 			}
 		};
@@ -448,7 +445,7 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 				target.add(form);
 			}
 		});
-		tipoRadioChoice.setNullValid(false);
+		tipoRadioChoice.setNullValid(true);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
 		return tipoRadioChoice;
