@@ -19,7 +19,7 @@ public class DataTextField extends DateTextField {
 
 	@Override
 	protected String getInputType() {
-		return "date";
+		return "text";
 	}
 
 }

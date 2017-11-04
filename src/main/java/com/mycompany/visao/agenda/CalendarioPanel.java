@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -16,7 +17,7 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.extensions.yui.calendar.DateTimeField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -51,6 +52,7 @@ import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.Util;
 import com.mycompany.visao.cadastro.evento.EventoEditForm;
 import com.mycompany.visao.cadastro.evento.EventoPanel;
+import com.mycompany.visao.comum.DataTextField;
 import com.mycompany.visao.comum.ListagemFiltrosDinamicosPanel;
 import com.mycompany.visao.comum.MensagemExcluirPanel;
 
@@ -174,12 +176,12 @@ public class CalendarioPanel extends Panel {
 				}
 				
 				List<Evento> listaEventosEncontrados = eventoServico.search(search);
+				listaTodosEventos = new ArrayList<Evento>();
 				
 				if(listaEventosEncontrados!=null && listaEventosEncontrados.size()>0){
-					listaTodosEventos = new ArrayList<Evento>();
 					listaTodosEventos.addAll(listaEventosEncontrados);
-					target.add(divListagem);
 				}
+				target.add(divListagem);
 			}
 		};
 		
@@ -267,9 +269,8 @@ public class CalendarioPanel extends Panel {
 	
 	private void popularHashMapEventoAgrupado(){
 		replicarPopularListaEventos();
-		
+		hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 		if(listaTodosEventos!=null && listaTodosEventos.size()>0){
-			hashMapEventoAgrupado = new HashMap<Date, List<Evento>>();
 			for(Evento evento:listaTodosEventos){
 				if(evento.getDataAuxiliar() == null){
 					evento.setDataAuxiliar(evento.getDataInicio());
@@ -289,16 +290,46 @@ public class CalendarioPanel extends Panel {
 		 
 	}
 	
-	private DateTextField criarCampoDataFim(){
-		DateTextField dataFim = new DateTextField("dataFim",new PropertyModel<Date>(evento, "dataFim"), new PatternDateConverter("dd/mm/yyyy",false));
+	private DataTextField criarCampoDataFim(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DataTextField dataFim = new DataTextField("dataFim",new PropertyModel<Date>(evento, "dataFim"),new PatternDateConverter("dd/MM/yyyy",false));
+		datePicker.setAutoHide(true);		
+		dataFim.add(datePicker);
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
 	
-	private DateTextField criarCampoDataInicio(){
-		DateTextField dataFim = new DateTextField("dataInicio",new PropertyModel<Date>(evento, "dataInicio"), new PatternDateConverter("dd/mm/yyyy",false));
-		dataFim.setOutputMarkupId(true);
-		return dataFim;
+	private DataTextField criarCampoDataInicio(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DataTextField dataInicio = new DataTextField("dataInicio",new PropertyModel<Date>(evento, "dataInicio"),new PatternDateConverter("dd/MM/yyyy",false));
+		datePicker.setAutoHide(true);		
+		dataInicio.add(datePicker);
+		dataInicio.setOutputMarkupId(true);
+		return dataInicio;
 	}
 	
 	

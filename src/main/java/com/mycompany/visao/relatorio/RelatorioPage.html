@@ -52,21 +52,22 @@ $('#tab a').on('click', function(e) {
 								<label class="control-label">Tipo Evento</label>
 								<select class="form-control" wicket:id="tipoEvento"></select>
 							</div>
-							<div class="col-md-3">	
+							<div class="col-md-2">	
 								<label class="control-label">Data inicio</label><br>
-								<span wicket:id="dataInicio" placeholder="Data Inicial"></span>
+								<input wicket:id="dataInicio" type="text" class="form-data" placeholder="Data Inicial"></input>
 							</div>
 						
-							<div class="col-md-3">	
+							<div class="col-md-2">	
 								<label class="control-label">Data final</label><br>
-								<span wicket:id="dataFim" placeholder="Data final"></span>
+								<input wicket:id="dataFim" type="text"  class="form-data" placeholder="Data final"></input>
 							</div>
-						</div>
-						<div class="form-group">
 							<div class="col-md-2">	
 								<label class="control-label">Origem Evento</label>
 								<select class="form-control" wicket:id="origemEvento"></select>
 							</div>
+						</div>
+						<div class="form-group">
+							
 							<div class="col-md-2">	
 								<label class="control-label">Materia Evento</label>
 								<select class="form-control" wicket:id="materia"></select>
@@ -106,14 +107,15 @@ $('#tab a').on('click', function(e) {
 							</div>
 						</div>
 						<div class="form-group">
-							<div class="col-md-2 col-md-offset-2 pull-right">	
+							<div class="col-md-1 pull-right">	
+								<a type="submit" wicket:id="imprimir" class="btn btn-info pull-right"><span class="glyphicon glyphicon-print"></span> Imprimir</a>
+							</div>
+							<div class="col-md-1 pull-right">
 								<span id="aguardePdf" style="display: none;">
                                        <img src="images/ajax-loader_pacman.gif" />
                                        Aguarde
                                  </span>
-								<a type="submit" wicket:id="imprimir" class="btn btn-info pull-right"><span class="glyphicon glyphicon-print"></span> Imprimir
-								</a>
-							</div>
+                            </div>
 						</div>
 					</form>
 				</div>

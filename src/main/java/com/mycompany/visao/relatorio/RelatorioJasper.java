@@ -18,7 +18,6 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.Materia;
@@ -30,7 +29,6 @@ import com.mycompany.services.interfaces.IEventoServico;
 import com.mycompany.util.Util;
 
 public class RelatorioJasper {
-	private IEventoServico eventoServico;
 	private Agenda agenda;
 	private Evento evento;
 	
@@ -45,8 +43,8 @@ public class RelatorioJasper {
 	
 	private List<Evento> listaTodosEventos;
 	
-	public JasperPrint gerarRelatorioAgenda(Evento evento,IEventoServico eventoServico,IAgendaServico agendaServico) throws Exception{
-		this.eventoServico = eventoServico;
+	public JasperPrint gerarRelatorioAgenda(Evento evento,IEventoServico eventoServico,IAgendaServico agendaServico,List<Evento> listaTodosEventos) throws Exception{
+		this.listaTodosEventos = listaTodosEventos;
 		this.agenda = (Agenda) agendaServico.searchFechId(evento.getAgenda());
 		this.evento = evento;
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -114,7 +112,6 @@ public class RelatorioJasper {
 		params.put("periodosAgenda",periodosAgenda);
 		params.put("logo_path", getLogo());
 		
-		buscaEvento();
 		List<Map<String, Object>> relatorioPaiFields = new ArrayList<Map<String, Object>>();
 		
 		SimpleDateFormat formataData = new SimpleDateFormat("EEEEEE");
@@ -175,42 +172,6 @@ public class RelatorioJasper {
 			x.printStackTrace();
 		}
 		return jasperPrint;
-	}
-	
-	private void buscaEvento(){
-		Search search = new Search(Evento.class);
-		search.addFilterEqual("agenda.id", agenda.getId());
-		
-		if(evento.getTipoEvento()!=null){
-			search.addFilterEqual("tipoEvento.id", evento.getTipoEvento().getId());
-		}
-		
-		if(evento.getDataInicio()!=null && evento.getDataFim()!=null){
-			search.addFilterGreaterOrEqual("dataInicio", Util.zeraHoraData(evento.getDataInicio()));
-			search.addFilterLessOrEqual("dataFim", Util.ultimaHoraData(evento.getDataFim()));
-		}
-		
-		if(evento.getDescricao()!=null){
-			search.addFilterEqual("descricao", evento.getDescricao());
-		}
-		
-		if(evento.getOrigemEvento()!=null){
-			search.addFilterEqual("origemEvento.id", evento.getOrigemEvento().getId());
-		}
-		
-		if(evento.getMateria()!=null){
-			search.addFilterEqual("materia.id", evento.getMateria().getId());
-		}
-		if(evento.getProfessor()!=null){
-			search.addFilterEqual("professor", evento.getProfessor());
-		}
-		
-		if(evento.getLocal()!=null){
-			search.addFilterEqual("local", evento.getLocal());
-		}
-		
-		listaTodosEventos = new ArrayList<Evento>();
-		listaTodosEventos.addAll(eventoServico.search(search));
 	}
 	
 	private void replicarEventoPorDiaEspecifico(Evento eventoParametro,Integer diaSemana){

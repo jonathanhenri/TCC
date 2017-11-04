@@ -15,7 +15,8 @@ import org.apache.wicket.ajax.IAjaxIndicatorAware;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.extensions.yui.calendar.DateTimeField;
+import org.apache.wicket.datetime.PatternDateConverter;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -49,6 +50,7 @@ import com.mycompany.services.interfaces.IOrigemEventoServico;
 import com.mycompany.services.interfaces.ITipoEventoServico;
 import com.mycompany.util.Util;
 import com.mycompany.visao.comum.AJAXDownload;
+import com.mycompany.visao.comum.DataTextField;
 import com.mycompany.visao.comum.Menu;
 
 public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
@@ -75,6 +77,7 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 	private Evento evento;
 	private JasperPrint jasperPrint;
 	private AJAXDownload ajaxDownloadPdf;
+	private List<Evento> listaTodosEventosEncontrados;
 	
 	private Form<Evento> form;
 	public RelatorioPage() {
@@ -163,18 +166,6 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 		return textFieldDescricao;
 	}
 	
-	private DateTimeField criarCampoDataFim(){
-		DateTimeField dataFim = new DateTimeField("dataFim");
-		dataFim.add(new AjaxFormComponentUpdatingBehavior("onchange") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onUpdate(AjaxRequestTarget target) {
-			}
-		});
-		dataFim.setOutputMarkupId(true);
-		return dataFim;
-	}
 	
 	private RadioGroup<Boolean> criarCampoAgruparPorDia() {
 		RadioGroup<Boolean> radioGroupAtivo = new RadioGroup<Boolean>("agruparPorDia");
@@ -194,18 +185,48 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 		return radioGroupAtivo;
 	}
 	
-	private DateTimeField criarCampoDataInicio(){
-		DateTimeField dataFim = new DateTimeField("dataInicio");
-		dataFim.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+	private DataTextField criarCampoDataFim(){
+		
+		DatePicker datePicker = new DatePicker(){
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			protected void onUpdate(AjaxRequestTarget target) {
+			protected boolean alignWithIcon() {
+				return true;
 			}
-		});
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DataTextField dataFim = new DataTextField("dataFim",new PatternDateConverter("dd/MM/yyyy",false));
+		datePicker.setAutoHide(true);		
+		dataFim.add(datePicker);
 		dataFim.setOutputMarkupId(true);
 		return dataFim;
 	}
+	
+	private DataTextField criarCampoDataInicio(){
+		
+		DatePicker datePicker = new DatePicker(){
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected boolean alignWithIcon() {
+				return true;
+			}
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return false;
+			}			
+		};
+		DataTextField dataInicio = new DataTextField("dataInicio",new PatternDateConverter("dd/MM/yyyy",false));
+		datePicker.setAutoHide(true);		
+		dataInicio.add(datePicker);
+		dataInicio.setOutputMarkupId(true);
+		return dataInicio;
+	}
+	
 	
 	
 	private DropDownChoice<OrigemEvento> criarCampoOrigemEvento(){
@@ -371,11 +392,9 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 				if(evento.getAdministracao().getCurso()!=null){
 					search.addFilterEqual("administracao.curso.id",evento.getAdministracao().getCurso().getId());
 				}
+				
 				agendas = agendaServico.search(search);
 				
-				if(agendas!=null && agendas.size() == 1){
-					evento.setAgenda(agendas.get(0));
-				}
 				return agendas;
 			}
 		};
@@ -451,6 +470,42 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 		return tipoRadioChoice;
 	}
 	
+	private void buscaEvento(){
+		Search search = new Search(Evento.class);
+		search.addFilterEqual("agenda.id", evento.getAgenda().getId());
+		
+		if(evento.getTipoEvento()!=null){
+			search.addFilterEqual("tipoEvento.id", evento.getTipoEvento().getId());
+		}
+		
+		if(evento.getDataInicio()!=null && evento.getDataFim()!=null){
+			search.addFilterGreaterOrEqual("dataInicio", Util.zeraHoraData(evento.getDataInicio()));
+			search.addFilterLessOrEqual("dataFim", Util.ultimaHoraData(evento.getDataFim()));
+		}
+		
+		if(evento.getDescricao()!=null){
+			search.addFilterEqual("descricao", evento.getDescricao());
+		}
+		
+		if(evento.getOrigemEvento()!=null){
+			search.addFilterEqual("origemEvento.id", evento.getOrigemEvento().getId());
+		}
+		
+		if(evento.getMateria()!=null){
+			search.addFilterEqual("materia.id", evento.getMateria().getId());
+		}
+		if(evento.getProfessor()!=null){
+			search.addFilterEqual("professor", evento.getProfessor());
+		}
+		
+		if(evento.getLocal()!=null){
+			search.addFilterEqual("local", evento.getLocal());
+		}
+		
+		listaTodosEventosEncontrados = new ArrayList<Evento>();
+		listaTodosEventosEncontrados.addAll(eventoServico.search(search));
+	}
+	
 	
 	private Boolean validarCamposObrigatorios(AjaxRequestTarget target){
 		Boolean isOk = true;
@@ -478,6 +533,13 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 				Util.notifyError(target, "Não existem eventos cadastrados para essa agenda.");
 				isOk = false;
 			}
+			
+			buscaEvento();
+			
+			if(listaTodosEventosEncontrados == null || (listaTodosEventosEncontrados!=null && listaTodosEventosEncontrados.size() <=0)){
+				Util.notifyError(target, "Nenhum evento encontrado.");
+				isOk = false;
+			}
 		}
 		
 		return isOk;
@@ -490,7 +552,7 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				if(validarCamposObrigatorios(target)){
 					try {
-						jasperPrint =  new  RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico,agendaServico);
+						jasperPrint =  new  RelatorioJasper().gerarRelatorioAgenda(evento, eventoServico,agendaServico,listaTodosEventosEncontrados);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
