@@ -37,10 +37,12 @@ import wicket.contrib.input.events.InputBehavior;
 import wicket.contrib.input.events.key.KeyType;
 
 import com.googlecode.genericdao.search.Search;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Agenda;
 import com.mycompany.domain.Evento;
 import com.mycompany.domain.FiltroDinamicoAtributo;
 import com.mycompany.domain.PermissaoAcesso;
+import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.feedback.Mensagem;
 import com.mycompany.feedback.Retorno;
 import com.mycompany.reflexao.Reflexao;
@@ -753,10 +755,14 @@ public class CalendarioPanel extends Panel {
 				evento.setDataFim(date);
 				evento.setDataInicio(date);
 				evento.setAgenda(agenda);
+				Administracao administracao = new Administracao();
+				administracao.setCurso(agenda.getAdministracao().getCurso());
+				administracao.setAluno(agenda.getAdministracao().getAluno());
+				evento.setAdministracao(administracao);
 				Agenda agendaAux = (Agenda) agendaServico.searchFechId(agenda);
 				evento.setListaPeriodosPertecentes(agendaAux.getListaPeriodosPertecentes());
 				
-				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar,true){
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -776,6 +782,11 @@ public class CalendarioPanel extends Panel {
 				modalIncluirEditar.setContent(editPanel);
 				modalIncluirEditar.show(target);
 			};
+			
+			@Override
+			public boolean isEnabled() {
+				return Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),agenda, PermissaoAcesso.OPERACAO_ALTERAR);
+			}
 		};
 		
 		return ajaxButton;
@@ -793,10 +804,24 @@ public class CalendarioPanel extends Panel {
 				
 				Evento evento = new Evento();
 				evento.setAgenda(agenda);
+				Administracao administracao = new Administracao();
+				administracao.setCurso(agenda.getAdministracao().getCurso());
+				administracao.setAluno(agenda.getAdministracao().getAluno());
+				evento.setAdministracao(administracao);
 				Agenda agendaAux = (Agenda)agendaServico.searchFechId(agenda);
-				evento.setListaPeriodosPertecentes(agendaAux.getListaPeriodosPertecentes());
+				List<RelacaoPeriodo> listaNovaRelacaoPeriodo = new ArrayList<RelacaoPeriodo>();
+				for(RelacaoPeriodo relacaoPeriodo:agendaAux.getListaPeriodosPertecentes()){
+					RelacaoPeriodo relacaoPeriodoAux = relacaoPeriodo.clonar(false);
+					Administracao administracaoRelacao = new Administracao();
+					administracaoRelacao.setCurso(agenda.getAdministracao().getCurso());
+					administracaoRelacao.setAluno(agenda.getAdministracao().getAluno());
+					relacaoPeriodoAux.setAdministracao(administracaoRelacao);
+					relacaoPeriodoAux.setEvento(evento);
+					listaNovaRelacaoPeriodo.add(relacaoPeriodoAux);
+				}
+				evento.setListaPeriodosPertecentes(Util.toSet(listaNovaRelacaoPeriodo));
 				
-				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar){
+				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar,true){
 					private static final long serialVersionUID = 1L;
 
 					@Override

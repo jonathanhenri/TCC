@@ -77,8 +77,12 @@ public class EventoEditForm extends EditForm<Evento> {
 	private WebMarkupContainer divPeriodos;
 	private NumberTextField<Integer> campoNumberPeriodoAux;
 	private List<RelacaoPeriodo> listaPeriodosSelecionados;
+	private DropDownChoice<Materia> tipoRadioChoiceMateria;
+	private DropDownChoice<OrigemEvento> tipoRadioChoiceOrigemEvento;
+	private DropDownChoice<TipoEvento> tipoRadioChoiceTipoEvento;
+	private Boolean origemCalendario = false;
 	
-	private Form<Evento> formTeste;
+	private Form<Evento> formEvento;
 	private Evento eventoAux = new Evento();
 	
 	public EventoEditForm(Evento evento,Agenda agenda,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
@@ -88,6 +92,14 @@ public class EventoEditForm extends EditForm<Evento> {
 		if(getAbstractBean().getId() == null){
 			getAbstractBean().setRepetirEvento(false);
 		}
+	}
+	
+	public EventoEditForm(Evento evento,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar,Boolean origemCalendario) {
+		super("formCadastro", evento,editPanel,feedbackPanel,divAtualizar,modalIncluirEditar);
+		if(getAbstractBean().getId() == null){
+			getAbstractBean().setRepetirEvento(false);
+		}
+		this.origemCalendario = origemCalendario;
 	}
 	
 	public EventoEditForm(Evento evento,Panel editPanel,JGrowlFeedbackPanel feedbackPanel,WebMarkupContainer divAtualizar,ModalWindow modalIncluirEditar) {
@@ -130,7 +142,22 @@ public class EventoEditForm extends EditForm<Evento> {
 				}
 				return true;
 			}
+			
+			@Override
+			public boolean isEnabled() {
+				return !origemCalendario;
+			}
 		};
+		tipoRadioChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				target.add(tipoRadioChoiceTipoEvento);
+				target.add(tipoRadioChoiceOrigemEvento);
+				target.add(tipoRadioChoiceMateria);
+			}
+		});
 		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
@@ -321,11 +348,20 @@ public class EventoEditForm extends EditForm<Evento> {
 					eventoNovo = getEventoAux().clonar(false);
 					eventoNovo.setAgenda(getAbstractBean().getAgenda());
 				}
-				eventoNovo.setAdministracao(null);
+				
+				if(origemCalendario){
+					Administracao administracao = new Administracao();
+					administracao.setCurso(getAbstractBean().getAdministracao().getCurso());
+					administracao.setAluno(getAbstractBean().getAdministracao().getAluno());
+					eventoNovo.setAdministracao(administracao);
+				}else{
+					eventoNovo.setAdministracao(null);
+				}
+				
 				setAbstractBean(eventoNovo);
 				setModelObject(eventoNovo);
-				formTeste.modelChanged();
-				target.add(formTeste);
+				formEvento.modelChanged();
+				target.add(formEvento);
 			}
 			
 		});
@@ -345,17 +381,22 @@ public class EventoEditForm extends EditForm<Evento> {
 			protected List<Materia> load() {
 				List<Materia> tiposEvento = new ArrayList<Materia>();
 				
-				tiposEvento = materiaServico.search(new Search(Materia.class));
+				Search search = new Search(Materia.class);
+				if(getAbstractBean().getAdministracao()!=null && getAbstractBean().getAdministracao().getCurso()!=null){
+					search.addFilterEqual("administracao.curso.id", getAbstractBean().getAdministracao().getCurso().getId());
+				}
+				
+				tiposEvento = materiaServico.search(search);
 				
 				return tiposEvento;
 			}
 		};
 		
-		final DropDownChoice<Materia> tipoRadioChoice = new DropDownChoice<Materia>("materia", materias,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
-		tipoRadioChoice.setOutputMarkupId(true);
+		tipoRadioChoiceMateria = new DropDownChoice<Materia>("materia", materias,choiceRenderer);
+		tipoRadioChoiceMateria.setNullValid(true);
+		tipoRadioChoiceMateria.setOutputMarkupId(true);
 		
-		return tipoRadioChoice;
+		return tipoRadioChoiceMateria;
 	}
 	
 	private DropDownChoice<OrigemEvento> criarCampoOrigemEvento(){
@@ -367,17 +408,22 @@ public class EventoEditForm extends EditForm<Evento> {
 			protected List<OrigemEvento> load() {
 				List<OrigemEvento> tiposEvento = new ArrayList<OrigemEvento>();
 				
-				tiposEvento = origemEventoServico.search(new Search(OrigemEvento.class));
+				Search search = new Search(OrigemEvento.class);
+				if(getAbstractBean().getAdministracao()!=null && getAbstractBean().getAdministracao().getCurso()!=null){
+					search.addFilterEqual("administracao.curso.id", getAbstractBean().getAdministracao().getCurso().getId());
+				}
+				
+				tiposEvento = origemEventoServico.search(search);
 				
 				return tiposEvento;
 			}
 		};
 		
-		final DropDownChoice<OrigemEvento> tipoRadioChoice = new DropDownChoice<OrigemEvento>("origemEvento", origensEventos,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
-		tipoRadioChoice.setOutputMarkupId(true);
+		tipoRadioChoiceOrigemEvento = new DropDownChoice<OrigemEvento>("origemEvento", origensEventos,choiceRenderer);
+		tipoRadioChoiceOrigemEvento.setNullValid(true);
+		tipoRadioChoiceOrigemEvento.setOutputMarkupId(true);
 		
-		return tipoRadioChoice;
+		return tipoRadioChoiceOrigemEvento;
 	}
 	
 	private DateTimeField criarCampoDataFim(){
@@ -417,17 +463,21 @@ public class EventoEditForm extends EditForm<Evento> {
 			protected List<TipoEvento> load() {
 				List<TipoEvento> tiposEvento = new ArrayList<TipoEvento>();
 				
-				tiposEvento = tipoEventoServico.search(new Search(TipoEvento.class));
+				Search search = new Search(TipoEvento.class);
+				if(getAbstractBean().getAdministracao()!=null && getAbstractBean().getAdministracao().getCurso()!=null){
+					search.addFilterEqual("administracao.curso.id", getAbstractBean().getAdministracao().getCurso().getId());
+				}
+				tiposEvento = tipoEventoServico.search(search);
 				
 				return tiposEvento;
 			}
 		};
 		
-		final DropDownChoice<TipoEvento> tipoRadioChoice = new DropDownChoice<TipoEvento>("tipoEvento", tiposEventos,choiceRenderer);
-		tipoRadioChoice.setNullValid(true);
-		tipoRadioChoice.setOutputMarkupId(true);
+		tipoRadioChoiceTipoEvento = new DropDownChoice<TipoEvento>("tipoEvento", tiposEventos,choiceRenderer);
+		tipoRadioChoiceTipoEvento.setNullValid(true);
+		tipoRadioChoiceTipoEvento.setOutputMarkupId(true);
 		
-		return tipoRadioChoice;
+		return tipoRadioChoiceTipoEvento;
 	}
 	
 	private TextField<String> criarCampoProfessor(){
@@ -558,23 +608,23 @@ public class EventoEditForm extends EditForm<Evento> {
 			listaPeriodosSelecionados = new ArrayList<RelacaoPeriodo>();
 		}
 		
-		formTeste = new Form<Evento>("formTeste");
-		formTeste.add(criarCampoDescricao());
-		formTeste.add(criarCampoCurso());
-		formTeste.add(criarButtonAdicionarPeriodo());
-		formTeste.add(criarCampoPeriodoAux());
-		formTeste.add(criarListViewPeriodos());
-		formTeste.add(criarCampoObservacao());
-		formTeste.add(criarCampoLocal());
-		formTeste.add(criarCampoProfessor());
-		formTeste.add(criarCampoOrigemEvento());
-		formTeste.add(criarCampoTipoEvento());
-		formTeste.add(criarCampoMateria());
-		formTeste.add(criarDivRepetirEvento());
-		formTeste.add(criarCampoRepetirEvento());
-		formTeste.add(criarListEventosRecorrentes());
-		formTeste.setOutputMarkupId(true);
-		addOrReplace(formTeste);
+		formEvento = new Form<Evento>("formTeste");
+		formEvento.add(criarCampoDescricao());
+		formEvento.add(criarCampoCurso());
+		formEvento.add(criarButtonAdicionarPeriodo());
+		formEvento.add(criarCampoPeriodoAux());
+		formEvento.add(criarListViewPeriodos());
+		formEvento.add(criarCampoObservacao());
+		formEvento.add(criarCampoLocal());
+		formEvento.add(criarCampoProfessor());
+		formEvento.add(criarCampoOrigemEvento());
+		formEvento.add(criarCampoTipoEvento());
+		formEvento.add(criarCampoMateria());
+		formEvento.add(criarDivRepetirEvento());
+		formEvento.add(criarCampoRepetirEvento());
+		formEvento.add(criarListEventosRecorrentes());
+		formEvento.setOutputMarkupId(true);
+		addOrReplace(formEvento);
 	}
 	
 	@Override

@@ -449,7 +449,7 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isVisible() {
+			public boolean isEnabled() {
 				if(!Util.possuiPermissao(agendaServico.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_CURSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
 					return false;
 				}
@@ -529,8 +529,8 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 			
 			i = eventoServico.count(search);
 			
-			if(i<=0){
-				Util.notifyError(target, "Não existem eventos do tipo 'Repetir' cadastrados para essa agenda.");
+			if(i<=0 && evento.getAgruparPorDia()!=null && evento.getAgruparPorDia()){
+				Util.notifyError(target, "Não existem eventos do tipo Repetir cadastrados para essa agenda.");
 				isOk = false;
 			}
 			

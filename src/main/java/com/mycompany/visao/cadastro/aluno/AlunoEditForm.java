@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -22,6 +23,8 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.StringValidator;
+
+import sun.misc.Perf;
 
 import com.googlecode.genericdao.search.Search;
 import com.mycompany.domain.Administracao;
@@ -55,6 +58,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	private WebMarkupContainer divPeriodos;
 	private NumberTextField<Integer> campoNumberPeriodoAux;
 	private List<RelacaoPeriodo> listaPeriodosSelecionados;
+	private DropDownChoice<PerfilAcesso> tipoRadioChoicePerfilAcesso;
 	
 	@SpringBean(name="perfilAcessoServico")
 	private  IPerfilAcessoServico perfilAcessoServico;
@@ -115,7 +119,13 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			@Override
 			protected List<PerfilAcesso> load() {
 				List<PerfilAcesso> perfis = new ArrayList<PerfilAcesso>();
-				perfis = perfilAcessoServico.search(new Search(PerfilAcesso.class));
+				
+				Search search = new Search(PerfilAcesso.class);
+				if(getAbstractBean().getAdministracao()!=null && getAbstractBean().getAdministracao().getCurso()!=null){
+					search.addFilterEqual("administracao.curso.id",getAbstractBean().getAdministracao().getCurso().getId());
+				}
+				
+				perfis = perfilAcessoServico.search(search);
 				
 				if(perfis!=null && perfis.size() == 1){
 					getAbstractBean().setPerfilAcesso(perfis.get(0));
@@ -124,7 +134,7 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			}
 		};
 		
-		final DropDownChoice<PerfilAcesso> tipoRadioChoice = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer){
+		tipoRadioChoicePerfilAcesso = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer){
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -138,10 +148,10 @@ public class AlunoEditForm extends EditForm<Aluno> {
 				return true;
 			}
 		};
-		tipoRadioChoice.setNullValid(false);
-		tipoRadioChoice.setOutputMarkupId(true);
+		tipoRadioChoicePerfilAcesso.setNullValid(false);
+		tipoRadioChoicePerfilAcesso.setOutputMarkupId(true);
 		
-		return tipoRadioChoice;
+		return tipoRadioChoicePerfilAcesso;
 	}
 	
 	private DropDownChoice<Curso> criarCampoCurso(){
@@ -170,13 +180,21 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isVisible() {
+			public boolean isEnabled() {
 				if(!Util.possuiPermissao(serviceComum.searchFetchAlunoLogado(Util.getAlunoLogado()),PermissaoAcesso.PERMISSAO_CURSO_PESQUISAR, PermissaoAcesso.OPERACAO_PESQUISAR)){
 					return false;
 				}
 				return true;
 			}
 		};
+		tipoRadioChoice.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(AjaxRequestTarget target) {
+				target.add(tipoRadioChoicePerfilAcesso);
+			}
+		});
 		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
 		
