@@ -199,6 +199,11 @@ public class AgendaServico implements IAgendaServico {
 			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
 		}
 		
+		if(agenda.getAdministracao()==null || agenda.getAdministracao()!=null && agenda.getAdministracao().getCurso() == null){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Curso é obrigatorio", Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(agenda));
 			return retorno;

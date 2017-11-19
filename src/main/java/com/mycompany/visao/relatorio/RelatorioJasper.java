@@ -433,7 +433,7 @@ public class RelatorioJasper {
 	public InputStream getLogo(){
 		InputStream inputStream = null;
 		try {
-			inputStream = new ByteArrayInputStream(Util.lerArquivo(getClass().getResource("logofundo.png").getFile(), "", false));
+			inputStream = new ByteArrayInputStream(Util.lerArquivo("logofundo.png", "jaspers2/", false));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

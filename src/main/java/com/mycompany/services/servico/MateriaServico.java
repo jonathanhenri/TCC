@@ -231,6 +231,13 @@ public class MateriaServico implements IMateriaServico {
 			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
 		}
 		
+		
+		if(materia.getAdministracao()==null || materia.getAdministracao()!=null && materia.getAdministracao().getCurso() == null){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Curso é obrigatorio", Mensagem.ERRO));
+		}
+		
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(materia));
 			return retorno;

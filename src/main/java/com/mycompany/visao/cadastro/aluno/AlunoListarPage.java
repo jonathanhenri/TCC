@@ -20,7 +20,7 @@ public class AlunoListarPage extends ListarPageGenerico {
 	static Aluno aluno = new Aluno();
 	
 	public AlunoListarPage(){
-		super(aluno);
+		super(aluno,60);
 		addFiltros();
 	}
 

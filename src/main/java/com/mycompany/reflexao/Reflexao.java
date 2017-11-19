@@ -39,8 +39,9 @@ public class Reflexao {
 			
 			if(name!=null){
 				Object objectCampo = getFieldValueCamposComuns(object, fld[i].getName());
-				if(objectCampo == null){ 
+				if(objectCampo == null || objectCampo!=null && objectCampo.toString().isEmpty()){ 
 					Mensagem mensagem = new Mensagem(Util.firstToUpperCase(fld[i].getName()), Mensagem.MOTIVO_NULO, Mensagem.ERRO);
+					mensagem.setNomeEntidade(object.getNomeClass());
 					retorno.setSucesso(false);
 					retorno.addMensagem(mensagem);
 				}

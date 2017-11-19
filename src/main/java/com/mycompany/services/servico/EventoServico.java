@@ -234,6 +234,11 @@ public class EventoServico implements IEventoServico {
 			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
 		}
 		
+		if(evento.getAdministracao()==null || evento.getAdministracao()!=null && evento.getAdministracao().getCurso() == null){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Curso é obrigatorio", Mensagem.ERRO));
+		}
+		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(evento));
 			return retorno;

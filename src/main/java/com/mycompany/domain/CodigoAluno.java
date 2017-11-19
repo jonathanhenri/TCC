@@ -37,7 +37,6 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Column(name = "ATIVO", nullable = false)
 	private Boolean ativo;
 	
-	@ListarPageAnotacao(filtro = true,nomeColuna="Ativo")
 	@Transient
 	private String ativoNome;
 	

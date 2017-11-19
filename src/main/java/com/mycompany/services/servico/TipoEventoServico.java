@@ -149,6 +149,10 @@ public class TipoEventoServico implements ITipoEventoServico {
 			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
 		}
 		
+		if(tipoEvento.getAdministracao()==null || tipoEvento.getAdministracao()!=null && tipoEvento.getAdministracao().getCurso() == null){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Curso é obrigatorio", Mensagem.ERRO));
+		}
 		
 		if(retorno.getSucesso()){
 			retorno.addRetorno(validaRegrasComuns(tipoEvento));

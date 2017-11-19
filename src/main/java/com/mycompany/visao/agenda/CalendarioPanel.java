@@ -167,7 +167,7 @@ public class CalendarioPanel extends Panel {
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				Search search = new Search(Evento.class);
 				if(evento.getDescricao()!=null){
-					search.addFilterEqual("descricao", evento.getDescricao());
+					search.addFilterLike("descricao", "%"+evento.getDescricao()+"%");
 				}
 				
 				if(evento.getDataInicio()!=null && evento.getDataFim()!=null){

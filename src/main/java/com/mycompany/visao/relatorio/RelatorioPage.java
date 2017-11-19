@@ -530,7 +530,7 @@ public class RelatorioPage extends Menu implements IAjaxIndicatorAware {
 			i = eventoServico.count(search);
 			
 			if(i<=0){
-				Util.notifyError(target, "Não existem eventos cadastrados para essa agenda.");
+				Util.notifyError(target, "Não existem eventos do tipo 'Repetir' cadastrados para essa agenda.");
 				isOk = false;
 			}
 			

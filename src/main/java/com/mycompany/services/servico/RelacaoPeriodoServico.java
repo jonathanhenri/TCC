@@ -33,7 +33,7 @@ public class RelacaoPeriodoServico implements IRelacaoPeriodoServico{
 	
 	@Override
 	public void persist(List<RelacaoPeriodo> listaRelacaoPeriodos) {
-		relacaoPeriodoDAO.persist(listaRelacaoPeriodos);;
+		relacaoPeriodoDAO.persist(listaRelacaoPeriodos);
 	}
 	
 	@Override

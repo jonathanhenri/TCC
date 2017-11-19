@@ -43,6 +43,7 @@ public class Menu extends WebPage {
 		}
 		
 		add(new Label("login_usuario_logado",nome));
+		add(new Label("login_usuario_logado2",nome));
 		
 		add(new AjaxLink<String>("link_cadastro_curso") {
 			private static final long serialVersionUID = 1L;
@@ -211,44 +212,9 @@ public class Menu extends WebPage {
 				setResponsePage(Login.class);				
 			}
 		});
-		
-		
-		
-//		add(criarFeedbackPanel());
-		
 	}
 	
 	protected JGrowlFeedbackPanel getFeedbackPanel(){
 		return (JGrowlFeedbackPanel)get("jgrowlFeedback");
 	}
-	
-	
-//	private JGrowlFeedbackPanel criarFeedbackPanel() {
-//		JGrowlFeedbackPanel feedback = new JGrowlFeedbackPanel("jgrowlFeedback");
-//		Options errorOptions = new Options();
-//		errorOptions.set("header", getString("erro"));
-//		errorOptions.set("theme", "jgrowl-ERROR"); 
-//		errorOptions.set("glue", "after");
-////		errorOptions.set("sticky", new FunctionString("true"));
-//		errorOptions.set("sticky",false);
-//		feedback.setErrorMessageOptions(errorOptions);
-//
-//		Options infoOptions = new Options();
-//		infoOptions.set("header", getString("info"));
-//		infoOptions.set("theme", "jgrowl-INFO");
-////		infoOptions.set("sticky", new FunctionString("true"));
-//		errorOptions.set("sticky", false);
-//		infoOptions.set("glue", "after");
-//		feedback.setInfoMessageOptions(infoOptions);
-//		
-//		Options successOptions = new Options();
-//		successOptions.set("header", getString("successo"));
-//		successOptions.set("theme", "jgrowl-SUCCESS");
-////		successOptions.set("sticky", new FunctionString("true"));
-//		successOptions.set("sticky", false);
-//		successOptions.set("glue", "after");
-//		feedback.setSuccessMessageOptions(successOptions);
-//		
-//		return feedback;
-//	}
 }

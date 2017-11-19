@@ -21,7 +21,7 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	static CodigoAluno codigoAluno = new CodigoAluno();
 	
 	public CodigoAlunoListarPage(){
-		super(codigoAluno);
+		super(codigoAluno,60);
 		addFiltros();
 	}
 	

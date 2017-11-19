@@ -33,6 +33,7 @@ import com.mycompany.domain.RelacaoPeriodo;
 import com.mycompany.services.interfaces.IAlunoServico;
 import com.mycompany.services.interfaces.ICursoServico;
 import com.mycompany.services.interfaces.IPerfilAcessoServico;
+import com.mycompany.services.interfaces.IRelacaoPeriodoServico;
 import com.mycompany.util.JGrowlFeedbackPanel;
 import com.mycompany.util.Util;
 import com.mycompany.visao.comum.EditForm;
@@ -46,6 +47,9 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	
 	@SpringBean(name="cursoServico")
 	private  ICursoServico cursoServico;
+	
+	@SpringBean(name="relacaoPeriodoServico")
+	private  IRelacaoPeriodoServico relacaoPeriodoServico;
 	
 	private Integer periodoAux = 0;
 	private WebMarkupContainer divPeriodos;
@@ -221,7 +225,12 @@ public class AlunoEditForm extends EditForm<Aluno> {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target,Form<?> form) {
 				if(getPeriodoAux()!=null && getPeriodoAux()>0){
-					listaPeriodosSelecionados.add(new RelacaoPeriodo(getPeriodoAux(), getAbstractBean()));
+					RelacaoPeriodo periodo = new RelacaoPeriodo(getPeriodoAux(), getAbstractBean());
+					Administracao administracao = new Administracao();
+					administracao.setAluno(getAbstractBean());
+					administracao.setCurso(getAbstractBean().getAdministracao().getCurso());
+					periodo.setAdministracao(administracao);
+					listaPeriodosSelecionados.add(periodo);
 					setPeriodoAux(0);
 					campoNumberPeriodoAux.modelChanged();
 					target.add(campoNumberPeriodoAux);
@@ -255,7 +264,12 @@ public class AlunoEditForm extends EditForm<Aluno> {
 	@Override
 	protected void adicionarCampos() {
 		if(getAbstractBean().getListaPeriodosPertecentes()!=null && getAbstractBean().getListaPeriodosPertecentes().size()>0){
-			listaPeriodosSelecionados = Util.toList(getAbstractBean().getListaPeriodosPertecentes());
+			Search search = new Search(RelacaoPeriodo.class);
+			search.addFilterEqual("aluno.id", getAbstractBean().getId());
+			search.addFetch("administracao");
+			List<RelacaoPeriodo> listaRelacaoPeriodo = relacaoPeriodoServico.search(search);
+			
+			listaPeriodosSelecionados = Util.toList(listaRelacaoPeriodo);
 		}else{
 			listaPeriodosSelecionados = new ArrayList<RelacaoPeriodo>();
 		}

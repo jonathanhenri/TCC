@@ -141,12 +141,25 @@ public class CodigoAlunoServico implements ICodigoAlunoServico {
 			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
 		}
 		
-		if(codigoAluno.getCursoAux()==null || codigoAluno.getQuantidadeAlunosAux()<=0){
+		if(codigoAluno.getCursoAux()==null){
 			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem("Quantidade de alunos deve ser maior que zero e curso é obrigatório", Mensagem.ERRO));
-		}			
-			
-		retorno.addRetorno(validaRegrasComuns(codigoAluno));
+			retorno.addMensagem(new Mensagem("Curso é obrigatorio", Mensagem.ERRO));
+		}
+		
+		if(codigoAluno.getPerfilAcesso() == null){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Perfil Acesso é obrigatorio", Mensagem.ERRO));
+		}
+		
+		if(codigoAluno.getCursoAux()==null || codigoAluno.getQuantidadeAlunosAux() == null || codigoAluno.getQuantidadeAlunosAux()!=null && codigoAluno.getQuantidadeAlunosAux()<=0){
+			retorno.setSucesso(false);
+			retorno.addMensagem(new Mensagem("Quantidade de alunos deve ser maior que zero.", Mensagem.ERRO));
+		}	
+		
+		if(retorno.getSucesso()){
+			retorno.addRetorno(validaRegrasComuns(codigoAluno));
+		}
+		
 		return retorno;
 	}
 	

@@ -13,8 +13,8 @@ import com.mycompany.domain.AbstractBean;
 import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Aluno;
 import com.mycompany.domain.Curso;
+import com.mycompany.domain.PermissaoAcesso;
 import com.mycompany.persistence.interfaces.IDAOComum;
-import com.mycompany.reflexao.Reflexao;
 import com.mycompany.util.Util;
 
 public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Serializable> extends GenericDAOImpl<T, ID> implements IDAOComum<T, ID>{
@@ -85,10 +85,13 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 		return super.count(search);
 	}
 	
-	
 	@Override
 	public List<T> search(Search search) {
 		
+		//Ignora perfil
+		if(search.getSearchClass()!=null && search.getSearchClass().isInstance(new PermissaoAcesso())){
+			return super.search(search);
+		}
 		if(Util.getAlunoLogado()!=null && Util.getAlunoLogado().getAdministracao()!=null){
 			if(Util.getAlunoLogado().getAdministracao().getAdministradorCampus()!=null && Util.getAlunoLogado().getAdministracao().getAdministradorCampus()){
 				return super.search(search);
