@@ -20,7 +20,7 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class RelacaoPeriodo extends AbstractBean<RelacaoPeriodo>{
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	

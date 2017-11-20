@@ -82,12 +82,20 @@ public class EventoServico implements IEventoServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			List<RelacaoPeriodo> listaRelacaoPeriodo = Util.toList(evento.getListaPeriodosPertecentes());
+			evento.setListaPeriodosPertecentes(null);
 			if(eventoDAO.persist(evento)){
 				mensagem  = new Mensagem(evento.getNomeClass(), Mensagem.MOTIVO_CADASTRADO, Mensagem.SUCESSO);
 			}else{
 				mensagem  = new Mensagem(evento.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO);
 			}
-			atualizarListaRelacaoPeriodos(evento);
+			
+			if(listaRelacaoPeriodo!=null && listaRelacaoPeriodo.size()>0){
+				for(RelacaoPeriodo periodo:listaRelacaoPeriodo){
+					periodo.setEvento(evento);
+				}
+				relacaoPeriodoServico.persist(Util.toList(listaRelacaoPeriodo));
+			}
 			retorno.addMensagem(mensagem);
 		}else{
 			retorno.addMensagem(new Mensagem(evento.getNomeClass(), Mensagem.MOTIVO_CADASTRO_ERRO, Mensagem.ERRO));
@@ -200,6 +208,7 @@ public class EventoServico implements IEventoServico {
 		
 		if(retorno.getSucesso()){
 			Mensagem mensagem = new Mensagem();
+			relacaoPeriodoServico.remove(Util.toList(evento.getListaPeriodosPertecentes()));
 			if(eventoDAO.remove(evento)){
 				mensagem = new Mensagem(evento.getNomeClass(), Mensagem.MOTIVO_EXCLUIDO, Mensagem.SUCESSO);
 			}else{

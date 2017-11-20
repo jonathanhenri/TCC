@@ -45,7 +45,7 @@ public class Curso extends AbstractBean<Curso> {
 //	private Arquivo logo;
 	
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	

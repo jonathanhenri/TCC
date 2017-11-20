@@ -350,10 +350,7 @@ public class EventoEditForm extends EditForm<Evento> {
 				}
 				
 				if(origemCalendario){
-					Administracao administracao = new Administracao();
-					administracao.setCurso(getAbstractBean().getAdministracao().getCurso());
-					administracao.setAluno(getAbstractBean().getAdministracao().getAluno());
-					eventoNovo.setAdministracao(administracao);
+					eventoNovo.setAdministracao(Util.clonar(getAbstractBean().getAdministracao(),false));
 				}else{
 					eventoNovo.setAdministracao(null);
 				}

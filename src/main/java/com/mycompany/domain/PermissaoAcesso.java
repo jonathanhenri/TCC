@@ -98,7 +98,7 @@ public class PermissaoAcesso extends AbstractBean<PermissaoAcesso> {
 //	@JoinColumn(name="ID_PERFIL_ACESSO",nullable = true)
 //	private PerfilAcesso perfilAcesso;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 

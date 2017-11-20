@@ -18,10 +18,9 @@ public class PerfilAcessoListarPage extends ListarPageGenerico {
 	@SpringBean(name="perfilAcessoServico")
 	static IPerfilAcessoServico perfilAcessoServico;
 	
-	static PerfilAcesso perfilAcesso = new PerfilAcesso();
 	
 	public PerfilAcessoListarPage(){
-		super(perfilAcesso);
+		super(new PerfilAcesso());
 		addFiltros();
 	}
 	

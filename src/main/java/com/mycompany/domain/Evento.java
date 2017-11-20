@@ -24,7 +24,7 @@ import com.mycompany.anotacao.ListarPageAnotacao;
 public class Evento extends AbstractBean<Evento> {
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO",nullable=true)
 	private Administracao administracao;
 	
@@ -72,7 +72,7 @@ public class Evento extends AbstractBean<Evento> {
 	@JoinColumn(name="ID_ORIGEM_EVENTO",nullable = true)
 	private OrigemEvento origemEvento;
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy = "evento",cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy = "evento")
 	@Column(name = "ID_EVENTO")
 	private Set<RelacaoPeriodo> listaPeriodosPertecentes;
 	

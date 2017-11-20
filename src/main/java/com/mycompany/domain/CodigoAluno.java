@@ -40,7 +40,7 @@ public class CodigoAluno extends AbstractBean<CodigoAluno> {
 	@Transient
 	private String ativoNome;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	

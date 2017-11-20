@@ -28,12 +28,20 @@ public class RelacaoPeriodoServico implements IRelacaoPeriodoServico{
 	}
 	@Override
 	public void remove(List<RelacaoPeriodo> listaRelacaoPeriodos) {
-		relacaoPeriodoDAO.remove(listaRelacaoPeriodos);;
+		if(listaRelacaoPeriodos!=null && listaRelacaoPeriodos.size()>0){
+			for(RelacaoPeriodo relacaoPeriodo:listaRelacaoPeriodos){
+				remove(relacaoPeriodo);
+			}
+		}
 	}
 	
 	@Override
 	public void persist(List<RelacaoPeriodo> listaRelacaoPeriodos) {
-		relacaoPeriodoDAO.persist(listaRelacaoPeriodos);
+		if(listaRelacaoPeriodos!=null && listaRelacaoPeriodos.size()>0){
+			for(RelacaoPeriodo relacaoPeriodo:listaRelacaoPeriodos){
+				persist(relacaoPeriodo);
+			}
+		}
 	}
 	
 	@Override

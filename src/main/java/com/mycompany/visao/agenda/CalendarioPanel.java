@@ -755,12 +755,17 @@ public class CalendarioPanel extends Panel {
 				evento.setDataFim(date);
 				evento.setDataInicio(date);
 				evento.setAgenda(agenda);
-				Administracao administracao = new Administracao();
-				administracao.setCurso(agenda.getAdministracao().getCurso());
-				administracao.setAluno(agenda.getAdministracao().getAluno());
-				evento.setAdministracao(administracao);
+				evento.setAdministracao(Util.clonar(agenda.getAdministracao(),false));
 				Agenda agendaAux = (Agenda) agendaServico.searchFechId(agenda);
-				evento.setListaPeriodosPertecentes(agendaAux.getListaPeriodosPertecentes());
+				List<RelacaoPeriodo> listaNovaRelacaoPeriodo = new ArrayList<RelacaoPeriodo>();
+				for(RelacaoPeriodo relacaoPeriodo:agendaAux.getListaPeriodosPertecentes()){
+					RelacaoPeriodo relacaoPeriodoAux = relacaoPeriodo.clonar(false);
+					relacaoPeriodoAux.setAdministracao(Util.clonar(agenda.getAdministracao(),false));
+					relacaoPeriodoAux.setAgenda(null);
+					relacaoPeriodoAux.setEvento(evento);
+					listaNovaRelacaoPeriodo.add(relacaoPeriodoAux);
+				}
+				evento.setListaPeriodosPertecentes(Util.toSet(listaNovaRelacaoPeriodo));
 				
 				EventoEditForm cadastroAlunoEditForm = new EventoEditForm(evento,editPanel,null,null,modalIncluirEditar,true){
 					private static final long serialVersionUID = 1L;
@@ -804,18 +809,14 @@ public class CalendarioPanel extends Panel {
 				
 				Evento evento = new Evento();
 				evento.setAgenda(agenda);
-				Administracao administracao = new Administracao();
-				administracao.setCurso(agenda.getAdministracao().getCurso());
-				administracao.setAluno(agenda.getAdministracao().getAluno());
-				evento.setAdministracao(administracao);
+				evento.setAdministracao(Util.clonar(agenda.getAdministracao(),false));
+				
 				Agenda agendaAux = (Agenda)agendaServico.searchFechId(agenda);
 				List<RelacaoPeriodo> listaNovaRelacaoPeriodo = new ArrayList<RelacaoPeriodo>();
 				for(RelacaoPeriodo relacaoPeriodo:agendaAux.getListaPeriodosPertecentes()){
 					RelacaoPeriodo relacaoPeriodoAux = relacaoPeriodo.clonar(false);
-					Administracao administracaoRelacao = new Administracao();
-					administracaoRelacao.setCurso(agenda.getAdministracao().getCurso());
-					administracaoRelacao.setAluno(agenda.getAdministracao().getAluno());
-					relacaoPeriodoAux.setAdministracao(administracaoRelacao);
+					relacaoPeriodoAux.setAdministracao(Util.clonar(agenda.getAdministracao(),false));
+					relacaoPeriodoAux.setAgenda(null);
 					relacaoPeriodoAux.setEvento(evento);
 					listaNovaRelacaoPeriodo.add(relacaoPeriodoAux);
 				}

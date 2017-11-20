@@ -24,7 +24,7 @@ public class TipoEvento extends AbstractBean<TipoEvento> {
 	@Column(name = "NOME", nullable = false, length = 300)
 	private String nome;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 	

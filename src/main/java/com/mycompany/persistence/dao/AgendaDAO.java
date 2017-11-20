@@ -5,7 +5,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.googlecode.genericdao.search.Search;
 import com.mycompany.DAOException;
+import com.mycompany.domain.AbstractBean;
+import com.mycompany.domain.Administracao;
 import com.mycompany.domain.Agenda;
 import com.mycompany.persistence.interfaces.IAgendaDAO;
 
@@ -52,8 +55,8 @@ public class AgendaDAO extends DAOComumHibernateImpl<Agenda, Long> implements IA
             resultado = query.uniqueResult();
 
             if(resultado!=null){
-            	Agenda saidaEstoque= (Agenda) resultado;
-                return saidaEstoque;
+            	Agenda agenda = (Agenda) resultado;
+                return agenda;
             }
 
         } catch (Exception e) {

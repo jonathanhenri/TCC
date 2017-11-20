@@ -19,10 +19,9 @@ public class EventoListarPage extends ListarPageGenerico {
 	@SpringBean(name="eventoServico")
 	static IEventoServico eventoServico;
 	
-	static Evento evento = new Evento();
 	
 	public EventoListarPage(){
-		super(evento);
+		super(new Evento());
 		addFiltros();
 	}
 	

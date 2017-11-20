@@ -71,7 +71,7 @@ public class RelacaoPeriodoDAO extends DAOComumHibernateImpl<RelacaoPeriodo, Lon
 	public void persist(List<RelacaoPeriodo> listaRelacaoPeriodos) {
 		if(listaRelacaoPeriodos!=null && listaRelacaoPeriodos.size()>0){
 			for(RelacaoPeriodo relacaoPeriodo:listaRelacaoPeriodos){
-				super.persist(relacaoPeriodo);
+				persist(relacaoPeriodo);
 			}
 		}
 	}

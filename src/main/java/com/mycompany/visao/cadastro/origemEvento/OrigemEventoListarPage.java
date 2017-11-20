@@ -18,10 +18,9 @@ public class OrigemEventoListarPage extends ListarPageGenerico {
 	@SpringBean(name="origemEventoServico")
 	static IOrigemEventoServico origemEventoServico;
 	
-	static OrigemEvento origemEvento = new OrigemEvento();
 	
 	public OrigemEventoListarPage(){
-		super(origemEvento);
+		super(new OrigemEvento());
 		addFiltros();
 	}
 	

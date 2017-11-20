@@ -18,10 +18,9 @@ public class MateriaListarPage extends ListarPageGenerico {
 	@SpringBean(name="materiaServico")
 	static IMateriaServico materiaServico;
 	
-	static Materia materia = new Materia();
 	
 	public MateriaListarPage(){
-		super(materia);
+		super(new Materia());
 		addFiltros();
 	}
 	
@@ -30,7 +29,7 @@ public class MateriaListarPage extends ListarPageGenerico {
 		serviceComum = materiaServico;
 	}
 	private void addFiltros(){
-		form.add(criarCampoNome());
+		form.addOrReplace(criarCampoNome());
 	}
 	
 

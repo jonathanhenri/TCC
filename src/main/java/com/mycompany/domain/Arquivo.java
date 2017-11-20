@@ -27,7 +27,7 @@ public class Arquivo extends AbstractBean<Arquivo>{
 	@Column(name = "NOME_ARQUIVO", nullable = true, length = 100)
 	private String nomeArquivo;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 

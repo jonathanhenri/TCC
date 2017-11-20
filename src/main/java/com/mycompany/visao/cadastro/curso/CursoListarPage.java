@@ -19,10 +19,9 @@ public class CursoListarPage extends ListarPageGenerico {
 	@SpringBean(name="cursoServico")
 	static ICursoServico cursoServico;
 	
-	static Curso curso = new Curso();
 	
 	public CursoListarPage(){
-		super(curso);
+		super(new Curso());
 		addFiltros();
 	}
 	

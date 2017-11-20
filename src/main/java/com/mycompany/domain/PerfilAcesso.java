@@ -34,7 +34,7 @@ public class PerfilAcesso extends AbstractBean<PerfilAcesso> {
 	private Set<PermissaoAcesso> permissoesAcesso;
 	
 
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 

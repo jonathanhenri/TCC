@@ -27,7 +27,7 @@ public class ContadorAcesso extends AbstractBean<ContadorAcesso> {
 	@Column(name = "DATA_ACESSO")
 	private Date dataAcesso;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 	private Administracao administracao;
 

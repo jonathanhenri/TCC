@@ -32,7 +32,7 @@ import com.mycompany.security.AtribuicaoAdmin;
 public class Aluno extends AbstractBean<Aluno> implements UserDetails, Sid{
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(optional = true,fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(optional = true,fetch=FetchType.EAGER,cascade = CascadeType.ALL)
 	@JoinColumn(name="ID_ADMINISTRACAO")
 //	@OnDelete(action=OnDeleteAction.CASCADE)
 	private Administracao administracao;

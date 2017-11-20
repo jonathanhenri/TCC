@@ -114,7 +114,7 @@
 <!--   				<prop key="hibernate.hbm2ddl.auto">create-drop</prop> -->
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
 				<prop key="hibernate.connection.pool_size">20</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
             	<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
             	<prop key="hibernate.hibernate.cache.use_query_cache">true</prop>

@@ -116,10 +116,11 @@ public abstract class ListarPageGenerico extends Menu {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				form.clearInput();
+				form.modelChanged();
+				target.add(form);
+				super.clearInput();
 				super.onSubmit(target, form);
-				
-//				FiltroDinamicoAtributo filtroDinamicoAtributo = new FiltroDinamicoAtributo(Reflexao.nomesAtributosFiltros(abstractBean));
-				
 				target.add(divListaAtualizar);
 			}
 		};

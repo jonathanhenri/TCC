@@ -18,10 +18,9 @@ public class CodigoAlunoListarPage extends ListarPageGenerico {
 	@SpringBean(name="codigoAlunoServico")
 	static ICodigoAlunoServico codigoAlunoServico;
 	
-	static CodigoAluno codigoAluno = new CodigoAluno();
 	
 	public CodigoAlunoListarPage(){
-		super(codigoAluno,60);
+		super(new CodigoAluno(),60);
 		addFiltros();
 	}
 	

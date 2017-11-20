@@ -17,10 +17,9 @@ public class AlunoListarPage extends ListarPageGenerico {
 	@SpringBean(name="alunoServico")
 	static IAlunoServico alunoServico;
 	
-	static Aluno aluno = new Aluno();
 	
 	public AlunoListarPage(){
-		super(aluno,60);
+		super(new Aluno(),60);
 		addFiltros();
 	}
 
@@ -58,17 +57,9 @@ public class AlunoListarPage extends ListarPageGenerico {
 		getModalIncluirEditar().show(target);
 	}
 	
-	private void campoCurso(){
-		final TextField<String> curso = new TextField<String>("administracao.curso.nome");
-		curso.setOutputMarkupId(true);
-		form.add(curso);
-	}
-	
-	
 	private void addFiltros(){
 		campoLogin();
 		campoNome();
-		campoCurso();
 	}
 
 
