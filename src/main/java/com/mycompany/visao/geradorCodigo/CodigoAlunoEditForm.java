@@ -87,7 +87,6 @@ public class CodigoAlunoEditForm extends EditForm<CodigoAluno> {
 		final DropDownChoice<PerfilAcesso> tipoRadioChoice = new DropDownChoice<PerfilAcesso>("perfilAcesso", perfis,choiceRenderer);
 		tipoRadioChoice.setNullValid(false);
 		tipoRadioChoice.setOutputMarkupId(true);
-		
 		return tipoRadioChoice;
 	}
 	

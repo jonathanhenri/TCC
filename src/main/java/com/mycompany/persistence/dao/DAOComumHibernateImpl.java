@@ -87,7 +87,6 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 	
 	@Override
 	public List<T> search(Search search) {
-		
 		//Ignora perfil
 		if(search.getSearchClass()!=null && search.getSearchClass().isInstance(new PermissaoAcesso())){
 			return super.search(search);
@@ -97,7 +96,7 @@ public class DAOComumHibernateImpl<T extends AbstractBean<T>, ID extends Seriali
 				return super.search(search);
 			}
 			
-			if( Util.getAlunoLogado().getAdministracao().getCurso()!=null){
+			if(Util.getAlunoLogado().getAdministracao().getCurso()!=null){
 				search.addFilterEqual("administracao.curso.id", Util.getAlunoLogado().getAdministracao().getCurso().getId());
 			}
 		}

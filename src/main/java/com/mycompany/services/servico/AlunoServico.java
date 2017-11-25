@@ -255,11 +255,12 @@ public class AlunoServico implements IAlunoServico{
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = java.lang.Exception.class, timeout = DEFAUL_TIMEOUT)
 	public Retorno validaRegrasAntesIncluir(Aluno aluno) {
 		Retorno retorno = Reflexao.validarTodosCamposObrigatorios(aluno);
+		searchFetchAlunoLogado(Util.getAlunoLogado());
+//		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),aluno, PermissaoAcesso.OPERACAO_INCLUIR)){
+//			retorno.setSucesso(false);
+//			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
+//		}
 		
-		if(!Util.possuiPermissao(searchFetchAlunoLogado(Util.getAlunoLogado()),aluno, PermissaoAcesso.OPERACAO_INCLUIR)){
-			retorno.setSucesso(false);
-			retorno.addMensagem(new Mensagem(Mensagem.MOTIVO_SEM_PERMISSAO_INCLUIR,Mensagem.ERRO));
-		}
 		if(aluno.getAdministracao()==null || aluno.getAdministracao()!=null && aluno.getAdministracao().getCurso() == null){
 			retorno.setSucesso(false);
 			retorno.addMensagem(new Mensagem("Curso é obrigatorio", Mensagem.ERRO));
