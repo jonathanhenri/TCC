@@ -1,3 +1,8 @@
+Instruções para criar o ambiente de desenvolvimento.
+* Instale o java
+* Instale o maven
+* configure o tomcat no eclipse
+
 Instruções para criação do banco de dados:
 
 1° Cria um banco de dados chamado "tcc" no mysql.
